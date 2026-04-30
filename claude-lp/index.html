@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Fractional Executive's Claude Prompt Library</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:           #0A0A12;
+    --bg2:          #12121E;
+    --bg3:          #0E0E19;
+    --primary:      #6A66A3;
+    --primary-light:#9B98C4;
+    --accent:       #FF9900;
+    --success:      #019047;
+    --warning:      #F08080;
+    --text:         rgba(255,255,255,0.90);
+    --text-dim:     rgba(255,255,255,0.72);
+    --text-muted:   rgba(255,255,255,0.55);
+    --border:       rgba(106,102,163,0.25);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image:
+      linear-gradient(rgba(106,102,163,0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(106,102,163,0.035) 1px, transparent 1px);
+    background-size: 44px 44px;
+    pointer-events: none; z-index: 0;
+  }
+
+  /* ── SIDEBAR NAV ── */
+  .nav {
+    position: fixed;
+    left: 0; top: 0; bottom: 0;
+    width: 220px;
+    background: rgba(10,10,18,0.97);
+    border-right: 1px solid var(--border);
+    padding: 32px 0;
+    overflow-y: auto;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .nav-logo {
+    padding: 0 20px 28px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 20px;
+  }
+
+  .nav-logo .tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(255,153,0,0.75);
+    margin-bottom: 6px;
+  }
+
+  .nav-logo .title {
+    font-size: 13px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.85);
+    line-height: 1.35;
+  }
+
+  .nav-section-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.30);
+    padding: 0 20px 8px;
+  }
+
+  .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 20px;
+    text-decoration: none;
+    font-size: 12.5px;
+    color: var(--text-muted);
+    transition: all 0.2s;
+    border-left: 2px solid transparent;
+    line-height: 1.4;
+  }
+
+  .nav-link:hover {
+    color: var(--text-dim);
+    background: rgba(106,102,163,0.07);
+    border-left-color: rgba(106,102,163,0.4);
+  }
+
+  .nav-link.active {
+    color: var(--accent);
+    border-left-color: var(--accent);
+    background: rgba(255,153,0,0.05);
+  }
+
+  .nav-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    color: rgba(106,102,163,0.6);
+    min-width: 16px;
+  }
+
+  /* ── MAIN CONTENT ── */
+  .main {
+    margin-left: 220px;
+    position: relative; z-index: 1;
+    padding: 60px 48px 80px;
+    max-width: 900px;
+  }
+
+  /* ── HEADER ── */
+  .page-header {
+    margin-bottom: 64px;
+    padding-bottom: 48px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .header-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(255,153,0,0.85);
+    border: 1px solid rgba(255,153,0,0.2);
+    background: rgba(255,153,0,0.06);
+    padding: 6px 14px;
+    border-radius: 3px;
+    margin-bottom: 24px;
+  }
+
+  .page-header h1 {
+    font-size: clamp(30px, 4vw, 44px);
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    line-height: 1.1;
+    color: rgba(255,255,255,0.95);
+    margin-bottom: 18px;
+  }
+
+  .page-header h1 em {
+    font-style: normal;
+    color: var(--accent);
+  }
+
+  .page-header .subtitle {
+    font-size: 16px;
+    color: var(--text-dim);
+    max-width: 560px;
+    line-height: 1.7;
+    margin-bottom: 32px;
+  }
+
+  .how-to-use {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-left: 3px solid rgba(106,102,163,0.7);
+    border-radius: 8px;
+    padding: 20px 24px;
+  }
+
+  .how-to-use .htl {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(155,152,196,0.75);
+    margin-bottom: 10px;
+  }
+
+  .how-to-use ol {
+    padding-left: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .how-to-use li {
+    font-size: 13.5px;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+
+  .how-to-use li strong {
+    color: rgba(255,255,255,0.85);
+    font-weight: 600;
+  }
+
+  /* ── SECTION DIVIDER ── */
+  .section-divider {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 52px 0 28px;
+  }
+
+  .section-divider h2 {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(155,152,196,0.65);
+    white-space: nowrap;
+  }
+
+  .section-divider .line {
+    flex: 1; height: 1px;
+    background: var(--border);
+  }
+
+  /* ── PROMPT CARD ── */
+  .prompt-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    transition: border-color 0.25s;
+  }
+
+  .prompt-card:hover {
+    border-color: rgba(106,102,163,0.45);
+  }
+
+  .card-header {
+    padding: 24px 28px 20px;
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .card-num-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    min-width: 32px;
+  }
+
+  .card-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    color: rgba(106,102,163,0.7);
+    letter-spacing: 0.06em;
+  }
+
+  .card-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: rgba(106,102,163,0.35);
+    transition: background 0.2s;
+  }
+
+  .prompt-card.open .card-dot {
+    background: var(--accent);
+  }
+
+  .card-meta {
+    flex: 1;
+  }
+
+  .card-category {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(155,152,196,0.65);
+    margin-bottom: 6px;
+  }
+
+  .card-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.92);
+    margin-bottom: 6px;
+    line-height: 1.35;
+  }
+
+  .card-desc {
+    font-size: 13.5px;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+
+  .card-toggle {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: rgba(106,102,163,0.65);
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+    margin-top: 4px;
+    transition: color 0.2s;
+  }
+
+  .prompt-card.open .card-toggle {
+    color: var(--accent);
+  }
+
+  /* ── CARD BODY ── */
+  .card-body {
+    display: none;
+    padding: 0 28px 28px;
+    border-top: 1px solid rgba(106,102,163,0.15);
+  }
+
+  .prompt-card.open .card-body {
+    display: block;
+  }
+
+  .when-to-use {
+    padding: 16px 0 20px;
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.65;
+    border-bottom: 1px solid rgba(106,102,163,0.12);
+    margin-bottom: 20px;
+  }
+
+  .when-to-use strong {
+    color: rgba(255,255,255,0.7);
+    font-size: 10px;
+    font-family: 'Space Mono', monospace;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  /* Prompt box */
+  .prompt-box-wrap {
+    position: relative;
+    margin-bottom: 16px;
+  }
+
+  .prompt-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(155,152,196,0.6);
+    margin-bottom: 8px;
+  }
+
+  .prompt-box {
+    background: var(--bg3);
+    border: 1px solid rgba(106,102,163,0.18);
+    border-radius: 8px;
+    padding: 20px;
+    font-family: 'Space Mono', monospace;
+    font-size: 12.5px;
+    color: rgba(255,255,255,0.82);
+    line-height: 1.75;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  .prompt-box .placeholder {
+    color: rgba(255,153,0,0.75);
+    font-weight: 700;
+  }
+
+  .copy-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: rgba(106,102,163,0.15);
+    border: 1px solid rgba(106,102,163,0.3);
+    color: rgba(155,152,196,0.85);
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 9px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .copy-btn:hover {
+    background: rgba(106,102,163,0.25);
+    border-color: rgba(106,102,163,0.55);
+    color: rgba(255,255,255,0.85);
+  }
+
+  .copy-btn.copied {
+    background: rgba(1,144,71,0.15);
+    border-color: rgba(1,144,71,0.4);
+    color: rgba(1,144,71,0.9);
+  }
+
+  .pro-tip {
+    margin-top: 16px;
+    background: rgba(255,153,0,0.05);
+    border: 1px solid rgba(255,153,0,0.15);
+    border-radius: 7px;
+    padding: 14px 18px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.72);
+    line-height: 1.65;
+  }
+
+  .pro-tip strong {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(255,153,0,0.8);
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  /* ── FOOTER CTA ── */
+  .footer-cta {
+    margin-top: 72px;
+    background: linear-gradient(135deg, rgba(106,102,163,0.1), rgba(255,153,0,0.05));
+    border: 1px solid rgba(106,102,163,0.3);
+    border-radius: 16px;
+    padding: 44px;
+    text-align: center;
+  }
+
+  .footer-cta .mono-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(155,152,196,0.6);
+    margin-bottom: 16px;
+  }
+
+  .footer-cta h3 {
+    font-size: 22px;
+    font-weight: 800;
+    color: rgba(255,255,255,0.93);
+    margin-bottom: 14px;
+    line-height: 1.3;
+  }
+
+  .footer-cta p {
+    font-size: 15px;
+    color: var(--text-dim);
+    max-width: 440px;
+    margin: 0 auto 28px;
+    line-height: 1.7;
+  }
+
+  .footer-cta a {
+    display: inline-block;
+    background: var(--accent);
+    color: #0A0A12;
+    font-weight: 700;
+    font-size: 14px;
+    padding: 14px 32px;
+    border-radius: 7px;
+    text-decoration: none;
+    transition: all 0.2s;
+    margin-bottom: 10px;
+  }
+
+  .footer-cta a:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(255,153,0,0.28);
+  }
+
+  .footer-cta .sub-note {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.06em;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .nav { display: none; }
+    .main { margin-left: 0; padding: 40px 20px 60px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav class="nav">
+  <div class="nav-logo">
+    <div class="tag">Prompt Library</div>
+    <div class="title">Fractional Executive Edition</div>
+  </div>
+  <div class="nav-section-label">Content Extraction</div>
+  <a href="#p1" class="nav-link"><span class="nav-num">01</span>Post-Call Extraction</a>
+  <a href="#p2" class="nav-link"><span class="nav-num">02</span>Objection Miner</a>
+  <a href="#p3" class="nav-link"><span class="nav-num">03</span>Framework Builder</a>
+  <div class="nav-section-label" style="margin-top:16px">Post Writing</div>
+  <a href="#p4" class="nav-link"><span class="nav-num">04</span>Contrarian Take</a>
+  <a href="#p5" class="nav-link"><span class="nav-num">05</span>Story Post Extractor</a>
+  <a href="#p6" class="nav-link"><span class="nav-num">06</span>Belief Shift Builder</a>
+  <a href="#p7" class="nav-link"><span class="nav-num">07</span>Hook Rewriter</a>
+  <div class="nav-section-label" style="margin-top:16px">Pipeline</div>
+  <a href="#p8" class="nav-link"><span class="nav-num">08</span>Monthly Planner</a>
+  <a href="#p9" class="nav-link"><span class="nav-num">09</span>DM Opener Generator</a>
+  <a href="#p10" class="nav-link"><span class="nav-num">10</span>Raw Note Converter</a>
+</nav>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- HEADER -->
+  <div class="page-header">
+    <div class="header-tag">10 PROMPTS · COPY &amp; PASTE · USE TODAY</div>
+    <h1>The Fractional Executive's<br><em>Claude Prompt Library</em></h1>
+    <p class="subtitle">Ten prompts that extract post-ready content from the client work you're already doing — without staring at a blank page. Built specifically for fractional CMOs, CROs, and GTM advisors.</p>
+    <div class="how-to-use">
+      <div class="htl">How to use this library</div>
+      <ol>
+        <li><strong>Open Claude.ai</strong> (free account works)</li>
+        <li><strong>Copy the prompt</strong> using the button below each one</li>
+        <li><strong>Replace the orange placeholders</strong> with your real content</li>
+        <li><strong>Paste and run</strong> — edit the output to match your voice</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- SECTION: CONTENT EXTRACTION -->
+  <div class="section-divider">
+    <h2>Content Extraction</h2>
+    <div class="line"></div>
+  </div>
+
+  <!-- PROMPT 01 -->
+  <div class="prompt-card" id="p1">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="card-num-col">
+        <div class="card-num">01</div>
+        <div class="card-dot"></div>
+      </div>
+      <div class="card-meta">
+        <div class="card-category">Content Extraction</div>
+        <div class="card-title">The Post-Call Extraction Prompt</div>
+        <div class="card-desc">Turn any client call into 3 ready-to-draft LinkedIn posts before you close your notes.</div>
+      </div>
+      <div class="card-toggle">OPEN</div>
+    </div>
+    <div class="card-body">
+      <div class="when-to-use">
+        <strong>When to use</strong>
+        Run this within 30 minutes of ending a client call, discovery call, or advisory session — while the content is still fresh. Paste in your raw notes or a rough transcript summary. Works with even 3–4 bullet points.
+      </div>
+      <div class="prompt-box-wrap">
+        <div class="prompt-label">The Prompt</div>
+        <div class="prompt-box" id="prompt-01">I just finished a client call. Here are my rough notes:
+
+<span class="placeholder">[PASTE YOUR CALL NOTES OR A SHORT SUMMARY — even 3-4 bullet points works]</span>
+
+My role: <span class="placeholder">[e.g. Fractional CMO / GTM Advisor / CRO]</span>
+My ICP (who I work with): <span class="placeholder">[e.g. B2B SaaS founders, Series A-B]</span>
+
+From these notes, identify:
+1. The most specific insight or diagnosis I gave the client
+2. The most interesting tension or problem we uncovered
+3. The framework or approach I reached for instinctively
+
+Then turn each of those into a LinkedIn post opening — just the first 3 lines (the hook). Not the full post. I want to see which angle is worth developing.
+
+Format your response as three numbered hooks, each under 180 characters, followed by one sentence explaining why that angle would resonate with my ICP.</div>
+      </div>
+      <button class="copy-btn" onclick="copyPrompt('prompt-01', this)">
+        <span>⎘</span> COPY PROMPT
+      </button>
+      <div class="pro-tip">
+        <strong>Pro Tip</strong>
+        Pick the hook that makes you think "I've never quite said it that way before." That friction is the signal — it means you've articulated something that was previously only in your head.
+      </div>
+    </div>
+  </div>
+
+  <!-- PROMPT 02 -->
+  <div class="prompt-card" id="p2">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="card-num-col">
+        <div class="card-num">02</div>
+        <div class="card-dot"></div>
+      </div>
+      <div class="card-meta">
+        <div class="card-category">Content Extraction</div>
+        <div class="card-title">The Objection Miner</div>
+        <div class="card-desc">Turn a sales objection into two high-converting post angles. The best objections are always content.</div>
+      </div>
+      <div class="card-toggle">OPEN</div>
+    </div>
+    <div class="card-body">
+      <div class="when-to-use">
+        <strong>When to use</strong>
+        Any time a prospect pushes back on your offer, raises a doubt, or asks a question that made you work for the answer. Run this immediately after a discovery call or sales conversation while the objection is still clear in your mind.
+      </div>
+      <div class="prompt-box-wrap">
+        <div class="prompt-label">The Prompt</div>
+        <div class="prompt-box" id="prompt-02">A prospect just raised this objection with me:
+
+"<span class="placeholder">[PASTE THE EXACT OBJECTION OR DESCRIBE IT IN A SENTENCE]</span>"
+
+My role: <span class="placeholder">[Fractional CMO / GTM Advisor / CRO / etc.]</span>
+What I actually do: <span class="placeholder">[1-2 sentences on your offer]</span>
+How I handled it in the call: <span class="placeholder">[what you said back — rough is fine]</span>
+
+This objection tells me something about how my ICP thinks about this problem. I want to turn it into content.
+
+Give me two LinkedIn post angles:
+- Angle A: A teaching post that addresses the root misconception behind the objection without ever mentioning the objection directly
+- Angle B: An opinion post that takes the contrarian position on whatever assumption the objection reveals
+
+For each angle: write the hook (first 2-3 lines only) and a one-sentence brief explaining what the body of the post would cover.</div>
+      </div>
+      <button class="copy-btn" onclick="copyPrompt('prompt-02', this)">
+        <span>⎘</span> COPY PROMPT
+      </button>
+      <div class="pro-tip">
+        <strong>Pro Tip</strong>
+        Your best-performing posts are usually answers to objections your paying clients never raised — because your content already handled it. This prompt closes that loop systematically.
+      </div>
+    </div>
+  </div>
+
+  <!-- PROMPT 03 -->
+  <div class="prompt-card" id="p3">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="card-num-col">
+        <div class="card-num">03</div>
+        <div class="card-dot"></div>
+      </div>
+      <div class="card-meta">
+        <div class="card-category">Content Extraction</div>
+        <div class="card-title">The Framework Post Builder</div>
+        <div class="card-desc">Turn a methodology you use with clients into a structured LinkedIn teaching post. Works with any framework, model, or diagnostic you reach for regularly.</div>
+      </div>
+      <div class="card-toggle">OPEN</div>
+    </div>
+    <div class="card-body">
+      <div class="when-to-use">
+        <strong>When to use</strong>
+        When you catch yourself explaining the same framework to multiple clients. If you've said it three times, it belongs on LinkedIn. This prompt turns the in-your-head version into a structured, shareable post.
+      </div>
+      <div class="prompt-box-wrap">
+        <div class="prompt-label">The Prompt</div>
+        <div class="prompt-box" id="prompt-03">I use a framework or approach with clients that I've never written about publicly. Here's a rough description of it:
+
+Name (if I have one for it): <span class="placeholder">[or write "unnamed"]</span>
+What problem it solves: <span class="placeholder">[describe the client situation it addresses]</span>
+The steps or components: <span class="placeholder">[list them out roughly — doesn't need to be polished]</span>
+What changes for the client after using it: <span class="placeholder">[the outcome or shift it produces]</span>
+A real example (anonymised is fine): <span class="placeholder">[describe a client situation where you used it]</span>
+
+Write a LinkedIn teaching post based on this framework. Requirements:
+- Open with the problem it solves, not the name of the framework
+- Explain it in 3-5 clear steps, each actionable and specific
+- Include the anonymised client example as the proof point
+- Close with a declarative statement about what changes when this is applied — no question CTA
+- Keep paragraphs to 2-3 sentences maximum
+- No exclamation marks. No em dashes. No emojis.</div>
+      </div>
+      <button class="copy-btn" onclick="copyPrompt('prompt-03', this)">
+        <span>⎘</span> COPY PROMPT
+      </button>
+      <div class="pro-tip">
+        <strong>Pro Tip</strong>
+        After the post is drafted, ask Claude: "What would someone need to believe for this framework to feel irrelevant to them?" — that answer is your next post.
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION: POST WRITING -->
+  <div class="section-divider">
+    <h2>Post Writing</h2>
+    <div class="line"></div>
+  </div>
+
+  <!-- PROMPT 04 -->
+  <div class="prompt-card" id="p4">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="card-num-col">
+        <div class="card-num">04</div>
+        <div class="card-dot"></div>
+      </div>
+      <div class="card-meta">
+        <div class="card-category">Post Writing</div>
+        <div class="card-title">The Contrarian Take Generator</div>
+        <div class="card-desc">Turn a strong opinion you hold about your industry into a short, declarative opinion post. No hedging. No both-sides framing.</div>
+      </div>
+      <div class="card-toggle">OPEN</div>
+    </div>
+    <div class="card-body">
+      <div class="when-to-use">
+        <strong>When to use</strong>
+        When you read a LinkedIn post from someone in your space and your instinct is "that's wrong" or "that's incomplete." Your disagreement is the post. Use this to sharpen it into something worth publishing.
+      </div>
+      <div class="prompt-box-wrap">
+        <div class="prompt-label">The Prompt</div>
+        <div class="prompt-box" id="prompt-04">I have a contrarian view I want to turn into a LinkedIn opinion post.
+
+My view: <span class="placeholder">[state your opinion plainly — one sentence, no hedging]</span>
+The common belief I'm pushing against: <span class="placeholder">[what most people in my space believe or do]</span>
+Why I believe this: <span class="placeholder">[your experience or evidence — rough notes are fine]</span>
+Who I want to reach: <span class="placeholder">[your ICP — e.g. fractional CMOs, GTM advisors]</span>
+
+Write a short LinkedIn opinion post (under 900 characters) that:
+- Opens with the opinion stated directly in the first line — no build-up
+- Backs it with 2-3 sentences of evidence or experience
+- Names the cost of the opposite belief in one specific sentence
+- Ends with a single declarative statement — not a question
+- Sounds like a senior practitioner, not a content creator
+- Zero em dashes, zero exclamation marks, zero emojis</div>
+      </div>
+      <button class="copy-btn" onclick="copyPrompt('prompt-04', this)">
+        <span>⎘</span> COPY PROMPT
+      </button>
+      <div class="pro-tip">
+        <strong>Pro Tip</strong>
+        Opinion posts with no CTA often outperform posts that ask for a comment — because they feel like a genuine statement, not a lead generation exercise. Let the post land. Your profile does the rest.
+      </div>
+    </div>
+  </div>
+
+  <!-- PROMPT 05 -->
+  <div class="prompt-card" id="p5">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="card-num-col">
+        <div class="card-num">05</div>
+        <div class="card-dot"></div>
+      </div>
+      <div class="card-meta">
+        <div class="card-category">Post Writing</div>
+        <div class="card-title">The Story Post Extractor</div>
+        <div class="card-desc">Turn a client situation, a conversation, or a moment from your consulting work into a story post with a transferable lesson.</div>
+      </div>
+      <div class="card-toggle">OPEN</div>
+    </div>
+    <div class="card-body">
+      <div class="when-to-use">
+        <strong>When to use</strong>
+        When something interesting happened in a client engagement — a breakthrough, a failure, an unexpected discovery, a moment where your diagnosis turned out to be different from what you expected. Write the story while it's still fresh.
+      </div>
+      <div class="prompt-box-wrap">
+        <div class="prompt-label">The Prompt</div>
+        <div class="prompt-box" id="prompt-05">I want to write a LinkedIn story post about a client situation. Here are the details (I'll anonymise the client):
+
+The situation: <span class="placeholder">[describe what was happening — what they hired you for, what the problem looked like from the outside]</span>
+The tension or unexpected discovery: <span class="placeholder">[what you found when you dug in — the part that surprised even you]</span>
+What you did or recommended: <span class="placeholder">[what you actually changed or advised]</span>
+The outcome: <span class="placeholder">[what happened as a result — specific if possible]</span>
+The lesson that's transferable: <span class="placeholder">[what does this mean for someone reading this who is in a similar situation]</span>
+
+Write a LinkedIn story post that:
+- Opens mid-scene — drops the reader directly into the moment, not the background
+- Keeps the client situation entirely anonymous but specific enough to be credible
+- Builds toward the lesson naturally rather than announcing it early
+- Closes with a declarative insight, not a question
+- Paragraphs of 2-3 sentences maximum
+- No em dashes, no exclamation marks</div>
+      </div>
+      <button class="copy-btn" onclick="copyPrompt('prompt-05', this)">
+        <span>⎘</span> COPY PROMPT
+      </button>
+      <div class="pro-tip">
+        <strong>Pro Tip</strong>
+        The best story posts feel slightly uncomfortable to write — because they reveal how you actually think, not just what you recommend. That discomfort is the signal you're writing something worth reading.
+      </div>
+    </div>
+  </div>
+
+  <!-- PROMPT 06 -->
+  <div class="prompt-card" id="p6">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="card-num-col">
+        <div class="card-num">06</div>
+        <div class="card-dot"></div>
+      </div>
+      <div class="card-meta">
+        <div class="card-category">Post Writing</div>
+        <div class="card-title">The Belief Shift Builder</div>
+        <div class="card-desc">Reframe one wrong assumption your ICP holds about their problem. The most powerful posts change how someone thinks, not just what they know.</div>
+      </div>
+      <div class="card-toggle">OPEN</div>
+    </div>
+    <div class="card-body">
+      <div class="when-to-use">
+        <strong>When to use</strong>
+        When you notice the same misdiagnosis recurring across multiple clients or prospects. If they all think the problem is X and you know it's actually Y, that gap is a belief shift post. One per month maximum — these posts need weight behind them.
+      </div>
+      <div class="prompt-box-wrap">
+        <div class="prompt-label">The Prompt</div>
+        <div class="prompt-box" id="prompt-06">I want to write a belief shift post for LinkedIn — a post that moves my ICP from a wrong assumption to a more accurate diagnosis.
+
+The wrong assumption most of my ICP holds: <span class="placeholder">[what they believe the problem is]</span>
+What the problem actually is: <span class="placeholder">[your reframe — the correct diagnosis]</span>
+Why they hold the wrong belief: <span class="placeholder">[what led them there — usually surface evidence that points to the wrong cause]</span>
+What changes when they adopt the right belief: <span class="placeholder">[the practical shift in what they do or stop doing]</span>
+My ICP: <span class="placeholder">[fractional CMOs / GTM advisors / etc.]</span>
+
+Write a LinkedIn belief shift post that:
+- Opens by naming the wrong belief plainly — no hedging
+- Shows why intelligent people hold this belief (validate without condescending)
+- Introduces the correct diagnosis with a clear structural distinction
+- Shows what becomes possible with the right framing
+- Closes with one declarative sentence that lands the shift
+- Never uses "Here's the thing:" or "Let me share..."
+- No em dashes, no exclamation marks, no closing question</div>
+      </div>
+      <button class="copy-btn" onclick="copyPrompt('prompt-06', this)">
+        <span>⎘</span> COPY PROMPT
+      </button>
+      <div class="pro-tip">
+        <strong>Pro Tip</strong>
+        The line "why intelligent people hold this belief" is the most important part. If you skip it, the post sounds condescending. If you include it, the reader feels seen — which is the moment they start trusting you.
+      </div>
+    </div>
+  </div>
+
+  <!-- PROMPT 07 -->
+  <div class="prompt-card" id="p7">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="card-num-col">
+        <div class="card-num">07</div>
+        <div class="card-dot"></div>
+      </div>
+      <div class="card-meta">
+        <div class="card-category">Post Writing</div>
+        <div class="card-title">The Hook Rewriter</div>
+        <div class="card-desc">Take any existing post draft and get five completely different opening lines — each using a different scroll-stopping technique.</div>
+      </div>
+      <div class="card-toggle">OPEN</div>
+    </div>
+    <div class="card-body">
+      <div class="when-to-use">
+        <strong>When to use</strong>
+        When you've written a post but the first line feels flat. Or when a post underperformed and you suspect the hook was the problem. Run this and replace the opening — everything else stays.
+      </div>
+      <div class="prompt-box-wrap">
+        <div class="prompt-label">The Prompt</div>
+        <div class="prompt-box" id="prompt-07">Here is a LinkedIn post I've written:
+
+<span class="placeholder">[PASTE YOUR FULL POST DRAFT]</span>
+
+The hook (first 1-2 lines) is weak. Write 5 alternative hooks for this post, each using a different technique:
+
+Hook 1 — THE CONTRADICTION: Open with a statement that contradicts a common belief related to this topic
+Hook 2 — THE SPECIFIC NUMBER: Lead with a precise number, data point, or timeframe that makes the reader curious
+Hook 3 — THE NAMED SITUATION: Open by describing a specific scenario the reader will recognise themselves in
+Hook 4 — THE DIAGNOSIS: State the root cause of the problem directly, in the first line, without build-up
+Hook 5 — THE COST: Open by naming what someone loses or leaves on the table by not knowing what this post reveals
+
+Requirements for all 5:
+- Under 180 characters each
+- No em dashes, no exclamation marks, no emojis
+- Do not open with "I"
+- Sound like a senior practitioner, not a content creator
+
+After the 5 hooks, recommend which one to lead with and explain in one sentence why.</div>
+      </div>
+      <button class="copy-btn" onclick="copyPrompt('prompt-07', this)">
+        <span>⎘</span> COPY PROMPT
+      </button>
+      <div class="pro-tip">
+        <strong>Pro Tip</strong>
+        The hook accounts for roughly 80% of a post's reach — because the algorithm measures "see more" clicks in the first 30 minutes. If those are low, the post stops distributing. A strong body with a weak hook is still a failed post.
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION: PIPELINE -->
+  <div class="section-divider">
+    <h2>Pipeline</h2>
+    <div class="line"></div>
+  </div>
+
+  <!-- PROMPT 08 -->
+  <div class="prompt-card" id="p8">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="card-num-col">
+        <div class="card-num">08</div>
+        <div class="card-dot"></div>
+      </div>
+      <div class="card-meta">
+        <div class="card-category">Pipeline</div>
+        <div class="card-title">The Monthly Content Planner</div>
+        <div class="card-desc">Answer three questions about your last 30 days of client work. Get a full month of post topics — mapped to your content pillars, sequenced for pipeline.</div>
+      </div>
+      <div class="card-toggle">OPEN</div>
+    </div>
+    <div class="card-body">
+      <div class="when-to-use">
+        <strong>When to use</strong>
+        At the start of each month — or whenever you feel like you're running out of things to post. Run this once and you'll have more ideas than you can publish. Takes under 10 minutes of input.
+      </div>
+      <div class="prompt-box-wrap">
+        <div class="prompt-label">The Prompt</div>
+        <div class="prompt-box" id="prompt-08">I want to plan my LinkedIn content for the next 30 days. Here's what happened in my consulting work this month:
+
+Most useful thing I told a client: <span class="placeholder">[describe it in 2-4 sentences]</span>
+Most interesting objection I heard in a sales conversation: <span class="placeholder">[quote it or paraphrase it]</span>
+The thing I wish my ideal clients understood before they get on a call with me: <span class="placeholder">[one honest sentence]</span>
+A framework I used repeatedly this month: <span class="placeholder">[describe it briefly]</span>
+Something I changed my mind about or saw differently this month: <span class="placeholder">[one observation]</span>
+
+My ICP: <span class="placeholder">[fractional CMOs / GTM advisors / etc.]</span>
+I post 3x per week (Tue/Wed/Thu). This month has [<span class="placeholder">X</span>] posting weeks.
+
+Using these inputs, generate a content plan:
+- Suggest 12 post topics (one per post slot)
+- For each topic: name the post type (teaching / opinion / story / belief shift / handraiser), the core angle in one sentence, and which input it draws from
+- Sequence them so the month builds — authority posts early, handraiser post in week 3
+- Vary the post types across the week (never two opinion posts back to back)
+- Flag which 2 topics have the highest pipeline potential and explain why</div>
+      </div>
+      <button class="copy-btn" onclick="copyPrompt('prompt-08', this)">
+        <span>⎘</span> COPY PROMPT
+      </button>
+      <div class="pro-tip">
+        <strong>Pro Tip</strong>
+        The three questions at the top of this prompt — most useful thing, objection heard, what clients should know — are the same three inputs that power a professional extraction session. If the output feels sharper than your usual content, that's why.
+      </div>
+    </div>
+  </div>
+
+  <!-- PROMPT 09 -->
+  <div class="prompt-card" id="p9">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="card-num-col">
+        <div class="card-num">09</div>
+        <div class="card-dot"></div>
+      </div>
+      <div class="card-meta">
+        <div class="card-category">Pipeline</div>
+        <div class="card-title">The DM Opener Generator</div>
+        <div class="card-desc">Turn a prospect's LinkedIn profile or recent post into three personalised, non-generic DM openers. No pitch, no template language.</div>
+      </div>
+      <div class="card-toggle">OPEN</div>
+    </div>
+    <div class="card-body">
+      <div class="when-to-use">
+        <strong>When to use</strong>
+        Before sending a connection request to a high-fit prospect, or when following up after they comment on your post. Paste in what you know about them — LinkedIn About section, a recent post they wrote, or their headline. Get an opener that doesn't read like every other DM they've received.
+      </div>
+      <div class="prompt-box-wrap">
+        <div class="prompt-label">The Prompt</div>
+        <div class="prompt-box" id="prompt-09">I want to open a LinkedIn DM conversation with a prospect. Here's what I know about them:
+
+Their headline or role: <span class="placeholder">[paste from their profile]</span>
+Their LinkedIn About section or a recent post they wrote: <span class="placeholder">[paste the relevant text]</span>
+Why I think they're a good fit for what I do: <span class="placeholder">[one honest sentence — not their job title, but a situation signal]</span>
+What I do (brief): <span class="placeholder">[1-2 sentences]</span>
+
+Write 3 DM openers. Rules:
+- Each opener is 2-3 sentences maximum
+- No pitch, no offer, no "I help people like you"
+- Each one should reference something specific from their profile or post — not generic praise
+- The goal of the opener is to start a genuine conversation, not to sell
+- End each opener with a single question that invites them to talk about their situation
+- Label each opener: Opener A (references their content), Opener B (references their situation), Opener C (references a shared observation)
+- Human tone — sounds like a message from a peer, not a sales sequence</div>
+      </div>
+      <button class="copy-btn" onclick="copyPrompt('prompt-09', this)">
+        <span>⎘</span> COPY PROMPT
+      </button>
+      <div class="pro-tip">
+        <strong>Pro Tip</strong>
+        Before you send any DM, ask yourself: "Would this message make sense if they'd never heard of me?" If the answer is no — if it only works because you've built context about your offer — rewrite it. The opener earns the right to a conversation. It doesn't start the sales process.
+      </div>
+    </div>
+  </div>
+
+  <!-- PROMPT 10 -->
+  <div class="prompt-card" id="p10">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="card-num-col">
+        <div class="card-num">10</div>
+        <div class="card-dot"></div>
+      </div>
+      <div class="card-meta">
+        <div class="card-category">Pipeline</div>
+        <div class="card-title">The Raw Note Converter</div>
+        <div class="card-desc">Turn a half-formed thought, a voice memo transcript, or a messy brain dump into a structured LinkedIn post. No idea is too rough for this one.</div>
+      </div>
+      <div class="card-toggle">OPEN</div>
+    </div>
+    <div class="card-body">
+      <div class="when-to-use">
+        <strong>When to use</strong>
+        When you have a thought worth sharing but no energy to shape it. Paste in whatever you have — a voice memo transcript, three disconnected sentences, a paragraph you wrote and abandoned. This prompt structures it without changing your voice.
+      </div>
+      <div class="prompt-box-wrap">
+        <div class="prompt-label">The Prompt</div>
+        <div class="prompt-box" id="prompt-10">I have a rough idea for a LinkedIn post. Here it is in its current state — unpolished, possibly incomplete:
+
+<span class="placeholder">[PASTE YOUR RAW NOTES, BRAIN DUMP, VOICE MEMO TRANSCRIPT, OR HALF-FORMED THOUGHT]</span>
+
+My ICP: <span class="placeholder">[fractional CMOs / GTM advisors / etc.]</span>
+Post type preference (or write "you decide"): <span class="placeholder">[teaching / opinion / story / belief shift]</span>
+
+Turn this into a complete LinkedIn post. Requirements:
+- Do not change my core point or conclusion — restructure how it's expressed, not what it says
+- Keep my language where it's specific and clear — only rewrite where it's vague or structurally weak
+- Open with the sharpest version of my main point — not background
+- Keep paragraphs to 2-3 sentences maximum
+- Close with a declarative statement, not a question
+- No em dashes, no exclamation marks, no emojis
+- After the post, give me one sentence explaining the structural choice you made and one suggestion for how I could make it 10% stronger.</div>
+      </div>
+      <button class="copy-btn" onclick="copyPrompt('prompt-10', this)">
+        <span>⎘</span> COPY PROMPT
+      </button>
+      <div class="pro-tip">
+        <strong>Pro Tip</strong>
+        The constraint "do not change my core point" is the most important line in this prompt. Without it, Claude will sharpen your idea into something generic. With it, the output sounds like you — just more structured.
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER CTA -->
+  <div class="footer-cta">
+    <div class="mono-tag">WANT THE FULL SYSTEM</div>
+    <h3>These prompts are the extraction logic.<br>The full system builds the infrastructure.</h3>
+    <p>A configured Authority Engine, Insight Library, 10-tab content report, and Connection Engine — built from a single 90-minute session. One-time setup. Runs every month from 10 minutes of input.</p>
+    <a href="https://pipelind.com/" target="_blank">See the Full System</a><br>
+    <span class="sub-note">Or try the free post generator first: pipelind.com/post-generator</span>
+  </div>
+
+</main>
+
+<script>
+function toggleCard(header) {
+  const card = header.parentElement;
+  const isOpen = card.classList.contains('open');
+  card.classList.toggle('open', !isOpen);
+  header.querySelector('.card-toggle').textContent = isOpen ? 'OPEN' : 'CLOSE';
+}
+
+function copyPrompt(id, btn) {
+  const el = document.getElementById(id);
+  // Get text without HTML tags, but preserve placeholder brackets
+  const text = el.innerText || el.textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.classList.add('copied');
+    btn.innerHTML = '<span>✓</span> COPIED';
+    setTimeout(() => {
+      btn.classList.remove('copied');
+      btn.innerHTML = '<span>⎘</span> COPY PROMPT';
+    }, 2000);
+  }).catch(() => {
+    // Fallback
+    const range = document.createRange();
+    range.selectNode(el);
+    window.getSelection().removeAllRanges();
+    window.getSelection().addRange(range);
+    document.execCommand('copy');
+    window.getSelection().removeAllRanges();
+    btn.classList.add('copied');
+    btn.innerHTML = '<span>✓</span> COPIED';
+    setTimeout(() => {
+      btn.classList.remove('copied');
+      btn.innerHTML = '<span>⎘</span> COPY PROMPT';
+    }, 2000);
+  });
+}
+
+// Highlight active nav link on scroll
+const sections = document.querySelectorAll('.prompt-card');
+const navLinks = document.querySelectorAll('.nav-link');
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      navLinks.forEach(l => l.classList.remove('active'));
+      const id = entry.target.id;
+      const active = document.querySelector(`.nav-link[href="#${id}"]`);
+      if (active) active.classList.add('active');
+    }
+  });
+}, { rootMargin: '-30% 0px -60% 0px' });
+
+sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
