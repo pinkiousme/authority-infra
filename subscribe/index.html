@@ -318,6 +318,54 @@
       text-decoration: none;
     }
 
+    /* Error state */
+    .error-box {
+      display: none;
+      background: rgba(220, 53, 69, 0.08);
+      border: 1px solid rgba(220, 53, 69, 0.25);
+      border-radius: 10px;
+      padding: 20px 24px;
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    .error-box p {
+      font-size: 14px;
+      color: var(--text-72);
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+
+    .error-box .error-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .error-box a.error-btn {
+      display: inline-block;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: opacity 0.15s;
+    }
+
+    .error-box a.error-btn:hover { opacity: 0.80; }
+
+    .error-btn-primary {
+      background: var(--accent);
+      color: #0A0A12;
+    }
+
+    .error-btn-secondary {
+      background: var(--surface2);
+      color: var(--text-72);
+      border: 1px solid var(--border);
+    }
+
     .paypal-note {
       font-size: 12px;
       color: var(--text-55);
@@ -495,6 +543,22 @@
       <!-- PayPal subscription button -->
       <div id="paypal-button-container-P-5Y462482YP650594PNH2FZ5Y"></div>
 
+      <!-- Error state (shown if PayPal fails) -->
+      <div class="error-box" id="error-message">
+        <p>
+          PayPal encountered an issue processing this payment.<br>
+          Email or book a call to complete your subscription directly.
+        </p>
+        <div class="error-actions">
+          <a href="mailto:saurabh@pipelind.com?subject=Pipelind Subscription" class="error-btn error-btn-primary">
+            Email Saurabh
+          </a>
+          <a href="https://calendly.com/saurabh_zentro/30-min" target="_blank" class="error-btn error-btn-secondary">
+            Book a Call
+          </a>
+        </div>
+      </div>
+
       <!-- Success state (shown after subscription confirmed) -->
       <div class="success-box" id="success-message">
         <div class="success-icon">✓</div>
@@ -506,7 +570,7 @@
         </p>
       </div>
 
-      <p class="paypal-note">Secure payment · Processed by PayPal</p>
+      <p class="paypal-note" id="paypal-note">Secure payment · Processed by PayPal</p>
 
       <hr class="cta-divider" />
 
@@ -571,34 +635,58 @@
   <!-- PayPal Subscription SDK -->
   <script src="https://www.paypal.com/sdk/js?client-id=BAACktzKsSOYyhBfV8OpmvKueJpRkAgKxQkTcfJ6kJXqKelR9X6t-WPWinghfVBOwm_I92ODoOpZnuAvCo&vault=true&intent=subscription" data-sdk-integration-source="button-factory"></script>
   <script>
-    paypal.Buttons({
-      style: {
-        shape: 'rect',
-        color: 'gold',
-        layout: 'vertical',
-        label: 'subscribe'
-      },
-      createSubscription: function(data, actions) {
-        return actions.subscription.create({
-          plan_id: 'P-5Y462482YP650594PNH2FZ5Y'
-        });
-      },
-      onApprove: function(data, actions) {
-        // Hide the PayPal button container
-        document.getElementById('paypal-button-container-P-5Y462482YP650594PNH2FZ5Y').style.display = 'none';
-        // Show branded success message
-        document.getElementById('success-message').style.display = 'block';
-        // Scroll success message into view
-        document.getElementById('success-message').scrollIntoView({ behavior: 'smooth', block: 'center' });
-      },
-      onError: function(err) {
-        console.error('PayPal error:', err);
-      },
-      onCancel: function(data) {
-        // User closed PayPal modal without completing — do nothing, button stays
-        console.log('Subscription cancelled by user.');
+    var BUTTON_CONTAINER = 'paypal-button-container-P-5Y462482YP650594PNH2FZ5Y';
+
+    function showError() {
+      document.getElementById(BUTTON_CONTAINER).style.display = 'none';
+      document.getElementById('error-message').style.display = 'block';
+      document.getElementById('paypal-note').style.display = 'none';
+      document.getElementById('error-message').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function showSuccess() {
+      document.getElementById(BUTTON_CONTAINER).style.display = 'none';
+      document.getElementById('error-message').style.display = 'none';
+      document.getElementById('success-message').style.display = 'block';
+      document.getElementById('paypal-note').style.display = 'none';
+      document.getElementById('success-message').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    // Guard: if PayPal SDK fails to load entirely
+    window.addEventListener('load', function() {
+      if (typeof paypal === 'undefined') {
+        showError();
+        return;
       }
-    }).render('#paypal-button-container-P-5Y462482YP650594PNH2FZ5Y');
+
+      paypal.Buttons({
+        style: {
+          shape: 'rect',
+          color: 'gold',
+          layout: 'vertical',
+          label: 'subscribe'
+        },
+        createSubscription: function(data, actions) {
+          return actions.subscription.create({
+            plan_id: 'P-5Y462482YP650594PNH2FZ5Y'
+          });
+        },
+        onApprove: function(data, actions) {
+          showSuccess();
+        },
+        onError: function(err) {
+          console.error('PayPal subscription error:', err);
+          showError();
+        },
+        onCancel: function(data) {
+          // User closed PayPal modal — button stays visible, do nothing
+          console.log('PayPal modal closed by user.');
+        }
+      }).render('#' + BUTTON_CONTAINER).catch(function(err) {
+        console.error('PayPal render error:', err);
+        showError();
+      });
+    });
   </script>
 
 </body>
