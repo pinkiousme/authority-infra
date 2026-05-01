@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Subscribe · Pipelind</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0A0A12;
+      --surface:   #12121E;
+      --surface2:  #1A1A2C;
+      --primary:   #6A66A3;
+      --accent:    #FF9900;
+      --success:   #019047;
+      --text-90:   rgba(255,255,255,0.90);
+      --text-72:   rgba(255,255,255,0.72);
+      --text-55:   rgba(255,255,255,0.55);
+      --border:    rgba(255,255,255,0.08);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text-90);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      min-height: 100vh;
+      padding: 0 24px 80px;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 32px 0 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .wordmark {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 800;
+      font-size: 22px;
+      letter-spacing: -0.5px;
+      color: var(--text-90);
+      text-decoration: none;
+    }
+
+    .wordmark span {
+      color: var(--accent);
+    }
+
+    .nav-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-55);
+    }
+
+    /* ─── CONTAINER ─── */
+    .container {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    /* ─── HEADER ─── */
+    .page-header {
+      margin-bottom: 48px;
+    }
+
+    .eyebrow {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    h1 {
+      font-size: clamp(32px, 5vw, 48px);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -1px;
+      color: var(--text-90);
+      margin-bottom: 16px;
+    }
+
+    .subline {
+      font-size: 17px;
+      color: var(--text-72);
+      font-weight: 400;
+    }
+
+    .price-inline {
+      color: var(--text-90);
+      font-weight: 700;
+    }
+
+    /* ─── DIVIDER ─── */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 40px 0;
+    }
+
+    /* ─── SECTION LABEL ─── */
+    .section-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-55);
+      margin-bottom: 20px;
+      display: block;
+    }
+
+    /* ─── DELIVERABLES ─── */
+    .deliverables-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .deliverable-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+    }
+
+    .deliverable-card .d-value {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--text-90);
+      line-height: 1;
+      margin-bottom: 6px;
+      letter-spacing: -1px;
+    }
+
+    .deliverable-card .d-value span {
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0;
+      color: var(--text-55);
+      margin-left: 2px;
+    }
+
+    .deliverable-card .d-label {
+      font-size: 13px;
+      color: var(--text-72);
+      font-weight: 500;
+    }
+
+    .deliverables-list {
+      list-style: none;
+      margin-top: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .deliverables-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 14px;
+      color: var(--text-72);
+    }
+
+    .deliverables-list li::before {
+      content: '·';
+      color: var(--primary);
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* ─── GUARANTEE ─── */
+    .guarantee-box {
+      background: rgba(1, 144, 71, 0.08);
+      border: 1px solid rgba(1, 144, 71, 0.25);
+      border-radius: 10px;
+      padding: 24px;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .guarantee-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(1, 144, 71, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 16px;
+    }
+
+    .guarantee-box h3 {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-90);
+      margin-bottom: 6px;
+    }
+
+    .guarantee-box p {
+      font-size: 14px;
+      color: var(--text-72);
+      line-height: 1.5;
+    }
+
+    /* ─── TERMS ─── */
+    .terms-row {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .term-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--text-72);
+    }
+
+    .term-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--primary);
+      flex-shrink: 0;
+    }
+
+    /* ─── CTA BOX ─── */
+    .cta-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 32px;
+      text-align: center;
+    }
+
+    .cta-price {
+      font-size: 42px;
+      font-weight: 800;
+      color: var(--text-90);
+      letter-spacing: -1.5px;
+      line-height: 1;
+    }
+
+    .cta-price sub {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--text-55);
+      letter-spacing: 0;
+      vertical-align: baseline;
+    }
+
+    .cta-caption {
+      font-size: 13px;
+      color: var(--text-55);
+      margin-top: 6px;
+      margin-bottom: 28px;
+    }
+
+    /* PayPal SDK button container */
+    #paypal-button-container-P-5Y462482YP650594PNH2FZ5Y {
+      width: 100%;
+      max-width: 360px;
+      margin: 0 auto;
+    }
+
+    /* Success state */
+    .success-box {
+      display: none;
+      background: rgba(1, 144, 71, 0.10);
+      border: 1px solid rgba(1, 144, 71, 0.35);
+      border-radius: 10px;
+      padding: 28px 24px;
+      text-align: center;
+    }
+
+    .success-box .success-icon {
+      font-size: 32px;
+      margin-bottom: 12px;
+    }
+
+    .success-box h3 {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--text-90);
+      margin-bottom: 8px;
+    }
+
+    .success-box p {
+      font-size: 14px;
+      color: var(--text-72);
+      line-height: 1.6;
+    }
+
+    .success-box a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .paypal-note {
+      font-size: 12px;
+      color: var(--text-55);
+      margin-top: 14px;
+      font-family: 'Space Mono', monospace;
+      letter-spacing: 0.04em;
+    }
+
+    .cta-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 24px 0;
+    }
+
+    .direct-contact {
+      font-size: 13px;
+      color: var(--text-55);
+    }
+
+    .direct-contact a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    .direct-contact a:hover { text-decoration: underline; }
+
+    /* ─── FAQ ─── */
+    .faq-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .faq-item {
+      border-bottom: 1px solid var(--border);
+      padding: 20px 0;
+    }
+
+    .faq-item:first-child { border-top: 1px solid var(--border); }
+
+    .faq-q {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-90);
+      margin-bottom: 8px;
+    }
+
+    .faq-a {
+      font-size: 14px;
+      color: var(--text-72);
+      line-height: 1.6;
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      max-width: 680px;
+      margin: 48px auto 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    footer p {
+      font-size: 12px;
+      color: var(--text-55);
+      font-family: 'Space Mono', monospace;
+    }
+
+    footer a {
+      color: var(--text-55);
+      text-decoration: none;
+    }
+
+    footer a:hover { color: var(--text-72); }
+
+    /* ─── ANIM ─── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .container { animation: fadeUp 0.4s ease both; }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 520px) {
+      .deliverables-grid { grid-template-columns: 1fr; }
+      .terms-row { flex-direction: column; gap: 12px; }
+      h1 { font-size: 30px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="https://pipelind.com" class="wordmark">Pipelind<span>.</span></a>
+    <span class="nav-label">Secure Checkout</span>
+  </nav>
+
+  <div class="container">
+
+    <!-- HEADER -->
+    <div class="page-header">
+      <span class="eyebrow">Done-For-You · Monthly Plan</span>
+      <h1>Subscribe to Pipelind</h1>
+      <p class="subline">
+        40 ICP-matched buyer profiles + 18 pieces of content,
+        delivered every Monday. <span class="price-inline">$697/month.</span>
+      </p>
+    </div>
+
+    <hr class="divider" />
+
+    <!-- DELIVERABLES -->
+    <span class="section-label">What you receive every month</span>
+
+    <div class="deliverables-grid">
+      <div class="deliverable-card">
+        <div class="d-value">40 <span>profiles</span></div>
+        <div class="d-label">ICP-matched buyer profiles per month, 10 per week</div>
+      </div>
+      <div class="deliverable-card">
+        <div class="d-value">18 <span>pieces</span></div>
+        <div class="d-label">Content pieces per month across posts, articles, carousels, and infographics</div>
+      </div>
+    </div>
+
+    <ul class="deliverables-list">
+      <li>12 LinkedIn posts in your voice (3 per week, mix of teaching, opinion, and story formats)</li>
+      <li>2 long-form LinkedIn articles</li>
+      <li>2 carousel posts with finished slide visuals</li>
+      <li>2 standalone infographics</li>
+      <li>Each buyer profile includes an active buying signal and a personalized connection note</li>
+      <li>15-minute strategy Loom every Monday</li>
+      <li>4 monthly strategy Looms + 1 monthly 30-minute optimization call</li>
+      <li>Mon-Fri async support via Slack or WhatsApp, 24-hour response time</li>
+    </ul>
+
+    <hr class="divider" />
+
+    <!-- GUARANTEE -->
+    <span class="section-label">Guarantee</span>
+
+    <div class="guarantee-box">
+      <div class="guarantee-icon">✓</div>
+      <div>
+        <h3>Monday Delivery Guarantee</h3>
+        <p>
+          Your full package lands in your inbox by 9 AM your local time every Monday.
+          If it does not arrive on time, that week is free. No exceptions, no excuses.
+        </p>
+      </div>
+    </div>
+
+    <hr class="divider" />
+
+    <!-- TERMS -->
+    <span class="section-label">Subscription terms</span>
+
+    <div class="terms-row">
+      <div class="term-item"><div class="term-dot"></div> Month-to-month</div>
+      <div class="term-item"><div class="term-dot"></div> Cancel anytime, no notice period</div>
+      <div class="term-item"><div class="term-dot"></div> Auto-billed monthly via PayPal</div>
+      <div class="term-item"><div class="term-dot"></div> First delivery within 7 days of onboarding</div>
+    </div>
+
+    <hr class="divider" />
+
+    <!-- CTA -->
+    <div class="cta-box">
+      <div class="cta-price">$697<sub> / month</sub></div>
+      <p class="cta-caption">Billed monthly · Cancel anytime</p>
+
+      <!-- PayPal subscription button -->
+      <div id="paypal-button-container-P-5Y462482YP650594PNH2FZ5Y"></div>
+
+      <!-- Success state (shown after subscription confirmed) -->
+      <div class="success-box" id="success-message">
+        <div class="success-icon">✓</div>
+        <h3>Subscription confirmed.</h3>
+        <p>
+          Saurabh will be in touch within 24 hours to schedule your 90-minute onboarding session.
+          Your first Monday delivery arrives within 7 days of onboarding.<br><br>
+          Questions? <a href="mailto:saurabh@pipelind.com">saurabh@pipelind.com</a>
+        </p>
+      </div>
+
+      <p class="paypal-note">Secure payment · Processed by PayPal</p>
+
+      <hr class="cta-divider" />
+
+      <p class="direct-contact">
+        Questions before subscribing?
+        <a href="mailto:saurabh@pipelind.com">saurabh@pipelind.com</a>
+        or
+        <a href="https://calendly.com/saurabh_zentro/30-min" target="_blank">book a 30-minute call</a>.
+      </p>
+    </div>
+
+    <hr class="divider" />
+
+    <!-- FAQ -->
+    <span class="section-label">Frequently asked</span>
+
+    <div class="faq-list">
+
+      <div class="faq-item">
+        <div class="faq-q">How does billing work?</div>
+        <div class="faq-a">
+          PayPal auto-bills $697 on the same date each month. You receive a receipt automatically.
+          Cancel anytime from your PayPal account, no notice period required.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">When does my first delivery arrive?</div>
+        <div class="faq-a">
+          Within 7 days of onboarding. Onboarding is a 90-minute session where we lock
+          your voice, ICP filters, and positioning. After that, every Monday at 9 AM your local time.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">How much time does this take from me each week?</div>
+        <div class="faq-a">
+          Roughly 30 minutes per week. You review the Monday package, approve or request
+          edits on the posts, schedule them via LinkedIn's native scheduler, and send
+          connection requests from your own account. Everything else is handled.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">Can I adjust what gets delivered each month?</div>
+        <div class="faq-a">
+          Yes. The standard mix is 12 posts, 2 articles, 2 carousels, and 2 infographics.
+          If a different mix works better for your practice, deliverables flex to fit at
+          no extra cost. Request changes any time via Slack or WhatsApp.
+        </div>
+      </div>
+
+    </div>
+
+  </div><!-- /container -->
+
+  <footer>
+    <p>© 2026 Pipelind · <a href="https://pipelind.com">pipelind.com</a></p>
+    <p><a href="mailto:saurabh@pipelind.com">saurabh@pipelind.com</a></p>
+  </footer>
+
+  <!-- PayPal Subscription SDK -->
+  <script src="https://www.paypal.com/sdk/js?client-id=BAACktzKsSOYyhBfV8OpmvKueJpRkAgKxQkTcfJ6kJXqKelR9X6t-WPWinghfVBOwm_I92ODoOpZnuAvCo&vault=true&intent=subscription" data-sdk-integration-source="button-factory"></script>
+  <script>
+    paypal.Buttons({
+      style: {
+        shape: 'rect',
+        color: 'gold',
+        layout: 'vertical',
+        label: 'subscribe'
+      },
+      createSubscription: function(data, actions) {
+        return actions.subscription.create({
+          plan_id: 'P-5Y462482YP650594PNH2FZ5Y'
+        });
+      },
+      onApprove: function(data, actions) {
+        // Hide the PayPal button container
+        document.getElementById('paypal-button-container-P-5Y462482YP650594PNH2FZ5Y').style.display = 'none';
+        // Show branded success message
+        document.getElementById('success-message').style.display = 'block';
+        // Scroll success message into view
+        document.getElementById('success-message').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      },
+      onError: function(err) {
+        console.error('PayPal error:', err);
+      },
+      onCancel: function(data) {
+        // User closed PayPal modal without completing — do nothing, button stays
+        console.log('Subscription cancelled by user.');
+      }
+    }).render('#paypal-button-container-P-5Y462482YP650594PNH2FZ5Y');
+  </script>
+
+</body>
+</html>
