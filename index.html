@@ -99,7 +99,8 @@ h2.hd em{font-style:italic;color:var(--or);}
 .hero-bg-ring2{position:absolute;bottom:-30%;left:50%;transform:translateX(-50%);width:1200px;height:580px;border-radius:50%;border:1px solid rgba(255,153,0,.05);}
 .hero-inner{display:grid;grid-template-columns:1fr 460px;gap:48px;align-items:flex-start;position:relative;z-index:1;}
 @media(max-width:1020px){.hero-inner{grid-template-columns:1fr 400px;gap:36px;}}
-@media(max-width:860px){.hero-inner{grid-template-columns:1fr;gap:40px;}}
+@media(max-width:860px){.hero-inner{grid-template-columns:1fr;gap:32px;}}
+@media(max-width:860px){.hero-widgets-col{display:none;}}
 .hero-tag{margin-bottom:28px;}
 .hero h1{font-family:var(--dsp);font-weight:700;font-size:clamp(32px,5vw,62px);line-height:1.05;letter-spacing:-.03em;margin-bottom:24px;color:var(--w1);}
 .hero h1 em{font-style:italic;color:var(--or);}
@@ -112,7 +113,7 @@ h2.hd em{font-style:italic;color:var(--or);}
 .hero-risk .sp{width:4px;height:4px;border-radius:50%;background:var(--w2);}
 
 /* ─── HERO WIDGET ─── */
-.hero-widget{background:var(--s2);border:1px solid var(--b2);border-radius:var(--rl);padding:0;overflow:hidden;box-shadow:0 40px 80px -20px rgba(0,0,0,.8),0 0 0 1px rgba(255,153,0,.08),0 0 60px -20px rgba(255,153,0,.14);animation:float 5s ease-in-out infinite;}
+.hero-widget{background:var(--s2);border:1px solid var(--b2);border-radius:var(--rl);padding:0;overflow:hidden;box-shadow:0 40px 80px -20px rgba(0,0,0,.8),0 0 0 1px rgba(255,153,0,.08),0 0 60px -20px rgba(255,153,0,.14);animation:float 5s ease-in-out infinite;max-width:100%;}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
 .hw-header{background:var(--s3);padding:14px 18px;border-bottom:1px solid var(--b1);display:flex;align-items:center;justify-content:space-between;}
 .hw-title{font-family:var(--dsp);font-size:11.5px;font-weight:600;color:var(--w8);display:flex;align-items:center;gap:8px;}
@@ -144,10 +145,10 @@ h2.hd em{font-style:italic;color:var(--or);}
 /* ─── STATS STRIP ─── */
 .stats-strip{padding:clamp(36px,5vw,60px) 0;}
 .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--b1);border:1px solid var(--b1);border-radius:var(--rl);overflow:hidden;}
-@media(max-width:860px){.stats-grid{grid-template-columns:repeat(2,1fr);}
-.stats-grid .sc:nth-child(2){border-right:none;}
-.stats-grid .sc:nth-child(1),.stats-grid .sc:nth-child(2){border-bottom:1px solid var(--b1);}}
-.sc{background:var(--s1);padding:28px 24px;display:flex;align-items:center;gap:16px;transition:background .3s;position:relative;overflow:hidden;}
+@media(max-width:860px){.stats-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:860px){.stats-grid .sc:nth-child(2){border-right:none;}.stats-grid .sc:nth-child(1),.stats-grid .sc:nth-child(2){border-bottom:1px solid var(--b1);}}
+@media(max-width:480px){.stats-grid{grid-template-columns:1fr;}.stats-grid .sc:nth-child(2){border-right:none;}.stats-grid .sc:nth-child(1),.stats-grid .sc:nth-child(2),.stats-grid .sc:nth-child(3){border-bottom:1px solid var(--b1);}}
+.sc{background:var(--s1);padding:20px 16px;display:flex;align-items:center;gap:14px;transition:background .3s;position:relative;overflow:hidden;}
 .sc:hover{background:var(--s2);}
 .sc::after{content:'';position:absolute;bottom:0;left:0;right:0;height:60px;background:radial-gradient(ellipse at 50% 110%,rgba(255,153,0,.1) 0%,transparent 70%);pointer-events:none;}
 .sc-icon{width:44px;height:44px;border-radius:12px;background:var(--ors);border:1px solid var(--bx);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
@@ -291,8 +292,8 @@ h2.hd em{font-style:italic;color:var(--or);}
 .compare tbody td:first-child{color:var(--w4);font-family:var(--dsp);font-size:10.5px;text-transform:uppercase;letter-spacing:.1em;white-space:nowrap;font-weight:700;}
 .compare tbody td.win{color:var(--w1);background:rgba(255,153,0,.04);font-weight:500;}
 .compare tbody tr:last-child td{border-bottom:none;}
-@media(max-width:740px){.compare{display:none;} .cmp-mob{display:grid;gap:12px;}}
-@media(min-width:741px){.cmp-mob{display:none;}}
+@media(max-width:768px){.compare{display:none;} .cmp-mob{display:grid;gap:12px;}}
+@media(min-width:769px){.cmp-mob{display:none;}}
 .cmp-card{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r);padding:20px;}
 .cmp-card.win{border-color:var(--bx);background:linear-gradient(145deg,rgba(255,153,0,.04),var(--s1));}
 .cmp-card h5{font-family:var(--dsp);font-weight:700;font-size:15px;margin-bottom:12px;letter-spacing:-.01em;}
@@ -403,12 +404,127 @@ h2.hd em{font-style:italic;color:var(--or);}
 .final-risk .ck{color:var(--gr);}
 .final-risk .sp{width:4px;height:4px;border-radius:50%;background:var(--w2);}
 
+/* ─── OPERATOR SECTION ─── */
+.operator-section{padding:clamp(72px,9vw,120px) 0;position:relative;}
+.operator-inner{display:grid;grid-template-columns:420px 1fr;gap:64px;align-items:center;}
+@media(max-width:1020px){.operator-inner{grid-template-columns:360px 1fr;gap:44px;}}
+@media(max-width:820px){.operator-inner{grid-template-columns:1fr;gap:40px;}}
+.operator-photo-wrap{position:relative;}
+.operator-photo-frame{border-radius:24px;overflow:hidden;position:relative;aspect-ratio:4/5;max-width:420px;}
+.operator-photo-frame img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block;}
+.operator-photo-frame::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(6,6,14,.85) 100%);pointer-events:none;}
+.operator-photo-badge{position:absolute;bottom:24px;left:24px;right:24px;z-index:2;display:flex;align-items:center;gap:12px;background:rgba(10,10,18,.82);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,153,0,.2);border-radius:14px;padding:14px 16px;}
+.operator-badge-avatar{width:40px;height:40px;border-radius:50%;overflow:hidden;flex-shrink:0;border:2px solid var(--or);}
+.operator-badge-avatar img{width:100%;height:100%;object-fit:cover;object-position:center top;}
+.operator-badge-text{}
+.operator-badge-name{font-family:var(--dsp);font-weight:700;font-size:13px;color:var(--w1);line-height:1.2;}
+.operator-badge-sub{font-family:var(--dsp);font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--or);margin-top:2px;}
+.operator-glow{position:absolute;top:-40px;left:-40px;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,rgba(106,102,163,.18) 0%,transparent 70%);pointer-events:none;z-index:-1;}
+.operator-content{}
+.operator-content .sl{margin-bottom:18px;}
+.operator-content h2{font-family:var(--dsp);font-weight:700;font-size:clamp(26px,3.2vw,42px);line-height:1.08;letter-spacing:-.025em;margin-bottom:20px;color:var(--w1);}
+.operator-content h2 em{font-style:italic;color:var(--or);}
+.operator-content .lead{font-size:clamp(15px,1.15vw,17px);color:var(--w8);line-height:1.72;font-weight:300;margin-bottom:28px;}
+.operator-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--b1);border:1px solid var(--b1);border-radius:14px;overflow:hidden;margin-bottom:28px;}
+.os{background:var(--s1);padding:18px 16px;text-align:center;position:relative;overflow:hidden;}
+.os::after{content:'';position:absolute;bottom:0;left:0;right:0;height:50px;background:radial-gradient(ellipse at 50% 110%,rgba(255,153,0,.1) 0%,transparent 70%);pointer-events:none;}
+.os-num{font-family:var(--dsp);font-weight:700;font-size:clamp(22px,2.5vw,32px);letter-spacing:-.04em;color:var(--or);line-height:1;margin-bottom:4px;}
+.os-lbl{font-family:var(--dsp);font-size:9.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--w6);line-height:1.4;}
+.operator-creds{display:flex;flex-direction:column;gap:10px;margin-bottom:28px;}
+.oc-row{display:flex;gap:12px;align-items:flex-start;font-size:13.5px;color:var(--w8);line-height:1.58;font-weight:300;}
+.oc-row::before{content:'→';color:var(--or);flex-shrink:0;font-weight:700;margin-top:1px;}
+.operator-quote{background:var(--s1);border:1px solid var(--bx);border-radius:14px;padding:20px 22px;position:relative;overflow:hidden;}
+.operator-quote::after{content:'';position:absolute;bottom:0;left:0;right:0;height:70px;background:radial-gradient(ellipse at 50% 110%,rgba(255,153,0,.1) 0%,transparent 70%);pointer-events:none;}
+.operator-quote p{font-family:var(--dsp);font-style:italic;font-size:clamp(14px,1.1vw,16px);color:var(--w8);line-height:1.65;font-weight:400;}
+.operator-quote p strong{color:var(--or);font-style:normal;font-weight:700;}
+
 /* ─── FOOTER ─── */
 .footer{border-top:1px solid var(--b1);padding:36px 0 28px;margin-top:48px;font-size:12.5px;color:var(--w6);}
 .footer-inner{display:flex;flex-wrap:wrap;gap:20px;justify-content:space-between;align-items:center;}
 .footer-links{display:flex;flex-wrap:wrap;gap:20px;}
 .footer-links a{color:var(--w6);transition:color .15s;}
 .footer-links a:hover{color:var(--or);}
+
+/* ─── COMPREHENSIVE MOBILE FIXES ─── */
+@media(max-width:768px){
+  /* Nav */
+  .nav-links a:not(.nav-cta){display:none;}
+
+  /* Hero */
+  .hero{padding:clamp(40px,8vw,80px) 0 clamp(28px,5vw,48px);}
+  .hero h1{font-size:clamp(28px,7vw,40px);}
+  .hero-sub{font-size:15px;}
+  .hero-ctas{flex-direction:column;}
+  .hero-ctas .btn{width:100%;justify-content:center;}
+  .hero-risk{font-size:10px;gap:10px;}
+
+  /* Stats strip */
+  .sc{padding:16px 14px;gap:10px;}
+  .sc-icon{width:36px;height:36px;border-radius:9px;}
+  .sc-num{font-size:clamp(22px,6vw,30px);}
+  .sc-lbl{font-size:11.5px;}
+
+  /* Engines bento */
+  .engines-bento{grid-template-columns:1fr;}
+
+  /* Compare table — hide on mobile, show cards */
+  .compare-wrap .compare{display:none;}
+  .cmp-mob{display:grid;gap:12px;}
+
+  /* Compound chart */
+  .compound-bento{grid-template-columns:1fr;}
+
+  /* Deliverables */
+  .deliv-top{grid-template-columns:repeat(2,1fr);}
+  .dc.feat,.dc.dfy{grid-column:span 1;}
+  .deliv-grid{grid-template-columns:1fr;}
+
+  /* Rhythm */
+  .rhythm{grid-template-columns:repeat(2,1fr);}
+
+  /* Fit grid */
+  .fit-grid{grid-template-columns:1fr;}
+
+  /* Trust */
+  .trust{grid-template-columns:1fr;}
+
+  /* Operator section */
+  .operator-inner{grid-template-columns:1fr;gap:32px;}
+  .operator-photo-frame{max-width:100%;aspect-ratio:3/2;border-radius:18px;}
+  .operator-photo-frame img{object-position:center 20%;}
+  .operator-stats{grid-template-columns:repeat(3,1fr);}
+  .os-num{font-size:22px;}
+  .os-lbl{font-size:9px;}
+
+  /* FAQ */
+  .faq summary{font-size:14px;padding:16px 18px;}
+  .faq-body{padding:0 18px 18px;font-size:13.5px;}
+
+  /* Final CTA */
+  .final{padding:40px 20px;}
+  .final h2{font-size:clamp(22px,6vw,34px);}
+
+  /* Footer */
+  .footer-inner{flex-direction:column;align-items:flex-start;gap:14px;}
+  .footer-links{flex-direction:column;gap:10px;}
+
+  /* Glow cards */
+  .glow-cards-grid{grid-template-columns:1fr;}
+
+  /* Alt grid */
+  .alt-grid{grid-template-columns:1fr;}
+}
+
+@media(max-width:480px){
+  .operator-stats{grid-template-columns:1fr;}
+  .rhythm{grid-template-columns:1fr;}
+  .deliv-top{grid-template-columns:1fr;}
+  .hero-risk{flex-direction:column;align-items:flex-start;gap:8px;}
+  .hero-risk .sp{display:none;}
+  .final-risk{flex-direction:column;gap:8px;}
+  .final-risk .sp{display:none;}
+  .operator-photo-frame{aspect-ratio:4/3;}
+}
 
 /* ─── MOBILE CTA ─── */
 .mob-cta{position:fixed;bottom:0;left:0;right:0;z-index:70;display:none;padding:10px clamp(14px,4vw,22px) calc(10px + env(safe-area-inset-bottom));background:rgba(6,6,14,.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--b2);}
@@ -562,6 +678,7 @@ h2.hd em{font-style:italic;color:var(--or);}
       <a href="#problem">The Problem</a>
       <a href="#video">Watch Demo</a>
       <a href="#deliverables">What You Get</a>
+      <a href="#operator">The Operator</a>
       <a href="#faq">FAQ</a>
       <a class="nav-cta" href="https://calendly.com/saurabh_zentro/30-min" target="_blank" rel="noopener">Book a Walkthrough</a>
     </div>
@@ -581,8 +698,8 @@ h2.hd em{font-style:italic;color:var(--or);}
         <div class="hero-tag">
           <span class="badge badge-or"><span class="badge-dot"></span>For Fractional CFOs &middot; COOs &middot; US, CA, UK, AU, NZ, IE, SG</span>
         </div>
-        <h1>Your buyers are showing active hiring and funding signals on LinkedIn right now. <em>This done-for-you service finds them, researches them, and delivers them to your inbox every Monday.</em></h1>
-        <p class="hero-sub"><strong>Pipelind</strong> is a fully managed DFY service for fractional CFOs and fractional COOs. Every month, you receive 40 ICP-matched buyer profiles flagged by active signals, plus 18 pieces of voice-matched content. Your time investment is roughly 30 minutes a week.</p>
+        <h1>40 signal-flagged buyers. 18 pieces of content. <em>Delivered to your inbox every Monday.</em></h1>
+        <p class="hero-sub">A fully managed pipeline + content service for fractional CFOs and COOs. We find the founders showing active hiring and funding signals, research them, and deliver the package every Monday at 9 AM. <strong>Your time: 30 minutes a week.</strong></p>
         <div class="hero-ctas">
           <a class="btn btn-or" href="https://calendly.com/saurabh_zentro/30-min" target="_blank" rel="noopener">
             Book Your Pipeline Walkthrough
@@ -870,7 +987,7 @@ h2.hd em{font-style:italic;color:var(--or);}
         <div class="vid-chrome-r">Saurabh M.</div>
       </div>
       <div class="vid-embed">
-        <iframe src="https://www.loom.com/embed/ffc484b1e8ba43a39ecbd9b346111a8c" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen title="LinkedIn Pipeline Studio Monday Delivery Walkthrough" loading="lazy"></iframe>
+        <iframe src="https://www.loom.com/embed/ffc484b1e8ba43a39ecbd9b346111a8c" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen title="Pipelind Monday Delivery Walkthrough" loading="lazy"></iframe>ry Walkthrough" loading="lazy"></iframe>
       </div>
     </div>
     <div class="vid-cta fi">
@@ -1042,7 +1159,7 @@ h2.hd em{font-style:italic;color:var(--or);}
           <li>Articles, carousels, and infographics on a monthly cadence</li>
           <li>Finished visuals where the content needs them</li>
           <li>15-minute strategy Loom from me explaining the week&rsquo;s rationale</li>
-          <li>Mon-Fri async support via Slack or WhatsApp, 24-hour response time</li>
+          <li>Mon-Fri async support via email at saurabh@pipelind.com, 24-hour response time</li>
         </ul>
       </div>
       <div class="step-tl fi">
@@ -1100,7 +1217,7 @@ h2.hd em{font-style:italic;color:var(--or);}
             <th></th>
             <th>Waiting for Referrals</th>
             <th>Cold Outreach</th>
-            <th class="win">LinkedIn Pipeline Studio</th>
+            <th class="win">Pipelind</th>
           </tr>
         </thead>
         <tbody>
@@ -1116,7 +1233,7 @@ h2.hd em{font-style:italic;color:var(--or);}
       <div class="cmp-mob">
         <div class="cmp-card"><h5>Waiting for Referrals</h5><dl><div><dt>Buyers reached monthly</dt><dd>Whoever remembers you</dd></div><div><dt>Signal intelligence</dt><dd>None</dd></div><div><dt>Compounds over time</dt><dd>No</dd></div></dl></div>
         <div class="cmp-card"><h5>Cold Outreach</h5><dl><div><dt>Buyers reached monthly</dt><dd>Whoever replies</dd></div><div><dt>Premium positioning</dt><dd>Damaged by cold pitch</dd></div><div><dt>Compounds over time</dt><dd>No</dd></div></dl></div>
-        <div class="cmp-card win"><h5>LinkedIn Pipeline Studio</h5><dl><div><dt>Buyers reached monthly</dt><dd>40 researched buyers with active signals</dd></div><div><dt>Signal intelligence</dt><dd>5 Custom Intelligence fields per profile</dd></div><div><dt>Compounds over time</dt><dd>240 right-fit buyers by month 6</dd></div></dl></div>
+        <div class="cmp-card win"><h5>Pipelind</h5><dl><div><dt>Buyers reached monthly</dt><dd>40 researched buyers with active signals</dd></div><div><dt>Signal intelligence</dt><dd>5 Custom Intelligence fields per profile</dd></div><div><dt>Compounds over time</dt><dd>240 right-fit buyers by month 6</dd></div></dl></div>
       </div>
     </div>
   </div>
@@ -1149,7 +1266,7 @@ h2.hd em{font-style:italic;color:var(--or);}
       <div class="dc"><span class="di">Carousels &middot; 2/mo</span><h4>2 carousels with finished slide visuals</h4><p>Slide-by-slide breakdowns rendered as finished visuals. No briefs to review. No design back-and-forth. Slides land ready to upload directly to LinkedIn.</p></div>
       <div class="dc"><span class="di">Infographics &middot; 2/mo</span><h4>2 standalone infographics</h4><p>Two on-brand infographic posts every month. Visual-first content built around a specific framework, data point, or pattern from your methodology.</p></div>
       <div class="dc"><span class="di">Strategy &middot; Weekly</span><h4>Weekly 15-min strategy Loom</h4><p>A short walkthrough every Monday explaining why these specific profiles, why these posts, what to watch for in conversations this week.</p></div>
-      <div class="dc"><span class="di">Support &middot; Mon-Fri</span><h4>Direct operator access via Slack or WhatsApp</h4><p>You message me directly. Not an account manager. 24-hour response time, Monday through Friday. Monthly 30-minute optimisation call included.</p></div>
+      <div class="dc"><span class="di">Support &middot; Mon-Fri</span><h4>Direct operator access via email</h4><p>Email me directly at <a href="mailto:saurabh@pipelind.com" style="color:var(--or)">saurabh@pipelind.com</a>. Not an account manager. 24-hour response time, Monday through Friday. Monthly 30-minute optimisation call included.</p></div>
       <div class="dc dfy">
         <span class="di" style="color:rgba(160,150,255,.9)">DFY Customisation &middot; No extra cost</span>
         <h4>Format, cadence, and content mix tailored to your practice</h4>
@@ -1217,9 +1334,67 @@ h2.hd em{font-style:italic;color:var(--or);}
   </div>
 </section>
 
+<!-- OPERATOR -->
+<section class="operator-section" id="operator">
+  <div class="container">
+    <div class="operator-inner">
+
+      <!-- PHOTO -->
+      <div class="operator-photo-wrap fi">
+        <div class="operator-glow"></div>
+        <div class="operator-photo-frame">
+          <img src="assets/saurabh-library.png" alt="Saurabh M. · Founder, Pipelind"/>
+        </div>
+        <div class="operator-photo-badge">
+          <div class="operator-badge-avatar">
+            <img src="assets/saurabh-orange.png" alt="Saurabh M."/>
+          </div>
+          <div class="operator-badge-text">
+            <div class="operator-badge-name">Saurabh M.</div>
+            <div class="operator-badge-sub">Founder &middot; Pipelind</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CONTENT -->
+      <div class="operator-content fi">
+        <div class="sl">The Operator</div>
+        <h2>16 years building systems.<br><em>This one builds your pipeline.</em></h2>
+        <p class="lead">Most LinkedIn services hand you over to an account manager who has never run a B2B pipeline. Pipelind is different. You work directly with me, the person who designed the system, runs it every week, and has spent 16+ years building software and data systems in the IT industry that actually deliver on time.</p>
+
+        <div class="operator-stats">
+          <div class="os"><div class="os-num">16+</div><div class="os-lbl">Years building IT systems</div></div>
+          <div class="os"><div class="os-num">B2B</div><div class="os-lbl">GTM &amp; pipeline specialist</div></div>
+          <div class="os"><div class="os-num">Mon</div><div class="os-lbl">9 AM delivery. Guaranteed.</div></div>
+        </div>
+
+        <div class="operator-creds">
+          <div class="oc-row">16+ years in B2B software and systems delivery across the IT service industry. The discipline of on-time, structured output is built into how this service runs.</div>
+          <div class="oc-row">Deep background in B2B GTM strategy, demand generation, and founder-led sales. The ICP filters and signal logic are built from years of watching what actually converts in B2B pipelines, not borrowed from a playbook.</div>
+          <div class="oc-row">Direct operator access means you email me at <a href="mailto:saurabh@pipelind.com" style="color:var(--or)">saurabh@pipelind.com</a>. The same person who built the system responds within 24 hours, Monday through Friday. No ticketing system. No queue.</div>
+          <div class="oc-row">Selective intake. Every client gets the same level of research depth, voice precision, and strategic oversight. That standard is non-negotiable, and intake is managed accordingly.</div>
+        </div>
+
+        <div class="operator-quote">
+          <p>"The system you receive every Monday is the same system I would build for myself. <strong>16 years of building things that work on schedule</strong> is the only credential that matters here."</p>
+        </div>
+
+        <div style="margin-top:24px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;">
+          <a class="btn btn-or" href="https://calendly.com/saurabh_zentro/30-min" target="_blank" rel="noopener">
+            Book a Walkthrough with Saurabh
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L8 3M13 8L8 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a class="link-ghost" href="mailto:saurabh@pipelind.com">Email saurabh@pipelind.com &nearr;</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
 <div class="divider"></div>
 
-<!-- TRUST -->
+
 <section class="sec">
   <div class="container">
     <div class="sh fi">
@@ -1229,7 +1404,15 @@ h2.hd em{font-style:italic;color:var(--or);}
     </div>
     <div class="trust fi">
       <div class="tc"><div class="tc-tag">01</div><h4>Verify before you commit</h4><p>The free 5-lead sample report delivers real signal research on real buyer profiles from your exact ICP pool. Comment LEAD or DM LEAD on LinkedIn and see the output within 24 hours. No form. No call.</p></div>
-      <div class="tc"><div class="tc-tag">02</div><h4>Direct operator access</h4><p>You message me, not an account manager. The same person who builds the system runs it every week. Capacity is capped at 4 to 5 clients to protect quality.</p></div>
+      <div class="tc"><div class="tc-tag">02</div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+          <img src="assets/saurabh-orange.png" alt="Saurabh M." style="width:48px;height:48px;border-radius:50%;object-fit:cover;object-position:center top;border:2px solid var(--or);flex-shrink:0;"/>
+          <div>
+            <div style="font-family:var(--dsp);font-weight:700;font-size:14px;color:var(--w1);line-height:1.2;">Saurabh M.</div>
+            <div style="font-family:var(--dsp);font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--or);margin-top:2px;">Founder &middot; Operator</div>
+          </div>
+        </div>
+        <h4>Direct operator access</h4><p>Email me at <a href="mailto:saurabh@pipelind.com" style="color:var(--or)">saurabh@pipelind.com</a>. Not an account manager. 16+ years building B2B systems. The same person who designed the pipeline runs it every week, responds within 24 hours.</p></div>
       <div class="tc"><div class="tc-tag">03</div><h4>Custom Intelligence on every profile</h4><p>Five intelligence fields per profile: leadership change, funding round, hiring trend, market expansion, tech stack. Real company-event data. No competitor in the LinkedIn-growth category offers this.</p></div>
     </div>
     <div class="guarantee fi">
@@ -1260,7 +1443,7 @@ h2.hd em{font-style:italic;color:var(--or);}
       <details><summary>Do you log into my LinkedIn account or use automation?</summary><div class="faq-body"><p>No. Never. You schedule posts using LinkedIn&rsquo;s native scheduler from your own account. You send connection requests from your own account. No credentials change hands. No automation tools. No browser extensions. Nothing that could put your LinkedIn account at risk.</p></div></details>
       <details><summary>How much time does this actually take from me each week?</summary><div class="faq-body"><p>Roughly 30 minutes per week: about 20 minutes on Sunday to schedule posts, and about 10 minutes on Monday to send the 10 personalised connection requests. Onboarding adds one 90-minute session in week zero. After that, weekly cadence stabilises at 30 minutes.</p></div></details>
       <details><summary>Is there a guarantee?</summary><div class="faq-body"><p>Yes, on delivery. <strong>The Monday Delivery Guarantee:</strong> the package lands in your inbox by 9 AM your local time every Monday, or that week is free. There is no guarantee on outcomes. Anyone who guarantees you a specific number of clients on LinkedIn is selling you something they cannot deliver.</p></div></details>
-      <details><summary>What does &ldquo;direct operator access&rdquo; actually mean?</summary><div class="faq-body"><p>You message me, Saurabh, on Slack or WhatsApp. Not a project manager. Not an account team. Capacity is capped at 4 to 5 active clients to make this possible.</p></div></details>
+      <details><summary>What does &ldquo;direct operator access&rdquo; actually mean?</summary><div class="faq-body"><p>You email me, Saurabh, directly at <strong>saurabh@pipelind.com</strong>. Not a project manager. Not an account team. Every client gets the same operator — the person who built the system and runs it every week. Response time is within 24 hours, Monday through Friday.</p></div></details>
       <details><summary>Why fractional CFOs and COOs specifically?</summary><div class="faq-body"><p>The signal data, buyer language, and methodology framing are all configured around how founders and CEOs hire fractional finance and operations leaders. The ICP filters, Custom Intelligence fields, content pillars, and DM scripts are all built for this niche.</p></div></details>
     </div>
   </div>
@@ -1298,8 +1481,10 @@ h2.hd em{font-style:italic;color:var(--or);}
   <div class="container footer-inner">
     <div>&copy; Pipelind &middot; Saurabh M. &middot; Done-for-you LinkedIn pipeline + content for fractional CFOs and COOs</div>
     <div class="footer-links">
+      <a href="https://www.pipelind.com/subscribe" target="_blank" rel="noopener">Subscribe &nearr;</a>
       <a href="https://www.linkedin.com/in/saurabh-m15/" target="_blank" rel="noopener">LinkedIn &nearr;</a>
       <a href="https://calendly.com/saurabh_zentro/30-min" target="_blank" rel="noopener">Book a Walkthrough &nearr;</a>
+      <a href="mailto:saurabh@pipelind.com">saurabh@pipelind.com</a>
       <a href="#video">Watch Demo</a>
     </div>
   </div>
