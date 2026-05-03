@@ -282,7 +282,56 @@
     #paypal-button-container-P-5Y462482YP650594PNH2FZ5Y {
       width: 100%;
       max-width: 360px;
-      margin: 0 auto;
+      margin: 0 auto 12px;
+      min-height: 45px;
+    }
+
+    /* Direct subscribe button */
+    .subscribe-btn {
+      display: inline-block;
+      width: 100%;
+      max-width: 360px;
+      padding: 16px 24px;
+      background: var(--accent);
+      color: #0A0A12;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 800;
+      text-align: center;
+      text-decoration: none;
+      border-radius: 8px;
+      letter-spacing: -0.2px;
+      transition: opacity 0.15s;
+      margin-bottom: 10px;
+    }
+
+    .subscribe-btn:hover { opacity: 0.88; }
+
+    .subscribe-btn-sub {
+      font-size: 12px;
+      color: var(--text-55);
+      font-family: 'Space Mono', monospace;
+      letter-spacing: 0.04em;
+      margin-bottom: 20px;
+    }
+
+    .divider-or {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      max-width: 360px;
+      margin: 0 auto 16px;
+      color: var(--text-55);
+      font-size: 12px;
+      font-family: 'Space Mono', monospace;
+    }
+
+    .divider-or::before,
+    .divider-or::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
     }
 
     /* Success state */
@@ -316,54 +365,6 @@
     .success-box a {
       color: var(--accent);
       text-decoration: none;
-    }
-
-    /* Error state */
-    .error-box {
-      display: none;
-      background: rgba(220, 53, 69, 0.08);
-      border: 1px solid rgba(220, 53, 69, 0.25);
-      border-radius: 10px;
-      padding: 20px 24px;
-      text-align: center;
-      margin-bottom: 16px;
-    }
-
-    .error-box p {
-      font-size: 14px;
-      color: var(--text-72);
-      line-height: 1.6;
-      margin-bottom: 12px;
-    }
-
-    .error-box .error-actions {
-      display: flex;
-      gap: 12px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .error-box a.error-btn {
-      display: inline-block;
-      padding: 10px 20px;
-      border-radius: 6px;
-      font-size: 13px;
-      font-weight: 700;
-      text-decoration: none;
-      transition: opacity 0.15s;
-    }
-
-    .error-box a.error-btn:hover { opacity: 0.80; }
-
-    .error-btn-primary {
-      background: var(--accent);
-      color: #0A0A12;
-    }
-
-    .error-btn-secondary {
-      background: var(--surface2);
-      color: var(--text-72);
-      border: 1px solid var(--border);
     }
 
     .paypal-note {
@@ -540,26 +541,7 @@
       <div class="cta-price">$697<sub> / month</sub></div>
       <p class="cta-caption">Billed monthly · Cancel anytime</p>
 
-      <!-- PayPal subscription button -->
-      <div id="paypal-button-container-P-5Y462482YP650594PNH2FZ5Y"></div>
-
-      <!-- Error state (shown if PayPal fails) -->
-      <div class="error-box" id="error-message">
-        <p>
-          PayPal encountered an issue processing this payment.<br>
-          Email or book a call to complete your subscription directly.
-        </p>
-        <div class="error-actions">
-          <a href="mailto:saurabh@pipelind.com?subject=Pipelind Subscription" class="error-btn error-btn-primary">
-            Email Saurabh
-          </a>
-          <a href="https://calendly.com/saurabh_zentro/30-min" target="_blank" class="error-btn error-btn-secondary">
-            Book a Call
-          </a>
-        </div>
-      </div>
-
-      <!-- Success state (shown after subscription confirmed) -->
+      <!-- Success state (shown after SDK subscription confirmed) -->
       <div class="success-box" id="success-message">
         <div class="success-icon">✓</div>
         <h3>Subscription confirmed.</h3>
@@ -570,7 +552,22 @@
         </p>
       </div>
 
-      <p class="paypal-note" id="paypal-note">Secure payment · Processed by PayPal</p>
+      <!-- Primary: direct PayPal hosted subscription page (always works) -->
+      <div id="direct-pay-section">
+        <a
+          href="https://www.paypal.com/webapps/billing/plans/subscribe?plan_id=P-5Y462482YP650594PNH2FZ5Y"
+          target="_blank"
+          class="subscribe-btn"
+          id="direct-paypal-btn"
+        >
+          Subscribe via PayPal
+        </a>
+        <p class="subscribe-btn-sub">Secure payment · Processed by PayPal</p>
+
+        <!-- SDK button loads here as progressive enhancement -->
+        <div class="divider-or" id="sdk-divider" style="display:none;">or pay with card</div>
+        <div id="paypal-button-container-P-5Y462482YP650594PNH2FZ5Y"></div>
+      </div>
 
       <hr class="cta-divider" />
 
@@ -632,59 +629,36 @@
     <p><a href="mailto:saurabh@pipelind.com">saurabh@pipelind.com</a></p>
   </footer>
 
-  <!-- PayPal Subscription SDK -->
+  <!-- PayPal Subscription SDK (progressive enhancement only) -->
   <script src="https://www.paypal.com/sdk/js?client-id=BAACktzKsSOYyhBfV8OpmvKueJpRkAgKxQkTcfJ6kJXqKelR9X6t-WPWinghfVBOwm_I92ODoOpZnuAvCo&vault=true&intent=subscription" data-sdk-integration-source="button-factory"></script>
   <script>
-    var BUTTON_CONTAINER = 'paypal-button-container-P-5Y462482YP650594PNH2FZ5Y';
-
-    function showError() {
-      document.getElementById(BUTTON_CONTAINER).style.display = 'none';
-      document.getElementById('error-message').style.display = 'block';
-      document.getElementById('paypal-note').style.display = 'none';
-      document.getElementById('error-message').scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
+    var PLAN_ID   = 'P-5Y462482YP650594PNH2FZ5Y';
+    var CONTAINER = 'paypal-button-container-' + PLAN_ID;
 
     function showSuccess() {
-      document.getElementById(BUTTON_CONTAINER).style.display = 'none';
-      document.getElementById('error-message').style.display = 'none';
-      document.getElementById('success-message').style.display = 'block';
-      document.getElementById('paypal-note').style.display = 'none';
+      document.getElementById('direct-pay-section').style.display = 'none';
+      document.getElementById('success-message').style.display    = 'block';
       document.getElementById('success-message').scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
 
-    // Guard: if PayPal SDK fails to load entirely
     window.addEventListener('load', function() {
-      if (typeof paypal === 'undefined') {
-        showError();
-        return;
-      }
+      // If SDK didn't load, direct link is already visible — nothing else needed
+      if (typeof paypal === 'undefined') return;
 
+      // SDK loaded: render the button as a secondary option below the direct link
       paypal.Buttons({
-        style: {
-          shape: 'rect',
-          color: 'gold',
-          layout: 'vertical',
-          label: 'subscribe'
-        },
+        style: { shape: 'rect', color: 'blue', layout: 'vertical', label: 'subscribe' },
         createSubscription: function(data, actions) {
-          return actions.subscription.create({
-            plan_id: 'P-5Y462482YP650594PNH2FZ5Y'
-          });
+          return actions.subscription.create({ plan_id: PLAN_ID });
         },
-        onApprove: function(data, actions) {
-          showSuccess();
-        },
-        onError: function(err) {
-          console.error('PayPal subscription error:', err);
-          showError();
-        },
-        onCancel: function(data) {
-          // User closed PayPal modal — button stays visible, do nothing
-          console.log('PayPal modal closed by user.');
-        }
-      }).render('#' + BUTTON_CONTAINER).catch(function(err) {
-        console.error('PayPal render error:', err);
-        showError();
+        onApprove: function() { showSuccess(); },
+        onError:   function(err) { console.warn('PayPal SDK error:', err); /* direct link still visible */ },
+        onCancel:  function() { /* user closed modal — direct link still visible */ }
+      }).render('#' + CONTAINER).then(function() {
+        // SDK button rendered successfully — show it as an alternative option
+        document.getElementById('sdk-divider').style.display = 'flex';
+      }).catch(function(err) {
+        console.warn('PayPal render failed:', err); /* direct link still visible */
       });
     });
   </script>
