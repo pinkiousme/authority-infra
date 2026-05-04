@@ -3,168 +3,152 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LinkedIn Pipeline Readiness Diagnostic</title>
+<title>Pipelind · Pipeline Readiness Diagnostic for Fractional CFOs and COOs</title>
+<meta name="description" content="7 questions. A personalised score across 5 dimensions. A prioritised 30-day action plan. Built for fractional CFOs and COOs. No email required.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,700;1,800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#08080F;--bg2:#10101A;--bg3:#14141F;
-  --border:rgba(120,100,220,0.18);
-  --primary:#7B6EE8;--plight:#A89EF0;
-  --accent:#FF9500;--success:#00B87C;--warn:#F06060;
-  --text:rgba(255,255,255,0.92);--dim:rgba(255,255,255,0.62);--muted:rgba(255,255,255,0.40);
+  --bg:#06060E;--bg2:#0A0A18;--bg3:#0E0E1F;
+  --border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.12);
+  --pu:#6A66A3;--pus:rgba(106,102,163,.12);--pub:rgba(106,102,163,.28);--pulight:#9490C0;
+  --or:#FF9900;--ors:rgba(255,153,0,.12);--orb:rgba(255,153,0,.28);
+  --gr:#10B981;--grs:rgba(16,185,129,.10);--grb:rgba(16,185,129,.3);
+  --rd:#F87171;
+  --w1:rgba(255,255,255,.95);--w8:rgba(255,255,255,.78);--w6:rgba(255,255,255,.55);--w4:rgba(255,255,255,.35);--w2:rgba(255,255,255,.12);
+  --dsp:'Plus Jakarta Sans',system-ui,sans-serif;
+  --mono:'Space Mono',monospace;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
-body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-size:15px;line-height:1.65;min-height:100vh;overflow-x:hidden;}
-body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.02'/%3E%3C/svg%3E");pointer-events:none;z-index:9999;}
-.orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0;filter:blur(130px);opacity:.28;}
-.orb1{width:600px;height:600px;background:#6355E0;top:-250px;right:-200px;}
-.orb2{width:500px;height:500px;background:rgba(255,149,0,.5);bottom:-200px;left:-200px;}
+body{background:var(--bg);color:var(--w1);font-family:var(--dsp);font-size:15px;line-height:1.65;min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");opacity:.025;pointer-events:none;z-index:999;mix-blend-mode:overlay;}
+.orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0;filter:blur(130px);opacity:.22;}
+.orb1{width:600px;height:600px;background:var(--pu);top:-250px;right:-200px;}
+.orb2{width:500px;height:500px;background:rgba(255,153,0,.45);bottom:-200px;left:-200px;}
 .shell{position:relative;z-index:1;max-width:700px;margin:0 auto;padding:0 24px 80px;}
-
-/* topbar */
 .topbar{display:flex;align-items:center;justify-content:space-between;padding:24px 0 0;margin-bottom:56px;}
-.logo{font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--plight);}
-.badge{font-family:'JetBrains Mono',monospace;font-size:10px;background:rgba(123,110,232,.15);border:1px solid rgba(123,110,232,.3);color:var(--plight);padding:4px 12px;border-radius:20px;}
-
-/* hero */
+.logo{font-family:var(--dsp);font-size:18px;font-weight:800;letter-spacing:-.02em;color:var(--w1);}
+.logo span{color:var(--or);}
+.badge{font-family:var(--mono);font-size:10px;background:rgba(106,102,163,.15);border:1px solid rgba(106,102,163,.3);color:var(--pulight);padding:4px 12px;border-radius:20px;text-transform:uppercase;letter-spacing:.08em;}
 .hero{margin-bottom:48px;text-align:center;}
-.eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--accent);margin-bottom:20px;display:inline-block;}
-h1{font-family:'Instrument Serif',Georgia,serif;font-size:clamp(30px,5vw,46px);font-weight:400;line-height:1.1;margin-bottom:20px;letter-spacing:-.02em;}
-h1 em{font-style:italic;background:linear-gradient(135deg,var(--primary),var(--plight));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.hero-sub{font-size:16px;color:var(--dim);max-width:500px;margin:0 auto 28px;line-height:1.7;}
-.hero-meta{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);}
+.eyebrow{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--or);margin-bottom:20px;display:inline-block;}
+h1{font-family:var(--dsp);font-size:clamp(28px,5vw,44px);font-weight:800;line-height:1.1;margin-bottom:20px;letter-spacing:-.03em;}
+h1 em{font-style:normal;color:var(--or);}
+.hero-sub{font-size:16px;color:var(--w8);max-width:500px;margin:0 auto 28px;line-height:1.7;}
+.hero-meta{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;font-family:var(--mono);font-size:11px;color:var(--w6);}
 .hero-meta span{display:flex;align-items:center;gap:6px;}
-.hero-meta span::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--accent);flex-shrink:0;}
-
-/* name card */
-.name-card{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:32px 36px;margin-bottom:32px;position:relative;overflow:hidden;}
-.name-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--primary),transparent);opacity:.6;}
-.name-label{font-family:'Instrument Serif',Georgia,serif;font-size:20px;font-weight:400;margin-bottom:6px;display:block;}
-.name-hint{font-size:13px;color:var(--dim);margin-bottom:20px;}
-
-/* stat row */
+.hero-meta span::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--or);flex-shrink:0;}
+.name-card{background:var(--bg2);border:1px solid var(--border2);border-radius:20px;padding:32px 36px;margin-bottom:32px;position:relative;overflow:hidden;}
+.name-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--pu),transparent);opacity:.7;}
+.name-label{font-family:var(--dsp);font-size:20px;font-weight:700;margin-bottom:6px;display:block;}
+.name-hint{font-size:13px;color:var(--w6);margin-bottom:20px;}
 .stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;text-align:center;}
 .stat-cell{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:18px 14px;}
-.stat-num{font-family:'Instrument Serif',Georgia,serif;font-size:24px;color:var(--accent);line-height:1;margin-bottom:4px;}
-.stat-lbl{font-size:11px;color:var(--muted);font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.06em;}
-
-/* progress */
+.stat-num{font-family:var(--dsp);font-size:26px;font-weight:800;color:var(--or);line-height:1;margin-bottom:4px;}
+.stat-lbl{font-size:11px;color:var(--w4);font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em;}
 .progress-wrap{margin-bottom:36px;}
-.progress-label{display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);margin-bottom:10px;}
+.progress-label{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;color:var(--w4);margin-bottom:10px;}
 .progress-track{height:3px;background:rgba(255,255,255,.08);border-radius:99px;overflow:hidden;}
-.progress-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--accent));border-radius:99px;transition:width .5s cubic-bezier(.4,0,.2,1);width:0%;}
-
-/* question card */
-.q-card{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:36px 40px 40px;position:relative;overflow:hidden;}
-.q-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--primary),transparent);opacity:.6;}
-.q-dim{font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin-bottom:8px;}
-.q-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);margin-bottom:4px;}
-.q-text{font-family:'Instrument Serif',Georgia,serif;font-size:21px;font-weight:400;line-height:1.35;margin-bottom:8px;}
-.q-hint{font-size:13px;color:var(--dim);margin-bottom:28px;line-height:1.6;}
-
-/* options — event delegation: NO onclick attributes */
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--pu),var(--or));border-radius:99px;transition:width .5s cubic-bezier(.4,0,.2,1);width:0%;}
+.q-card{background:var(--bg2);border:1px solid var(--border2);border-radius:20px;padding:36px 40px 40px;position:relative;overflow:hidden;}
+.q-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--pu),transparent);opacity:.7;}
+.q-dim{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--or);margin-bottom:8px;}
+.q-num{font-family:var(--mono);font-size:11px;color:var(--w4);margin-bottom:4px;}
+.q-text{font-family:var(--dsp);font-size:21px;font-weight:700;line-height:1.3;margin-bottom:8px;}
+.q-hint{font-size:13px;color:var(--w6);margin-bottom:28px;line-height:1.6;}
 .opts{display:grid;gap:10px;}
-.opt{display:flex;align-items:flex-start;gap:14px;padding:14px 18px;background:var(--bg3);border:1.5px solid rgba(255,255,255,.07);border-radius:12px;cursor:pointer;transition:all .18s;text-align:left;width:100%;color:var(--text);font-family:'Inter',sans-serif;}
-.opt:hover{border-color:rgba(123,110,232,.4);background:rgba(123,110,232,.08);}
-.opt.selected{border-color:var(--primary);background:rgba(123,110,232,.12);}
+.opt{display:flex;align-items:flex-start;gap:14px;padding:14px 18px;background:var(--bg3);border:1.5px solid rgba(255,255,255,.07);border-radius:12px;cursor:pointer;transition:all .18s;text-align:left;width:100%;color:var(--w1);font-family:var(--dsp);}
+.opt:hover{border-color:rgba(106,102,163,.4);background:rgba(106,102,163,.08);}
+.opt.selected{border-color:var(--pu);background:rgba(106,102,163,.12);}
 .radio{width:18px;height:18px;flex-shrink:0;border:2px solid rgba(255,255,255,.2);border-radius:50%;margin-top:2px;position:relative;transition:all .18s;background:transparent;}
-.opt.selected .radio{background:var(--primary);border-color:var(--primary);}
+.opt.selected .radio{background:var(--pu);border-color:var(--pu);}
 .opt.selected .radio::after{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:6px;height:6px;border-radius:50%;background:#fff;}
-.opt-label{font-size:14px;font-weight:500;line-height:1.4;}
-.opt-sub{font-size:12px;color:var(--dim);margin-top:3px;line-height:1.4;}
-
-/* text input */
-.q-input{width:100%;background:var(--bg3);border:1.5px solid rgba(255,255,255,.1);border-radius:12px;padding:14px 18px;font-family:'Inter',sans-serif;font-size:15px;color:var(--text);resize:none;outline:none;transition:border-color .18s;line-height:1.6;}
-.q-input:focus{border-color:rgba(123,110,232,.5);}
-.q-input::placeholder{color:var(--muted);}
-
-/* nav */
+.opt-label{font-size:14px;font-weight:600;line-height:1.4;}
+.opt-sub{font-size:12px;color:var(--w6);margin-top:3px;line-height:1.4;}
+.q-input{width:100%;background:var(--bg3);border:1.5px solid rgba(255,255,255,.1);border-radius:12px;padding:14px 18px;font-family:var(--dsp);font-size:15px;color:var(--w1);resize:none;outline:none;transition:border-color .18s;line-height:1.6;}
+.q-input:focus{border-color:rgba(106,102,163,.5);}
+.q-input::placeholder{color:var(--w4);}
 .q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:28px;gap:12px;}
-.btn-back{background:none;border:1.5px solid rgba(255,255,255,.12);color:var(--dim);font-family:'Inter',sans-serif;font-size:14px;padding:11px 22px;border-radius:10px;cursor:pointer;transition:all .18s;}
-.btn-back:hover{border-color:rgba(255,255,255,.3);color:var(--text);}
-.btn-next{background:linear-gradient(135deg,var(--primary),#9B8EF5);border:none;color:#fff;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;padding:12px 28px;border-radius:10px;cursor:pointer;transition:all .18s;display:flex;align-items:center;gap:8px;margin-left:auto;}
-.btn-next:hover:not(:disabled){opacity:.9;transform:translateY(-1px);}
-.btn-next:disabled{opacity:.4;cursor:not-allowed;transform:none;}
-.btn-start{background:linear-gradient(135deg,var(--primary),#9B8EF5);border:none;color:#fff;font-family:'Inter',sans-serif;font-size:15px;font-weight:600;padding:13px 28px;border-radius:10px;cursor:pointer;transition:all .18s;display:inline-flex;align-items:center;gap:8px;margin-top:20px;}
-.btn-start:hover{opacity:.9;transform:translateY(-1px);}
-
-/* generating */
+.btn-back{background:none;border:1.5px solid rgba(255,255,255,.12);color:var(--w6);font-family:var(--dsp);font-size:14px;font-weight:600;padding:11px 22px;border-radius:10px;cursor:pointer;transition:all .18s;}
+.btn-back:hover{border-color:rgba(255,255,255,.3);color:var(--w1);}
+.btn-next{background:var(--pu);border:none;color:#fff;font-family:var(--dsp);font-size:14px;font-weight:700;padding:12px 28px;border-radius:10px;cursor:pointer;transition:all .18s;display:flex;align-items:center;gap:8px;margin-left:auto;}
+.btn-next:hover:not(:disabled){opacity:.88;transform:translateY(-1px);}
+.btn-next:disabled{opacity:.35;cursor:not-allowed;transform:none;}
+.btn-start{background:var(--pu);border:none;color:#fff;font-family:var(--dsp);font-size:15px;font-weight:700;padding:13px 28px;border-radius:10px;cursor:pointer;transition:all .18s;display:inline-flex;align-items:center;gap:8px;margin-top:20px;}
+.btn-start:hover{opacity:.88;transform:translateY(-1px);}
 #screen-generating{display:none;text-align:center;padding:60px 0;}
-.gen-orb{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--accent));margin:0 auto 32px;display:flex;align-items:center;justify-content:center;font-size:32px;animation:pulse 2s ease-in-out infinite;}
-@keyframes pulse{0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(123,110,232,.4);}50%{transform:scale(1.05);box-shadow:0 0 0 20px rgba(123,110,232,0);}}
-.gen-title{font-family:'Instrument Serif',Georgia,serif;font-size:24px;font-weight:400;margin-bottom:12px;}
-.gen-sub{font-size:14px;color:var(--dim);}
+.gen-orb{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--pu),var(--or));margin:0 auto 32px;display:flex;align-items:center;justify-content:center;font-size:32px;animation:pulse 2s ease-in-out infinite;}
+@keyframes pulse{0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(106,102,163,.4);}50%{transform:scale(1.05);box-shadow:0 0 0 20px rgba(106,102,163,0);}}
+.gen-title{font-family:var(--dsp);font-size:24px;font-weight:700;margin-bottom:12px;}
+.gen-sub{font-size:14px;color:var(--w6);}
 .gen-steps{margin:32px auto 0;max-width:320px;display:grid;gap:12px;text-align:left;}
-.gen-step{display:flex;align-items:center;gap:12px;font-size:13px;color:var(--muted);transition:color .3s;}
-.gen-step.active{color:var(--text);}
-.gen-step.done{color:var(--success);}
+.gen-step{display:flex;align-items:center;gap:12px;font-size:13px;color:var(--w4);transition:color .3s;}
+.gen-step.active{color:var(--w1);}
+.gen-step.done{color:var(--gr);}
 .gen-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.15);flex-shrink:0;transition:background .3s;}
-.gen-step.active .gen-dot{background:var(--accent);animation:blink .8s ease-in-out infinite alternate;}
-.gen-step.done .gen-dot{background:var(--success);}
+.gen-step.active .gen-dot{background:var(--or);animation:blink .8s ease-in-out infinite alternate;}
+.gen-step.done .gen-dot{background:var(--gr);}
 @keyframes blink{from{opacity:.4;}to{opacity:1;}}
-
-/* report */
 #screen-report{display:none;}
 .report-header{text-align:center;padding:48px 0 40px;border-bottom:1px solid var(--border);margin-bottom:40px;}
-.report-for{font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:8px;}
-.report-name{font-family:'Instrument Serif',Georgia,serif;font-size:30px;font-weight:400;margin-bottom:4px;}
-.report-date{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);margin-bottom:28px;}
+.report-for{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--w4);margin-bottom:8px;}
+.report-name{font-family:var(--dsp);font-size:30px;font-weight:800;margin-bottom:4px;}
+.report-date{font-family:var(--mono);font-size:11px;color:var(--w4);margin-bottom:28px;}
 .score-wrap{display:flex;justify-content:center;margin-bottom:20px;}
-.score-circle{width:140px;height:140px;border-radius:50%;border:3px solid transparent;background:linear-gradient(var(--bg),var(--bg)) padding-box,linear-gradient(135deg,var(--primary),var(--accent)) border-box;display:flex;flex-direction:column;align-items:center;justify-content:center;}
-.score-num{font-family:'Instrument Serif',Georgia,serif;font-size:44px;line-height:1;}
-.score-lbl{font-family:'JetBrains Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-top:4px;}
-.score-band{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:11px;padding:5px 16px;border-radius:20px;margin-bottom:16px;}
-.bc{background:rgba(240,96,96,.15);color:#F06060;border:1px solid rgba(240,96,96,.3);}
-.bd{background:rgba(255,149,0,.15);color:var(--accent);border:1px solid rgba(255,149,0,.3);}
-.bb{background:rgba(123,110,232,.15);color:var(--plight);border:1px solid rgba(123,110,232,.3);}
-.bs{background:rgba(0,184,124,.15);color:var(--success);border:1px solid rgba(0,184,124,.3);}
-.score-interp{font-size:15px;color:var(--dim);max-width:500px;margin:0 auto;line-height:1.7;}
+.score-circle{width:140px;height:140px;border-radius:50%;border:3px solid transparent;background:linear-gradient(var(--bg),var(--bg)) padding-box,linear-gradient(135deg,var(--pu),var(--or)) border-box;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.score-num{font-family:var(--dsp);font-size:44px;font-weight:800;line-height:1;}
+.score-lbl{font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--w4);margin-top:4px;}
+.score-band{display:inline-block;font-family:var(--mono);font-size:11px;padding:5px 16px;border-radius:20px;margin-bottom:16px;text-transform:uppercase;letter-spacing:.06em;}
+.bc{background:rgba(248,113,113,.15);color:#F87171;border:1px solid rgba(248,113,113,.3);}
+.bd{background:rgba(255,153,0,.15);color:var(--or);border:1px solid rgba(255,153,0,.3);}
+.bb{background:rgba(106,102,163,.15);color:var(--pulight);border:1px solid rgba(106,102,163,.3);}
+.bs{background:rgba(16,185,129,.15);color:var(--gr);border:1px solid rgba(16,185,129,.3);}
+.score-interp{font-size:15px;color:var(--w8);max-width:500px;margin:0 auto;line-height:1.7;}
 .r-section{margin-bottom:36px;}
-.r-eyebrow{font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin-bottom:6px;}
-.r-title{font-family:'Instrument Serif',Georgia,serif;font-size:22px;font-weight:400;margin-bottom:16px;}
+.r-eyebrow{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--or);margin-bottom:6px;}
+.r-title{font-family:var(--dsp);font-size:22px;font-weight:700;margin-bottom:16px;}
 .dim-card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:12px;}
 .dim-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;gap:16px;}
-.dim-name{font-size:15px;font-weight:600;}
-.dim-badge{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:500;padding:4px 12px;border-radius:8px;white-space:nowrap;flex-shrink:0;}
+.dim-name{font-size:15px;font-weight:700;}
+.dim-badge{font-family:var(--mono);font-size:13px;font-weight:400;padding:4px 12px;border-radius:8px;white-space:nowrap;flex-shrink:0;}
 .dim-bar-track{height:4px;background:rgba(255,255,255,.08);border-radius:99px;margin-bottom:14px;overflow:hidden;}
 .dim-bar-fill{height:100%;border-radius:99px;transition:width 1s cubic-bezier(.4,0,.2,1) .5s;width:0%;}
-.dim-insight{font-size:13px;color:var(--dim);line-height:1.6;}
+.dim-insight{font-size:13px;color:var(--w8);line-height:1.6;}
 .dim-fix{margin-top:12px;background:var(--bg3);border-radius:10px;padding:12px 14px;font-size:13px;line-height:1.6;}
-.dim-fix-lbl{font-family:'JetBrains Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin-bottom:6px;}
+.dim-fix-lbl{font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--or);margin-bottom:6px;}
 .math-section{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:32px;margin:28px 0;position:relative;overflow:hidden;}
-.math-section::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:.5;}
+.math-section::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--or),transparent);opacity:.5;}
 .math-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:20px;}
 .math-cell{text-align:center;padding:16px 12px;background:var(--bg3);border-radius:12px;border:1px solid var(--border);}
-.math-num{font-family:'Instrument Serif',Georgia,serif;font-size:34px;line-height:1;margin-bottom:4px;}
-.math-lbl{font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);}
-.math-sub{font-size:11px;color:var(--dim);margin-top:6px;line-height:1.4;}
+.math-num{font-family:var(--dsp);font-size:34px;font-weight:800;line-height:1;margin-bottom:4px;}
+.math-lbl{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--w4);}
+.math-sub{font-size:11px;color:var(--w6);margin-top:6px;line-height:1.4;}
 .action-card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:12px;position:relative;}
-.ap{position:absolute;top:-1px;left:24px;font-family:'JetBrains Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.1em;padding:4px 12px;border-radius:0 0 8px 8px;}
-.ap1{background:rgba(240,96,96,.2);color:#F06060;border:1px solid rgba(240,96,96,.3);border-top:none;}
-.ap2{background:rgba(255,149,0,.15);color:var(--accent);border:1px solid rgba(255,149,0,.3);border-top:none;}
-.ap3{background:rgba(123,110,232,.15);color:var(--plight);border:1px solid rgba(123,110,232,.3);border-top:none;}
+.ap{position:absolute;top:-1px;left:24px;font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:.1em;padding:4px 12px;border-radius:0 0 8px 8px;}
+.ap1{background:rgba(248,113,113,.2);color:#F87171;border:1px solid rgba(248,113,113,.3);border-top:none;}
+.ap2{background:rgba(255,153,0,.15);color:var(--or);border:1px solid rgba(255,153,0,.3);border-top:none;}
+.ap3{background:rgba(106,102,163,.15);color:var(--pulight);border:1px solid rgba(106,102,163,.3);border-top:none;}
 .action-content{margin-top:12px;}
-.action-what{font-size:15px;font-weight:600;margin-bottom:8px;}
-.action-why{font-size:13px;color:var(--dim);line-height:1.6;margin-bottom:10px;}
-.action-meta{display:flex;gap:16px;flex-wrap:wrap;font-family:'JetBrains Mono',monospace;font-size:11px;}
-.at{color:var(--success);}
-.ar{color:var(--plight);}
-.cta-section{background:linear-gradient(135deg,rgba(123,110,232,.12),rgba(255,149,0,.08));border:1px solid rgba(123,110,232,.25);border-radius:20px;padding:40px;text-align:center;margin-top:40px;position:relative;overflow:hidden;}
-.cta-section::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--primary),var(--accent),transparent);}
-.cta-title{font-family:'Instrument Serif',Georgia,serif;font-size:24px;font-weight:400;margin-bottom:12px;}
-.cta-body{font-size:14px;color:var(--dim);max-width:440px;margin:0 auto 28px;line-height:1.7;}
-.btn-cta{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--primary),#9B8EF5);color:#fff;font-family:'Inter',sans-serif;font-size:15px;font-weight:600;padding:14px 32px;border-radius:12px;text-decoration:none;transition:all .2s;border:none;cursor:pointer;}
-.btn-cta:hover{opacity:.9;transform:translateY(-2px);color:#fff;}
-.btn-sec{display:inline-flex;align-items:center;gap:8px;color:var(--plight);font-size:13px;text-decoration:none;margin-top:16px;font-family:'JetBrains Mono',monospace;transition:color .18s;}
-.btn-sec:hover{color:var(--text);}
+.action-what{font-size:15px;font-weight:700;margin-bottom:8px;}
+.action-why{font-size:13px;color:var(--w8);line-height:1.6;margin-bottom:10px;}
+.action-meta{display:flex;gap:16px;flex-wrap:wrap;font-family:var(--mono);font-size:11px;}
+.at{color:var(--gr);}
+.ar{color:var(--pulight);}
+.cta-section{background:linear-gradient(135deg,rgba(106,102,163,.12),rgba(255,153,0,.08));border:1px solid rgba(106,102,163,.25);border-radius:20px;padding:40px;text-align:center;margin-top:40px;position:relative;overflow:hidden;}
+.cta-section::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--pu),var(--or),transparent);}
+.cta-title{font-family:var(--dsp);font-size:24px;font-weight:800;margin-bottom:12px;letter-spacing:-.02em;}
+.cta-body{font-size:14px;color:var(--w8);max-width:440px;margin:0 auto 28px;line-height:1.7;}
+.btn-cta{display:inline-flex;align-items:center;gap:10px;background:var(--pu);color:#fff;font-family:var(--dsp);font-size:15px;font-weight:700;padding:14px 32px;border-radius:12px;text-decoration:none;transition:all .2s;border:none;cursor:pointer;}
+.btn-cta:hover{opacity:.88;transform:translateY(-2px);color:#fff;}
+.btn-sec{display:inline-flex;align-items:center;gap:8px;color:var(--pulight);font-size:13px;text-decoration:none;margin-top:16px;font-family:var(--mono);transition:color .18s;}
+.btn-sec:hover{color:var(--w1);}
 .report-actions{display:flex;gap:12px;justify-content:center;margin-top:28px;flex-wrap:wrap;}
-.btn-action{display:inline-flex;align-items:center;gap:8px;background:var(--bg2);border:1px solid var(--border);color:var(--dim);font-family:'JetBrains Mono',monospace;font-size:11px;padding:10px 18px;border-radius:10px;cursor:pointer;transition:all .18s;text-decoration:none;}
-.btn-action:hover{border-color:rgba(255,255,255,.3);color:var(--text);}
-.report-footer{text-align:center;margin-top:48px;padding-top:28px;border-top:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);}
-.report-footer a{color:var(--plight);text-decoration:none;}
+.btn-action{display:inline-flex;align-items:center;gap:8px;background:var(--bg2);border:1px solid var(--border);color:var(--w6);font-family:var(--mono);font-size:11px;padding:10px 18px;border-radius:10px;cursor:pointer;transition:all .18s;text-decoration:none;}
+.btn-action:hover{border-color:rgba(255,255,255,.3);color:var(--w1);}
+.report-footer{text-align:center;margin-top:48px;padding-top:28px;border-top:1px solid var(--border);font-family:var(--mono);font-size:11px;color:var(--w4);}
+.report-footer a{color:var(--pulight);text-decoration:none;}
 .fade-in{animation:fadeUp .4s ease forwards;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
 @media(max-width:600px){
@@ -176,21 +160,21 @@ h1 em{font-style:italic;background:linear-gradient(135deg,var(--primary),var(--p
 }
 @media print{
   *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}
-  body{background:#0D0D1A!important;color:#fff!important;margin:0;padding:0;}
-  body::after{display:none!important;}
+  body{background:#0A0A18!important;color:#fff!important;margin:0;padding:0;}
+  body::before{display:none!important;}
   .orb1,.orb2{display:none!important;}
   .shell{max-width:100%!important;padding:20px!important;}
   #screen-intro,#screen-questions,#screen-generating{display:none!important;}
   #screen-report{display:block!important;}
   .report-actions,.cta-section,.report-footer,.topbar{display:none!important;}
   .report-header{padding:20px 0!important;border-bottom:1px solid rgba(255,255,255,0.2)!important;}
-  .score-circle{border:3px solid #7B6EE8!important;background:#1A1A2E!important;}
-  .score-num{color:#7B6EE8!important;}
-  .dim-card,.action-card,.math-section,.math-cell{background:#1A1A2E!important;border:1px solid rgba(255,255,255,0.15)!important;}
+  .score-circle{border:3px solid #6A66A3!important;background:#0A0A18!important;}
+  .score-num{color:#6A66A3!important;}
+  .dim-card,.action-card,.math-section,.math-cell{background:#0E0E1F!important;border:1px solid rgba(255,255,255,0.15)!important;}
   .dim-bar-fill{print-color-adjust:exact!important;}
   .r-section{margin-bottom:24px!important;}
   .math-grid{grid-template-columns:repeat(3,1fr)!important;}
-  a{color:#A89EF0!important;}
+  a{color:#9490C0!important;}
 }
 </style>
 </head>
@@ -200,16 +184,15 @@ h1 em{font-style:italic;background:linear-gradient(135deg,var(--primary),var(--p
 <div class="shell">
 
 <div class="topbar">
-  <div class="logo">LinkedIn Pipeline Infrastructure</div>
+  <div class="logo">Pipelind<span>.</span></div>
   <div class="badge">Free Diagnostic</div>
 </div>
 
-<!-- INTRO -->
 <div id="screen-intro">
   <div class="hero fade-in">
     <div class="eyebrow">5-Minute Diagnostic</div>
     <h1>Find Out Exactly What Your LinkedIn<br>Is <em>Costing You in Pipeline.</em></h1>
-    <p class="hero-sub">7 questions. A personalised score across 5 dimensions. A prioritised 30-day action plan. No email required.</p>
+    <p class="hero-sub">7 questions. A personalised score across 5 dimensions. A prioritised 30-day action plan. Built for fractional CFOs and COOs. No email required.</p>
     <div class="hero-meta">
       <span>No email</span><span>No signup</span><span>Instant report</span><span>Free</span>
     </div>
@@ -224,7 +207,7 @@ h1 em{font-style:italic;background:linear-gradient(135deg,var(--primary),var(--p
       Start the Diagnostic
       <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </button>
-    <div id="name-error" style="color:#F06060;font-size:13px;margin-top:10px;display:none;">Please enter your name to continue.</div>
+    <div id="name-error" style="color:#F87171;font-size:13px;margin-top:10px;display:none;">Please enter your name to continue.</div>
   </div>
   <div class="stat-row">
     <div class="stat-cell"><div class="stat-num">5</div><div class="stat-lbl">Dimensions Scored</div></div>
@@ -233,7 +216,6 @@ h1 em{font-style:italic;background:linear-gradient(135deg,var(--primary),var(--p
   </div>
 </div>
 
-<!-- QUESTIONS -->
 <div id="screen-questions" style="display:none;">
   <div class="progress-wrap">
     <div class="progress-label">
@@ -252,21 +234,19 @@ h1 em{font-style:italic;background:linear-gradient(135deg,var(--primary),var(--p
   </div>
 </div>
 
-<!-- GENERATING -->
 <div id="screen-generating">
   <div class="gen-orb">&#9889;</div>
   <div class="gen-title">Building your report...</div>
   <div class="gen-sub">Analysing answers across 5 pipeline dimensions</div>
   <div class="gen-steps">
     <div class="gen-step active" id="gs-1"><div class="gen-dot"></div>Scoring audience composition</div>
-    <div class="gen-step" id="gs-2"><div class="gen-dot"></div>Evaluating content alignment</div>
-    <div class="gen-step" id="gs-3"><div class="gen-dot"></div>Checking profile conversion</div>
+    <div class="gen-step" id="gs-2"><div class="gen-dot"></div>Evaluating content-pipeline alignment</div>
+    <div class="gen-step" id="gs-3"><div class="gen-dot"></div>Checking profile conversion layer</div>
     <div class="gen-step" id="gs-4"><div class="gen-dot"></div>Assessing outreach consistency</div>
     <div class="gen-step" id="gs-5"><div class="gen-dot"></div>Calculating response infrastructure</div>
   </div>
 </div>
 
-<!-- REPORT -->
 <div id="screen-report"></div>
 
 </div>
@@ -274,18 +254,18 @@ h1 em{font-style:italic;background:linear-gradient(135deg,var(--primary),var(--p
 var userName='',currentQ=0,answers={};
 
 var Qs=[
-  {id:'audience',dim:'Dimension 1 - Audience Composition',
+  {id:'audience',dim:'Dimension 1 \u00b7 Audience Composition',
    text:'How were most of your current LinkedIn connections built?',
-   hint:'Think about the last connection you accepted or sent.',
+   hint:'Think about the last 20 connection requests you sent or accepted.',
    type:'opts',
    opts:[
-     {l:'Mostly from a previous corporate career',s:'Colleagues and peers who will not hire me now',v:1},
-     {l:'Mixed, some from my current practice but mostly older connections',s:'Some right people, but they are outnumbered',v:2},
-     {l:'Actively building with right-fit buyers for my consulting work',s:'My network is aligned with who I serve now',v:4}
+     {l:'Mostly from a previous corporate career',s:'Former colleagues and peers who will not hire a fractional CFO or COO',v:1},
+     {l:'Mixed \u2014 some from my fractional practice, mostly older connections',s:'Some right people, but they are outnumbered',v:2},
+     {l:'Actively building with founders and CEOs who need fractional support',s:'My network is aligned with who I serve now',v:4}
    ]},
-  {id:'inbound',dim:'Dimension 2 - Content Pipeline Alignment',
+  {id:'inbound',dim:'Dimension 2 \u00b7 Content-Pipeline Alignment',
    text:'In the last 30 days, how many inbound conversations started with a potential buyer?',
-   hint:'Not peers, recruiters, or former colleagues. Genuine potential clients.',
+   hint:'Not peers, recruiters, or former colleagues. Founders or CEOs who could hire a fractional CFO or COO.',
    type:'opts',
    opts:[
      {l:'Zero',s:'LinkedIn is silent on the pipeline side',v:1},
@@ -293,56 +273,54 @@ var Qs=[
      {l:'3 to 5 conversations',s:'Some signal, but not yet a system',v:3},
      {l:'6 or more',s:'Pipeline conversations are happening consistently',v:4}
    ]},
-  {id:'freq',dim:'Dimension 2 - Content Pipeline Alignment',
+  {id:'freq',dim:'Dimension 2 \u00b7 Content-Pipeline Alignment',
    text:'How consistently have you posted on LinkedIn in the last 90 days?',
-   hint:'Be honest. This helps diagnose whether the gap is content or audience.',
+   hint:'Be honest. This helps separate a content gap from an audience gap.',
    type:'opts',
    opts:[
      {l:'Rarely or not at all',s:'LinkedIn presence has been quiet',v:1},
      {l:'1 to 2 times per week, inconsistently',s:'Some effort, but stops and starts',v:2},
      {l:'3 or more times per week, fairly consistently',s:'Consistent enough to measure results',v:3}
    ]},
-  {id:'profile',dim:'Dimension 3 - Profile Conversion',
-   text:'When someone lands on your LinkedIn profile after seeing a post, what happens?',
-   hint:'Your profile is where content converts. Most consultants have a resume where a landing page should be.',
+  {id:'profile',dim:'Dimension 3 \u00b7 Profile Conversion Layer',
+   text:'When a founder lands on your LinkedIn profile after seeing a post, what happens?',
+   hint:'Your profile is where content converts. Most fractional executives have a resume where a landing page should be.',
    type:'opts',
    opts:[
      {l:'They see my work history. Essentially a resume.',s:'No clear next step for a potential client',v:1},
-     {l:'My headline and about section describe what I do, but no clear next step',s:'Better framing, but still no conversion path',v:2},
+     {l:'My headline and About section describe what I do, but no clear next step',s:'Better framing, but still no conversion path',v:2},
      {l:'My profile speaks directly to my ideal client with a clear next step',s:'Optimised for conversion, not just visibility',v:4}
    ]},
-  {id:'outreach',dim:'Dimension 4 - Outreach Consistency',
+  {id:'outreach',dim:'Dimension 4 \u00b7 Outreach Consistency',
    text:'How are you currently adding right-fit connections to your LinkedIn network?',
-   hint:'Most consultants skip this entirely. It is the most important lever most people are not pulling.',
+   hint:'Most fractional executives skip this entirely. It is the most important lever most people are not pulling.',
    type:'opts',
    opts:[
      {l:'I am not. The network grows organically if it grows at all.',s:'No systematic audience-building in place',v:1},
      {l:'Occasionally, when I think of it or see someone relevant',s:'Sporadic, not systematic',v:2},
-     {l:'I have a weekly routine for sending targeted connection requests',s:'Consistently adding right-fit people to my network',v:4}
+     {l:'I have a weekly routine for sending targeted connection requests to founders and CEOs',s:'Consistently adding right-fit buyers to my network',v:4}
    ]},
-  {id:'response',dim:'Dimension 5 - Response Infrastructure',
+  {id:'response',dim:'Dimension 5 \u00b7 Response Infrastructure',
    text:'When someone comments on a post or sends a keyword DM, what do you do?',
-   hint:'Every engagement is the start of a pipeline conversation, or it dies in the thread.',
+   hint:'Every engagement is the opening of a pipeline conversation, or it dies in the thread.',
    type:'opts',
    opts:[
      {l:'Say thanks or nothing. No system for replies.',s:'Pipeline conversations are dying before they start',v:1},
      {l:'Reply thoughtfully but improvise every time',s:'Good instincts, no system',v:2},
-     {l:'I have scripts and a clear sequence for turning engagement into conversations',s:'Every engagement has a tested next move',v:4}
+     {l:'I have scripts and a clear sequence for turning engagement into booked calls',s:'Every engagement has a tested next move',v:4}
    ]},
   {id:'about',dim:'About Your Practice',
    text:'In one sentence, describe what you do for your clients.',
    hint:'Be specific. This calibrates your action plan to your context and appears in your report.',
    type:'text',
-   placeholder:'e.g. I help B2B SaaS companies build their go-to-market motion from scratch...'}
+   placeholder:'e.g. I help Series A and B founders build their finance function as a fractional CFO...'}
 ];
 
-// Boot
 window.addEventListener('DOMContentLoaded',function(){
   document.getElementById('btn-start').addEventListener('click',start);
   document.getElementById('name-input').addEventListener('keydown',function(e){if(e.key==='Enter')start();});
   document.getElementById('btn-next').addEventListener('click',next);
   document.getElementById('btn-back').addEventListener('click',back);
-  // Event delegation for options
   document.getElementById('q-card').addEventListener('click',function(e){
     var opt=e.target.closest('.opt');
     if(!opt)return;
@@ -351,7 +329,6 @@ window.addEventListener('DOMContentLoaded',function(){
     answers[opt.dataset.qid]=parseInt(opt.dataset.val,10);
     document.getElementById('btn-next').disabled=false;
   });
-  // Text input delegation
   document.getElementById('q-card').addEventListener('input',function(e){
     if(e.target.classList.contains('q-input')){
       var v=e.target.value.trim();
@@ -382,7 +359,6 @@ function renderQ(idx){
     html+='<div class="opts">';
     q.opts.forEach(function(o){
       var sel=(answers[q.id]===o.v)?' selected':'';
-      // data-qid and data-val carry the info — no onclick needed
       html+='<button class="opt'+sel+'" data-qid="'+q.id+'" data-val="'+o.v+'" type="button">';
       html+='<div class="radio"></div><div>';
       html+='<div class="opt-label">'+o.l+'</div>';
@@ -395,19 +371,15 @@ function renderQ(idx){
     html+='<textarea class="q-input" rows="3" placeholder="'+q.placeholder+'">'+sv+'</textarea>';
   }
   card.innerHTML=html;
-  // progress
   var pct=Math.round((idx/Qs.length)*100);
   document.getElementById('prog-fill').style.width=pct+'%';
   document.getElementById('prog-text').textContent='Question '+(idx+1)+' of '+Qs.length;
   document.getElementById('prog-pct').textContent=pct+'%';
-  // back
   document.getElementById('btn-back').style.display=idx>0?'block':'none';
-  // next label
   var nb=document.getElementById('btn-next');
   nb.innerHTML=idx===Qs.length-1
     ?'Generate My Report <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>'
     :'Continue <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
-  // disabled state
   nb.disabled=(q.type==='text')?(!(answers[q.id]&&answers[q.id].length>=8)):(answers[q.id]===undefined);
 }
 
@@ -440,79 +412,78 @@ function generate(){
   },delay);
 }
 
-// Score calculators
 function dAudience(){
   var a=answers['audience']||1;
   var s={1:4,2:10,4:18}[a]||4;
   var ins={
-    1:'Most of your connections are from a previous corporate career. Content you publish reaches former colleagues, not potential clients. This is the most common reason LinkedIn effort produces no pipeline.',
-    2:'Your network is mixed. Some right people exist but they are outnumbered. Every post reaches more people who will never hire you than people who might.',
-    4:'Your audience is aligned with who you serve. Posts reach people who could become clients. This is the right foundation to build on.'
+    1:'Most of your connections are from a previous corporate career. Every post you publish reaches former colleagues, not the founders and CEOs who hire fractional CFOs and COOs. This is the most common reason LinkedIn effort produces no pipeline.',
+    2:'Your network is mixed. Some right-fit buyers exist but they are outnumbered. Every post reaches more people who will never hire a fractional executive than people who might.',
+    4:'Your audience is aligned with who you serve. Posts reach founders and CEOs who could become clients. This is the right foundation to compound on.'
   };
   var fix={
-    1:'Send 20 targeted connection requests per week to the right buyers in your market. Include a personalised note under 280 characters for each one. This single change transforms the audience problem over 6 months.',
-    2:'Increase weekly outreach from sporadic to systematic. 20 targeted requests per week adds 80 right-fit buyers to your feed every month. Compounded over 6 months: 480 right-fit buyers receiving every post.',
-    4:'Audience foundation is solid. Focus on tightening the ICP profile of new connections and increasing weekly volume to accelerate compounding.'
+    1:'Send 10 targeted connection requests per week to founders and CEOs showing active hiring or funding signals. Include a personalised note under 280 characters. This single change transforms the audience composition over 6 months.',
+    2:'Increase weekly outreach from sporadic to systematic. 10 targeted requests per week adds 40 right-fit buyers to your feed every month. Compounded over 6 months: 240 founders and CEOs receiving every post.',
+    4:'Audience foundation is solid. Focus on tightening the ICP profile of new connections and maintaining weekly volume to accelerate compounding.'
   };
   return{name:'Audience Composition',score:s,insight:ins[a]||ins[1],fix:fix[a]||fix[1],
-    actionWhat:'Build a weekly connection outreach ritual',
+    actionWhat:'Build a weekly connection outreach ritual targeting founders and CEOs',
     actionWhy:'Your current audience is the primary reason pipeline conversations are not happening. No amount of better content fixes a distribution problem.',
-    actionTime:'20 min every Monday',actionResult:'80 right-fit buyers added per month'};
+    actionTime:'20 min every Monday',actionResult:'40 right-fit buyers added to your network per month'};
 }
 function dContent(){
   var inb=answers['inbound']||1,freq=answers['freq']||1;
   var raw=inb+freq;
   var s=raw<=2?4:raw<=4?8:raw<=5?14:18;
   var ins;
-  if(freq===1&&inb===1)ins='No content means no signal. Even 3 posts per week reaching the right audience can start conversations within 30 days.';
-  else if(freq>=2&&inb<=1)ins='You are posting but not generating pipeline conversations. Consistent content with zero buyer inbound means the audience receiving your content is not the right one.';
-  else if(freq>=2&&inb===2)ins='Some signal is present. The conversations starting confirm your content can work. The gap is in how many right-fit buyers are seeing it.';
+  if(freq===1&&inb===1)ins='No content means no signal. Even 3 posts per week reaching the right founders and CEOs can start conversations within 30 days.';
+  else if(freq>=2&&inb<=1)ins='You are posting but not generating pipeline conversations. Consistent content with zero buyer inbound means the audience receiving your content is not the right one. The problem is distribution, not the posts themselves.';
+  else if(freq>=2&&inb===2)ins='Some signal is present. The conversations starting confirm your content can work. The gap is in how many right-fit founders and CEOs are actually seeing it.';
   else ins='Content is producing pipeline conversations. The system is working. The opportunity is in converting more of that engagement into discovery calls.';
   return{name:'Content-Pipeline Alignment',score:s,insight:ins,
-    fix:'Lead every post with a pipeline problem, not a content or consistency tip. The first line should name something your ideal buyer thinks about, not a general observation about business.',
-    actionWhat:'Reframe posts to lead with pipeline problems, not content topics',
-    actionWhy:'Posts that name the pipeline problem get stopped by the right buyer. Posts about consistency tips get stopped by content creators.',
-    actionTime:'30 min per week',actionResult:'Comments and DMs from potential buyers, not content peers'};
+    fix:'Lead every post with a problem your buyer is experiencing right now. The first line should name something a founder or CEO at your ideal stage thinks about daily. Not a general business observation.',
+    actionWhat:'Reframe posts to lead with the specific pain your ICP buyer is living right now',
+    actionWhy:'Posts that name the right pipeline problem stop the right buyer. Posts about general business topics stop everyone and convert no one.',
+    actionTime:'30 min per week',actionResult:'Comments and DMs from potential clients, not content peers'};
 }
 function dProfile(){
   var a=answers['profile']||1;
   var s={1:4,2:10,4:18}[a]||4;
   var ins={
-    1:'Your profile is a resume. When someone arrives from a post, they see work history, not a clear picture of who you help and what to do next.',
-    2:'Your profile describes what you do but does not drive action. One targeted rewrite of the headline and About section could meaningfully change your inbound rate.',
-    4:'Your profile is working as a landing page. Visitors from your content land on a clear positioning statement with a specific next step.'
+    1:'Your profile is a resume. When a founder arrives from a post, they see work history and no clear picture of who you help or what to do next. The pipeline conversation dies at the profile visit.',
+    2:'Your profile describes what you do but does not drive action. One rewrite of the headline and About section could meaningfully change your inbound rate.',
+    4:'Your profile is working as a landing page. Visitors from your content land on a clear positioning statement and a specific next step.'
   };
   var fix={
-    1:'Rewrite your headline to name your ideal client, the problem you solve, and the outcome you produce. Then close your About section with a specific next step: a free tool, a 20-minute call, or a clear resource.',
+    1:'Rewrite your headline to name your ideal client, the problem you solve, and the outcome you produce. Close your About section with a specific next step: a free sample, a 30-minute call, or a clear resource.',
     2:'Add a clear call to action at the end of your About section. Every profile visit without a next step is a missed pipeline conversation.',
-    4:'Ensure your Featured section links to your best lead magnet or a recent post that has driven engagement from the right buyers.'
+    4:'Ensure your Featured section links to your best lead magnet or a recent post that has driven engagement from founders and CEOs in your ICP.'
   };
   return{name:'Profile Conversion Layer',score:s,insight:ins[a]||ins[1],fix:fix[a]||fix[1],
     actionWhat:'Rewrite your LinkedIn headline and About section for conversion',
-    actionWhy:'Content drives traffic to your profile. If the profile does not convert that traffic, every post loses its return at the final step.',
+    actionWhy:'Content drives traffic to your profile. If the profile does not convert that traffic, every post loses its pipeline return at the final step.',
     actionTime:'45 min one-time',actionResult:'Inbound DMs from post viewers who recognise your positioning'};
 }
 function dOutreach(){
   var a=answers['outreach']||1;
   var s={1:3,2:8,4:18}[a]||3;
   var ins={
-    1:'Your audience is growing organically, which in practice means it is not growing with the right people. The pipeline math changes when outreach becomes a weekly ritual.',
-    2:'Sporadic outreach produces sporadic results. Systematising this one action changes the audience composition over 3 to 6 months.',
-    4:'You have a consistent outreach system. The quality of who you are connecting with is the variable to optimise next.'
+    1:'Your audience is growing organically, which in practice means it is not growing with founders and CEOs who need a fractional CFO or COO. The pipeline math changes when outreach becomes a weekly ritual.',
+    2:'Sporadic outreach produces sporadic results. Making this a weekly ritual changes the audience composition over 3 to 6 months.',
+    4:'You have a consistent outreach system. The quality of who you are connecting with, and whether they carry active buying signals, is the variable to optimise next.'
   };
   return{name:'Outreach Consistency',score:s,insight:ins[a]||ins[1],
-    fix:'Set a Monday morning ritual: 20 targeted connection requests to right-fit buyers. Each note references something specific about their profile or work. Under 280 characters. Peer-to-peer tone. No pitch. 20 minutes total.',
+    fix:'Set a Monday morning ritual: 10 targeted connection requests to founders and CEOs showing active signals, funding rounds, or leadership changes. Each note references something specific. Under 280 characters. Peer tone. No pitch. 20 minutes total.',
     actionWhat:'Establish a weekly connection outreach ritual on Monday mornings',
-    actionWhy:'Without systematic outreach, your audience never fills with the people who would actually buy from you.',
-    actionTime:'20 min every Monday',actionResult:'80 right-fit buyers added per month, 480 in 6 months'};
+    actionWhy:'Without systematic outreach, your audience never fills with founders and CEOs who would actually hire you.',
+    actionTime:'20 min every Monday',actionResult:'40 right-fit buyers added per month, 240 in 6 months'};
 }
 function dResponse(){
   var a=answers['response']||1;
   var s={1:4,2:10,4:18}[a]||4;
   var ins={
     1:'Pipeline conversations are dying in the thread. Every comment on a post and every keyword DM is the opening of a potential client relationship. Without a system to advance those conversations, they close permanently.',
-    2:'Good instincts but no system means inconsistent results. The conversations that convert are the ones where the follow-through is fast and purposeful.',
-    4:'You have a system for converting engagement into conversations. The opportunity is in the quality of the scripts and whether each response moves toward a specific next step.'
+    2:'Good instincts but no system means inconsistent results. The conversations that convert are the ones where follow-through is fast and purposeful.',
+    4:'You have a system for converting engagement into conversations. The opportunity is in the quality of the scripts and whether each response moves toward a booked discovery call.'
   };
   return{name:'Response Infrastructure',score:s,insight:ins[a]||ins[1],
     fix:'Write 3 reply scripts for your most common comment types: agreement, question, and buying signal. Each script should acknowledge the comment, add one insight they did not have before, and open one specific door.',
@@ -525,9 +496,9 @@ function buildReport(){
   var d1=dAudience(),d2=dContent(),d3=dProfile(),d4=dOutreach(),d5=dResponse();
   var total=d1.score+d2.score+d3.score+d4.score+d5.score;
   var band,bc,msg;
-  if(total<40){band='Critical Gap';bc='bc';msg='Your LinkedIn is currently disconnected from your pipeline. The foundations are not yet in place. The fix is structural, not strategic. You do not need better ideas, you need the right systems running.';}
+  if(total<40){band='Critical Gap';bc='bc';msg='Your LinkedIn is currently disconnected from your pipeline. The foundations are not yet in place. The fix is structural, not strategic. You do not need better ideas or more posts. You need the right systems running.';}
   else if(total<60){band='Developing';bc='bd';msg='You have some pieces in place but the two engines are not running together. The specific gaps below are fixable within 30 days with the right sequence.';}
-  else if(total<80){band='Building';bc='bb';msg='Your system is working but not yet compounding. You are visible to some of the right people, but the pipeline conversation rate is not reflecting the effort. Two specific fixes will close the gap.';}
+  else if(total<80){band='Building';bc='bb';msg='Your system is working but not yet compounding. You are visible to some of the right founders and CEOs, but the pipeline conversation rate is not reflecting the effort. Two specific fixes will close the gap.';}
   else{band='Strong Foundation';bc='bs';msg='You have a solid base. Pipeline conversations are happening. The opportunity now is to compound what is working and remove the remaining friction points.';}
   var rfn=answers['audience']===4?400:answers['audience']===2?150:60;
   var dims=[d1,d2,d3,d4,d5];
@@ -536,21 +507,19 @@ function buildReport(){
   var today=new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
   var h='';
 
-  // Header
   h+='<div class="report-header fade-in">';
-  h+='<div class="report-for">LinkedIn Pipeline Readiness Report, prepared for</div>';
+  h+='<div class="report-for">Pipeline Readiness Report \u00b7 prepared for</div>';
   h+='<div class="report-name">'+userName+'</div>';
-  h+='<div class="report-date">'+today+' · LinkedIn Pipeline Infrastructure</div>';
+  h+='<div class="report-date">'+today+' \u00b7 Pipelind</div>';
   h+='<div class="score-wrap"><div class="score-circle"><div class="score-num" id="anim-score" style="color:'+col(total)+'">0</div><div class="score-lbl">Out of 100</div></div></div>';
   h+='<span class="score-band '+bc+'">'+band+'</span><br>';
   h+='<p class="score-interp">'+msg+'</p>';
   h+='</div>';
 
-  // Dimensions
   h+='<div class="r-section fade-in"><div class="r-eyebrow">Your Score Breakdown</div><div class="r-title">5 Pipeline Dimensions</div>';
   dims.forEach(function(d){
     var pct=(d.score/20)*100;
-    var dc=d.score<=8?'var(--warn)':d.score<=14?'var(--accent)':'var(--success)';
+    var dc=d.score<=8?'var(--rd)':d.score<=14?'var(--or)':'var(--gr)';
     h+='<div class="dim-card">';
     h+='<div class="dim-top"><div class="dim-name">'+d.name+'</div>';
     h+='<div class="dim-badge" style="background:rgba(255,255,255,.05);color:'+dc+';border:1px solid '+dc+'40;">'+d.score+' / 20</div></div>';
@@ -561,23 +530,21 @@ function buildReport(){
   });
   h+='</div>';
 
-  // Math
   h+='<div class="r-section fade-in"><div class="math-section">';
   h+='<div class="r-eyebrow">The Compounding Audience Math</div>';
   h+='<div class="r-title" style="margin-bottom:8px;">What building the right audience looks like for '+userName+'</div>';
-  h+='<p style="font-size:13px;color:var(--dim);line-height:1.6;">You '+about.toLowerCase()+'. The people who most need that work are not yet in your LinkedIn feed. Here is what changes when a systematic outreach system runs monthly.</p>';
+  h+='<p style="font-size:13px;color:var(--w8);line-height:1.6;">You '+about.toLowerCase()+'. The founders and CEOs who most need that work are not yet in your LinkedIn feed. Here is what changes when a systematic weekly outreach system runs alongside your content.</p>';
   h+='<div class="math-grid">';
-  h+='<div class="math-cell"><div class="math-num" style="color:var(--warn);">'+rfn+'</div><div class="math-lbl">Right-fit buyers now</div><div class="math-sub">Estimated from your current audience composition</div></div>';
-  h+='<div class="math-cell"><div class="math-num" style="color:var(--accent);">'+(rfn+240)+'</div><div class="math-lbl">After 3 months</div><div class="math-sub">Plus 80 right-fit connections per month</div></div>';
-  h+='<div class="math-cell" style="border-color:rgba(0,184,124,.3);background:rgba(0,184,124,.04);"><div class="math-num" style="color:var(--success);">'+(rfn+480)+'</div><div class="math-lbl">After 6 months</div><div class="math-sub">Right-fit buyers receiving every post you publish</div></div>';
+  h+='<div class="math-cell"><div class="math-num" style="color:var(--rd);">'+rfn+'</div><div class="math-lbl">Right-fit buyers now</div><div class="math-sub">Estimated from your current audience composition</div></div>';
+  h+='<div class="math-cell"><div class="math-num" style="color:var(--or);">'+(rfn+120)+'</div><div class="math-lbl">After 3 months</div><div class="math-sub">Plus 40 ICP-matched buyer profiles per month</div></div>';
+  h+='<div class="math-cell" style="border-color:rgba(16,185,129,.3);background:rgba(16,185,129,.04);"><div class="math-num" style="color:var(--gr);">'+(rfn+240)+'</div><div class="math-lbl">After 6 months</div><div class="math-sub">Right-fit buyers receiving every post you publish</div></div>';
   h+='</div>';
-  h+='<p style="font-size:12px;color:var(--muted);margin-top:14px;text-align:center;font-family:\'JetBrains Mono\',monospace;">Every post at month 6 reaches '+(rfn+480)+' potential clients instead of '+rfn+'.</p>';
+  h+='<p style="font-size:12px;color:var(--w4);margin-top:14px;text-align:center;font-family:var(--mono);">Every post at month 6 reaches '+(rfn+240)+' potential clients instead of '+rfn+'.</p>';
   h+='</div></div>';
 
-  // Action plan
   h+='<div class="r-section fade-in"><div class="r-eyebrow">Based on Your Lowest Scores</div><div class="r-title">Your Prioritised 30-Day Action Plan</div>';
-  h+='<p style="font-size:13px;color:var(--dim);margin-bottom:20px;line-height:1.6;">These three actions are sequenced by impact. Start with Priority 1. It produces the fastest visible result on your pipeline.</p>';
-  var plabels=['ap1','ap2','ap3'],ptexts=['Priority 1 - Do This First','Priority 2 - Week 2','Priority 3 - Weeks 3 to 4'];
+  h+='<p style="font-size:13px;color:var(--w8);margin-bottom:20px;line-height:1.6;">These three actions are sequenced by impact. Start with Priority 1. It produces the fastest visible result on your pipeline.</p>';
+  var plabels=['ap1','ap2','ap3'],ptexts=['Priority 1 \u00b7 Do This First','Priority 2 \u00b7 Week 2','Priority 3 \u00b7 Weeks 3 to 4'];
   actions.forEach(function(d,i){
     h+='<div class="action-card"><div class="ap '+plabels[i]+'">'+ptexts[i]+'</div>';
     h+='<div class="action-content"><div class="action-what">'+d.actionWhat+'</div>';
@@ -587,16 +554,15 @@ function buildReport(){
   });
   h+='</div>';
 
-  // CTA
   h+='<div class="cta-section fade-in">';
-  h+='<div class="r-eyebrow" style="margin-bottom:12px;">The Full Solution</div>';
-  h+='<div class="cta-title">The Infrastructure Session Builds All 5 Dimensions in 90 Minutes</div>';
-  h+='<p class="cta-body">This diagnostic shows the gaps. One 90-minute session closes all of them permanently. Two engines running simultaneously: content building trust with the right people, and 80 right-fit buyers added to your audience every month. Pipeline is the output.</p>';
-  h+='<a href="https://calendly.com/saurabh_zentro/30-min" target="_blank" class="btn-cta">Book Your Free 20-Min Walkthrough</a><br>';
-  h+='<a href="https://pipelind.com/" target="_blank" class="btn-sec">See exactly what the full system builds first</a>';
+  h+='<div class="r-eyebrow" style="margin-bottom:12px;">The Done-For-You Solution</div>';
+  h+='<div class="cta-title">See Exactly What the Full Pipeline System Delivers Every Monday</div>';
+  h+='<p class="cta-body">This diagnostic shows the gaps. The Pipelind system closes all five permanently: 40 ICP-matched buyer profiles flagged by active hiring and funding signals, plus 18 pieces of content in your voice, delivered to your inbox every Monday. 30 minutes of your time per week.</p>';
+  h+='<a href="https://calendly.com/saurabh_zentro/30-min" target="_blank" class="btn-cta">Book Your Pipeline Walkthrough</a><br>';
+  h+='<a href="https://pipelind.com/" target="_blank" class="btn-sec">See exactly what ships every Monday first \u2197</a>';
   h+='</div>';
   h+='<div class="report-actions"><button class="btn-action" onclick="printReport()">Save as PDF</button><button class="btn-action" onclick="shareLinkedIn()">Share on LinkedIn</button><button class="btn-action" onclick="resetAll()">Retake</button></div>';
-  h+='<div class="report-footer"><p>LinkedIn Pipeline Infrastructure · <a href="https://pipelind.com/">pipelind.com</a> · Built by Saurabh M.</p></div>';
+  h+='<div class="report-footer"><p>Pipelind \u00b7 <a href="https://pipelind.com/">pipelind.com</a> \u00b7 Saurabh M.</p></div>';
 
   document.getElementById('screen-report').innerHTML=h;
   animScore(total);
@@ -605,7 +571,7 @@ function buildReport(){
   },400);
 }
 
-function col(s){return s<40?'#F06060':s<60?'#FF9500':s<80?'#7B6EE8':'#00B87C';}
+function col(s){return s<40?'#F87171':s<60?'#FF9900':s<80?'#6A66A3':'#10B981';}
 
 function animScore(target){
   var el=document.getElementById('anim-score');
@@ -614,19 +580,14 @@ function animScore(target){
   var t=setInterval(function(){n=Math.min(n+step,target);el.textContent=n;if(n>=target)clearInterval(t);},40);
 }
 function printReport(){
-  // Ensure bars are at final width and score is at final number before printing
   document.querySelectorAll('.dim-bar-fill').forEach(function(el){
     el.style.transition='none';
     el.style.width=el.getAttribute('data-pct')+'%';
   });
-  var scoreEl=document.getElementById('anim-score');
-  // Score should already be at target — just ensure it
   setTimeout(function(){window.print();},300);
 }
 function shareLinkedIn(){
-  var d1=dAudience(),d2=dContent(),d3=dProfile(),d4=dOutreach(),d5=dResponse();
-  var total=d1.score+d2.score+d3.score+d4.score+d5.score;
-  window.open('https://www.linkedin.com/sharing/share-offsite/?url='+encodeURIComponent('https://pipeline-readiness.pipelind.com/'),'_blank');
+  window.open('https://www.linkedin.com/sharing/share-offsite/?url='+encodeURIComponent('https://www.pipelind.com/pipeline-readiness'),'_blank');
 }
 function resetAll(){
   answers={};currentQ=0;
