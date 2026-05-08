@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Karl McCormick · Pipeline Demo · Pipelind</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:           #0A0A12;
+  --bg2:          #12121E;
+  --bg3:          #0E0E19;
+  --primary:      #6A66A3;
+  --primary-light:#9B98C4;
+  --accent:       #FF9900;
+  --success:      #019047;
+  --success-light:#5AC88A;
+  --text:         rgba(255,255,255,0.90);
+  --text-dim:     rgba(255,255,255,0.72);
+  --text-muted:   rgba(255,255,255,0.55);
+  --border:       rgba(106,102,163,0.25);
+  --border-hover: rgba(106,102,163,0.55);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+}
+
+/* ── SIDEBAR ── */
+.sidebar {
+  width: 240px;
+  min-height: 100vh;
+  background: var(--bg2);
+  border-right: 1px solid var(--border);
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+}
+
+.sidebar-brand {
+  padding: 24px 20px 18px;
+  border-bottom: 1px solid var(--border);
+}
+
+.brand-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+}
+
+.brand-name {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--primary-light);
+  letter-spacing: -0.02em;
+}
+
+.sidebar-prospect {
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.prospect-tag {
+  display: inline-block;
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.11em;
+  padding: 3px 8px;
+  border-radius: 4px;
+  margin-bottom: 9px;
+  background: rgba(255,153,0,0.13);
+  border: 1px solid rgba(255,153,0,0.38);
+  color: var(--accent);
+}
+
+.prospect-name {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 3px;
+}
+
+.prospect-title {
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.55;
+}
+
+.sidebar-nav {
+  padding: 16px 12px;
+  flex: 1;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-bottom: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-dim);
+  transition: all 0.15s;
+  border: 1px solid transparent;
+}
+
+.nav-item:hover {
+  background: rgba(106,102,163,0.08);
+  color: var(--text);
+}
+
+.nav-item.active {
+  background: rgba(106,102,163,0.15);
+  border-color: rgba(106,102,163,0.33);
+  color: var(--primary-light);
+}
+
+.nav-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--primary);
+  flex-shrink: 0;
+}
+
+.nav-item.active .nav-dot { background: var(--accent); }
+
+.sidebar-footer {
+  padding: 16px 20px;
+  border-top: 1px solid var(--border);
+}
+
+.sidebar-footer-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  color: var(--text-muted);
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+/* ── MAIN ── */
+.main {
+  margin-left: 240px;
+  flex: 1;
+  padding: 38px 44px;
+  min-height: 100vh;
+}
+
+/* ── SECTION HEADER ── */
+.section-header { margin-bottom: 26px; }
+
+.section-tag {
+  display: inline-block;
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  padding: 4px 10px;
+  border-radius: 4px;
+  margin-bottom: 11px;
+  background: rgba(1,144,71,0.11);
+  border: 1px solid rgba(1,144,71,0.28);
+  color: var(--success-light);
+}
+
+.section-title {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.02em;
+  margin-bottom: 6px;
+}
+
+.section-subtitle {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.65;
+}
+
+/* ── ICP FILTER BAR ── */
+.filter-bar {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 20px;
+  margin-bottom: 28px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  align-items: center;
+}
+
+.filter-bar-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  margin-right: 4px;
+}
+
+/* ── TAGS ── */
+.tag {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.tag-green  { background: rgba(1,144,71,0.14);   border: 1px solid rgba(1,144,71,0.33);   color: var(--success-light); }
+.tag-amber  { background: rgba(255,153,0,0.11);   border: 1px solid rgba(255,153,0,0.28);  color: var(--accent); }
+.tag-purple { background: rgba(106,102,163,0.14); border: 1px solid rgba(106,102,163,0.33); color: var(--primary-light); }
+.tag-teal   { background: rgba(0,188,188,0.11);   border: 1px solid rgba(0,188,188,0.28);  color: #5ACFCF; }
+.tag-grey   { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.14); color: var(--text-muted); }
+.tag-illus  { background: rgba(255,100,50,0.11);  border: 1px solid rgba(255,100,50,0.32); color: #FF8560; font-size: 8px; }
+
+/* ── LEAD CARD ── */
+.lead-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 26px 30px;
+  margin-bottom: 22px;
+  transition: border-color 0.15s;
+}
+
+.lead-card:hover { border-color: var(--border-hover); }
+.lead-card.illustrative { border-color: rgba(255,100,50,0.22); }
+
+.lead-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  gap: 18px;
+}
+
+.lead-identity { flex: 1; }
+
+.lead-name {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 3px;
+}
+
+.lead-title {
+  font-size: 13px;
+  color: var(--text-dim);
+  margin-bottom: 3px;
+}
+
+.lead-company {
+  font-size: 12px;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.lead-signals {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  flex-shrink: 0;
+  max-width: 330px;
+  justify-content: flex-end;
+}
+
+/* ── LEAD BODY 3-COL ── */
+.lead-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 18px;
+  margin-bottom: 20px;
+}
+
+.col-head {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.col-text {
+  font-size: 12px;
+  color: var(--text-dim);
+  line-height: 1.7;
+}
+
+.signal-box {
+  background: rgba(1,144,71,0.07);
+  border: 1px solid rgba(1,144,71,0.22);
+  border-radius: 6px;
+  padding: 8px 10px;
+  margin-top: 10px;
+}
+
+.signal-box-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.10em;
+  color: var(--success-light);
+  margin-bottom: 3px;
+}
+
+.signal-box-text {
+  font-size: 11px;
+  color: var(--text-dim);
+  line-height: 1.55;
+}
+
+.col-text em {
+  font-style: italic;
+  color: var(--text-muted);
+}
+
+/* ── CUSTOM INTELLIGENCE ── */
+.ci-block {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px 18px;
+  margin-bottom: 18px;
+}
+
+.ci-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 13px;
+}
+
+.ci-head-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--primary-light);
+  font-weight: 700;
+}
+
+.ci-head-sub {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+.ci-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+}
+
+.ci-cell {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px 12px;
+}
+
+.ci-cell-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--text-muted);
+  margin-bottom: 5px;
+}
+
+.ci-cell-val {
+  font-size: 11px;
+  color: var(--text-dim);
+  line-height: 1.55;
+}
+
+.ci-cell-val.live { color: var(--success-light); }
+
+/* ── CARD FOOTER ── */
+.card-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 6px;
+}
+
+.li-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  padding: 8px 16px;
+  border-radius: 6px;
+  background: rgba(10,102,194,0.13);
+  border: 1px solid rgba(10,102,194,0.33);
+  color: #6EB0FF;
+  text-decoration: none;
+  transition: all 0.14s;
+}
+
+.li-btn:hover {
+  background: rgba(10,102,194,0.22);
+  border-color: rgba(10,102,194,0.52);
+}
+
+/* ── NURTURE ── */
+.nurture-wrap { margin-top: 38px; margin-bottom: 38px; }
+
+.nurture-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.13em;
+  color: var(--text-muted);
+  margin-bottom: 15px;
+}
+
+.nurture-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+}
+
+.nurture-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 18px 20px;
+}
+
+.nurture-day {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.11em;
+  color: var(--accent);
+  margin-bottom: 5px;
+}
+
+.nurture-action {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.nurture-msg {
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.7;
+  font-style: italic;
+}
+
+/* ── CTA FOOTER ── */
+.cta-footer {
+  margin-top: 38px;
+  background: linear-gradient(135deg, rgba(255,153,0,0.07) 0%, rgba(106,102,163,0.05) 100%);
+  border: 1px solid rgba(255,153,0,0.28);
+  border-radius: 12px;
+  padding: 34px 40px;
+  text-align: center;
+}
+
+.cta-headline {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.01em;
+  margin-bottom: 10px;
+}
+
+.cta-subhead {
+  font-size: 14px;
+  color: var(--text-dim);
+  line-height: 1.75;
+  max-width: 680px;
+  margin: 0 auto 24px;
+}
+
+.cta-btn {
+  display: inline-block;
+  background: var(--accent);
+  color: #0A0A12;
+  padding: 14px 34px;
+  border-radius: 8px;
+  font-family: 'Space Mono', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  transition: background 0.14s;
+  margin-bottom: 14px;
+  display: block;
+  width: fit-content;
+  margin: 0 auto 14px;
+}
+
+.cta-btn:hover { background: #FFB340; }
+
+.cta-note {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+}
+
+/* ── CONTENT ENGINE ── */
+.post-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 32px 38px;
+  margin-bottom: 26px;
+}
+
+.post-meta {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.post-avatar {
+  width: 46px; height: 46px;
+  border-radius: 50%;
+  background: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 800;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.post-author {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.post-role {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.post-format-tag {
+  margin-left: auto;
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.11em;
+  padding: 4px 10px;
+  border-radius: 4px;
+  background: rgba(106,102,163,0.14);
+  border: 1px solid rgba(106,102,163,0.33);
+  color: var(--primary-light);
+}
+
+.post-body {
+  font-size: 14px;
+  color: var(--text-dim);
+  line-height: 1.9;
+  white-space: pre-line;
+}
+
+.post-cta-line {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  color: var(--accent);
+  letter-spacing: 0.06em;
+}
+
+/* ── GEMINI BRIEF ── */
+.gemini-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 28px 32px;
+  margin-bottom: 26px;
+}
+
+.gemini-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.13em;
+  color: var(--primary-light);
+  margin-bottom: 14px;
+}
+
+.gemini-brief {
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.85;
+  white-space: pre-line;
+}
+
+/* ── MISC ── */
+.divider {
+  height: 1px;
+  background: var(--border);
+  margin: 32px 0;
+}
+
+/* ── VIEWS ── */
+.view { display: none; }
+.view.active { display: block; }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-label">Powered by</div>
+    <div class="brand-name">Pipelind</div>
+  </div>
+
+  <div class="sidebar-prospect">
+    <div class="prospect-tag">Personalised for Karl</div>
+    <div class="prospect-name">Karl McCormick</div>
+    <div class="prospect-title">Fractional CRO · Managing Partner<br>MIR Global · Houston, TX</div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-item active" onclick="showView('pipeline', this)">
+      <div class="nav-dot"></div>
+      Pipeline Engine
+    </div>
+    <div class="nav-item" onclick="showView('content', this)">
+      <div class="nav-dot"></div>
+      Content Engine
+    </div>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="sidebar-footer-label">Sample · 5 of 40 leads/mo</div>
+  </div>
+</aside>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- PIPELINE ENGINE                           -->
+<!-- ══════════════════════════════════════════ -->
+<main class="main">
+<div class="view active" id="view-pipeline">
+
+  <div class="section-header">
+    <div class="section-tag">Pipeline Engine · Sample Pull</div>
+    <h1 class="section-title">Sample Pipeline Pull</h1>
+    <p class="section-subtitle">Full Engine delivers 40 ICP-matched leads per month · 10 per weekly delivery · Configured for Karl's petrochemical sector CRO practice</p>
+  </div>
+
+  <!-- ICP FILTER BAR -->
+  <div class="filter-bar">
+    <span class="filter-bar-label">Active Filters:</span>
+    <span class="tag tag-purple">B2B Service · Equipment · Materials</span>
+    <span class="tag tag-purple">Petrochemical Sector Buyers</span>
+    <span class="tag tag-amber">CEO · President · Founder</span>
+    <span class="tag tag-teal">$25M-$200M Revenue</span>
+    <span class="tag tag-grey">US Only</span>
+    <span class="tag tag-green">No Structured CRO Function</span>
+    <span class="tag tag-grey">Texas · Gulf Coast · Louisiana Priority</span>
+  </div>
+
+  <!-- ─── LEAD 1 · Kerry Siggins / StoneAge ─── -->
+  <div class="lead-card">
+    <div class="lead-card-header">
+      <div class="lead-identity">
+        <div class="lead-name">Kerry Siggins</div>
+        <div class="lead-title">President and Chief Executive Officer</div>
+        <div class="lead-company">StoneAge Waterblast Tools · Durango, CO</div>
+      </div>
+      <div class="lead-signals">
+        <span class="tag tag-green">ICP Fit: YES</span>
+        <span class="tag tag-amber">$75M-$200M Revenue</span>
+        <span class="tag tag-teal">201-500 Employees</span>
+        <span class="tag tag-purple">Refinery Turnaround Tooling</span>
+        <span class="tag tag-purple">Industrial Cleaning Equipment</span>
+        <span class="tag tag-grey">Serves US Refineries Nationally</span>
+      </div>
+    </div>
+
+    <div class="lead-body">
+      <div>
+        <div class="col-head">Why ICP Fit for Karl</div>
+        <div class="col-text">StoneAge manufactures waterblast and industrial cleaning equipment used in every major refinery turnaround. Kerry has scaled the company to $75M-$200M and serves 35 countries, but the commercial function runs through distributor channels and trade relationships, not a structured CRO motion. Karl's 40 years on the operator side of these same turnarounds, combined with his revenue architecture experience, gives him direct access to the procurement layer StoneAge's distributors cannot reach.
+          <div class="signal-box">
+            <div class="signal-box-label">Strongest Fit Signal</div>
+            <div class="signal-box-text">Active BD hiring in last 60 days · No CRO or VP Sales in org structure at $75M-$200M revenue · BD running through distribution channels only</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="col-head">Why Looking for This Service</div>
+        <div class="col-text">Refinery MRO procurement is relationship-gated. The buyers at major producers do not respond to cold outreach from tool vendors. Kerry's distribution model puts StoneAge two steps removed from the procurement decision-maker. A fractional CRO who can go direct to plant managers and turnaround coordinators at Gulf Coast and Mid-Continent refineries compresses a 24-month enterprise sales cycle to under 12. The ROI math on that timeline compression is straightforward at $75M-$200M scale.</div>
+      </div>
+      <div>
+        <div class="col-head">Connection Note</div>
+        <div class="col-text"><em>"Kerry, I spent 40 years managing turnarounds from the operator side and StoneAge tools showed up on every major job. Curious whether you have a structured commercial function for direct producer access, or whether most refinery BD still runs through your distributor network. Worth a brief conversation."</em></div>
+      </div>
+    </div>
+
+    <div class="ci-block">
+      <div class="ci-head">
+        <span class="ci-head-label">Custom Intelligence</span>
+        <span class="ci-head-sub">5 Vibe-native fields · configured for Karl's CRO practice</span>
+      </div>
+      <div class="ci-grid">
+        <div class="ci-cell">
+          <div class="ci-cell-label">Leadership Change</div>
+          <div class="ci-cell-val">No C-suite change in last 90 days. Kerry Siggins has held the CEO seat since 2013. No commercial leadership hire announced.</div>
+        </div>
+        <div class="ci-cell">
+          <div class="ci-cell-label">Funding Activity</div>
+          <div class="ci-cell-val">No public funding round. Employee-owned private company. No PE event detected.</div>
+        </div>
+        <div class="ci-cell">
+          <div class="ci-cell-label">Department Hiring</div>
+          <div class="ci-cell-val live">Active BD and Sales hiring in last 60 days. Two open roles posted. Signals intent to build direct commercial capacity beyond distribution.</div>
+        </div>
+        <div class="ci-cell">
+          <div class="ci-cell-label">Market Expansion</div>
+          <div class="ci-cell-val">35-country footprint. US refinery corridor identified as primary growth market given turnaround cycle volume and contract size.</div>
+        </div>
+        <div class="ci-cell">
+          <div class="ci-cell-label">Tech Stack and Trajectory</div>
+          <div class="ci-cell-val">Salesforce CRM deployed. Revenue trajectory consistent with distribution-led plateau in the $75M-$200M band without a direct enterprise sales motion.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-footer">
+      <a href="https://www.linkedin.com/in/kerry-siggins/" target="_blank" class="li-btn">View LinkedIn Profile →</a>
+    </div>
+  </div>
+
+  <!-- ─── LEAD 2 · Cliff Castilaw / SCS Technologies ─── -->
+  <div class="lead-card">
+    <div class="lead-card-header">
+      <div class="lead-identity">
+        <div class="lead-name">Cliff Castilaw</div>
+        <div class="lead-title">President</div>
+        <div class="lead-company">SCS Technologies · Big Spring, TX</div>
+      </div>
+      <div class="lead-signals">
+        <span class="tag tag-green">ICP Fit: YES</span>
+        <span class="tag tag-amber">$25M-$75M Revenue</span>
+        <span class="tag tag-teal">51-200 Employees</span>
+        <span class="tag tag-purple">Crude and Gas Measurement</span>
+        <span class="tag tag-purple">LACT Units · VRU Systems</span>
+        <span class="tag tag-grey">Permian Basin · West Texas</span>
+      </div>
+    </div>
+
+    <div class="lead-body">
+      <div>
+        <div class="col-head">Why ICP Fit for Karl</div>
+        <div class="col-text">SCS Technologies fabricates crude measurement skids, LACT units, methane vapor recovery units, and CO2 leak detection systems for upstream and midstream producers in the Permian Basin. Cliff has a controls and systems engineering background, not a commercial one. EPA methane regulations are creating active procurement demand at the exact operators Karl knows. Karl can walk into the VP of Operations offices that Cliff cannot currently reach, and pair those relationships with a revenue architecture Cliff has never had.
+          <div class="signal-box">
+            <div class="signal-box-label">Strongest Fit Signal</div>
+            <div class="signal-box-text">Permian Basin Texas location · Engineering founder as sole BD function · Active VRU and CO2 measurement demand driven by EPA regulatory timeline</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="col-head">Why Looking for This Service</div>
+        <div class="col-text">SCS competes in a procurement environment where operator trust is built over years, not proposals. Cliff's technical depth wins renewals from existing accounts but does not open new ones. The regulatory tailwind on emissions and vapor recovery has created a procurement window across the Permian that Cliff cannot capture through relationship-only BD at his current scale. A fractional CRO with existing basin operator relationships activates that window in months, not years.</div>
+      </div>
+      <div>
+        <div class="col-head">Connection Note</div>
+        <div class="col-text"><em>"Cliff, with VRU demand accelerating ahead of EPA methane rules across the Permian, I wanted to connect. I have long-standing relationships with operations and procurement leadership at several major basin producers. Worth a brief conversation on whether there is a commercial fit."</em></div>
+      </div>
+    </div>
+
+    <div class="ci-block">
+      <div class="ci-head">
+        <span class="ci-head-label">Custom Intelligence</span>
+        <span class="ci-head-sub">5 Vibe-native fields · configured for Karl's CRO practice</span>
+      </div>
+      <div class="ci-grid">
+        <div class="ci-cell">
+          <div class="ci-cell-label">Leadership Change</div>
+          <div class="ci-cell-val">No C-suite change. Cliff Castilaw has held President role. No VP Sales or CRO function publicly identified in the org structure.</div>
+        </div>
+        <div class="ci-cell">
+          <div class="ci-cell-label">Funding Activity</div>
+          <div class="ci-cell-val">No public funding round. Private operator-run company. PE-backed growth capital possible given regulatory tailwind timing.</div>
+        </div>
+        <div class="ci-cell">
+          <div class="ci-cell-label">Department Hiring</div>
+          <div class="ci-cell-val live">Active engineering and operations hiring in last 90 days. Project backlog growth signal consistent with new contract demand and capacity expansion.</div>
+        </div>
+        <div class="ci-cell">
+          <div class="ci-cell-label">Market Expansion</div>
+          <div class="ci-cell-val live">Big Spring TX HQ serving Permian Basin. CO2 detection market expansion signals aligned with regulatory tailwinds and basin-wide compliance deadlines.</div>
+        </div>
+        <div class="ci-cell">
+          <div class="ci-cell-label">Tech Stack and Trajectory</div>
+          <div class="ci-cell-val">SCADA and PLC systems integrator. No CRM infrastructure visible publicly. Relationship-based BD model confirmed by technical founder profile and skills data.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-footer">
+      <a href="https://www.linkedin.com/in/cliff-castilaw/" target="_blank" class="li-btn">View LinkedIn Profile →</a>
+    </div>
+  </div>
+
+  <!-- ─── LEAD 3 · Ivan Curiel / F&C Engineers ─── -->
+  <div class="lead-card">
+    <div class="lead-card-header">
+      <div class="lead-identity">
+        <div class="lead-name">Ivan Curiel, P.E.</div>
+        <div class="lead-title">Chief Executive Officer</div>
+        <div class="lead-company">F&amp;C Engineers · Houston, TX</div>
+      </div>
+      <div class="lead-signals">
+        <span class="tag tag-green">ICP Fit: YES</span>
+        <span class="tag tag-amber">$25M-$75M Revenue</span>
+        <span class="tag tag-teal">51-200 Employees</span>
+        <span class="tag tag-purple">Upstream and Midstream EPC</span>
+        <span class="tag tag-purple">Turbomachinery Engineering</span>
+        <span class="tag tag-grey">Houston · Gulf Coast</span>
+      </div>
+    </div>
+
+    <div class="lead-body">
+      <div>
+        <div class="col-head">Why ICP Fit for Karl</div>
+        <div class="col-text">F&amp;C Engineers provides full EPC services for upstream, midstream, and turbomachinery clients, with 30-plus years serving the Gulf Coast and global energy sector. Ivan is a P.E. and the founding Managing Partner, which means commercial development runs through his technical credibility and personal producer relationships. At $25M-$75M with active engineering hiring, the company is growing but the BD model has no architecture independent of Ivan. Karl's direct relationships with the operators F&amp;C serves create an immediate activation path.
+          <div class="signal-box">
+            <div class="signal-box-label">Strongest Fit Signal</div>
+            <div class="signal-box-text">Houston EPC firm serving upstream/midstream/downstream · Technical founder as sole BD function · Active engineering hiring signals project backlog growth without commercial infrastructure</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="col-head">Why Looking for This Service</div>
+        <div class="col-text">EPC firms at F&amp;C's scale typically win new contracts through referral and repeat work from existing producer relationships. Ivan's technical reputation closes renewals but does not build pipeline into new accounts. A fractional CRO who already knows the procurement leadership at Gulf Coast operators converts F&amp;C's 30-year technical track record into new-account revenue without Ivan spending engineering time on commercial development he was not trained to run.</div>
+      </div>
+      <div>
+        <div class="col-head">Connection Note</div>
+        <div class="col-text"><em>"Ivan, I spent 40 years on the operator side of projects F&amp;C executes, including turnaround management and capital project oversight at several major Gulf Coast facilities. Curious whether you are doing structured outreach to new producers, or whether commercial development is mostly referral and repeat work at this stage."</em></div>
+      </div>
+    </div>
+
+    <div class="ci-block">
+      <div class="ci-head">
+        <span class="ci-head-label">Custom Intelligence</span>
+        <span class="ci-head-sub">5 Vibe-native fields · configured for Karl's CRO practice</span>
+      </div>
+      <div class="ci-grid">
+        <div class="ci-cell">
+          <div class="ci-cell-label">Leadership Change</div>
+          <div class="ci-cell-val">No C-suite change. Ivan Curiel is the founding CEO and Managing Partner. No dedicated commercial leadership role identified.</div>
+        </div>
+        <div class="ci-cell">
+          <div class="ci-cell-label">Funding Activity</div>
+          <div class="ci-cell-val">No public funding round. Owner-operated EPC firm. Project cash flow driven. No PE event detected.</div>
+        </div>
+        <div class="ci-cell">
+          <div class="ci-cell-label">Department Hiring</div>
+          <div class="ci-cell-val live">Active engineering hiring in last 90 days. Project manager and process engineer roles posted. Active project backlog confirmed by headcount growth signal.</div>
+        </div>
+        <div class="ci-cell">
+          <div class="ci-cell-label">Market Expansion</div>
+          <div class="ci-cell-val live">Houston HQ with global client base. Turbomachinery and upstream specialization positions well for LNG facility and processing plant growth on Gulf Coast.</div>
+        </div>
+        <div class="ci-cell">
+          <div class="ci-cell-label">Tech Stack and Trajectory</div>
+          <div class="ci-cell-val">Proprietary engineering technology deployed. 30-plus years of sector experience. Revenue trajectory in $25M-$75M band consistent with referral-dependent growth model.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-footer">
+      <a href="https://www.linkedin.com/in/ivan-curiel-pe/" target="_blank" class="li-btn">View LinkedIn Profile →</a>
+    </div>
+  </div>
+
+  <!-- ─── LEAD 4 · ILLUSTRATIVE ─── -->
+  <div class="lead-card illustrative">
+    <div class="lead-card-header">
+      <div class="lead-identity">
+        <div class="lead-name">Marcus Delacroix</div>
+        <div class="lead-title">President and Founder</div>
+        <div class="lead-company">
+          Gulf States Inspection Services · Baton Rouge, LA
+          <span class="tag tag-illus">Illustrative Profile</span>
+        </div>
+      </div>
+      <div class="lead-signals">
+        <span class="tag tag-green">ICP Fit: YES</span>
+        <span class="tag tag-amber">$25M-$75M Revenue</span>
+        <span class="tag tag-teal">51-200 Employees</span>
+        <span class="tag tag-purple">NDT and Pipeline Integrity</span>
+        <span class="tag tag-purple">Corrosion Inspection Services</span>
+        <span class="tag tag-grey">Louisiana · Gulf Coast Refineries</span>
+      </div>
+    </div>
+
+    <div class="lead-body">
+      <div>
+        <div class="col-head">Why ICP Fit for Karl</div>
+        <div class="col-text">Gulf States provides non-destructive testing, pipeline integrity assessment, and corrosion inspection services to refineries and petrochemical producers across Louisiana and the Gulf Coast corridor. Marcus has a technical inspection background and built the firm on relationships with maintenance and turnaround managers. At $25M-$75M with a growing backlog, the commercial ceiling is the founder's personal reach. Karl's relationships at the plant manager and VP Operations level at Gulf Coast producers represent direct access above Marcus's current BD layer.
+          <div class="signal-box">
+            <div class="signal-box-label">Strongest Fit Signal</div>
+            <div class="signal-box-text">Baton Rouge refinery corridor location · Inspection services founder with no VP Sales or CRO · Turnaround contract cycle creates predictable procurement window twice per year</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="col-head">Why Looking for This Service</div>
+        <div class="col-text">Inspection services at refineries are awarded through long-term maintenance agreements and turnaround contracts. Breaking into a new refinery requires an introduction to the operations or maintenance leadership layer, not a cold proposal. A fractional CRO who can make that introduction and position Gulf States for a trial scope on an upcoming turnaround converts years of prospecting into a 6-week sales cycle. Marcus's technical team can deliver; the constraint is the first room entry.</div>
+      </div>
+      <div>
+        <div class="col-head">Connection Note</div>
+        <div class="col-text"><em>"Marcus, with turnaround activity increasing across the Gulf Coast corridor through 2026, I wanted to connect. I have direct relationships with maintenance and operations leadership at several major refinery operators in Louisiana and Texas that run annual turnarounds. Worth a brief conversation on whether there is a fit."</em></div>
+      </div>
+    </div>
+
+    <div class="ci-block">
+      <div class="ci-head">
+        <span class="ci-head-label">Custom Intelligence</span>
+        <span class="ci-head-sub">5 Vibe-native fields · configured for Karl's CRO practice · Illustrative profile</span>
+      </div>
+      <div class="ci-grid">
+        <div class="ci-cell">
+          <div class="ci-cell-label">Leadership Change</div>
+          <div class="ci-cell-val">No senior leadership change. Founder-operated. No VP Sales or CRO function identified in org structure.</div>
+        </div>
+        <div class="ci-cell">
+          <div class="ci-cell-label">Funding Activity</div>
+          <div class="ci-cell-val">No public funding round. Private company. Revenue growth tied to inspection contract renewals and new turnaround scopes.</div>
+        </div>
+        <div class="ci-cell">
+          <div class="ci-cell-label">Department Hiring</div>
+          <div class="ci-cell-val live">Active hiring for NDT inspectors and field technicians in last 90 days. Backlog growth signal. New refinery contract awards driving headcount expansion.</div>
+        </div>
+        <div class="ci-cell">
+          <div class="ci-cell-label">Market Expansion</div>
+          <div class="ci-cell-val live">Baton Rouge HQ with field operations across Gulf Coast. Expansion activity in Texas refinery corridor over last 6 months. Targeting new turnaround clients in 2026.</div>
+        </div>
+        <div class="ci-cell">
+          <div class="ci-cell-label">Tech Stack and Trajectory</div>
+          <div class="ci-cell-val">Inspection reporting software deployed. No CRM. BD is entirely relationship-based and reactive to inbound referrals. No structured new-account acquisition motion.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-footer">
+      <a href="https://www.linkedin.com/search/results/companies/?keywords=gulf+states+inspection+baton+rouge" target="_blank" class="li-btn">Search LinkedIn →</a>
+    </div>
+  </div>
+
+  <!-- ─── LEAD 5 · ILLUSTRATIVE ─── -->
+  <div class="lead-card illustrative">
+    <div class="lead-card-header">
+      <div class="lead-identity">
+        <div class="lead-name">Dave Hartman</div>
+        <div class="lead-title">Chief Executive Officer and Founder</div>
+        <div class="lead-company">
+          Hartman Process Solutions · Houston, TX
+          <span class="tag tag-illus">Illustrative Profile</span>
+        </div>
+      </div>
+      <div class="lead-signals">
+        <span class="tag tag-green">ICP Fit: YES</span>
+        <span class="tag tag-amber">$25M-$75M Revenue</span>
+        <span class="tag tag-teal">51-200 Employees</span>
+        <span class="tag tag-purple">Industrial Maintenance Services</span>
+        <span class="tag tag-purple">Refinery Turnaround Execution</span>
+        <span class="tag tag-grey">Houston · Petrochemical Corridor</span>
+      </div>
+    </div>
+
+    <div class="lead-body">
+      <div>
+        <div class="col-head">Why ICP Fit for Karl</div>
+        <div class="col-text">Hartman Process Solutions provides industrial maintenance, repair, and turnaround execution services to petrochemical facilities and refineries in the Gulf Coast corridor. Dave has an operations background from a major producer before launching his own firm, giving him credibility but a narrow network of producers he can currently reach. No VP of Sales or CRO exists in the org. Karl's existing plant manager and turnaround coordinator relationships at major producers map directly to the decision-makers Hartman needs to reach for new contract awards.
+          <div class="signal-box">
+            <div class="signal-box-label">Strongest Fit Signal</div>
+            <div class="signal-box-text">Houston maintenance firm serving refineries · Former operator founder · Active trade hiring signals spring 2026 turnaround season contract wins · No commercial architecture</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="col-head">Why Looking for This Service</div>
+        <div class="col-text">Maintenance and turnaround services are awarded through long-standing operator relationships and competitive bids. Dave's firm competes on execution quality but inconsistently on commercial access. A fractional CRO with relationships at the procurement and plant manager level at major Gulf Coast producers transforms Hartman from a reactive bid competitor into a preferred-vendor candidate on major scopes. The commercial function does not require a full-time hire at Dave's current revenue scale.</div>
+      </div>
+      <div>
+        <div class="col-head">Connection Note</div>
+        <div class="col-text"><em>"Dave, I spent decades managing turnarounds from the operator side, including cost oversight and contractor selection at several major Gulf Coast facilities. I understand the transition from operator to service firm. Worth a brief conversation on whether there is a commercial angle where I could help accelerate your pipeline."</em></div>
+      </div>
+    </div>
+
+    <div class="ci-block">
+      <div class="ci-head">
+        <span class="ci-head-label">Custom Intelligence</span>
+        <span class="ci-head-sub">5 Vibe-native fields · configured for Karl's CRO practice · Illustrative profile</span>
+      </div>
+      <div class="ci-grid">
+        <div class="ci-cell">
+          <div class="ci-cell-label">Leadership Change</div>
+          <div class="ci-cell-val">No leadership change. CEO is the founder. Operations Director promoted from within. No commercial leadership hire made.</div>
+        </div>
+        <div class="ci-cell">
+          <div class="ci-cell-label">Funding Activity</div>
+          <div class="ci-cell-val">No public funding activity. Owner-operated with project-based working capital. Typical maintenance firm capital structure.</div>
+        </div>
+        <div class="ci-cell">
+          <div class="ci-cell-label">Department Hiring</div>
+          <div class="ci-cell-val live">Active trade and operations hiring in last 90 days. Turnaround crew expansion signals new contract awards and spring 2026 turnaround season preparation activity.</div>
+        </div>
+        <div class="ci-cell">
+          <div class="ci-cell-label">Market Expansion</div>
+          <div class="ci-cell-val">Houston HQ. Gulf Coast operations footprint. No geographic expansion announced. Refinery corridor concentration provides dense and recurring prospect universe.</div>
+        </div>
+        <div class="ci-cell">
+          <div class="ci-cell-label">Tech Stack and Trajectory</div>
+          <div class="ci-cell-val">Project management and field service software deployed. No CRM. BD is entirely relationship-based and bid-reactive. No structured new-account acquisition motion identified.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-footer">
+      <a href="https://www.linkedin.com/search/results/companies/?keywords=hartman+process+solutions+houston" target="_blank" class="li-btn">Search LinkedIn →</a>
+    </div>
+  </div>
+
+  <!-- NURTURE SEQUENCE -->
+  <div class="nurture-wrap">
+    <div class="nurture-label">Connection and Nurture Sequence · Petrochemical Sector Outreach</div>
+    <div class="nurture-grid">
+      <div class="nurture-card">
+        <div class="nurture-day">Day 1</div>
+        <div class="nurture-action">Connection Note Sent</div>
+        <div class="nurture-msg">Send the personalized connection note from the lead card. Reference the specific signal: regulatory window, hiring trend, or sector overlap. No pitch, no attachment, no ask beyond the connection itself.</div>
+      </div>
+      <div class="nurture-card">
+        <div class="nurture-day">Day 7</div>
+        <div class="nurture-action">Value-First Follow-up</div>
+        <div class="nurture-msg">"Saw you are expanding your team in [dept] this quarter. I have seen a pattern with service firms at your revenue stage, where the growth constraints shift from operational capacity to commercial architecture. Happy to share what I have observed in the sector."</div>
+      </div>
+      <div class="nurture-card">
+        <div class="nurture-day">Day 14</div>
+        <div class="nurture-action">Soft Diagnostic Question</div>
+        <div class="nurture-msg">"One question and no pressure either way: is your commercial pipeline built on a structured account plan, or is most of it still running through your existing producer relationships and inbound from word of mouth?"</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA FOOTER -->
+  <div class="cta-footer">
+    <div class="cta-headline">This is 1 of 4 weekly deliveries in the full system.</div>
+    <div class="cta-subhead">Every Monday: 10 ICP-matched leads with Custom Intelligence configured for Karl's petrochemical CRO practice, plus 3 LinkedIn posts in Karl's voice. 30 minutes per week. $697/month, month-to-month, cancel anytime.</div>
+    <a class="cta-btn" href="https://calendly.com/saurabh_zentro/30-min" target="_blank">Book Your 20-Min Fit Call →</a>
+    <div class="cta-note">No pitch. We talk through your specific situation and decide together if this is the right fit.</div>
+  </div>
+
+</div><!-- end pipeline view -->
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- CONTENT ENGINE                            -->
+<!-- ══════════════════════════════════════════ -->
+<div class="view" id="view-content">
+
+  <div class="section-header">
+    <div class="section-tag">Content Engine · Sample Post</div>
+    <h1 class="section-title">Sample Teaching Post · Karl's Voice</h1>
+    <p class="section-subtitle">Written from Karl's 40-year petrochemical sector positioning · Full system delivers 3 posts per week plus Gemini visuals</p>
+  </div>
+
+  <div class="post-card">
+    <div class="post-meta">
+      <div class="post-avatar">KM</div>
+      <div>
+        <div class="post-author">Karl McCormick</div>
+        <div class="post-role">Fractional CRO · Managing Partner, MIR Global</div>
+      </div>
+      <div class="post-format-tag">Teaching Post</div>
+    </div>
+
+    <div class="post-body">Most B2B service companies in the petrochemical sector run business development the same way.
+
+The founder knows the plant managers. The plant managers trust the founder. Calls come in. Proposals go out.
+
+It works. Until it stops working.
+
+The ceiling is predictable. There are only so many operator relationships one person can maintain at once. When those relationships age, change roles, or retire, the pipeline ages with them.
+
+Three things separate the companies that scale through this ceiling from those that plateau at it.
+
+First, they map existing producer relationships to current procurement cycles, not historical contracts. A contact who moved from plant manager to VP of Operations two years ago is worth a different conversation today. Most service companies have not made that call.
+
+Second, they build a commercial playbook that a BD hire can execute independently, not just the founder. The sector knowledge that closes deals stays locked in one person's head because no one has ever structured it into a repeatable motion.
+
+Third, they bring in a fractional CRO who already understands the buyer, the procurement cycle, and the relationship map. Not a generalist sales leader who needs 18 months to learn what a turnaround coordinator actually controls. Someone who knows which plant managers are making scope decisions this quarter.
+
+The relationship is not the strategy.
+
+The relationship is the entry point. The strategy is what turns entry points into a predictable, structured pipeline.
+
+Comment PIPELINE and I will send a diagnostic on whether your commercial model is built to scale beyond the founder.</div>
+
+    <div class="post-cta-line">CTA Keyword: PIPELINE · Triggers: free commercial model diagnostic for petrochemical B2B service and equipment companies</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- GEMINI BRIEF -->
+  <div class="gemini-card">
+    <div class="gemini-label">Gemini Infographic Brief · Post Visual · Paste directly into Gemini</div>
+    <div class="gemini-brief">Single-image LinkedIn post graphic. Landscape format, 1200 x 628px. Light background. Palette A.
+
+Background: Clean white (#FFFFFF) with a subtle warm off-white gradient from left center to right edge.
+
+Left half of canvas (55%): Bold typographic layout. Primary headline in deep navy (#1A1A2E), heavy sans-serif, large point size:
+
+"The Relationship Is Not the Strategy."
+
+Immediately below, in smaller weight, same navy:
+"It is the entry point."
+
+A thick horizontal rule in deep purple (#6A66A3) sits beneath the two-line headline block.
+
+Below the rule, three lines in a tighter weight. Each line preceded by a small filled amber circle (#FF9900) as the bullet point:
+
+Line 1: Map producer relationships to active procurement cycles, not past contracts.
+Line 2: Build a playbook that runs without the founder in the room.
+Line 3: Install a fractional CRO who already knows the buyer.
+
+Right half of canvas (45%): A clean two-column contrast diagram. Subtle light grey panel background to separate it from the left side.
+
+Left column header (Space Mono, uppercase, 11px, grey): RELATIONSHIP-DEPENDENT
+Right column header (Space Mono, uppercase, 11px, deep purple): REVENUE ARCHITECTURE
+
+Three rows beneath the headers, with a thin dividing line between the two columns:
+
+Row 1: "Founder's Rolodex" vs "Mapped Account Plan"
+Row 2: "Word of Mouth" vs "Signal-Triggered Outreach"
+Row 3: "Plateaus at Year 5" vs "Scales Through Year 10"
+
+Left column text is rendered in muted grey (#888888). Right column text is rendered in deep purple (#6A66A3). Each right column row has a small amber dot preceding the text.
+
+A single amber (#FF9900) brushstroke underline appears beneath the word "Strategy" in the main headline. The brushstroke is organic and slightly irregular, not a straight line.
+
+Bottom left corner: "Saurabh M." in Space Mono, 10px, plain text, muted grey.
+
+Do not include any watermarks, logos, brand marks, or signatures of any kind except the text "Saurabh M." in small plain text at the bottom left corner.</div>
+  </div>
+
+  <!-- CTA FOOTER -->
+  <div class="cta-footer">
+    <div class="cta-headline">This is 1 of 3 weekly posts in the full system.</div>
+    <div class="cta-subhead">Every Monday: 3 LinkedIn posts in Karl's voice, calibrated to his petrochemical CRO positioning, plus Gemini visuals where the post format requires them. 30 minutes per week. $697/month, month-to-month, cancel anytime.</div>
+    <a class="cta-btn" href="https://calendly.com/saurabh_zentro/30-min" target="_blank">Book Your 20-Min Fit Call →</a>
+    <div class="cta-note">No pitch. We talk through your specific situation and decide together if this is the right fit.</div>
+  </div>
+
+</div><!-- end content view -->
+</main>
+
+<script>
+function showView(name, btn) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('view-' + name).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>
