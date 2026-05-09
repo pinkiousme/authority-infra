@@ -51,7 +51,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .nav{position:sticky;top:0;z-index:60;backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);background:rgba(6,6,14,.85);border-bottom:1px solid var(--b1);}
 .nav-inner{display:flex;align-items:center;justify-content:space-between;padding:16px 0;}
 .logo{display:flex;align-items:center;gap:10px;font-family:var(--dsp);font-weight:700;font-size:14.5px;color:var(--w1);min-width:0;}
-.logo-icon{width:32px;height:32px;background:var(--or);border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;color:#06060E;flex-shrink:0;box-shadow:0 0 20px rgba(255,153,0,.4);}
+.logo-icon{width:40px;height:40px;background:var(--or);border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;color:#06060E;flex-shrink:0;box-shadow:0 0 20px rgba(255,153,0,.4);}
 .nav-links{display:flex;gap:26px;align-items:center;font-size:13.5px;}
 .nav-links a{color:var(--w6);transition:color .15s;}
 .nav-links a:hover{color:var(--w1);}
@@ -91,7 +91,7 @@ h2.hd em{font-style:italic;color:var(--or);}
 .card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:90px;background:radial-gradient(ellipse at 50% 110%,rgba(255,153,0,.1) 0%,transparent 70%);pointer-events:none;}
 .card-pu::after{background:radial-gradient(ellipse at 50% 110%,rgba(139,92,246,.12) 0%,transparent 70%);}
 
-/* âââ HERO âââ */
+/* --- HERO --- */
 .hero{padding:clamp(60px,10vw,130px) 0 clamp(40px,6vw,80px);position:relative;overflow:hidden;}
 .hero-bg{position:absolute;inset:0;pointer-events:none;z-index:0;}
 .hero-bg-orb{position:absolute;bottom:-20%;left:50%;transform:translateX(-50%);width:1000px;height:460px;border-radius:50%;background:radial-gradient(ellipse at 50% 85%,rgba(255,153,0,.18) 0%,rgba(139,92,246,.06) 40%,transparent 70%);filter:blur(3px);}
@@ -112,7 +112,7 @@ h2.hd em{font-style:italic;color:var(--or);}
 .hero-risk .ck{color:var(--gr);}
 .hero-risk .sp{width:4px;height:4px;border-radius:50%;background:var(--w2);}
 
-/* âââ HERO WIDGET âââ */
+/* --- HERO WIDGET --- */
 .hero-widget{background:var(--s2);border:1px solid var(--b2);border-radius:var(--rl);padding:0;overflow:hidden;box-shadow:0 40px 80px -20px rgba(0,0,0,.8),0 0 0 1px rgba(255,153,0,.08),0 0 60px -20px rgba(255,153,0,.14);animation:float 5s ease-in-out infinite;max-width:100%;}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
 .hw-header{background:var(--s3);padding:14px 18px;border-bottom:1px solid var(--b1);display:flex;align-items:center;justify-content:space-between;}
@@ -142,7 +142,7 @@ h2.hd em{font-style:italic;color:var(--or);}
 .hw-footer-lbl{font-family:var(--dsp);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--w4);}
 .hw-footer-div{width:1px;height:28px;background:var(--b2);}
 
-/* âââ STATS STRIP âââ */
+/* --- STATS STRIP --- */
 .stats-strip{padding:clamp(36px,5vw,60px) 0;}
 .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--b1);border:1px solid var(--b1);border-radius:var(--rl);overflow:hidden;}
 @media(max-width:860px){.stats-grid{grid-template-columns:repeat(2,1fr);}}
@@ -156,7 +156,7 @@ h2.hd em{font-style:italic;color:var(--or);}
 .sc-num em{font-style:normal;color:var(--or);font-size:.45em;font-weight:600;letter-spacing:.03em;}
 .sc-lbl{font-size:12.5px;color:var(--w6);line-height:1.45;font-weight:300;margin-top:4px;}
 
-/* âââ DIAGNOSIS âââ */
+/* --- DIAGNOSIS --- */
 .diag-big{background:var(--s1);border:1px solid var(--b1);border-radius:var(--rl);padding:clamp(28px,4vw,50px);margin-bottom:28px;position:relative;overflow:hidden;}
 .diag-big::before{content:'';position:absolute;left:0;top:24px;bottom:24px;width:3px;background:linear-gradient(180deg,var(--or),transparent);border-radius:0 2px 2px 0;}
 .diag-big::after{content:'';position:absolute;bottom:0;left:0;right:0;height:120px;background:radial-gradient(ellipse at 20% 110%,rgba(255,153,0,.08) 0%,transparent 65%);pointer-events:none;}
@@ -180,7 +180,7 @@ h2.hd em{font-style:italic;color:var(--or);}
 .diag-col.bad .dm{color:var(--rd);}
 .diag-col.good .dm{color:var(--or);}
 
-/* âââ VIDEO âââ */
+/* --- VIDEO --- */
 .video-section{padding:clamp(56px,8vw,110px) 0;position:relative;}
 .video-section::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 900px 400px at 50% 50%,rgba(255,153,0,.05) 0%,transparent 65%);pointer-events:none;}
 .vid-head{max-width:740px;margin:0 auto 40px;text-align:center;}
@@ -197,7 +197,7 @@ h2.hd em{font-style:italic;color:var(--or);}
 .vid-cta{text-align:center;margin-top:40px;display:flex;flex-direction:column;align-items:center;gap:14px;}
 .vid-cta p{color:var(--w8);font-size:15px;max-width:520px;font-weight:300;}
 
-/* âââ ENGINES BENTO âââ */
+/* --- ENGINES BENTO --- */
 .engines-bento{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
 @media(max-width:920px){.engines-bento{grid-template-columns:1fr;}}
 .eng-card{background:var(--s1);border:1px solid var(--b1);border-radius:var(--rl);padding:clamp(26px,3.5vw,40px);position:relative;overflow:hidden;transition:transform .3s,border-color .3s;}
@@ -237,7 +237,7 @@ h2.hd em{font-style:italic;color:var(--or);}
 .engines-payoff h4{font-family:var(--dsp);font-weight:700;font-size:clamp(17px,1.8vw,24px);margin-bottom:10px;letter-spacing:-.02em;font-style:italic;}
 .engines-payoff p{color:var(--w8);max-width:700px;margin:0 auto;font-size:14.5px;line-height:1.65;font-weight:300;}
 
-/* âââ COMPOUND CHART âââ */
+/* --- COMPOUND CHART --- */
 .compound-bento{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:28px;}
 @media(max-width:800px){.compound-bento{grid-template-columns:1fr;}}
 .cb-chart{background:var(--s1);border:1px solid var(--b1);border-radius:var(--rl);padding:28px;position:relative;overflow:hidden;}
@@ -260,7 +260,7 @@ h2.hd em{font-style:italic;color:var(--or);}
 .compound-payoff{text-align:center;font-family:var(--dsp);font-style:italic;font-weight:700;font-size:clamp(16px,1.5vw,21px);color:var(--w1);letter-spacing:-.01em;line-height:1.4;}
 .compound-payoff strong{color:var(--or);font-style:normal;}
 
-/* âââ STEPS âââ */
+/* --- STEPS --- */
 .steps{display:grid;gap:14px;}
 .step{background:var(--s1);border:1px solid var(--b1);border-radius:var(--rl);padding:clamp(24px,3.5vw,42px);display:grid;grid-template-columns:72px 1fr;gap:28px;align-items:start;transition:border-color .3s;position:relative;overflow:hidden;}
 .step:hover{border-color:var(--bx);}
@@ -272,9 +272,9 @@ h2.hd em{font-style:italic;color:var(--or);}
 .step p{color:var(--w8);margin-bottom:18px;line-height:1.68;font-size:14.5px;font-weight:300;}
 .step ul{list-style:none;display:grid;gap:9px;}
 .step li{display:flex;gap:12px;font-size:13.5px;color:var(--w8);line-height:1.55;font-weight:300;}
-.step li::before{content:'â';color:var(--or);flex-shrink:0;font-weight:700;}
+.step li::before{content:"\2713 ";color:var(--or);flex-shrink:0;font-weight:700;}
 
-/* âââ ALTERNATIVES âââ */
+/* --- ALTERNATIVES --- */
 .alt-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:36px;}
 @media(max-width:800px){.alt-grid{grid-template-columns:1fr;}}
 .alt-card{background:var(--s1);border:1px solid var(--b1);border-radius:var(--rl);padding:26px;position:relative;overflow:hidden;}
@@ -283,7 +283,7 @@ h2.hd em{font-style:italic;color:var(--or);}
 .alt-card h4{font-family:var(--dsp);font-weight:700;font-size:19px;margin-bottom:10px;letter-spacing:-.02em;line-height:1.2;}
 .alt-card p{font-size:13.5px;color:var(--w8);line-height:1.65;font-weight:300;}
 
-/* âââ COMPARE âââ */
+/* --- COMPARE --- */
 .compare-wrap{overflow:hidden;border-radius:var(--rl);border:1px solid var(--b1);}
 .compare{width:100%;border-collapse:collapse;background:var(--s1);font-size:13.5px;}
 .compare th,.compare td{padding:17px 20px;text-align:left;border-bottom:1px solid var(--b1);vertical-align:top;}
@@ -303,7 +303,7 @@ h2.hd em{font-style:italic;color:var(--or);}
 .cmp-card dd{font-size:13px;color:var(--w8);font-weight:300;}
 .cmp-card.win dd{color:var(--w1);}
 
-/* âââ DELIVERABLES BENTO âââ */
+/* --- DELIVERABLES BENTO --- */
 .deliv-top{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--b1);border:1px solid var(--b1);border-radius:var(--rl);margin-bottom:16px;overflow:hidden;}
 @media(max-width:760px){.deliv-top{grid-template-columns:repeat(2,1fr);}
 .deliv-top .ds:nth-child(2){border-right:none;}
@@ -335,7 +335,7 @@ h2.hd em{font-style:italic;color:var(--or);}
 .dtag{display:inline-block;margin-top:14px;font-family:var(--dsp);font-size:9.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--or);padding:5px 10px;border:1px solid var(--bx);border-radius:999px;}
 .dc.dfy .dtag{color:rgba(160,150,255,.9);border-color:var(--pub);}
 
-/* âââ RHYTHM âââ */
+/* --- RHYTHM --- */
 .rhythm{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
 @media(max-width:920px){.rhythm{grid-template-columns:repeat(2,1fr);}}
 @media(max-width:500px){.rhythm{grid-template-columns:1fr;}}
@@ -346,7 +346,7 @@ h2.hd em{font-style:italic;color:var(--or);}
 .rc h5{font-family:var(--dsp);font-weight:700;font-size:15.5px;margin-bottom:9px;letter-spacing:-.015em;line-height:1.25;}
 .rc p{font-size:13px;color:var(--w6);line-height:1.6;font-weight:300;}
 
-/* âââ FIT GRID âââ */
+/* --- FIT GRID --- */
 .fit-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
 @media(max-width:800px){.fit-grid{grid-template-columns:1fr;}}
 .fit-col{background:var(--s1);border:1px solid var(--b1);border-radius:var(--rl);padding:32px;position:relative;overflow:hidden;}
@@ -358,10 +358,10 @@ h2.hd em{font-style:italic;color:var(--or);}
 .fit-col ul{list-style:none;display:grid;gap:0;}
 .fit-col li{display:flex;gap:12px;font-size:13.5px;color:var(--w8);padding:13px 0;border-top:1px solid var(--b1);line-height:1.58;font-weight:300;}
 .fit-col li:first-child{border-top:none;padding-top:4px;}
-.fit-col.yes li::before{content:'â';color:var(--or);flex-shrink:0;font-weight:700;}
-.fit-col.no li::before{content:'Ã';color:var(--w4);flex-shrink:0;font-weight:700;}
+.fit-col.yes li::before{content:"\2713 ";color:var(--or);flex-shrink:0;font-weight:700;}
+.fit-col.no li::before{content:"\2717 ";color:var(--w4);flex-shrink:0;font-weight:700;}
 
-/* âââ TRUST âââ */
+/* --- TRUST --- */
 .trust{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:44px;}
 @media(max-width:800px){.trust{grid-template-columns:1fr;}}
 .tc{background:var(--s1);border:1px solid var(--b1);border-radius:var(--rl);padding:30px;transition:transform .3s,border-color .3s;position:relative;overflow:hidden;}
@@ -377,7 +377,7 @@ h2.hd em{font-style:italic;color:var(--or);}
 .guarantee h3 em{font-style:italic;color:var(--gr);}
 .guarantee p{color:var(--w8);max-width:620px;margin:0 auto;font-size:14.5px;line-height:1.65;font-weight:300;}
 
-/* âââ FAQ âââ */
+/* --- FAQ --- */
 .faq{display:grid;gap:8px;max-width:840px;margin:0 auto;}
 .faq details{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r);overflow:hidden;transition:border-color .25s;}
 .faq details[open]{border-color:var(--bx);}
@@ -391,7 +391,7 @@ h2.hd em{font-style:italic;color:var(--or);}
 .faq-body strong{color:var(--w1);font-weight:600;}
 .faq-body em{color:var(--or);font-style:italic;}
 
-/* âââ FINAL CTA âââ */
+/* --- FINAL CTA --- */
 .final{background:var(--s1);border:1px solid var(--b2);border-radius:var(--rl);padding:clamp(48px,7vw,96px) clamp(24px,5vw,72px);text-align:center;position:relative;overflow:hidden;}
 .final::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:55%;height:1px;background:linear-gradient(90deg,transparent,var(--or),transparent);}
 .final::after{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:700px;height:380px;border-radius:50%;background:radial-gradient(ellipse at 50% 0%,rgba(255,153,0,.1) 0%,transparent 60%);pointer-events:none;}
@@ -404,7 +404,7 @@ h2.hd em{font-style:italic;color:var(--or);}
 .final-risk .ck{color:var(--gr);}
 .final-risk .sp{width:4px;height:4px;border-radius:50%;background:var(--w2);}
 
-/* âââ OPERATOR SECTION âââ */
+/* --- OPERATOR SECTION --- */
 .operator-section{padding:clamp(72px,9vw,120px) 0;position:relative;}
 .operator-inner{display:grid;grid-template-columns:420px 1fr;gap:64px;align-items:center;}
 @media(max-width:1020px){.operator-inner{grid-template-columns:360px 1fr;gap:44px;}}
@@ -440,14 +440,14 @@ h2.hd em{font-style:italic;color:var(--or);}
 .operator-quote p{font-family:var(--dsp);font-style:italic;font-size:clamp(14px,1.1vw,16px);color:var(--w8);line-height:1.65;font-weight:400;}
 .operator-quote p strong{color:var(--or);font-style:normal;font-weight:700;}
 
-/* âââ FOOTER âââ */
+/* --- FOOTER --- */
 .footer{border-top:1px solid var(--b1);padding:36px 0 28px;margin-top:48px;font-size:12.5px;color:var(--w6);}
 .footer-inner{display:flex;flex-wrap:wrap;gap:20px;justify-content:space-between;align-items:center;}
 .footer-links{display:flex;flex-wrap:wrap;gap:20px;}
 .footer-links a{color:var(--w6);transition:color .15s;}
 .footer-links a:hover{color:var(--or);}
 
-/* âââ COMPREHENSIVE MOBILE FIXES âââ */
+/* --- COMPREHENSIVE MOBILE FIXES --- */
 @media(max-width:768px){
   /* Nav */
   .nav-links a:not(.nav-cta){display:none;}
@@ -469,7 +469,7 @@ h2.hd em{font-style:italic;color:var(--or);}
   /* Engines bento */
   .engines-bento{grid-template-columns:1fr;}
 
-  /* Compare table â hide on mobile, show cards */
+  /* Compare table - hide on mobile, show cards */
   .compare-wrap .compare{display:none;}
   .cmp-mob{display:grid;gap:12px;}
 
@@ -528,18 +528,18 @@ h2.hd em{font-style:italic;color:var(--or);}
   .operator-photo-frame{aspect-ratio:4/3;}
 }
 
-/* âââ MOBILE CTA âââ */
+/* --- MOBILE CTA --- */
 .mob-cta{position:fixed;bottom:0;left:0;right:0;z-index:70;display:none;padding:10px clamp(14px,4vw,22px) calc(10px + env(safe-area-inset-bottom));background:rgba(6,6,14,.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--b2);}
 .mob-cta a{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:15px 18px;background:var(--or);color:#06060E;font-family:var(--dsp);font-weight:700;font-size:15px;border-radius:10px;}
 .mob-cta a:active{background:var(--or2);transform:scale(.99);}
 @media(max-width:768px){.mob-cta{display:block;}body{padding-bottom:74px;}}
 
-/* âââ SCROLL REVEAL âââ */
+/* --- SCROLL REVEAL --- */
 @media(prefers-reduced-motion:no-preference){
   .fi{opacity:0;transform:translateY(20px);transition:opacity .7s cubic-bezier(.2,0,.2,1),transform .7s cubic-bezier(.2,0,.2,1);}
   .fi.vis{opacity:1;transform:translateY(0);}
 }
-/* âââ GLOW CARDS (reference pattern) âââ */
+/* --- GLOW CARDS (reference pattern) --- */
 .glow-cards-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
 @media(max-width:900px){.glow-cards-grid{grid-template-columns:repeat(2,1fr);}}
 @media(max-width:560px){.glow-cards-grid{grid-template-columns:1fr;}}
@@ -567,7 +567,7 @@ h2.hd em{font-style:italic;color:var(--or);}
 .gc-title{font-family:var(--dsp);font-weight:700;font-size:clamp(16px,1.4vw,19px);letter-spacing:-.02em;margin-bottom:9px;line-height:1.2;color:var(--w1);}
 .gc-desc{font-size:13.5px;color:var(--w8);line-height:1.62;font-weight:300;flex:1;}
 
-/* âââ DIAG SECTION LABELS âââ */
+/* --- DIAG SECTION LABELS --- */
 .diag-section-label{font-family:var(--dsp);font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;margin-bottom:18px;display:flex;align-items:center;gap:10px;}
 .diag-section-label.bad{color:rgba(248,113,113,.9);}
 .diag-section-label.good{color:var(--or);}
@@ -575,7 +575,7 @@ h2.hd em{font-style:italic;color:var(--or);}
 .diag-section-label.bad::before{background:rgba(248,113,113,.5);}
 .diag-section-label.good::before{background:rgba(255,153,0,.5);}
 
-/* âââ SETUP TIMELINE âââ */
+/* --- SETUP TIMELINE --- */
 .steps-timeline{display:flex;flex-direction:column;gap:0;position:relative;}
 .steps-timeline::before{content:'';position:absolute;left:35px;top:56px;bottom:56px;width:2px;background:linear-gradient(180deg,var(--or) 0%,rgba(255,153,0,.3) 60%,transparent 100%);z-index:0;}
 @media(max-width:760px){.steps-timeline::before{display:none;}}
@@ -590,7 +590,7 @@ h2.hd em{font-style:italic;color:var(--or);}
 .step-tl p{color:var(--w8);font-size:14px;line-height:1.7;margin-bottom:16px;font-weight:300;}
 .step-tl ul{list-style:none;display:grid;gap:7px;}
 .step-tl li{display:flex;gap:11px;font-size:13px;color:var(--w8);line-height:1.5;font-weight:300;}
-.step-tl li::before{content:'â';color:var(--or);flex-shrink:0;font-weight:700;}
+.step-tl li::before{content:"\2713 ";color:var(--or);flex-shrink:0;font-weight:700;}
 /* staggered slide-in for steps */
 .step-tl.fi{opacity:0;transform:translateX(-24px);transition:opacity .7s cubic-bezier(.2,0,.2,1),transform .7s cubic-bezier(.2,0,.2,1);}
 .step-tl.fi.vis{opacity:1;transform:translateX(0);}
@@ -598,7 +598,7 @@ h2.hd em{font-style:italic;color:var(--or);}
 .step-tl.fi:nth-child(2){transition-delay:.18s;}
 .step-tl.fi:nth-child(3){transition-delay:.31s;}
 
-/* âââ HERO WIDGETS COLUMN âââ */
+/* --- HERO WIDGETS COLUMN --- */
 .hero-widgets-col{display:flex;flex-direction:column;gap:14px;}
 /* content widget */
 .cw{background:var(--s2);border:1px solid var(--b2);border-radius:var(--rl);overflow:hidden;box-shadow:0 24px 60px -16px rgba(0,0,0,.7),0 0 0 1px rgba(139,92,246,.08),0 0 40px -16px rgba(139,92,246,.14);animation:float2 5.5s ease-in-out infinite;}
@@ -641,7 +641,7 @@ h2.hd em{font-style:italic;color:var(--or);}
 .compare tbody tr:hover{background:rgba(255,255,255,.03);}
 .compare tbody td:first-child{color:var(--w4);font-family:var(--dsp);font-size:10px;text-transform:uppercase;letter-spacing:.1em;white-space:nowrap;font-weight:700;}
 .compare tbody td.win{color:var(--w1);background:rgba(255,153,0,.05);font-weight:500;}
-.compare tbody td.win::before{content:'â ';color:var(--or);font-weight:700;}
+.compare tbody td.win::before{content:"\2713 ";color:var(--or);font-weight:700;}
 .compare tbody tr:last-child td{border-bottom:none;}
 /* animated row reveal */
 .compare tbody tr.fi{opacity:0;transform:translateX(-10px);transition:opacity .5s,transform .5s;}
@@ -749,14 +749,14 @@ h2.hd em{font-style:italic;color:var(--or);}
   .nav-inner{padding:13px 0;gap:10px;flex-wrap:nowrap;}
   .logo{font-size:14px;gap:7px;min-width:0;flex:0 1 auto;}
   .logo-icon{width:30px !important;height:30px !important;flex-shrink:0;}
-  .logo svg{width:30px !important;height:30px !important;}
+  .logo svg{width:30px !important;height:30px !important;display:block;}
   .nav-cta{padding:8px 12px;font-size:11.5px;white-space:nowrap;flex-shrink:0;}
 }
 @media(max-width:380px){
   .nav-inner{gap:8px;}
   .logo{font-size:13px;gap:6px;}
   .logo-icon{width:28px !important;height:28px !important;}
-  .logo svg{width:28px !important;height:28px !important;}
+  .logo svg{width:28px !important;height:28px !important;display:block;}
   .nav-cta{padding:7px 10px;font-size:11px;}
 }
 </style>
@@ -767,8 +767,8 @@ h2.hd em{font-style:italic;color:var(--or);}
 <nav class="nav">
   <div class="container nav-inner">
     <a href="#" class="logo">
-      <span class="logo-icon" style="background:transparent;padding:0;width:40px;height:40px;">
-        <svg width="40" height="40" viewBox="0 0 52 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <span class="logo-icon" style="background:transparent;padding:0;">
+        <svg viewBox="0 0 52 32" fill="none" xmlns="http://www.w3.org/2000/svg">
           <circle cx="7" cy="16" r="6" fill="#6A66A3"/>
           <circle cx="7" cy="16" r="3" fill="#fff" opacity="0.25"/>
           <line x1="13" y1="16" x2="20" y2="16" stroke="#6A66A3" stroke-width="2.5" stroke-linecap="round"/>
@@ -837,7 +837,7 @@ h2.hd em{font-style:italic;color:var(--or);}
           <div class="hw-live"><span class="hw-live-dot"></span>Live Signals</div>
         </div>
         <div class="hw-body">
-          <div class="hw-week">This Week's Delivery â 10 Profiles</div>
+          <div class="hw-week">This Week's Delivery - 10 Profiles</div>
           <div class="hw-profiles">
             <div class="hw-profile">
               <div class="hw-avatar" style="background:linear-gradient(135deg,#FF9900,#FFB340)">AK</div>
@@ -864,7 +864,7 @@ h2.hd em{font-style:italic;color:var(--or);}
               <span class="hw-signal sig-exp">Expansion</span>
             </div>
           </div>
-          <div class="hw-chart-label">Signal Strength â Monthly Buyers Added</div>
+          <div class="hw-chart-label">Signal Strength - Monthly Buyers Added</div>
           <div class="hw-bars" id="heroBars">
             <div class="hw-bar" style="height:35%;background:rgba(255,153,0,.35);"></div>
             <div class="hw-bar" style="height:55%;background:rgba(255,153,0,.5);"></div>
@@ -907,16 +907,16 @@ h2.hd em{font-style:italic;color:var(--or);}
           <span class="cw-badge">18 pieces / mo</span>
         </div>
         <div class="cw-body">
-          <div class="cw-section-lbl">Content Mix â This Month</div>
+          <div class="cw-section-lbl">Content Mix - This Month</div>
           <div class="cw-types">
             <div class="cw-type">
               <div class="cw-type-dot" style="background:#8B5CF6;box-shadow:0 0 6px rgba(139,92,246,.6);"></div>
-              <div class="cw-type-info"><div class="cw-type-name">LinkedIn Posts</div><div class="cw-type-count">Teaching Â· Opinion Â· Story</div></div>
+              <div class="cw-type-info"><div class="cw-type-name">LinkedIn Posts</div><div class="cw-type-count">Teaching  ·  Opinion  ·  Story</div></div>
               <div class="cw-type-num" style="color:#8B5CF6;">12</div>
             </div>
             <div class="cw-type">
               <div class="cw-type-dot" style="background:#06B6D4;box-shadow:0 0 6px rgba(6,182,212,.6);"></div>
-              <div class="cw-type-info"><div class="cw-type-name">Long-form Articles</div><div class="cw-type-count">Authority Â· Niche anchors</div></div>
+              <div class="cw-type-info"><div class="cw-type-name">Long-form Articles</div><div class="cw-type-count">Authority  ·  Niche anchors</div></div>
               <div class="cw-type-num" style="color:#06B6D4;">2</div>
             </div>
             <div class="cw-type">
@@ -1026,7 +1026,7 @@ h2.hd em{font-style:italic;color:var(--or);}
       <p><strong>This is not a content problem. It is a pipeline problem.</strong></p>
     </div>
     <!-- PROBLEM CARDS -->
-    <div class="diag-section-label bad fi">â &nbsp;What is happening now</div>
+    <div class="diag-section-label bad fi">- &nbsp;What is happening now</div>
     <div class="glow-cards-grid fi" style="margin-bottom:32px;">
       <div class="glow-card gc-red">
         <div class="gc-icon red">
@@ -1052,7 +1052,7 @@ h2.hd em{font-style:italic;color:var(--or);}
     </div>
 
     <!-- SOLUTION CARDS -->
-    <div class="diag-section-label good fi">â &nbsp;What this fixes</div>
+    <div class="diag-section-label good fi">- &nbsp;What this fixes</div>
     <div class="glow-cards-grid fi">
       <div class="glow-card gc-or">
         <div class="gc-icon or">
@@ -1066,14 +1066,14 @@ h2.hd em{font-style:italic;color:var(--or);}
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(255,153,0,.9)" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
         </div>
         <div class="gc-title">18 pieces of content in your voice</div>
-        <div class="gc-desc">Posts, articles, infographics, carousels â with finished visuals where needed. Reaches the exact buyers just added to your network.</div>
+        <div class="gc-desc">Posts, articles, infographics, carousels - with finished visuals where needed. Reaches the exact buyers just added to your network.</div>
       </div>
       <div class="glow-card gc-or">
         <div class="gc-icon or">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(255,153,0,.9)" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
         </div>
         <div class="gc-title">Delivered every Monday, guaranteed</div>
-        <div class="gc-desc">Direct operator access. No account managers. No automation. Lands in your inbox at 9 AM your local time â or that week is free.</div>
+        <div class="gc-desc">Direct operator access. No account managers. No automation. Lands in your inbox at 9 AM your local time - or that week is free.</div>
       </div>
     </div>
   </div>
@@ -1154,7 +1154,7 @@ h2.hd em{font-style:italic;color:var(--or);}
     </div>
     <div class="engines-payoff fi">
       <h4>Pipeline conversations. The only output that matters.</h4>
-      <p>When researched buyers â people already in a situation where they need a fractional CFO or COO â receive your thinking consistently, inbound discovery calls start. Not cold outreach. Not a pitch. A warm conversation that begins because the data found them and your content did the rest.</p>
+      <p>When researched buyers - people already in a situation where they need a fractional CFO or COO - receive your thinking consistently, inbound discovery calls start. Not cold outreach. Not a pitch. A warm conversation that begins because the data found them and your content did the rest.</p>
     </div>
   </div>
 </section>
@@ -1415,7 +1415,7 @@ h2.hd em{font-style:italic;color:var(--or);}
     </div>
     <div class="fit-grid fi">
       <div class="fit-col yes">
-        <div class="fit-head">â Right Fit</div>
+        <div class="fit-head">- Right Fit</div>
         <ul>
           <li>Fractional CFO or fractional COO with 2 to 6 years of independent practice</li>
           <li>Currently serving 2 to 5 active clients, billing $5K to $15K per month per engagement</li>
@@ -1451,7 +1451,7 @@ h2.hd em{font-style:italic;color:var(--or);}
       <div class="operator-photo-wrap fi">
         <div class="operator-glow"></div>
         <div class="operator-photo-frame">
-          <img src="assets/saurabh-library.png" alt="Saurabh M. Â· Founder, Pipelind"/>
+          <img src="assets/saurabh-library.png" alt="Saurabh M.  ·  Founder, Pipelind"/>
         </div>
         <div class="operator-photo-badge">
           <div class="operator-badge-avatar">
@@ -1545,13 +1545,13 @@ h2.hd em{font-style:italic;color:var(--or);}
       <details><summary>Why is the price what it is, and will it change?</summary><div class="faq-body"><p>The current rate is set during the case-study phase. Once three public case studies are live, the rate moves up to <em>$1,497/month</em> for new clients. Existing clients stay locked at $697/month for as long as they remain in the engagement. That is a written commitment in the Letter of Agreement.</p></div></details>
       <details><summary>Can I cancel anytime?</summary><div class="faq-body"><p><strong>Yes. Cancel anytime.</strong> No notice period. No exit fees. No clawbacks. The Letter of Agreement spells out scope, deliverables, response times, and IP ownership. Everything generated during your engagement stays yours.</p><p>If you cancel mid-month, the current month&rsquo;s deliveries are completed. The next month&rsquo;s subscription does not charge.</p></div></details>
       <details><summary>What is an active hiring or funding signal, and how does it find my ICP?</summary><div class="faq-body"><p>A signal is a verifiable company event indicating a founder or CEO is currently in a situation where they are likely to need a fractional CFO or COO. Examples: a Series A or B funding round in the last 90 days, a finance-team leadership change, a finance hiring trend, a multi-jurisdiction expansion. These are live, verifiable events pulled from real company-event data.</p></div></details>
-      <details><summary>Can the deliverables be customised to my practice?</summary><div class="faq-body"><p><strong>Yes. At no extra cost.</strong> If your practice would benefit from a different mix â more long-form articles, more carousels, fewer posts, more profiles per week instead of more content â the deliverables flex to fit you. Voice recalibration as your positioning evolves is also included at no extra cost.</p></div></details>
+      <details><summary>Can the deliverables be customised to my practice?</summary><div class="faq-body"><p><strong>Yes. At no extra cost.</strong> If your practice would benefit from a different mix - more long-form articles, more carousels, fewer posts, more profiles per week instead of more content - the deliverables flex to fit you. Voice recalibration as your positioning evolves is also included at no extra cost.</p></div></details>
       <details><summary>How is this different from a LinkedIn ghostwriter or a growth agency?</summary><div class="faq-body"><p>A ghostwriter writes posts. The audience problem stays untouched. A LinkedIn growth agency does either content OR cold outreach, runs your account through an account manager, often uses automation that puts your LinkedIn account at risk, and locks you into 6 to 12-month contracts at $1,500 to $7,000 per month.</p><p>This service delivers both content and pipeline intelligence, configured specifically for the fractional CFO/COO niche, with five Custom Intelligence fields per profile, direct operator access, no automation, and cancel-anytime terms.</p></div></details>
       <details><summary>What if the posts do not sound like me?</summary><div class="faq-body"><p>The 90-minute onboarding session captures how you think, not just what you think. Posts go through your review every week before scheduling. If after the first month the voice match is not where you want it, we recalibrate at no cost.</p></div></details>
       <details><summary>Do you log into my LinkedIn account or use automation?</summary><div class="faq-body"><p>No. Never. You schedule posts using LinkedIn&rsquo;s native scheduler from your own account. You send connection requests from your own account. No credentials change hands. No automation tools. No browser extensions. Nothing that could put your LinkedIn account at risk.</p></div></details>
       <details><summary>How much time does this actually take from me each week?</summary><div class="faq-body"><p>Roughly 30 minutes per week: about 20 minutes on Sunday to schedule posts, and about 10 minutes on Monday to send the 10 personalised connection requests. Onboarding adds one 90-minute session in week zero. After that, weekly cadence stabilises at 30 minutes.</p></div></details>
       <details><summary>Is there a guarantee?</summary><div class="faq-body"><p>Yes, on delivery. <strong>The Monday Delivery Guarantee:</strong> the package lands in your inbox by 9 AM your local time every Monday, or that week is free. There is no guarantee on outcomes. Anyone who guarantees you a specific number of clients on LinkedIn is selling you something they cannot deliver.</p></div></details>
-      <details><summary>What does &ldquo;direct operator access&rdquo; actually mean?</summary><div class="faq-body"><p>You email me, Saurabh, directly at <strong>saurabh@pipelind.com</strong>. Not a project manager. Not an account team. Every client gets the same operator â the person who built the system and runs it every week. Response time is within 24 hours, Monday through Friday.</p></div></details>
+      <details><summary>What does &ldquo;direct operator access&rdquo; actually mean?</summary><div class="faq-body"><p>You email me, Saurabh, directly at <strong>saurabh@pipelind.com</strong>. Not a project manager. Not an account team. Every client gets the same operator - the person who built the system and runs it every week. Response time is within 24 hours, Monday through Friday.</p></div></details>
       <details><summary>Why fractional CFOs and COOs specifically?</summary><div class="faq-body"><p>The signal data, buyer language, and methodology framing are all configured around how founders and CEOs hire fractional finance and operations leaders. The ICP filters, Custom Intelligence fields, content pillars, and DM scripts are all built for this niche.</p></div></details>
     </div>
   </div>
@@ -1607,7 +1607,7 @@ h2.hd em{font-style:italic;color:var(--or);}
 </div>
 
 <script>
-// ââ SCROLL REVEAL ââ
+// -- SCROLL REVEAL --
 (function(){
   if(!('IntersectionObserver' in window)){
     document.querySelectorAll('.fi').forEach(el=>el.classList.add('vis'));
@@ -1621,7 +1621,7 @@ h2.hd em{font-style:italic;color:var(--or);}
   document.querySelectorAll('.fi').forEach(el=>io.observe(el));
 })();
 
-// ââ COUNTER ANIMATION ââ
+// -- COUNTER ANIMATION --
 function animateCounter(el){
   const target=+el.dataset.counter;
   const suffix=el.dataset.suffix||'';
@@ -1635,7 +1635,7 @@ function animateCounter(el){
   requestAnimationFrame(step);
 }
 
-// ââ BAR CHART ANIMATIONS ââ
+// -- BAR CHART ANIMATIONS --
 function animateBars(container,attr){
   container.querySelectorAll('['+attr+']').forEach((bar,i)=>{
     setTimeout(()=>{
@@ -1668,7 +1668,7 @@ function animateCmBars(){
   });
 }
 
-// ââ INTERSECTION OBSERVERS FOR ANIMATIONS ââ
+// -- INTERSECTION OBSERVERS FOR ANIMATIONS --
 const animIO=new IntersectionObserver((entries)=>{
   entries.forEach(e=>{
     if(!e.isIntersecting)return;
