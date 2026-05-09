@@ -50,7 +50,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 /* NAV */
 .nav{position:sticky;top:0;z-index:60;backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);background:rgba(6,6,14,.85);border-bottom:1px solid var(--b1);}
 .nav-inner{display:flex;align-items:center;justify-content:space-between;padding:16px 0;}
-.logo{display:flex;align-items:center;gap:10px;font-family:var(--dsp);font-weight:700;font-size:14.5px;}
+.logo{display:flex;align-items:center;gap:10px;font-family:var(--dsp);font-weight:700;font-size:14.5px;color:var(--w1);min-width:0;}
 .logo-icon{width:32px;height:32px;background:var(--or);border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;color:#06060E;flex-shrink:0;box-shadow:0 0 20px rgba(255,153,0,.4);}
 .nav-links{display:flex;gap:26px;align-items:center;font-size:13.5px;}
 .nav-links a{color:var(--w6);transition:color .15s;}
@@ -432,7 +432,7 @@ h2.hd em{font-style:italic;color:var(--or);}
 .os-lbl{font-family:var(--dsp);font-size:9.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--w6);line-height:1.4;}
 .operator-creds{display:flex;flex-direction:column;gap:14px;margin-bottom:28px;}
 .oc-row{display:block;font-size:13.5px;color:var(--w8);line-height:1.7;font-weight:300;padding-left:22px;position:relative;margin-bottom:0;}
-.oc-row::before{content:"\2192";color:var(--or);font-weight:700;position:absolute;left:0;top:0;}
+.oc-row::before{content:"";position:absolute;left:0;top:8px;width:3px;height:14px;background:var(--or);border-radius:2px;}
 .oc-row a{color:var(--or);text-decoration:none;white-space:nowrap;}
 .oc-row a:hover{text-decoration:underline;}
 .operator-quote{background:var(--s1);border:1px solid var(--bx);border-radius:14px;padding:20px 22px;position:relative;overflow:hidden;}
@@ -690,37 +690,74 @@ h2.hd em{font-style:italic;color:var(--or);}
 }
 /* FIX: Hero widgets - show on mobile, stack below hero text, responsive */
 @media(max-width:860px){
-  .hero-inner{grid-template-columns:1fr !important;gap:36px;}
-  .hero-widgets-col{display:flex !important;flex-direction:column;gap:14px;max-width:480px;margin:0 auto;width:100%;}
-  .hero-widget,.cw{animation:none;}
-  .hw-profile{padding:9px 11px;}
+  .hero-inner{grid-template-columns:1fr !important;gap:32px;}
+  .hero-widgets-col{display:flex !important;flex-direction:column;gap:14px;max-width:460px;margin:0 auto;width:100%;}
+  .hero-widget,.cw{animation:none !important;transform:none !important;}
+  .hw-header,.cw-header{padding:11px 14px;}
+  .hw-title,.cw-title{font-size:12.5px;}
+  .hw-live{font-size:9.5px;}
+  .hw-body{padding:12px 14px;}
+  .hw-week{font-size:10px;margin-bottom:9px;}
+  .hw-profiles{gap:7px;}
+  .hw-profile{padding:8px 10px;gap:9px;}
+  .hw-avatar{width:30px;height:30px;font-size:11px;flex-shrink:0;}
   .hw-name{font-size:11.5px;}
-  .hw-company{font-size:10.5px;}
-  .hw-signal{font-size:9.5px;padding:2px 7px;}
-  .hw-bars{height:44px;}
-  .hw-footer-num{font-size:14px;}
-  .cw-types{grid-template-columns:1fr 1fr;gap:6px;}
-  .cw-type{padding:8px 10px;}
+  .hw-company{font-size:10px;}
+  .hw-chart-label{font-size:10px;margin:14px 0 7px;}
+  .hw-bars{height:48px;gap:5px;}
+  .hw-bars-labels{font-size:9px;}
+  .hw-footer{padding:10px 14px;gap:10px;}
+  .hw-footer-num{font-size:15px;}
+  .hw-footer-lbl{font-size:8.5px;}
+  .cw-body{padding:12px 14px;}
+  .cw-section-lbl{font-size:9.5px;margin-bottom:8px;}
+  .cw-types{grid-template-columns:1fr 1fr;gap:7px;}
+  .cw-type{padding:8px 10px;gap:8px;}
   .cw-type-name{font-size:10.5px;}
-  .cw-type-count{font-size:9.5px;}
-  .cw-sched-title{font-size:11px;}
+  .cw-type-count{font-size:9px;}
+  .cw-type-num{font-size:13px;}
+  .cw-schedule{padding:11px 14px;}
+  .cw-sched-title{font-size:10.5px;}
+  .cw-cal-day{font-size:9.5px;}
+  .cw-cal-lbl{font-size:8.5px;}
+  .cw-badge{font-size:9px;padding:3px 7px;}
 }
 @media(max-width:480px){
-  .hero-widgets-col{max-width:100%;}
-  .cw-types{grid-template-columns:1fr;}
+  .hero-widgets-col{max-width:100%;gap:12px;}
+  .hw-header,.cw-header{padding:10px 12px;}
+  .hw-body,.cw-body{padding:11px 12px;}
+  .hw-profile{padding:7px 9px;gap:8px;}
+  .hw-avatar{width:28px;height:28px;font-size:10.5px;}
+  .hw-name{font-size:11px;}
+  .hw-company{font-size:9.5px;}
+  .hw-bars{height:42px;}
+  .hw-footer{padding:9px 12px;}
+  .hw-footer-num{font-size:14px;}
+  .cw-types{grid-template-columns:1fr 1fr;gap:6px;}
+  .cw-type{padding:7px 9px;}
+  .cw-schedule{padding:10px 12px;}
+}
+@media(max-width:380px){
+  .hero-widgets-col{gap:11px;}
+  .hw-week{font-size:9.5px;}
+  .hw-name{font-size:10.5px;}
+  .hw-company{font-size:9px;}
 }
 
 /* FIX: Logo sizing on mobile so it doesn't cut */
 @media(max-width:480px){
-  .nav-inner{padding:14px 0;gap:8px;}
-  .logo{font-size:13px;gap:8px;}
-  .logo-icon{width:34px !important;height:34px !important;}
-  .logo svg{width:34px !important;height:34px !important;}
-  .nav-cta{padding:8px 14px;font-size:12px;}
+  .nav-inner{padding:13px 0;gap:10px;flex-wrap:nowrap;}
+  .logo{font-size:14px;gap:7px;min-width:0;flex:0 1 auto;}
+  .logo-icon{width:30px !important;height:30px !important;flex-shrink:0;}
+  .logo svg{width:30px !important;height:30px !important;}
+  .nav-cta{padding:8px 12px;font-size:11.5px;white-space:nowrap;flex-shrink:0;}
 }
 @media(max-width:380px){
-  .logo{font-size:12.5px;}
-  .nav-cta{padding:7px 11px;font-size:11.5px;}
+  .nav-inner{gap:8px;}
+  .logo{font-size:13px;gap:6px;}
+  .logo-icon{width:28px !important;height:28px !important;}
+  .logo svg{width:28px !important;height:28px !important;}
+  .nav-cta{padding:7px 10px;font-size:11px;}
 }
 </style>
 </head>
@@ -767,7 +804,7 @@ h2.hd em{font-style:italic;color:var(--or);}
     <div class="hero-inner">
       <div>
         <div class="hero-tag">
-          <span class="badge badge-or"><span class="badge-dot"></span>For Fractional CFOs &middot; COOs &middot; US, CA, UK, AU, NZ, IE, SG</span>
+          <span class="badge badge-or"><span class="badge-dot"></span>For Fractional CFOs &middot; COOs</span>
         </div>
         <h1>40 signal-flagged buyers. 18 pieces of content. <em>Delivered to your inbox every Monday.</em></h1>
         <p class="hero-sub">A fully managed pipeline + content service for fractional CFOs and COOs. We find the founders showing active hiring and funding signals, research them, and deliver the package every Monday at 9 AM. <strong>Your time: 30 minutes a week.</strong></p>
