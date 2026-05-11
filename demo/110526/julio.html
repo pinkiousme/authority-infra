@@ -1,0 +1,1399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Julio Alarcon · Lead Demo | Pipelind</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:           #0A0A12;
+  --bg2:          #12121E;
+  --bg3:          #0E0E19;
+  --primary:      #6A66A3;
+  --primary-light:#9B98C4;
+  --accent:       #FF9900;
+  --success:      #019047;
+  --success-light:#5AC88A;
+  --text:         rgba(255,255,255,0.90);
+  --text-dim:     rgba(255,255,255,0.72);
+  --text-muted:   rgba(255,255,255,0.55);
+  --border:       rgba(106,102,163,0.25);
+  --border-hover: rgba(106,102,163,0.55);
+  --hot:          #FF4444;
+  --warm:         #FF9900;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif; min-height: 100vh; }
+
+/* SIDEBAR */
+.sidebar {
+  position: fixed; top: 0; left: 0; width: 240px; height: 100vh;
+  background: var(--bg2); border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; padding: 24px 20px; z-index: 100;
+}
+.sidebar-logo { font-family: 'Space Mono', monospace; font-size: 13px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--primary-light); margin-bottom: 28px; }
+.prospect-block { margin-bottom: 32px; }
+.prospect-label { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px; }
+.prospect-name { font-size: 17px; font-weight: 800; color: var(--text); line-height: 1.25; }
+.prospect-meta { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--text-muted);
+  letter-spacing: .06em; margin-top: 4px; }
+.nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 8px;
+  cursor: pointer; margin-bottom: 4px; font-size: 13px; font-weight: 600; color: var(--text-dim);
+  transition: all .15s; border: 1px solid transparent; }
+.nav-item:hover { background: rgba(106,102,163,0.10); color: var(--text); }
+.nav-item.active { background: rgba(106,102,163,0.15); color: var(--primary-light); border-color: var(--border); }
+.nav-icon { font-size: 16px; }
+.sidebar-footer { margin-top: auto; font-family: 'Space Mono', monospace; font-size: 10px;
+  color: var(--text-muted); letter-spacing: .04em; line-height: 1.8; }
+
+/* MOBILE TOPBAR */
+.mobile-topbar {
+  display: none; position: sticky; top: 0; z-index: 200;
+  background: var(--bg2); border-bottom: 1px solid var(--border);
+  padding: 14px 16px; align-items: center; justify-content: space-between;
+}
+.mobile-logo { font-family: 'Space Mono', monospace; font-size: 12px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--primary-light); }
+.mobile-prospect-name { font-size: 13px; font-weight: 700; color: var(--text); }
+
+/* MOBILE TABS */
+.mobile-tabs {
+  display: none; position: sticky; top: 53px; z-index: 199;
+  background: var(--bg); border-bottom: 1px solid var(--border);
+  padding: 10px 16px; gap: 8px;
+}
+.mobile-tab-pill { padding: 7px 16px; border-radius: 20px; font-size: 12px; font-weight: 700;
+  font-family: 'Space Mono', monospace; letter-spacing: .06em; text-transform: uppercase;
+  cursor: pointer; border: 1px solid var(--border); color: var(--text-muted); background: transparent;
+  transition: all .15s; }
+.mobile-tab-pill.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+/* MAIN */
+.main { margin-left: 240px; padding: 32px 36px; max-width: 1140px; }
+
+/* TAB BAR */
+.tab-bar {
+  position: sticky; top: 0; z-index: 50; background: var(--bg);
+  border-bottom: 1px solid var(--border); display: flex; margin: -32px -36px 32px; padding: 0 36px;
+}
+.tab-btn { padding: 14px 22px; font-family: 'Space Mono', monospace; font-size: 11px;
+  font-weight: 700; letter-spacing: .10em; text-transform: uppercase; color: var(--text-muted);
+  cursor: pointer; border: none; background: transparent; border-bottom: 2px solid transparent;
+  transition: all .15s; }
+.tab-btn.active { color: var(--primary-light); border-bottom-color: var(--primary); }
+
+/* VIEWS */
+.view { display: none; }
+.view.active { display: block; }
+
+/* WELCOME BANNER */
+.welcome-banner { background: linear-gradient(135deg, rgba(106,102,163,0.10) 0%, rgba(255,153,0,0.05) 100%);
+  border: 1px solid var(--border); border-radius: 12px; padding: 24px 28px; margin-bottom: 28px; }
+.welcome-tag { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+.welcome-text { font-size: 14px; line-height: 1.75; color: var(--text-dim); }
+.welcome-text strong { color: var(--text); font-weight: 700; }
+
+/* ICP GRID */
+.icp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 32px; }
+.icp-panel { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 22px 24px; }
+.panel-title { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 16px; }
+.icp-item { display: flex; justify-content: space-between; align-items: flex-start;
+  padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 13px; }
+.icp-item:last-child { border-bottom: none; }
+.icp-label { color: var(--text-muted); font-size: 12px; }
+.icp-value { color: var(--text); font-weight: 600; text-align: right; max-width: 60%; }
+.quality-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.quality-metric { background: rgba(106,102,163,0.08); border: 1px solid var(--border);
+  border-radius: 8px; padding: 14px 16px; text-align: center; }
+.quality-num { font-size: 24px; font-weight: 800; color: var(--primary-light); }
+.quality-label { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--text-muted);
+  letter-spacing: .06em; text-transform: uppercase; margin-top: 4px; }
+.quality-note { font-size: 12px; color: var(--text-muted); line-height: 1.6; margin-top: 14px;
+  padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.05); }
+
+/* SECTION HEADER */
+.section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+.section-title { font-size: 13px; font-weight: 700; color: var(--text);
+  font-family: 'Space Mono', monospace; letter-spacing: .06em; text-transform: uppercase; }
+.section-count { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: .06em; }
+
+/* LEAD CARDS */
+.lead-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px;
+  margin-bottom: 20px; overflow: hidden; transition: border-color .15s; }
+.lead-card:hover { border-color: var(--border-hover); }
+.card-header { padding: 18px 22px; cursor: pointer; display: flex; align-items: center; gap: 14px; }
+.signal-badge { font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; padding: 4px 10px; border-radius: 20px; white-space: nowrap; flex-shrink: 0; }
+.signal-badge.hot { background: rgba(255,68,68,0.15); color: var(--hot); border: 1px solid rgba(255,68,68,0.30); }
+.signal-badge.warm { background: rgba(255,153,0,0.12); color: var(--warm); border: 1px solid rgba(255,153,0,0.25); }
+.card-header-info { flex: 1; min-width: 0; }
+.lead-name { font-size: 17px; font-weight: 800; color: var(--text); line-height: 1.2; }
+.lead-company { font-size: 13px; color: var(--text-dim); margin-top: 2px; }
+.why-now-line { font-size: 12px; color: var(--accent); margin-top: 5px; font-weight: 600; }
+.expand-icon { color: var(--text-muted); font-size: 18px; flex-shrink: 0; transition: transform .2s; }
+.lead-card.expanded .expand-icon { transform: rotate(180deg); }
+.icp-fit-badge { font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: .10em; padding: 4px 10px; border-radius: 20px;
+  background: rgba(1,144,71,0.15); color: var(--success-light); border: 1px solid rgba(1,144,71,0.30); white-space: nowrap; flex-shrink: 0; }
+.card-body { display: none; border-top: 1px solid var(--border); }
+.lead-card.expanded .card-body { display: block; }
+
+/* IDENTITY STRIP */
+.identity-strip { display: flex; flex-wrap: wrap; gap: 12px; padding: 14px 22px;
+  background: var(--bg3); border-bottom: 1px solid var(--border);
+  font-family: 'Space Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: .04em; }
+.identity-item a { color: var(--primary-light); text-decoration: none; }
+.identity-item a:hover { color: var(--text); }
+
+/* TAGS */
+.tag-row { display: flex; flex-wrap: wrap; gap: 6px; padding: 12px 22px; border-bottom: 1px solid var(--border); }
+.tag { font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase; padding: 3px 9px; border-radius: 4px; }
+.tag.signal { background: rgba(255,153,0,0.12); color: var(--warm); }
+.tag.icp { background: rgba(106,102,163,0.15); color: var(--primary-light); }
+.tag.teamsize { background: rgba(0,180,180,0.12); color: #5ECFCF; }
+.tag.intent { background: rgba(1,144,71,0.12); color: var(--success-light); }
+.tag.geo { background: rgba(255,255,255,0.06); color: var(--text-muted); }
+
+/* CARD SECTION */
+.card-section { padding: 20px 22px; border-bottom: 1px solid var(--border); }
+.card-section:last-child { border-bottom: none; }
+.card-section-title { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 14px; }
+
+/* SIGNAL INTELLIGENCE */
+.signal-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.signal-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+.signal-type { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .10em; text-transform: uppercase; color: var(--accent); margin-bottom: 5px; }
+.signal-timing { font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+.signal-desc { font-size: 12px; color: var(--text-dim); line-height: 1.6; }
+
+/* INTELLIGENCE BRIEFING */
+.intel-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+.intel-cell { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; }
+.intel-cell-label { font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: .10em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 7px; }
+.intel-cell-value { font-size: 12px; color: var(--text-dim); line-height: 1.5; }
+
+/* CONTACT DETAILS */
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.contact-item { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px;
+  padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.contact-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: .10em;
+  text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px; }
+.contact-value { font-size: 13px; font-weight: 600; color: var(--text); word-break: break-all; }
+.contact-value.unavailable { color: var(--text-muted); font-weight: 400; font-style: italic; }
+.copy-btn { font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase; padding: 5px 10px; border-radius: 5px;
+  border: 1px solid var(--border); background: transparent; color: var(--text-muted);
+  cursor: pointer; white-space: nowrap; flex-shrink: 0; transition: all .15s; }
+.copy-btn:hover { border-color: var(--primary); color: var(--primary-light); }
+.copy-btn.copied { color: var(--success-light); border-color: var(--success); }
+
+/* WHY THIS LEAD */
+.why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.why-block-title { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .10em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; }
+.why-block-text { font-size: 13px; color: var(--text-dim); line-height: 1.75; }
+.fit-signal { background: rgba(1,144,71,0.10); border: 1px solid rgba(1,144,71,0.25);
+  border-radius: 6px; padding: 8px 12px; margin-top: 10px; font-size: 12px; color: var(--success-light); font-weight: 600; }
+.fit-signal-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: .10em;
+  text-transform: uppercase; color: var(--success); margin-bottom: 3px; }
+
+/* OUTREACH ARSENAL */
+.outreach-channel { margin-bottom: 18px; }
+.outreach-channel:last-child { margin-bottom: 0; }
+.outreach-channel-label { font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--primary-light); margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+.connection-note { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px;
+  padding: 14px 16px; font-size: 13px; color: var(--text-dim); line-height: 1.7; font-style: italic; }
+.char-count { font-family: 'Space Mono', monospace; font-size: 9px; color: var(--text-muted);
+  letter-spacing: .04em; margin-top: 8px; }
+.email-block { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 16px 18px; }
+.email-subject-label { font-family: 'Space Mono', monospace; font-size: 9px; color: var(--text-muted); letter-spacing: .06em; margin-bottom: 4px; }
+.email-subject-value { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 12px; }
+.email-body { font-size: 13px; color: var(--text-dim); line-height: 1.85; white-space: pre-line; }
+.email-meta { display: flex; justify-content: space-between; align-items: center;
+  margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.06); }
+.email-word-count { font-family: 'Space Mono', monospace; font-size: 9px; color: var(--text-muted); letter-spacing: .04em; }
+.email-safe-label { font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase; color: var(--success-light); }
+.copy-action-btn { display: inline-flex; align-items: center; gap: 6px; margin-top: 10px;
+  font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: .10em;
+  text-transform: uppercase; padding: 7px 14px; border-radius: 6px; border: 1px solid var(--border);
+  background: transparent; color: var(--text-muted); cursor: pointer; transition: all .15s; }
+.copy-action-btn:hover { border-color: var(--primary); color: var(--primary-light); }
+.copy-action-btn.copied { color: var(--success-light); border-color: var(--success); }
+
+/* NURTURE SEQUENCE */
+.nurture-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+.nurture-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+.nurture-day { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--primary-light); margin-bottom: 6px; }
+.nurture-action { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+.nurture-script { font-size: 12px; color: var(--text-dim); line-height: 1.65; font-style: italic; }
+
+/* CARD FOOTER */
+.card-footer { padding: 12px 22px; background: var(--bg3); border-top: 1px solid var(--border); display: flex; justify-content: flex-end; }
+.linkedin-btn { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase; padding: 8px 16px; border-radius: 6px;
+  border: 1px solid var(--border); color: var(--primary-light); text-decoration: none; transition: all .15s; }
+.linkedin-btn:hover { border-color: var(--primary); background: rgba(106,102,163,0.10); }
+
+/* PIPELINE MATH */
+.pipeline-math { background: rgba(106,102,163,0.06); border: 1px solid var(--border);
+  border-radius: 12px; padding: 22px 28px; margin: 28px 0; text-align: center; }
+.pipeline-math-text { font-size: 15px; color: var(--text-dim); line-height: 1.8; }
+.pipeline-math-text strong { color: var(--primary-light); font-weight: 700; }
+
+/* VISUAL GRAPHICS SECTION */
+.visuals-section { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; padding: 28px 32px; margin: 28px 0; }
+.visuals-header { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-bottom: 24px; }
+.visuals-copy h3 { font-size: 18px; font-weight: 800; color: var(--text); line-height: 1.3; margin-bottom: 12px; }
+.visuals-copy p { font-size: 13px; color: var(--text-dim); line-height: 1.75; margin-bottom: 10px; }
+.visuals-list { list-style: none; margin-top: 14px; }
+.visuals-list li { font-size: 13px; color: var(--text-dim); padding: 6px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04); display: flex; gap: 10px; }
+.visuals-list li:last-child { border-bottom: none; }
+.visuals-list-dot { color: var(--success-light); font-weight: 700; flex-shrink: 0; }
+.visuals-tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.visual-tile { border-radius: 10px; overflow: hidden; }
+.visual-tile-inner { aspect-ratio: 4/3; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 16px; }
+.visual-tile.carousel { background: linear-gradient(135deg, #1B2A4A 0%, #243655 100%); border: 1px solid rgba(240,165,0,0.20); }
+.visual-tile.post { background: linear-gradient(135deg, #1B2A4A 0%, #1D2D47 100%); border: 1px solid rgba(240,165,0,0.15); }
+.visual-tile.infographic { background: linear-gradient(135deg, #162238 0%, #1B2A4A 100%); border: 1px solid rgba(240,165,0,0.10); }
+.tile-accent-bar { width: 36px; height: 3px; background: #F0A500; border-radius: 2px; margin-bottom: 12px; }
+.tile-lines { width: 100%; }
+.tile-line { height: 7px; background: rgba(245,240,232,0.15); border-radius: 3px; margin-bottom: 6px; }
+.tile-line.short { width: 60%; }
+.tile-line.medium { width: 80%; }
+.tile-line.full { width: 100%; }
+.tile-label { font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); text-align: center; margin-top: 10px; padding: 6px; background: var(--bg3); }
+.visuals-note { font-size: 13px; color: var(--text-dim); text-align: center; margin-top: 18px;
+  padding-top: 18px; border-top: 1px solid var(--border); line-height: 1.7; }
+.visuals-note strong { color: var(--text); }
+
+/* CTA FOOTER */
+.cta-footer { margin-top: 36px; background: linear-gradient(135deg, rgba(255,153,0,0.08) 0%, rgba(106,102,163,0.06) 100%);
+  border: 1px solid rgba(255,153,0,0.30); border-radius: 12px; padding: 36px 40px; text-align: center; }
+.cta-footer-headline { font-size: 22px; font-weight: 800; color: var(--text); letter-spacing: -.01em; margin-bottom: 14px; line-height: 1.3; }
+.cta-footer-subhead { font-size: 14px; color: var(--text-dim); line-height: 1.8; max-width: 680px; margin: 0 auto 26px; }
+.cta-footer-btn { display: inline-block; background: var(--accent); color: var(--bg);
+  padding: 15px 34px; border-radius: 8px; font-family: 'Space Mono', monospace;
+  font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em;
+  text-decoration: none; transition: background .15s; margin-bottom: 14px; }
+.cta-footer-btn:hover { background: #ffb340; }
+.cta-footer-note { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: .04em; }
+
+/* CONTENT ENGINE POSTS */
+.post-cards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 28px; }
+.post-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 24px 26px; }
+.post-type-label { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--primary-light); margin-bottom: 6px; }
+.post-type-desc { font-size: 11px; color: var(--text-muted); margin-bottom: 16px;
+  padding-bottom: 16px; border-bottom: 1px solid var(--border); line-height: 1.5; }
+.post-text { font-size: 13px; color: var(--text-dim); line-height: 1.85; white-space: pre-line; }
+.post-copy-wrap { margin-top: 16px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.06); display: flex; justify-content: flex-end; }
+
+/* CONTACT ITEM INNER */
+.contact-inner { flex: 1; min-width: 0; }
+
+/* RESPONSIVE */
+@media (max-width: 860px) {
+  .sidebar { display: none; }
+  .main { margin-left: 0; padding: 16px; }
+  .tab-bar { display: none; }
+  .mobile-topbar { display: flex; }
+  .mobile-tabs { display: flex; }
+  .icp-grid { grid-template-columns: 1fr; }
+  .signal-cards { grid-template-columns: 1fr; }
+  .intel-grid { grid-template-columns: 1fr 1fr; }
+  .contact-grid { grid-template-columns: 1fr; }
+  .why-grid { grid-template-columns: 1fr; }
+  .nurture-grid { grid-template-columns: 1fr; }
+  .post-cards-grid { grid-template-columns: 1fr; }
+  .visuals-header { grid-template-columns: 1fr; }
+  .visuals-tiles { grid-template-columns: 1fr 1fr; }
+  .quality-grid { grid-template-columns: 1fr 1fr; }
+  .main { padding-top: 16px; }
+  .tab-bar { margin: 0 -16px 20px; }
+}
+</style>
+</head>
+<body>
+
+<!-- MOBILE TOPBAR -->
+<div class="mobile-topbar">
+  <span class="mobile-logo">Pipelind</span>
+  <span class="mobile-prospect-name">Julio · Lead Demo</span>
+</div>
+
+<!-- MOBILE TAB PILLS -->
+<div class="mobile-tabs">
+  <button class="mobile-tab-pill active" onclick="switchTab('pipeline', this)">Pipeline Engine</button>
+  <button class="mobile-tab-pill" onclick="switchTab('content', this)">Content Engine</button>
+</div>
+
+<!-- DESKTOP SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-logo">Pipelind</div>
+  <div class="prospect-block">
+    <div class="prospect-label">Personalised For</div>
+    <div class="prospect-name">Julio Alarcon</div>
+    <div class="prospect-meta">Accounting Capacity Support · US</div>
+  </div>
+  <div class="nav-item active" onclick="switchTab('pipeline', this)" id="nav-pipeline">
+    <span class="nav-icon">⚡</span> Pipeline Engine
+  </div>
+  <div class="nav-item" onclick="switchTab('content', this)" id="nav-content">
+    <span class="nav-icon">✏️</span> Content Engine
+  </div>
+  <div class="sidebar-footer">
+    Pipelind · pipelind.com<br>
+    5 ICP-matched profiles<br>
+    Signal window · 90 days
+  </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+
+  <!-- DESKTOP TAB BAR -->
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab('pipeline', this)" id="tab-pipeline">Pipeline Engine</button>
+    <button class="tab-btn" onclick="switchTab('content', this)" id="tab-content">Content Engine</button>
+  </div>
+
+  <!-- ============ PIPELINE ENGINE ============ -->
+  <div id="pipeline" class="view active">
+
+    <div class="welcome-banner">
+      <div class="welcome-tag">Personalised for Julio</div>
+      <div class="welcome-text">
+        Five US-based accounting firm leaders and finance decision-makers, each with an <strong>active finance hiring signal in the last 90 days.</strong> Every profile includes verified contact details, a ready-to-send connection note, outreach email, and a 14-day nurture sequence. These are the buyers most likely to need reliable accounting capacity support right now.
+      </div>
+    </div>
+
+    <div class="icp-grid">
+      <div class="icp-panel">
+        <div class="panel-title">Buyer Profile</div>
+        <div class="icp-item"><span class="icp-label">Buyer Type</span><span class="icp-value">CFO, CPA Firm Owner, Managing Partner, Firm Manager</span></div>
+        <div class="icp-item"><span class="icp-label">Company Type</span><span class="icp-value">Accounting / CPA Firms, Outsourced Accounting Providers</span></div>
+        <div class="icp-item"><span class="icp-label">Team Size</span><span class="icp-value">11-200 employees</span></div>
+        <div class="icp-item"><span class="icp-label">Revenue Range</span><span class="icp-value">$1M - $75M</span></div>
+        <div class="icp-item"><span class="icp-label">Geography</span><span class="icp-value">United States</span></div>
+        <div class="icp-item"><span class="icp-label">Active Signal</span><span class="icp-value">Finance department hiring · last 90 days</span></div>
+      </div>
+      <div class="icp-panel">
+        <div class="panel-title">Signal Quality</div>
+        <div class="quality-grid">
+          <div class="quality-metric"><div class="quality-num">5</div><div class="quality-label">Profiles Pulled</div></div>
+          <div class="quality-metric"><div class="quality-num">5</div><div class="quality-label">Active Signals</div></div>
+          <div class="quality-metric"><div class="quality-num">5/5</div><div class="quality-label">Email Verified</div></div>
+          <div class="quality-metric"><div class="quality-num">90d</div><div class="quality-label">Signal Window</div></div>
+        </div>
+        <div class="quality-note">All five profiles carry a verified finance hiring signal from the last 90 days. Every contact includes a confirmed professional email. Direct contact not on record is shown where mobile is unavailable.</div>
+      </div>
+    </div>
+
+    <div class="section-header">
+      <span class="section-title">ICP-Matched Profiles</span>
+      <span class="section-count">5 of 5 · ICP Fit Verified</span>
+    </div>
+
+    <!-- CARD 1: BOBBY HEALEY - EXPANDED -->
+    <div class="lead-card expanded" id="card1">
+      <div class="card-header" onclick="toggleCard('card1')">
+        <span class="signal-badge warm">Warm</span>
+        <div class="card-header-info">
+          <div class="lead-name">Bobby Healey</div>
+          <div class="lead-company">CFO · Black Ink Business Services · Brooklyn, NY</div>
+          <div class="why-now-line">Finance team hiring active · bookkeeping firm at capacity ceiling</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit · YES</span>
+        <span class="expand-icon">&#9660;</span>
+      </div>
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item">CFO / Head of Finance &amp; Operations</span>
+          <span class="identity-item">blackinkservices.com</span>
+          <span class="identity-item">Brooklyn, NY · New Jersey (prospect)</span>
+          <span class="identity-item">11-50 employees</span>
+          <span class="identity-item">$1M-$5M revenue</span>
+          <span class="identity-item"><a href="https://linkedin.com/in/ACoAAANQn-UBfz8U9OJB-1pqBzC3RkMEbLJCXYM" target="_blank" title="LinkedIn URL may require login">LinkedIn Profile ↗</a></span>
+        </div>
+        <div class="tag-row">
+          <span class="tag signal">Finance Hiring Active</span>
+          <span class="tag icp">Bookkeeping Services Firm</span>
+          <span class="tag icp">CFO Decision Maker</span>
+          <span class="tag teamsize">11-50 Staff</span>
+          <span class="tag intent">Capacity Ceiling Signal</span>
+          <span class="tag geo">US · New York</span>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Active Signal Intelligence</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Finance Hiring Surge</div>
+              <div class="signal-timing">Within last 90 days</div>
+              <div class="signal-desc">Black Ink Business Services is actively posting and hiring for finance and accounting roles. At a bookkeeping services firm, finance hiring at the delivery level signals client volume has outpaced team bandwidth.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">Capacity Pressure</div>
+              <div class="signal-timing">Current state</div>
+              <div class="signal-desc">Firm description indicates client-facing delivery focus with a lean team (11-50). As CFO overseeing both finance and operations, Bobby is managing both the books and the business at a firm experiencing growth pressure.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing</div>
+          <div class="intel-grid">
+            <div class="intel-cell"><div class="intel-cell-label">Leadership Movement</div><div class="intel-cell-value">No leadership movement detected in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Capital Activity</div><div class="intel-cell-value">No public funding activity in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Hiring Signals</div><div class="intel-cell-value">Active finance and accounting department hiring detected, last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Expansion Signals</div><div class="intel-cell-value">No expansion signals in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Growth Trajectory</div><div class="intel-cell-value">Bookkeeping services firm with growing client base; trajectory data not publicly available</div></div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div class="contact-inner">
+                <div class="contact-label">Work Email</div>
+                <div class="contact-value" id="c1-email">bhealey@blackinkservices.com</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('bhealey@blackinkservices.com', this)">Copy</button>
+            </div>
+            <div class="contact-item">
+              <div class="contact-inner">
+                <div class="contact-label">Direct Phone</div>
+                <div class="contact-value" id="c1-phone">+1 201 463 1849</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('+12014631849', this)">Copy</button>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div>
+              <div class="why-block-title">ICP Fit</div>
+              <div class="why-block-text">Black Ink provides full-cycle bookkeeping and accounting services to small business clients. Bobby is the CFO managing both the numbers and the operations. When the firm hires for finance at this size, it means client delivery bandwidth is under pressure. That's the exact problem outsourced accounting capacity solves: bridging the gap between current team ceiling and growing client demand.</div>
+              <div class="fit-signal"><div class="fit-signal-label">Fit Signal</div>Bookkeeping firm CFO with active finance hiring = delivery capacity at threshold</div>
+            </div>
+            <div>
+              <div class="why-block-title">Connection Opportunity</div>
+              <div class="why-block-text">Bobby has held CFO, Managing Director CFO, and Financial Controller roles across multiple firms. He understands what reliable accounting delivery means operationally. A peer-level note referencing the hiring activity at Black Ink positions this as an observation, not a pitch. CFOs at service firms respond to people who understand the capacity math, not people who lead with a service description.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal</div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note <span style="color:var(--text-muted);font-weight:400">(300 char max)</span></div>
+            <div class="connection-note" id="cn1">Noticed Black Ink is actively building out the finance team. At a bookkeeping services firm, that usually means client volume is outpacing delivery bandwidth. Happy to connect.</div>
+            <div class="char-count">179 characters</div>
+            <button class="copy-action-btn" onclick="copyElementText('cn1', this)">Copy Note</button>
+          </div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Outreach Email</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject</div>
+              <div class="email-subject-value" id="es1">Black Ink's finance hiring</div>
+              <div class="email-body" id="eb1">Noticed Black Ink Business Services has been actively adding to the finance and accounting function over the last few months.
+
+When a bookkeeping services firm starts hiring at the delivery level, it usually points to one of two things: client volume is ahead of team capacity, or close cycles are starting to stretch. Either way, the pressure lands on whoever is managing the numbers. For a CFO overseeing both finance and operations, that backlog problem compounds quickly.
+
+Julio provides accounting capacity support for firms in this position - full-cycle bookkeeping, month-end close, and reconciliations that integrate with your existing team and systems. Would a 15-minute call make sense to see if there's a fit?</div>
+              <div class="email-meta">
+                <span class="email-word-count">~120 words</span>
+                <span class="email-safe-label">No pitch. No pressure.</span>
+              </div>
+            </div>
+            <button class="copy-action-btn" onclick="copyFullEmail('es1','eb1',this)">Copy Full Email</button>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">14-Day Nurture Sequence</div>
+          <div class="nurture-grid">
+            <div class="nurture-card">
+              <div class="nurture-day">Day 1</div>
+              <div class="nurture-action">Send Connection Note</div>
+              <div class="nurture-script">"Noticed Black Ink is actively building out the finance team. At a bookkeeping services firm, that usually means client volume is outpacing delivery bandwidth. Happy to connect."</div>
+            </div>
+            <div class="nurture-card">
+              <div class="nurture-day">Day 7</div>
+              <div class="nurture-action">Value Drop</div>
+              <div class="nurture-script">"One thing that tends to happen when bookkeeping firms start hiring: the first 30-60 days of that new person onboarding is actually when the backlog deepens, not clears. Worth planning for if you're in the middle of that cycle right now."</div>
+            </div>
+            <div class="nurture-card">
+              <div class="nurture-day">Day 14</div>
+              <div class="nurture-action">Diagnostic Question</div>
+              <div class="nurture-script">"Is the finance hiring at Black Ink driven by a specific client volume increase, or is the current book of business creating the capacity pressure?"</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="https://linkedin.com/in/ACoAAANQn-UBfz8U9OJB-1pqBzC3RkMEbLJCXYM" target="_blank" class="linkedin-btn" title="May require LinkedIn login">View on LinkedIn ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 2: JACOB ANSEL - COLLAPSED -->
+    <div class="lead-card" id="card2">
+      <div class="card-header" onclick="toggleCard('card2')">
+        <span class="signal-badge warm">Warm</span>
+        <div class="card-header-info">
+          <div class="lead-name">Jacob Ansel, CPA CGMA</div>
+          <div class="lead-company">Owner · Vision Financial Group CPAs · New Jersey</div>
+          <div class="why-now-line">CPA firm owner hiring in accounting · solo decision maker for capacity</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit · YES</span>
+        <span class="expand-icon">&#9660;</span>
+      </div>
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item">Owner / Managing Partner</span>
+          <span class="identity-item">vfgcpas.com</span>
+          <span class="identity-item">Livingston, NJ</span>
+          <span class="identity-item">11-50 employees</span>
+          <span class="identity-item">$1M-$5M revenue</span>
+          <span class="identity-item"><a href="https://linkedin.com/in/ACoAAAEorRoBKKvN7qfCjB0ii9TjSzfdpkpVbfI" target="_blank" title="LinkedIn URL may require login">LinkedIn Profile ↗</a></span>
+        </div>
+        <div class="tag-row">
+          <span class="tag signal">Finance Hiring Active</span>
+          <span class="tag icp">CPA Firm Owner</span>
+          <span class="tag icp">QuickBooks Practitioner</span>
+          <span class="tag teamsize">11-50 Staff</span>
+          <span class="tag intent">Solo Decision Maker</span>
+          <span class="tag geo">US · New Jersey</span>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Active Signal Intelligence</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Finance Hiring Surge</div>
+              <div class="signal-timing">Within last 90 days</div>
+              <div class="signal-desc">Vision Financial Group CPAs has been actively hiring in the accounting function. At an 11-50 person CPA firm, a hiring push at this scale typically signals client demand is ahead of current delivery capacity.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">Multi-Sector Client Base</div>
+              <div class="signal-timing">Current state</div>
+              <div class="signal-desc">Firm serves retail, manufacturing, industrial, construction, and professional services clients. Multi-sector demand concentrates deadline pressure across multiple industry cycles, compounding capacity strain for a small team.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing</div>
+          <div class="intel-grid">
+            <div class="intel-cell"><div class="intel-cell-label">Leadership Movement</div><div class="intel-cell-value">No leadership movement detected in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Capital Activity</div><div class="intel-cell-value">No public funding activity in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Hiring Signals</div><div class="intel-cell-value">Active accounting department hiring detected, last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Expansion Signals</div><div class="intel-cell-value">No expansion signals in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Growth Trajectory</div><div class="intel-cell-value">Established CPA firm with diversified client base across five sectors; trajectory data not publicly available</div></div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div class="contact-inner">
+                <div class="contact-label">Work Email</div>
+                <div class="contact-value" id="c2-email">jansel@vfgcpas.com</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('jansel@vfgcpas.com', this)">Copy</button>
+            </div>
+            <div class="contact-item">
+              <div class="contact-inner">
+                <div class="contact-label">Mobile</div>
+                <div class="contact-value" id="c2-phone">+1 646 208 4320</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('+16462084320', this)">Copy</button>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div>
+              <div class="why-block-title">ICP Fit</div>
+              <div class="why-block-text">Jacob is the owner and managing partner of a small CPA firm with QuickBooks in the tech stack - the same platform Julio supports. As both the delivery lead and the business owner, Jacob absorbs capacity pressure directly. When his team can't keep up, he can't delegate the decision about what to do. That's the moment external accounting support becomes a fast answer instead of a slow hire.</div>
+              <div class="fit-signal"><div class="fit-signal-label">Fit Signal</div>Owner-operator CPA firm with active hiring + QuickBooks stack = direct match for capacity support</div>
+            </div>
+            <div>
+              <div class="why-block-title">Connection Opportunity</div>
+              <div class="why-block-text">Jacob holds CPA and CGMA designations and has served as both managing partner and owner across his career. He knows exactly what capacity gaps cost a small firm - in client relationships and in personal hours. Referencing Vision Financial Group's hiring activity opens a peer-level observation, not a services pitch. Small firm owners respond to specificity, not generic accounting capacity messaging.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal</div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="cn2">Saw Vision Financial Group has been hiring in accounting recently. Managing both firm operations and client delivery at that scale is a real balancing act. Happy to connect.</div>
+            <div class="char-count">173 characters</div>
+            <button class="copy-action-btn" onclick="copyElementText('cn2', this)">Copy Note</button>
+          </div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Outreach Email</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject</div>
+              <div class="email-subject-value" id="es2">Vision Financial's accounting hiring</div>
+              <div class="email-body" id="eb2">Noticed Vision Financial Group CPAs has been adding to the accounting team recently.
+
+For a managing partner at a firm your size, the staffing cycle - posting, screening, onboarding - often costs as much time as just absorbing the extra work yourself. Meanwhile, client deadlines don't pause. The challenge isn't finding the right person. It's buying enough time to find them without letting service quality slip.
+
+Julio provides outsourced accounting support - full-cycle bookkeeping, month-end close, reconciliations - for CPA firms dealing with exactly this kind of capacity pressure. Would a 15-minute conversation make sense to see if there's a fit?</div>
+              <div class="email-meta">
+                <span class="email-word-count">~122 words</span>
+                <span class="email-safe-label">No pitch. No pressure.</span>
+              </div>
+            </div>
+            <button class="copy-action-btn" onclick="copyFullEmail('es2','eb2',this)">Copy Full Email</button>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">14-Day Nurture Sequence</div>
+          <div class="nurture-grid">
+            <div class="nurture-card">
+              <div class="nurture-day">Day 1</div>
+              <div class="nurture-action">Send Connection Note</div>
+              <div class="nurture-script">"Saw Vision Financial Group has been hiring in accounting recently. Managing both firm operations and client delivery at that scale is a real balancing act. Happy to connect."</div>
+            </div>
+            <div class="nurture-card">
+              <div class="nurture-day">Day 7</div>
+              <div class="nurture-action">Value Drop</div>
+              <div class="nurture-script">"One thing that holds small CPA firms back from taking on new clients: they're already at capacity with current ones. The irony is that the hiring process itself pulls attention from the work that's already due."</div>
+            </div>
+            <div class="nurture-card">
+              <div class="nurture-day">Day 14</div>
+              <div class="nurture-action">Diagnostic Question</div>
+              <div class="nurture-script">"Is the hiring at Vision Financial driven by a new client pipeline coming in, or is the current book of business the capacity constraint right now?"</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="https://linkedin.com/in/ACoAAAEorRoBKKvN7qfCjB0ii9TjSzfdpkpVbfI" target="_blank" class="linkedin-btn" title="May require LinkedIn login">View on LinkedIn ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 3: KURT MILLER - COLLAPSED -->
+    <div class="lead-card" id="card3">
+      <div class="card-header" onclick="toggleCard('card3')">
+        <span class="signal-badge warm">Warm</span>
+        <div class="card-header-info">
+          <div class="lead-name">Kurt Miller, CPA</div>
+          <div class="lead-company">CEO · RDM Associates · Clarkston, MI</div>
+          <div class="why-now-line">Outsourced accounting CEO hiring in finance · delivery ceiling at scale</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit · YES</span>
+        <span class="expand-icon">&#9660;</span>
+      </div>
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item">CEO / President</span>
+          <span class="identity-item">rdma.com</span>
+          <span class="identity-item">Clarkston, MI</span>
+          <span class="identity-item">11-50 employees</span>
+          <span class="identity-item">$5M-$10M revenue</span>
+          <span class="identity-item"><a href="https://linkedin.com/in/ACoAAAM9kN8BgKgdlsVBo-LrdHrmiM7rDYmooys" target="_blank" title="LinkedIn URL may require login">LinkedIn Profile ↗</a></span>
+        </div>
+        <div class="tag-row">
+          <span class="tag signal">Finance Hiring Active</span>
+          <span class="tag icp">Outsourced Accounting Provider</span>
+          <span class="tag icp">Nonprofit Sector</span>
+          <span class="tag teamsize">11-50 Staff</span>
+          <span class="tag intent">Delivery Scale Signal</span>
+          <span class="tag geo">US · Michigan</span>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Active Signal Intelligence</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Finance Hiring Surge</div>
+              <div class="signal-timing">Within last 90 days</div>
+              <div class="signal-desc">RDM Associates has been actively adding to the finance team in recent months. For an outsourced accounting firm, internal finance hiring signals that the delivery team is at capacity and client SLAs are at risk of slipping.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">Delivery Model Pressure</div>
+              <div class="signal-timing">Current state</div>
+              <div class="signal-desc">RDM provides outsourced accounting services to nonprofit organizations. Their business model depends entirely on delivery consistency. Internal capacity gaps carry direct client-side consequences - the same problem they solve for clients is now their own.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing</div>
+          <div class="intel-grid">
+            <div class="intel-cell"><div class="intel-cell-label">Leadership Movement</div><div class="intel-cell-value">No leadership movement detected in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Capital Activity</div><div class="intel-cell-value">No public funding activity in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Hiring Signals</div><div class="intel-cell-value">Active finance department hiring detected at RDM Associates, last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Expansion Signals</div><div class="intel-cell-value">No expansion signals in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Growth Trajectory</div><div class="intel-cell-value">Established outsourced accounting provider with nonprofit client base, $5M-$10M revenue band</div></div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div class="contact-inner">
+                <div class="contact-label">Work Email</div>
+                <div class="contact-value" id="c3-email">kpmiller@rdma.com</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('kpmiller@rdma.com', this)">Copy</button>
+            </div>
+            <div class="contact-item">
+              <div class="contact-inner">
+                <div class="contact-label">Mobile</div>
+                <div class="contact-value" id="c3-phone">+1 248 882 4454</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('+12488824454', this)">Copy</button>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div>
+              <div class="why-block-title">ICP Fit</div>
+              <div class="why-block-text">Kurt runs an outsourced accounting firm - the same business model Julio operates. He knows the delivery economics better than anyone: you can only absorb so many clients before close quality starts to erode. When his internal team is at capacity, the risk isn't just operational. It's what shows up in the nonprofit client's financial statements that month. External accounting capacity solves this faster than a hire.</div>
+              <div class="fit-signal"><div class="fit-signal-label">Fit Signal</div>CEO of outsourced accounting firm + active hiring = delivery capacity at ceiling, clients at risk</div>
+            </div>
+            <div>
+              <div class="why-block-title">Connection Opportunity</div>
+              <div class="why-block-text">Kurt has held CFO, VP of Operations, and President roles across his career. He understands the difference between a capacity problem and a quality problem - they look the same until they don't. A note that references RDM's hiring activity will land differently because he's already thinking about capacity. This is not a cold introduction. It's a well-timed one.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal</div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="cn3">Noticed RDM Associates is actively adding to the finance team. Running outsourced accounting at scale means delivery consistency is the entire value proposition. Happy to connect.</div>
+            <div class="char-count">177 characters</div>
+            <button class="copy-action-btn" onclick="copyElementText('cn3', this)">Copy Note</button>
+          </div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Outreach Email</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject</div>
+              <div class="email-subject-value" id="es3">RDM Associates' finance capacity</div>
+              <div class="email-body" id="eb3">Noticed RDM Associates has been adding to the finance team in recent months.
+
+As CEO of an outsourced accounting firm, you know exactly what delivery consistency means to clients - it's the entire value proposition. When the internal team reaches capacity, the risk isn't just operational. It affects what the nonprofit client sees every month-end. A hire solves it eventually, but it doesn't solve the problem this close cycle.
+
+Julio provides accounting capacity support for firms in exactly this position - month-end close, bookkeeping, and reconciliation work that integrates with existing processes and systems. Would 15 minutes make sense to explore whether there's a fit?</div>
+              <div class="email-meta">
+                <span class="email-word-count">~120 words</span>
+                <span class="email-safe-label">No pitch. No pressure.</span>
+              </div>
+            </div>
+            <button class="copy-action-btn" onclick="copyFullEmail('es3','eb3',this)">Copy Full Email</button>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">14-Day Nurture Sequence</div>
+          <div class="nurture-grid">
+            <div class="nurture-card">
+              <div class="nurture-day">Day 1</div>
+              <div class="nurture-action">Send Connection Note</div>
+              <div class="nurture-script">"Noticed RDM Associates is actively adding to the finance team. Running outsourced accounting at scale means delivery consistency is the entire value proposition. Happy to connect."</div>
+            </div>
+            <div class="nurture-card">
+              <div class="nurture-day">Day 7</div>
+              <div class="nurture-action">Value Drop</div>
+              <div class="nurture-script">"Something that comes up often with outsourced accounting firms: when their own delivery team is at capacity, they face the same problem they solve for clients. The service model breaks if the internal capacity does."</div>
+            </div>
+            <div class="nurture-card">
+              <div class="nurture-day">Day 14</div>
+              <div class="nurture-action">Diagnostic Question</div>
+              <div class="nurture-script">"When RDM's finance team is at full capacity, how do you maintain close quality for nonprofit clients without absorbing the overflow at the leadership level?"</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="https://linkedin.com/in/ACoAAAM9kN8BgKgdlsVBo-LrdHrmiM7rDYmooys" target="_blank" class="linkedin-btn" title="May require LinkedIn login">View on LinkedIn ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 4: JACOB WAGUESPACK - COLLAPSED -->
+    <div class="lead-card" id="card4">
+      <div class="card-header" onclick="toggleCard('card4')">
+        <span class="signal-badge warm">Warm</span>
+        <div class="card-header-info">
+          <div class="lead-name">Jacob Waguespack, CPA, MBA</div>
+          <div class="lead-company">Partner · Faulk &amp; Winkler · Louisiana (Spring, TX)</div>
+          <div class="why-now-line">Regional CPA partner with active finance hiring · 51-200 staff at capacity</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit · YES</span>
+        <span class="expand-icon">&#9660;</span>
+      </div>
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item">Partner / Director</span>
+          <span class="identity-item">fw-cpa.com</span>
+          <span class="identity-item">Baton Rouge, LA · Spring, TX (prospect)</span>
+          <span class="identity-item">51-200 employees</span>
+          <span class="identity-item">$25M-$75M revenue</span>
+          <span class="identity-item"><a href="https://linkedin.com/in/ACoAAAIYu7IBNs5dpE7z4E1UY0Up-jsAys1hCng" target="_blank" title="LinkedIn URL may require login">LinkedIn Profile ↗</a></span>
+        </div>
+        <div class="tag-row">
+          <span class="tag signal">Finance Hiring Active</span>
+          <span class="tag icp">Regional CPA Firm</span>
+          <span class="tag icp">Government &amp; Nonprofit Focus</span>
+          <span class="tag teamsize">51-200 Staff</span>
+          <span class="tag intent">Seasonal Capacity Pressure</span>
+          <span class="tag geo">US · Louisiana</span>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Active Signal Intelligence</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Finance Hiring Surge</div>
+              <div class="signal-timing">Within last 90 days</div>
+              <div class="signal-desc">Faulk &amp; Winkler has been actively hiring in the finance and accounting function. At a 51-200 person regional CPA firm, finance hiring at this scale typically signals sustained client volume rather than a single engagement spike.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">Deadline Season Exposure</div>
+              <div class="signal-timing">Recurring pattern</div>
+              <div class="signal-desc">Firm serves government and nonprofit clients alongside private businesses, creating concentrated audit and tax deadline cycles. Capacity at a regional firm of this size is tested hardest at the overlap of these seasonal windows.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing</div>
+          <div class="intel-grid">
+            <div class="intel-cell"><div class="intel-cell-label">Leadership Movement</div><div class="intel-cell-value">No leadership movement detected in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Capital Activity</div><div class="intel-cell-value">No public funding activity in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Hiring Signals</div><div class="intel-cell-value">Active finance department hiring at Faulk &amp; Winkler, last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Expansion Signals</div><div class="intel-cell-value">No expansion signals in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Growth Trajectory</div><div class="intel-cell-value">Established regional CPA firm founded 1984, $25M-$75M revenue, serving Louisiana and surrounding region</div></div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div class="contact-inner">
+                <div class="contact-label">Work Email</div>
+                <div class="contact-value" id="c4-email">jwaguespack@fw-cpa.com</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('jwaguespack@fw-cpa.com', this)">Copy</button>
+            </div>
+            <div class="contact-item">
+              <div class="contact-inner">
+                <div class="contact-label">Mobile</div>
+                <div class="contact-value" id="c4-phone">+1 407 284 0009</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('+14072840009', this)">Copy</button>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div>
+              <div class="why-block-title">ICP Fit</div>
+              <div class="why-block-text">Jacob is a partner at a regional CPA firm with 51-200 staff, government and nonprofit clients, and an active finance hiring push. At this size, capacity gaps don't stay internal - they surface in audit quality and close timelines that clients notice. As a partner with both audit and tax backgrounds, Jacob understands exactly what a capacity problem costs when it hits during the wrong week of a reporting cycle.</div>
+              <div class="fit-signal"><div class="fit-signal-label">Fit Signal</div>CPA firm partner with dual audit and tax background + hiring signal = capacity precision buyer</div>
+            </div>
+            <div>
+              <div class="why-block-title">Connection Opportunity</div>
+              <div class="why-block-text">Jacob has progressed from staff auditor to partner and director at Faulk &amp; Winkler. He has seen the firm at different capacity levels. A note that acknowledges the hiring activity at a regional firm of this scale - rather than a generic accounting pitch - is more likely to get a response from someone who has managed audit cycles for 40+ years of institutional clients.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal</div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="cn4">Saw Faulk and Winkler has been building out the finance team. At 70 staff, timing capacity around quarter-end and deadline seasons must take real precision. Happy to connect.</div>
+            <div class="char-count">169 characters</div>
+            <button class="copy-action-btn" onclick="copyElementText('cn4', this)">Copy Note</button>
+          </div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Outreach Email</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject</div>
+              <div class="email-subject-value" id="es4">Faulk &amp; Winkler's finance hiring</div>
+              <div class="email-body" id="eb4">Noticed Faulk and Winkler has been actively adding to the finance and accounting team.
+
+For a partner managing client delivery at a regional firm, the math gets tight during audit and tax season. When headcount is growing but not fast enough to match demand, the overflow gets absorbed by people who are already at ceiling. That's when delivery quality starts to erode quietly, in ways that only show up after the deadline has passed.
+
+Julio provides accounting capacity support for CPA firms dealing with seasonal or sustained volume pressure - bookkeeping, close support, and reconciliations that keep delivery consistent without adding a full-time seat. Worth 15 minutes to explore whether there's a fit?</div>
+              <div class="email-meta">
+                <span class="email-word-count">~124 words</span>
+                <span class="email-safe-label">No pitch. No pressure.</span>
+              </div>
+            </div>
+            <button class="copy-action-btn" onclick="copyFullEmail('es4','eb4',this)">Copy Full Email</button>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">14-Day Nurture Sequence</div>
+          <div class="nurture-grid">
+            <div class="nurture-card">
+              <div class="nurture-day">Day 1</div>
+              <div class="nurture-action">Send Connection Note</div>
+              <div class="nurture-script">"Saw Faulk and Winkler has been building out the finance team. At 70 staff, timing capacity around quarter-end and deadline seasons must take real precision. Happy to connect."</div>
+            </div>
+            <div class="nurture-card">
+              <div class="nurture-day">Day 7</div>
+              <div class="nurture-action">Value Drop</div>
+              <div class="nurture-script">"Regional CPA firms with 50+ staff have a particular challenge: enough clients to be complex, not enough margin to absorb a missed deadline. The quiet erosion usually shows up in the close cycle before anyone names it."</div>
+            </div>
+            <div class="nurture-card">
+              <div class="nurture-day">Day 14</div>
+              <div class="nurture-action">Diagnostic Question</div>
+              <div class="nurture-script">"Is the finance hiring at Faulk and Winkler tied to a specific service line expanding, or is it across-the-board capacity for the current client base?"</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="https://linkedin.com/in/ACoAAAIYu7IBNs5dpE7z4E1UY0Up-jsAys1hCng" target="_blank" class="linkedin-btn" title="May require LinkedIn login">View on LinkedIn ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 5: ANGIE NELSON - COLLAPSED -->
+    <div class="lead-card" id="card5">
+      <div class="card-header" onclick="toggleCard('card5')">
+        <span class="signal-badge warm">Warm</span>
+        <div class="card-header-info">
+          <div class="lead-name">Angie Nelson</div>
+          <div class="lead-company">Firm Manager / HR Director · B. Johnson &amp; Associates · Brainerd, MN</div>
+          <div class="why-now-line">CPA firm manager handling staffing gap · first to feel the capacity pressure</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit · YES</span>
+        <span class="expand-icon">&#9660;</span>
+      </div>
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item">Firm Manager / HR Director</span>
+          <span class="identity-item">brainerdcpa.com</span>
+          <span class="identity-item">Brainerd, MN</span>
+          <span class="identity-item">11-50 employees</span>
+          <span class="identity-item">$1M-$5M revenue</span>
+          <span class="identity-item"><a href="https://linkedin.com/in/ACoAAAi_1lUBKHIOmaw370X8qpQuUy5tm_KfunI" target="_blank" title="LinkedIn URL may require login">LinkedIn Profile ↗</a></span>
+        </div>
+        <div class="tag-row">
+          <span class="tag signal">Finance Hiring Active</span>
+          <span class="tag icp">CPA Firm Operations</span>
+          <span class="tag icp">Staffing Decision Maker</span>
+          <span class="tag teamsize">11-50 Staff</span>
+          <span class="tag intent">Capacity Gap Coordinator</span>
+          <span class="tag geo">US · Minnesota</span>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Active Signal Intelligence</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Finance Hiring Surge</div>
+              <div class="signal-timing">Within last 90 days</div>
+              <div class="signal-desc">B. Johnson and Associates has been actively hiring in the accounting function. Angie as firm manager and HR director is the person coordinating those job postings, screening candidates, and managing the gap while the search is open.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">Multi-Practice Capacity Pressure</div>
+              <div class="signal-timing">Current state</div>
+              <div class="signal-desc">Firm offers tax, payroll, audit, accounting, and advisory services. Multi-practice demand at a lean 11-50 person firm creates overlapping deadline pressure across service lines - the kind of pressure a firm manager feels in every direction simultaneously.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing</div>
+          <div class="intel-grid">
+            <div class="intel-cell"><div class="intel-cell-label">Leadership Movement</div><div class="intel-cell-value">No leadership movement detected in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Capital Activity</div><div class="intel-cell-value">No public funding activity in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Hiring Signals</div><div class="intel-cell-value">Active accounting department hiring at B. Johnson and Associates, last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Expansion Signals</div><div class="intel-cell-value">No expansion signals in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Growth Trajectory</div><div class="intel-cell-value">Small multi-practice CPA firm; trajectory data not publicly available</div></div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div class="contact-inner">
+                <div class="contact-label">Work Email</div>
+                <div class="contact-value" id="c5-email">angie@brainerdcpa.com</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('angie@brainerdcpa.com', this)">Copy</button>
+            </div>
+            <div class="contact-item">
+              <div class="contact-inner">
+                <div class="contact-label">Mobile</div>
+                <div class="contact-value" id="c5-phone">+1 218 330 6692</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('+12183306692', this)">Copy</button>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div>
+              <div class="why-block-title">ICP Fit</div>
+              <div class="why-block-text">Angie is the firm manager and HR director at a small CPA firm that provides tax, payroll, audit, accounting, and advisory services. She is the person posting the accounting roles, managing the search, and simultaneously watching deadlines arrive while the seat is still open. External accounting capacity is the fastest solution to the problem she is coordinating right now, without waiting on a hire to become productive.</div>
+              <div class="fit-signal"><div class="fit-signal-label">Fit Signal</div>Firm manager handling hiring + multi-practice CPA firm = decision maker for outsourced capacity</div>
+            </div>
+            <div>
+              <div class="why-block-title">Connection Opportunity</div>
+              <div class="why-block-text">Angie has held office manager and firm administrator roles and moved into HR leadership. She thinks about staffing, operations, and firm-level coordination as a single system. A note that acknowledges the hiring activity - framed around the coordination burden, not the accounting services - will resonate more than a generic outreach. She is not the buyer of accounting services. She is the buyer of the solution to the hiring problem.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal</div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="cn5">Noticed B. Johnson and Associates has been hiring in accounting recently. Managing firm operations and HR through a capacity gap at a multi-practice firm takes real coordination. Happy to connect.</div>
+            <div class="char-count">192 characters</div>
+            <button class="copy-action-btn" onclick="copyElementText('cn5', this)">Copy Note</button>
+          </div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Outreach Email</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject</div>
+              <div class="email-subject-value" id="es5">B. Johnson's accounting hiring</div>
+              <div class="email-body" id="eb5">Noticed B. Johnson and Associates has been actively adding to the accounting function recently.
+
+As the person managing both firm operations and HR, you're typically the first to feel the pressure when client demand outpaces team capacity. Job postings take time. Onboarding takes longer. And the client deadlines still land on the same date. The gap between when a role is posted and when that person is fully productive is usually four to six weeks where something has to give.
+
+Julio provides outsourced accounting capacity for CPA firms in this position - bookkeeping, month-end close, reconciliations - integrated with your existing team and tools. Would 15 minutes make sense to see if there's a fit?</div>
+              <div class="email-meta">
+                <span class="email-word-count">~130 words</span>
+                <span class="email-safe-label">No pitch. No pressure.</span>
+              </div>
+            </div>
+            <button class="copy-action-btn" onclick="copyFullEmail('es5','eb5',this)">Copy Full Email</button>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">14-Day Nurture Sequence</div>
+          <div class="nurture-grid">
+            <div class="nurture-card">
+              <div class="nurture-day">Day 1</div>
+              <div class="nurture-action">Send Connection Note</div>
+              <div class="nurture-script">"Noticed B. Johnson and Associates has been hiring in accounting recently. Managing firm operations and HR through a capacity gap at a multi-practice firm takes real coordination. Happy to connect."</div>
+            </div>
+            <div class="nurture-card">
+              <div class="nurture-day">Day 7</div>
+              <div class="nurture-action">Value Drop</div>
+              <div class="nurture-script">"When a firm manager at a CPA firm is running both HR and operations during a hiring cycle, the search competes with the firm-level decisions that actually need your attention. Both slow down."</div>
+            </div>
+            <div class="nurture-card">
+              <div class="nurture-day">Day 14</div>
+              <div class="nurture-action">Diagnostic Question</div>
+              <div class="nurture-script">"Is the accounting search at B. Johnson on track, or is the capacity gap already showing up in delivery timelines before the new seat is filled?"</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="https://linkedin.com/in/ACoAAAi_1lUBKHIOmaw370X8qpQuUy5tm_KfunI" target="_blank" class="linkedin-btn" title="May require LinkedIn login">View on LinkedIn ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- PIPELINE MATH -->
+    <div class="pipeline-math">
+      <div class="pipeline-math-text">
+        <strong>5 buyers.</strong> Each running a US accounting firm with an active finance hiring signal in the last 90 days.<br>
+        Verified professional email on every profile. Connection note, outreach email, and 14-day nurture sequence ready on each card.<br>
+        <strong>This is one week of the full delivery.</strong>
+      </div>
+    </div>
+
+    <!-- VISUAL GRAPHICS SECTION -->
+    <div class="visuals-section">
+      <div class="visuals-header">
+        <div class="visuals-copy">
+          <h3>Visual Graphics Engine</h3>
+          <p>Every delivery includes finished visual assets matched to Julio's brand and content voice. Each post that requires a visual ships with a production-ready image, not a prompt to hand off.</p>
+          <ul class="visuals-list">
+            <li><span class="visuals-list-dot">&#10003;</span> Carousel slides with consistent brand layout</li>
+            <li><span class="visuals-list-dot">&#10003;</span> Post graphics for teaching and handraiser content</li>
+            <li><span class="visuals-list-dot">&#10003;</span> Standalone infographics for process or framework posts</li>
+            <li><span class="visuals-list-dot">&#10003;</span> PNG files ready for LinkedIn scheduling</li>
+          </ul>
+        </div>
+        <div class="visuals-tiles">
+          <div class="visual-tile carousel">
+            <div class="visual-tile-inner">
+              <div class="tile-accent-bar"></div>
+              <div class="tile-lines">
+                <div class="tile-line full"></div>
+                <div class="tile-line medium"></div>
+                <div class="tile-line short"></div>
+                <div class="tile-line medium"></div>
+              </div>
+            </div>
+            <div class="tile-label">Carousel Slide</div>
+          </div>
+          <div class="visual-tile post">
+            <div class="visual-tile-inner">
+              <div class="tile-accent-bar"></div>
+              <div class="tile-lines">
+                <div class="tile-line full"></div>
+                <div class="tile-line medium"></div>
+                <div class="tile-line short"></div>
+              </div>
+            </div>
+            <div class="tile-label">Post Graphic</div>
+          </div>
+          <div class="visual-tile infographic">
+            <div class="visual-tile-inner">
+              <div class="tile-accent-bar"></div>
+              <div class="tile-lines">
+                <div class="tile-line full"></div>
+                <div class="tile-line full"></div>
+                <div class="tile-line medium"></div>
+                <div class="tile-line short"></div>
+              </div>
+            </div>
+            <div class="tile-label">Infographic</div>
+          </div>
+        </div>
+      </div>
+      <div class="visuals-note">
+        <strong>Finished PNGs delivered every Monday.</strong> No tools, no prompts, no creative briefs to manage. The visual ships with the post.
+      </div>
+    </div>
+
+    <!-- CTA FOOTER -->
+    <div class="cta-footer">
+      <div class="cta-footer-headline">See What the Full System Looks Like for Your Practice</div>
+      <div class="cta-footer-subhead">This is a sample of five profiles. The full delivery includes 40 ICP-matched buyer profiles per month, 18 pieces of content in your voice, and finished visual assets - managed entirely by one operator, delivered every Monday.</div>
+      <a href="https://calendly.com/saurabh_zentro/30-min" target="_blank" class="cta-footer-btn">Book a 30-Min Walkthrough</a>
+      <div class="cta-footer-note">Cancel anytime · No agency handoff · Direct operator access</div>
+    </div>
+
+  </div>
+  <!-- END PIPELINE ENGINE -->
+
+
+  <!-- ============ CONTENT ENGINE ============ -->
+  <div id="content" class="view">
+
+    <div class="welcome-banner">
+      <div class="welcome-tag">Content Engine · Julio Alarcon</div>
+      <div class="welcome-text">
+        Two sample LinkedIn posts written in <strong>Julio's voice</strong>, extracted from his actual LinkedIn content and profile. A teaching post built around his core diagnostic insight on data structure. A handraiser post targeting the CPA firm capacity problem his buyers are actively feeling.
+      </div>
+    </div>
+
+    <div class="post-cards-grid">
+
+      <!-- TEACHING POST -->
+      <div class="post-card">
+        <div class="post-type-label">Teaching Post</div>
+        <div class="post-type-desc">Builds authority by diagnosing the structural problem behind a common frustration. Written in Julio's clinical, observational voice.</div>
+        <div class="post-text" id="post-teaching">Clean data and clear data are not the same thing.
+
+Most accounting systems have both connected and flowing.
+
+QuickBooks reconciles. Gusto syncs payroll. The ERP pushes to the GL.
+
+Everything is technically working.
+
+And yet, the month-end report still feels uncertain.
+
+Here's what's usually underneath that feeling:
+
+&#x2192; Revenue mapped to the wrong period
+&#x2192; Payroll sitting in a general cost bucket instead of by department
+&#x2192; Catch-up entries that fix the balance but not the logic
+&#x2192; Reports that clear a review but collapse under a real question
+
+The problem isn't the volume of data.
+
+It's that the data was never coded to a structure that reflects how the business actually works.
+
+When that's fixed, the reports don't just balance.
+
+They tell the truth.
+
+Comment BOOKS and I will send you a 5-step chart of accounts review you can run in under an hour.</div>
+        <div class="post-copy-wrap">
+          <button class="copy-action-btn" onclick="copyElementText('post-teaching', this)">Copy Post</button>
+        </div>
+      </div>
+
+      <!-- HANDRAISER POST -->
+      <div class="post-card">
+        <div class="post-type-label">Handraiser Post</div>
+        <div class="post-type-desc">Designed to drive self-identification from CPA firm owners dealing with workload pressure. Ends with a keyword-driven CTA.</div>
+        <div class="post-text" id="post-handraiser">Most CPA firms I speak with are not short on clients.
+
+They're short on capacity to serve the ones they have.
+
+Deadlines arrive at the same time every quarter.
+
+Staff carries the same workload they did six months ago, when the book of business was smaller.
+
+The clients expect the same turnaround.
+
+And something always slips.
+
+Not because the team isn't capable.
+
+Because there are not enough hours in the right week.
+
+This is the specific problem outsourced accounting support is built for.
+
+Not a replacement for your team.
+
+A reliable extension of it.
+
+When capacity matches demand, close cycles stop being a crisis.
+
+They become a process.
+
+If your firm is dealing with this right now, comment CAPACITY and I will show you how firms like yours have cleared the backlog without a new full-time hire.</div>
+        <div class="post-copy-wrap">
+          <button class="copy-action-btn" onclick="copyElementText('post-handraiser', this)">Copy Post</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- VISUAL GRAPHICS SECTION -->
+    <div class="visuals-section">
+      <div class="visuals-header">
+        <div class="visuals-copy">
+          <h3>Visual Graphics Engine</h3>
+          <p>Posts that perform better with a visual ship with one. Every carousel, infographic, or post graphic is produced in Julio's brand and ready to attach to the LinkedIn post at scheduling.</p>
+          <ul class="visuals-list">
+            <li><span class="visuals-list-dot">&#10003;</span> Visual brief generated per post that requires one</li>
+            <li><span class="visuals-list-dot">&#10003;</span> Final image rendered and delivered as PNG</li>
+            <li><span class="visuals-list-dot">&#10003;</span> Carousel slides produced individually and in sequence</li>
+            <li><span class="visuals-list-dot">&#10003;</span> No creative tools, no external designers needed</li>
+          </ul>
+        </div>
+        <div class="visuals-tiles">
+          <div class="visual-tile carousel">
+            <div class="visual-tile-inner">
+              <div class="tile-accent-bar"></div>
+              <div class="tile-lines">
+                <div class="tile-line full"></div>
+                <div class="tile-line medium"></div>
+                <div class="tile-line short"></div>
+                <div class="tile-line medium"></div>
+              </div>
+            </div>
+            <div class="tile-label">Carousel Slide</div>
+          </div>
+          <div class="visual-tile post">
+            <div class="visual-tile-inner">
+              <div class="tile-accent-bar"></div>
+              <div class="tile-lines">
+                <div class="tile-line full"></div>
+                <div class="tile-line medium"></div>
+                <div class="tile-line short"></div>
+              </div>
+            </div>
+            <div class="tile-label">Post Graphic</div>
+          </div>
+          <div class="visual-tile infographic">
+            <div class="visual-tile-inner">
+              <div class="tile-accent-bar"></div>
+              <div class="tile-lines">
+                <div class="tile-line full"></div>
+                <div class="tile-line full"></div>
+                <div class="tile-line medium"></div>
+                <div class="tile-line short"></div>
+              </div>
+            </div>
+            <div class="tile-label">Infographic</div>
+          </div>
+        </div>
+      </div>
+      <div class="visuals-note">
+        <strong>Every visual is production-ready on delivery day.</strong> No feedback loop, no revision cycle. The image ships with the post.
+      </div>
+    </div>
+
+    <!-- CTA FOOTER -->
+    <div class="cta-footer">
+      <div class="cta-footer-headline">This Is One Week of Full Delivery</div>
+      <div class="cta-footer-subhead">Five buyer profiles. Two posts. Production-ready visuals. Delivered every Monday at 9 AM. The full system covers 40 buyer profiles and 18 pieces of content per month, all in your voice, with no tools to manage on your end.</div>
+      <a href="https://calendly.com/saurabh_zentro/30-min" target="_blank" class="cta-footer-btn">Book a 30-Min Walkthrough</a>
+      <div class="cta-footer-note">Cancel anytime · Direct operator access · Monday Delivery Guarantee</div>
+    </div>
+
+  </div>
+  <!-- END CONTENT ENGINE -->
+
+</main>
+
+<script>
+// TAB SWITCHING
+function switchTab(tab, el) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById(tab).classList.add('active');
+
+  // Desktop tab btns
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  var dtab = document.getElementById('tab-' + tab);
+  if (dtab) dtab.classList.add('active');
+
+  // Sidebar nav
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  var snav = document.getElementById('nav-' + tab);
+  if (snav) snav.classList.add('active');
+
+  // Mobile pills
+  document.querySelectorAll('.mobile-tab-pill').forEach(p => p.classList.remove('active'));
+  if (el && el.classList.contains('mobile-tab-pill')) el.classList.add('active');
+}
+
+// CARD EXPAND/COLLAPSE
+function toggleCard(id) {
+  var card = document.getElementById(id);
+  card.classList.toggle('expanded');
+}
+
+// COPY TO CLIPBOARD
+function copyToClipboard(text, btn) {
+  var el = document.createElement('textarea');
+  el.value = text;
+  el.setAttribute('readonly', '');
+  el.style.position = 'absolute';
+  el.style.left = '-9999px';
+  document.body.appendChild(el);
+  el.select();
+  document.execCommand('copy');
+  document.body.removeChild(el);
+  var orig = btn.textContent;
+  btn.textContent = 'Copied.';
+  btn.classList.add('copied');
+  setTimeout(function() { btn.textContent = orig; btn.classList.remove('copied'); }, 2000);
+}
+
+function copyElementText(elementId, btn) {
+  var el = document.getElementById(elementId);
+  if (!el) return;
+  var charEl = el.querySelector('.char-count');
+  var text = el.textContent;
+  if (charEl) text = text.replace(charEl.textContent, '').trim();
+  copyToClipboard(text, btn);
+}
+
+function copyFullEmail(subjId, bodyId, btn) {
+  var subj = document.getElementById(subjId);
+  var body = document.getElementById(bodyId);
+  var text = 'Subject: ' + (subj ? subj.textContent.trim() : '') + '\n\n' + (body ? body.textContent.trim() : '');
+  copyToClipboard(text, btn);
+}
+</script>
+
+</body>
+</html>
