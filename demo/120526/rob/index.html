@@ -1,0 +1,1299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rob P. · Lead Demo · Pipelind</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#0A0A12;
+  --bg2:#12121E;
+  --bg3:#0E0E19;
+  --primary:#6A66A3;
+  --primary-light:#9B98C4;
+  --accent:#FF9900;
+  --success:#019047;
+  --success-light:#5AC88A;
+  --text:rgba(255,255,255,0.90);
+  --text-dim:rgba(255,255,255,0.72);
+  --text-muted:rgba(255,255,255,0.55);
+  --border:rgba(106,102,163,0.25);
+  --border-hover:rgba(106,102,163,0.55);
+  --hot:#FF4444;
+  --warm:#FF9900;
+}
+body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;min-height:100vh;}
+
+/* SIDEBAR */
+.sidebar{position:fixed;top:0;left:0;width:240px;height:100vh;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:24px 20px;z-index:100;}
+.sidebar-logo{font-family:'Space Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--primary-light);margin-bottom:28px;}
+.prospect-block{margin-bottom:32px;}
+.prospect-label{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px;}
+.prospect-name{font-size:17px;font-weight:800;color:var(--text);line-height:1.25;}
+.prospect-meta{font-family:'Space Mono',monospace;font-size:10px;color:var(--text-muted);letter-spacing:.06em;margin-top:4px;}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;cursor:pointer;margin-bottom:4px;font-size:13px;font-weight:600;color:var(--text-dim);transition:all .15s;border:1px solid transparent;}
+.nav-item:hover{background:rgba(106,102,163,0.10);color:var(--text);}
+.nav-item.active{background:rgba(106,102,163,0.15);color:var(--primary-light);border-color:var(--border);}
+.sidebar-footer{margin-top:auto;font-family:'Space Mono',monospace;font-size:10px;color:var(--text-muted);letter-spacing:.04em;line-height:1.8;}
+
+/* MOBILE TOP BAR */
+.mobile-topbar{display:none;position:sticky;top:0;z-index:200;background:var(--bg2);border-bottom:1px solid var(--border);padding:14px 16px;align-items:center;justify-content:space-between;}
+.mobile-logo{font-family:'Space Mono',monospace;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--primary-light);}
+.mobile-prospect-name{font-size:13px;font-weight:700;color:var(--text);}
+
+/* MOBILE TAB PILLS */
+.mobile-tabs{display:none;position:sticky;top:53px;z-index:199;background:var(--bg);border-bottom:1px solid var(--border);padding:10px 16px;gap:8px;}
+.mobile-tab-pill{padding:7px 16px;border-radius:20px;font-size:12px;font-weight:700;font-family:'Space Mono',monospace;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;border:1px solid var(--border);color:var(--text-muted);background:transparent;transition:all .15s;}
+.mobile-tab-pill.active{background:var(--primary);color:#fff;border-color:var(--primary);}
+
+/* MAIN */
+.main{margin-left:240px;padding:32px 36px;max-width:1140px;}
+
+/* DESKTOP TAB BAR */
+.tab-bar{position:sticky;top:0;z-index:50;background:var(--bg);border-bottom:1px solid var(--border);display:flex;margin:-32px -36px 32px;padding:0 36px;}
+.tab-btn{padding:14px 22px;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--text-muted);cursor:pointer;border:none;background:transparent;border-bottom:2px solid transparent;transition:all .15s;}
+.tab-btn.active{color:var(--primary-light);border-bottom-color:var(--primary);}
+
+/* WELCOME BANNER */
+.welcome-banner{background:linear-gradient(135deg,rgba(106,102,163,0.10) 0%,rgba(255,153,0,0.05) 100%);border:1px solid var(--border);border-radius:12px;padding:24px 28px;margin-bottom:28px;}
+.welcome-tag{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;}
+.welcome-text{font-size:14px;line-height:1.75;color:var(--text-dim);}
+.welcome-text strong{color:var(--text);font-weight:700;}
+
+/* ICP GRID */
+.icp-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:32px;}
+.icp-panel{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:22px 24px;}
+.panel-title{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:16px;}
+.icp-item{display:flex;justify-content:space-between;align-items:flex-start;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05);font-size:13px;}
+.icp-item:last-child{border-bottom:none;}
+.icp-label{color:var(--text-muted);font-size:12px;}
+.icp-value{color:var(--text);font-weight:600;text-align:right;max-width:60%;}
+.quality-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.quality-metric{background:rgba(106,102,163,0.08);border:1px solid var(--border);border-radius:8px;padding:14px 16px;text-align:center;}
+.quality-num{font-size:24px;font-weight:800;color:var(--primary-light);}
+.quality-label{font-family:'Space Mono',monospace;font-size:10px;color:var(--text-muted);letter-spacing:.06em;text-transform:uppercase;margin-top:4px;}
+.quality-note{font-size:12px;color:var(--text-muted);line-height:1.6;margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.05);}
+
+/* SECTION HEADER */
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.section-title{font-size:13px;font-weight:700;color:var(--text);font-family:'Space Mono',monospace;letter-spacing:.06em;text-transform:uppercase;}
+.section-count{font-family:'Space Mono',monospace;font-size:11px;color:var(--text-muted);letter-spacing:.06em;}
+
+/* LEAD CARDS */
+.lead-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;margin-bottom:20px;overflow:hidden;transition:border-color .15s;}
+.lead-card:hover{border-color:var(--border-hover);}
+.card-header{padding:18px 22px;cursor:pointer;display:flex;align-items:center;gap:14px;}
+.signal-badge{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:4px 10px;border-radius:20px;white-space:nowrap;flex-shrink:0;}
+.signal-badge.hot{background:rgba(255,68,68,0.15);color:var(--hot);border:1px solid rgba(255,68,68,0.30);}
+.signal-badge.warm{background:rgba(255,153,0,0.12);color:var(--warm);border:1px solid rgba(255,153,0,0.25);}
+.card-header-info{flex:1;min-width:0;}
+.lead-name{font-size:17px;font-weight:800;color:var(--text);line-height:1.2;}
+.lead-company{font-size:13px;color:var(--text-dim);margin-top:2px;}
+.why-now-line{font-size:12px;color:var(--accent);margin-top:5px;font-weight:600;}
+.expand-icon{color:var(--text-muted);font-size:18px;flex-shrink:0;transition:transform .2s;}
+.lead-card.expanded .expand-icon{transform:rotate(180deg);}
+.icp-fit-badge{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.10em;padding:4px 10px;border-radius:20px;background:rgba(1,144,71,0.15);color:var(--success-light);border:1px solid rgba(1,144,71,0.30);white-space:nowrap;flex-shrink:0;}
+.card-body{display:none;border-top:1px solid var(--border);}
+.lead-card.expanded .card-body{display:block;}
+
+/* IDENTITY STRIP */
+.identity-strip{display:flex;flex-wrap:wrap;gap:12px;padding:14px 22px;background:var(--bg3);border-bottom:1px solid var(--border);font-family:'Space Mono',monospace;font-size:11px;color:var(--text-muted);letter-spacing:.04em;}
+.identity-item a{color:var(--primary-light);text-decoration:none;}
+.identity-item a:hover{color:var(--text);}
+
+/* TAGS */
+.tag-row{display:flex;flex-wrap:wrap;gap:6px;padding:12px 22px;border-bottom:1px solid var(--border);}
+.tag{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:4px;}
+.tag.industry{background:rgba(106,102,163,0.15);color:var(--primary-light);}
+.tag.signal{background:rgba(255,153,0,0.12);color:var(--warm);}
+.tag.context{background:rgba(1,144,71,0.12);color:var(--success-light);}
+
+/* CARD SECTION */
+.card-section{padding:20px 22px;border-bottom:1px solid var(--border);}
+.card-section:last-child{border-bottom:none;}
+.card-section-title{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:14px;}
+
+/* SIGNAL INTELLIGENCE */
+.signal-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.signal-card{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:14px 16px;}
+.signal-type{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--accent);margin-bottom:5px;}
+.signal-timing{font-size:12px;font-weight:700;color:var(--text);margin-bottom:6px;}
+.signal-desc{font-size:12px;color:var(--text-dim);line-height:1.6;}
+
+/* INTELLIGENCE BRIEFING */
+.intel-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;}
+.intel-cell{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px 14px;}
+.intel-cell-label{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--text-muted);margin-bottom:7px;}
+.intel-cell-value{font-size:12px;color:var(--text-dim);line-height:1.5;}
+
+/* CONTACT DETAILS */
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.contact-item{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.contact-label{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--text-muted);margin-bottom:4px;}
+.contact-value{font-size:13px;font-weight:600;color:var(--text);word-break:break-all;}
+.contact-value.unavailable{color:var(--text-muted);font-weight:400;font-style:italic;}
+.copy-btn{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:5px 10px;border-radius:5px;border:1px solid var(--border);background:transparent;color:var(--text-muted);cursor:pointer;white-space:nowrap;flex-shrink:0;transition:all .15s;}
+.copy-btn:hover{border-color:var(--primary);color:var(--primary-light);}
+.copy-btn.copied{color:var(--success-light);border-color:var(--success);}
+
+/* WHY THIS LEAD */
+.why-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.why-block-title{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px;}
+.why-block-text{font-size:13px;color:var(--text-dim);line-height:1.75;}
+.fit-signal{background:rgba(1,144,71,0.10);border:1px solid rgba(1,144,71,0.25);border-radius:6px;padding:8px 12px;margin-top:10px;font-size:12px;color:var(--success-light);font-weight:600;}
+.fit-signal-label{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--success);margin-bottom:3px;}
+
+/* OUTREACH ARSENAL */
+.outreach-channel{margin-bottom:18px;}
+.outreach-channel:last-child{margin-bottom:0;}
+.outreach-channel-label{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--primary-light);margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+.connection-note{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:14px 16px;font-size:13px;color:var(--text-dim);line-height:1.7;font-style:italic;}
+.char-count{font-family:'Space Mono',monospace;font-size:9px;color:var(--text-muted);letter-spacing:.04em;margin-top:8px;}
+.email-block{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:16px 18px;}
+.email-subject-label{font-family:'Space Mono',monospace;font-size:9px;color:var(--text-muted);letter-spacing:.06em;margin-bottom:4px;}
+.email-subject-value{font-size:13px;font-weight:700;color:var(--text);margin-bottom:12px;}
+.email-body{font-size:13px;color:var(--text-dim);line-height:1.85;white-space:pre-line;}
+.email-meta{display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.06);}
+.email-word-count{font-family:'Space Mono',monospace;font-size:9px;color:var(--text-muted);letter-spacing:.04em;}
+.email-safe-label{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--success-light);}
+.copy-action-btn{display:inline-flex;align-items:center;gap:6px;margin-top:10px;font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;padding:7px 14px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--text-muted);cursor:pointer;transition:all .15s;}
+.copy-action-btn:hover{border-color:var(--primary);color:var(--primary-light);}
+.copy-action-btn.copied{color:var(--success-light);border-color:var(--success);}
+
+/* PROSPECT INTELLIGENCE */
+.intel-callout{background:rgba(255,153,0,0.07);border:1px solid rgba(255,153,0,0.25);border-radius:8px;padding:13px 16px;font-size:12px;color:var(--text-dim);line-height:1.65;}
+.intel-callout-label{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:5px;}
+
+/* NURTURE SEQUENCE */
+.nurture-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+.nurture-card{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:14px 16px;}
+.nurture-day{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--primary-light);margin-bottom:6px;}
+.nurture-action{font-size:13px;font-weight:700;color:var(--text);margin-bottom:8px;}
+.nurture-script{font-size:12px;color:var(--text-dim);line-height:1.65;font-style:italic;}
+
+/* CARD FOOTER */
+.card-footer{padding:12px 22px;background:var(--bg3);border-top:1px solid var(--border);display:flex;justify-content:flex-end;}
+.linkedin-btn{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:8px 16px;border-radius:6px;border:1px solid var(--border);color:var(--primary-light);text-decoration:none;transition:all .15s;display:inline-block;}
+.linkedin-btn:hover{border-color:var(--primary);background:rgba(106,102,163,0.10);}
+
+/* PIPELINE MATH */
+.pipeline-math{background:rgba(106,102,163,0.06);border:1px solid var(--border);border-radius:12px;padding:22px 28px;margin:28px 0;text-align:center;}
+.pipeline-math-text{font-size:15px;color:var(--text-dim);line-height:1.8;}
+.pipeline-math-text strong{color:var(--primary-light);font-weight:700;}
+
+/* VISUAL GRAPHICS */
+.visuals-section{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:28px 32px;margin:28px 0;}
+.visuals-header{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-bottom:24px;}
+.visuals-copy h3{font-size:18px;font-weight:800;color:var(--text);line-height:1.3;margin-bottom:12px;}
+.visuals-copy p{font-size:13px;color:var(--text-dim);line-height:1.75;margin-bottom:10px;}
+.visuals-list{list-style:none;margin-top:14px;}
+.visuals-list li{font-size:13px;color:var(--text-dim);padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.04);display:flex;gap:10px;}
+.visuals-list li:last-child{border-bottom:none;}
+.visuals-list-dot{color:var(--success-light);font-weight:700;flex-shrink:0;}
+.visuals-tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.visual-tile{border-radius:10px;overflow:hidden;}
+.visual-tile-inner{aspect-ratio:4/3;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px;}
+.visual-tile.carousel{background:linear-gradient(135deg,#1B2A4A 0%,#243655 100%);border:1px solid rgba(240,165,0,0.20);}
+.visual-tile.post{background:linear-gradient(135deg,#1B2A4A 0%,#1D2D47 100%);border:1px solid rgba(240,165,0,0.15);}
+.visual-tile.infographic{background:linear-gradient(135deg,#162238 0%,#1B2A4A 100%);border:1px solid rgba(240,165,0,0.10);}
+.tile-accent-bar{width:36px;height:3px;background:#F0A500;border-radius:2px;margin-bottom:12px;}
+.tile-lines{width:100%;}
+.tile-line{height:7px;background:rgba(245,240,232,0.15);border-radius:3px;margin-bottom:6px;}
+.tile-line.short{width:60%;}
+.tile-line.medium{width:80%;}
+.tile-line.full{width:100%;}
+.tile-label{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);text-align:center;margin-top:10px;padding:6px;background:var(--bg3);}
+.visuals-note{font-size:13px;color:var(--text-dim);text-align:center;margin-top:18px;padding-top:18px;border-top:1px solid var(--border);line-height:1.7;}
+.visuals-note strong{color:var(--text);}
+
+/* CTA FOOTER */
+.cta-footer{margin-top:36px;background:linear-gradient(135deg,rgba(255,153,0,0.08) 0%,rgba(106,102,163,0.06) 100%);border:1px solid rgba(255,153,0,0.30);border-radius:12px;padding:36px 40px;text-align:center;}
+.cta-footer-headline{font-size:22px;font-weight:800;color:var(--text);letter-spacing:-.01em;margin-bottom:14px;line-height:1.3;}
+.cta-footer-subhead{font-size:14px;color:var(--text-dim);line-height:1.8;max-width:680px;margin:0 auto 26px;}
+.cta-footer-btn{display:inline-block;background:var(--accent);color:var(--bg);padding:15px 34px;border-radius:8px;font-family:'Space Mono',monospace;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;text-decoration:none;transition:background .15s;margin-bottom:14px;}
+.cta-footer-btn:hover{background:#ffb340;}
+.cta-footer-note{font-family:'Space Mono',monospace;font-size:11px;color:var(--text-muted);letter-spacing:.04em;}
+
+/* POST CARDS */
+.post-cards-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:28px;}
+.post-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:24px 26px;}
+.post-type-label{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--primary-light);margin-bottom:6px;}
+.post-type-desc{font-size:11px;color:var(--text-muted);margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--border);line-height:1.5;}
+.post-text{font-size:13px;color:var(--text-dim);line-height:1.85;white-space:pre-line;}
+.post-cta-line{margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.06);font-size:12px;color:var(--accent);font-weight:600;}
+
+/* VIEWS */
+.view{display:none;}
+.view.active{display:block;}
+
+/* PERSONALISED BANNER */
+.personalised-banner{background:rgba(1,144,71,0.10);border:1px solid rgba(1,144,71,0.30);border-radius:8px;padding:8px 16px;display:inline-flex;align-items:center;gap:8px;margin-bottom:20px;font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--success-light);}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .sidebar{display:none;}
+  .mobile-topbar{display:flex;}
+  .mobile-tabs{display:flex;}
+  .main{margin-left:0;padding:16px;}
+  .tab-bar{display:none;}
+  .icp-grid{grid-template-columns:1fr;}
+  .signal-cards{grid-template-columns:1fr;}
+  .intel-grid{grid-template-columns:1fr 1fr;}
+  .contact-grid{grid-template-columns:1fr;}
+  .why-grid{grid-template-columns:1fr;}
+  .nurture-grid{grid-template-columns:1fr;}
+  .post-cards-grid{grid-template-columns:1fr;}
+  .visuals-header{grid-template-columns:1fr;}
+  .card-header{flex-wrap:wrap;gap:8px;}
+  .lead-name{font-size:15px;}
+  .cta-footer{padding:24px 20px;}
+  .cta-footer-btn{width:100%;text-align:center;display:block;}
+  .email-meta{flex-direction:column;align-items:flex-start;gap:8px;}
+}
+@media(max-width:480px){
+  .intel-grid{grid-template-columns:1fr;}
+  .visuals-tiles{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- MOBILE TOP BAR -->
+<div class="mobile-topbar">
+  <div class="mobile-logo">Pipelind</div>
+  <div class="mobile-prospect-name">Rob's Report</div>
+</div>
+
+<!-- MOBILE TAB PILLS -->
+<div class="mobile-tabs">
+  <button class="mobile-tab-pill active" onclick="showView('pipeline',this)">Pipeline Engine</button>
+  <button class="mobile-tab-pill" onclick="showView('content',this)">Content Engine</button>
+</div>
+
+<!-- DESKTOP SIDEBAR -->
+<nav class="sidebar">
+  <div class="sidebar-logo">Pipelind</div>
+  <div class="prospect-block">
+    <div class="prospect-label">Personalised For</div>
+    <div class="prospect-name">Rob P.</div>
+    <div class="prospect-meta">May 2026 · Lead Demo</div>
+  </div>
+  <div class="nav-item active" id="nav-pipeline" onclick="showView('pipeline',this)">Pipeline Engine</div>
+  <div class="nav-item" id="nav-content" onclick="showView('content',this)">Content Engine</div>
+  <div class="sidebar-footer">Personalised build<br>Real signal data<br>Sample of your full delivery</div>
+</nav>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="showView('pipeline',this)">Pipeline Engine</button>
+    <button class="tab-btn" onclick="showView('content',this)">Content Engine</button>
+  </div>
+
+  <!-- ===== PIPELINE ENGINE VIEW ===== -->
+  <div id="view-pipeline" class="view active">
+
+    <div class="personalised-banner">Personalised for Rob P.</div>
+
+    <div class="welcome-banner">
+      <div class="welcome-tag">Pipeline Engine · Sample Delivery</div>
+      <div class="welcome-text">
+        This report was built specifically for you, Rob. <strong>Five UK logistics and fulfilment CEOs and co-founders</strong>, each carrying an active operational signal from the last 90 days. Every card includes a verified direct contact, a ready-to-send outreach draft, and a day-by-day follow-up sequence. This is what one week of pipeline delivery looks like for a fractional COO in your space.
+      </div>
+    </div>
+
+    <div class="icp-grid">
+      <div class="icp-panel">
+        <div class="panel-title">Target Buyer Profile</div>
+        <div class="icp-item"><span class="icp-label">Buyer Title</span><span class="icp-value">CEO, Co-founder, Owner</span></div>
+        <div class="icp-item"><span class="icp-label">Company Stage</span><span class="icp-value">PE-backed, founder-led, scaling</span></div>
+        <div class="icp-item"><span class="icp-label">Company Size</span><span class="icp-value">50-500 employees</span></div>
+        <div class="icp-item"><span class="icp-label">Industries</span><span class="icp-value">Logistics, 3PL, fulfilment, freight</span></div>
+        <div class="icp-item"><span class="icp-label">Geography</span><span class="icp-value">United Kingdom</span></div>
+        <div class="icp-item"><span class="icp-label">Active Signal</span><span class="icp-value">Ops hiring, expansion, leadership change</span></div>
+      </div>
+      <div class="icp-panel">
+        <div class="panel-title">Sample Quality</div>
+        <div class="quality-grid">
+          <div class="quality-metric"><div class="quality-num">5/5</div><div class="quality-label">ICP Fit</div></div>
+          <div class="quality-metric"><div class="quality-num">5/5</div><div class="quality-label">Active Signal</div></div>
+          <div class="quality-metric"><div class="quality-num">4/5</div><div class="quality-label">Work Email</div></div>
+          <div class="quality-metric"><div class="quality-num">1/5</div><div class="quality-label">Mobile</div></div>
+        </div>
+        <div class="quality-note">All five companies showed at least one active operational signal in the last 90 days. Contacts verified against current employment records.</div>
+      </div>
+    </div>
+
+    <div class="section-header">
+      <div class="section-title">ICP-Matched Buyers</div>
+      <div class="section-count">5 of 40 monthly leads</div>
+    </div>
+
+    <!-- CARD 1: Neil Kuschel - InPost UK -->
+    <div class="lead-card expanded" id="card1">
+      <div class="card-header" onclick="toggleCard('card1')">
+        <span class="signal-badge warm">Warm</span>
+        <div class="card-header-info">
+          <div class="lead-name">Neil Kuschel</div>
+          <div class="lead-company">CEO UK · InPost UK · London, England</div>
+          <div class="why-now-line">Operations team actively growing · last 90 days · 201-500 employees · £25M-75M revenue</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit · YES</span>
+        <span class="expand-icon">&#9660;</span>
+      </div>
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item">CEO UK · InPost UK</span>
+          <span class="identity-item">London, England, UK</span>
+          <span class="identity-item">201-500 employees</span>
+          <span class="identity-item">£25M-75M revenue</span>
+          <span class="identity-item"><a href="https://inpost.co.uk" target="_blank">inpost.co.uk</a></span>
+        </div>
+        <div class="tag-row">
+          <span class="tag industry">Logistics</span>
+          <span class="tag industry">Last-Mile Delivery</span>
+          <span class="tag industry">Parcel Networks</span>
+          <span class="tag signal">Ops Hiring Active</span>
+          <span class="tag signal">Network Expansion</span>
+          <span class="tag context">201-500 Employees</span>
+          <span class="tag context">UK Operations</span>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Signal Intelligence</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Primary Signal</div>
+              <div class="signal-timing">Operations hiring · last 90 days</div>
+              <div class="signal-desc">InPost UK is actively growing its operations team as the automated parcel machine network continues its rapid UK rollout. Operational headcount is expanding in line with deployment pace.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">Secondary Signal</div>
+              <div class="signal-timing">Network expansion · ongoing</div>
+              <div class="signal-desc">UK parcel machine deployment accelerating across retail and residential locations. Each new location adds operational governance and service delivery complexity at scale.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing</div>
+          <div class="intel-grid">
+            <div class="intel-cell"><div class="intel-cell-label">Leadership Movement</div><div class="intel-cell-value">No leadership movement in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Capital Activity</div><div class="intel-cell-value">No public funding activity in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Hiring Signals</div><div class="intel-cell-value">Active operations department hiring in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Expansion Signals</div><div class="intel-cell-value">Continued APM network rollout across UK locations</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Growth Trajectory</div><div class="intel-cell-value">201-500 employees · £25M-75M revenue · rapid UK market expansion</div></div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div><div class="contact-label">Work Email</div><div class="contact-value">nkuschel@inpost.co.uk</div></div>
+              <button class="copy-btn" onclick="copyToClipboard('nkuschel@inpost.co.uk',this)">Copy</button>
+            </div>
+            <div class="contact-item">
+              <div><div class="contact-label">Mobile</div><div class="contact-value unavailable">Direct contact not on record</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div>
+              <div class="why-block-title">ICP Fit</div>
+              <div class="why-block-text">Neil leads InPost UK's full operational footprint across a rapidly expanding automated parcel machine network. The complexity of scaling multi-site logistics operations at this deployment pace is precisely the kind of structural challenge where fractional COO engagement delivers clearest value: governance cadence, operational decision rights, and cost-to-serve discipline before growth outpaces the operating model.</div>
+              <div class="fit-signal"><div class="fit-signal-label">Primary Fit Signal</div>Operations department actively growing while network deployment accelerates</div>
+            </div>
+            <div>
+              <div class="why-block-title">Connection Angle</div>
+              <div class="why-block-text">Rob's 25 years scaling multi-site logistics operations across GXO, Alliance Automotive, and Elovate maps directly to the operational challenges InPost UK is navigating. The specific track record across automated warehousing, governance cadence, and team depth at scale is the credibility that makes this outreach relevant rather than generic.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal</div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="note1">InPost UK's operational expansion is moving fast. Having scaled parcel machine networks at this pace, you're managing complexity most logistics leaders haven't encountered. Worth connecting with someone who has lived that across multi-site operations at scale.</div>
+            <div class="char-count">273 characters</div>
+            <button class="copy-action-btn" onclick="copyElementText('note1',this)">Copy Note</button>
+          </div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Outreach Email</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject</div>
+              <div class="email-subject-value" id="subj1">InPost UK's ops expansion</div>
+              <div class="email-body" id="body1">InPost UK is one of the most operationally complex builds in UK last-mile delivery right now. I noticed the operations team has been actively growing over the last couple of months, which tracks with what the network deployment pace demands.
+
+At that kind of expansion rate, the governance infrastructure often can't keep up with the commercial ambition. The gap tends to show up in operational leadership depth, cost-to-serve creep, or a tier-two management layer that's stretched too thin before it registers in the P&L.
+
+I work with logistics businesses at this stage as a fractional COO, typically stepping in around scale events to build the operating model the business needs rather than just adding headcount to the one it already has. Worth a 15-minute conversation to see if there's anything relevant?</div>
+              <div class="email-meta">
+                <span class="email-word-count">130 words</span>
+                <span class="email-safe-label">Zero buzzwords</span>
+              </div>
+              <button class="copy-action-btn" onclick="copyFullEmail('subj1','body1',this)">Copy Full Email</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Follow-Up Sequence</div>
+          <div class="nurture-grid">
+            <div class="nurture-card">
+              <div class="nurture-day">Day 1</div>
+              <div class="nurture-action">Connection Request</div>
+              <div class="nurture-script">"InPost UK's operational expansion is moving fast. Having scaled parcel machine networks at this pace, you're managing complexity most logistics leaders haven't encountered. Worth connecting with someone who has lived that across multi-site operations at scale."</div>
+            </div>
+            <div class="nurture-card">
+              <div class="nurture-day">Day 7</div>
+              <div class="nurture-action">Value Drop</div>
+              <div class="nurture-script">"InPost's APM network is one of the most capital-intensive operations builds in UK last-mile logistics right now. The governance model at that kind of deployment pace tends to be what either compounds or constrains what's been invested. Something worth watching as the network scales."</div>
+            </div>
+            <div class="nurture-card">
+              <div class="nurture-day">Day 14</div>
+              <div class="nurture-action">Diagnostic Question</div>
+              <div class="nurture-script">"At InPost UK's current growth stage, what's the bigger operational constraint: the infrastructure deployment pace, or the leadership layer below you keeping up with it?"</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <a href="https://linkedin.com/in/ACoAAAAiSq8B8xaw4ONmIhxKz5qPXNIwgwDqo3s" target="_blank" class="linkedin-btn" title="LinkedIn profile · may require login">View on LinkedIn</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 2: Graham Fagan - Fagan & Whalley -->
+    <div class="lead-card" id="card2">
+      <div class="card-header" onclick="toggleCard('card2')">
+        <span class="signal-badge warm">Warm</span>
+        <div class="card-header-info">
+          <div class="lead-name">Graham Fagan</div>
+          <div class="lead-company">CEO · Fagan & Whalley · Padiham, England</div>
+          <div class="why-now-line">Operations expansion signal · last 90 days · 201-500 employees · £25M-75M revenue</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit · YES</span>
+        <span class="expand-icon">&#9660;</span>
+      </div>
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item">CEO · Fagan & Whalley</span>
+          <span class="identity-item">Padiham, England, UK</span>
+          <span class="identity-item">201-500 employees</span>
+          <span class="identity-item">£25M-75M revenue</span>
+          <span class="identity-item"><a href="https://faganwhalley.co.uk" target="_blank">faganwhalley.co.uk</a></span>
+        </div>
+        <div class="tag-row">
+          <span class="tag industry">Road Transport</span>
+          <span class="tag industry">3PL</span>
+          <span class="tag industry">Freight</span>
+          <span class="tag signal">Ops Expansion Active</span>
+          <span class="tag signal">Modernisation Phase</span>
+          <span class="tag context">Family-Founded</span>
+          <span class="tag context">Six Generations</span>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Signal Intelligence</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Primary Signal</div>
+              <div class="signal-timing">Operations expansion · last 90 days</div>
+              <div class="signal-desc">Fagan & Whalley is actively investing in operational capacity, consistent with the business's stated transition from a traditional road transport model to a modern 3PL infrastructure.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">Context Signal</div>
+              <div class="signal-timing">5-year CEO tenure · Jan 2026 anniversary</div>
+              <div class="signal-desc">Graham has led the business for five years, overseeing a period of significant structural evolution. The modernisation agenda requires operational governance that matches the new infrastructure.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing</div>
+          <div class="intel-grid">
+            <div class="intel-cell"><div class="intel-cell-label">Leadership Movement</div><div class="intel-cell-value">No leadership movement in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Capital Activity</div><div class="intel-cell-value">No public funding activity in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Hiring Signals</div><div class="intel-cell-value">Active operations department hiring in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Expansion Signals</div><div class="intel-cell-value">Active expansion signals in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Growth Trajectory</div><div class="intel-cell-value">201-500 employees · £25M-75M revenue · six-generation 3PL actively modernising</div></div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div><div class="contact-label">Work Email</div><div class="contact-value">graham.fagan@faganwhalley.co.uk</div></div>
+              <button class="copy-btn" onclick="copyToClipboard('graham.fagan@faganwhalley.co.uk',this)">Copy</button>
+            </div>
+            <div class="contact-item">
+              <div><div class="contact-label">Mobile</div><div class="contact-value unavailable">Direct contact not on record</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div>
+              <div class="why-block-title">ICP Fit</div>
+              <div class="why-block-text">Graham leads a 90-year-old logistics business in active transition from a family-run road transport model to a structured modern 3PL. That structural shift, navigating from informally managed operations to governance-led delivery infrastructure, is one of the most operationally demanding phases any logistics CEO can manage. Rob's track record of going into complexity and leaving with better numbers is exactly the profile this conversation warrants.</div>
+              <div class="fit-signal"><div class="fit-signal-label">Primary Fit Signal</div>Operations expansion active while modernisation phase is underway</div>
+            </div>
+            <div>
+              <div class="why-block-title">Connection Angle</div>
+              <div class="why-block-text">Rob's background building standard work and governance cadence at multi-site UK logistics operations, including at GXO and Alliance Automotive, mirrors the exact structural challenge Fagan & Whalley is navigating. The family-business-to-modern-3PL transition is a credible anchor for the first conversation.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal</div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="note2">Six generations of logistics leadership at Fagan & Whalley, and now actively modernising into a structured 3PL. That transition from family-founded model to governance-led operations is one I know well. Thought it worth connecting given where the business is heading.</div>
+            <div class="char-count">258 characters</div>
+            <button class="copy-action-btn" onclick="copyElementText('note2',this)">Copy Note</button>
+          </div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Outreach Email</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject</div>
+              <div class="email-subject-value" id="subj2">Fagan & Whalley's next chapter</div>
+              <div class="email-body" id="body2">Six generations is an exceptional run for any logistics business, let alone a road transport firm actively modernising into a structured 3PL. I noticed the business has been investing in operational capacity recently.
+
+The transition from a family-run logistics model to a modern 3PL infrastructure is one of the most structurally complex things a logistics CEO can navigate. The decisions around governance cadence, decision rights, and the leadership layer below the owner tend to define whether the next decade compounds on the last or simply extends it.
+
+I work with logistics businesses at that transition point as a fractional COO. If there's a conversation worth having around where the operating model is heading at Fagan & Whalley, a 15-minute call would be a good starting point.</div>
+              <div class="email-meta">
+                <span class="email-word-count">132 words</span>
+                <span class="email-safe-label">Zero buzzwords</span>
+              </div>
+              <button class="copy-action-btn" onclick="copyFullEmail('subj2','body2',this)">Copy Full Email</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Follow-Up Sequence</div>
+          <div class="nurture-grid">
+            <div class="nurture-card">
+              <div class="nurture-day">Day 1</div>
+              <div class="nurture-action">Connection Request</div>
+              <div class="nurture-script">"Six generations of logistics leadership at Fagan & Whalley, and now actively modernising into a structured 3PL. That transition from family-founded model to governance-led operations is one I know well. Thought it worth connecting given where the business is heading."</div>
+            </div>
+            <div class="nurture-card">
+              <div class="nurture-day">Day 7</div>
+              <div class="nurture-action">Value Drop</div>
+              <div class="nurture-script">"Ninety-plus years in road transport and freight is unusual. Most family-founded logistics businesses at Fagan & Whalley's stage find the constraint isn't capability - it's the operating model structure that was built for a smaller business and hasn't been redesigned for what the modernisation requires."</div>
+            </div>
+            <div class="nurture-card">
+              <div class="nurture-day">Day 14</div>
+              <div class="nurture-action">Diagnostic Question</div>
+              <div class="nurture-script">"For a business at Fagan & Whalley's stage, six generations in and actively modernising, where does the most operational friction sit right now: the leadership layer, the site infrastructure, or the cost-to-serve model?"</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <a href="https://linkedin.com/in/ACoAAArHbggB2PtD8sKeInFXZVxNcFVC6ftFZv0" target="_blank" class="linkedin-btn" title="LinkedIn profile · may require login">View on LinkedIn</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 3: David Ramirez - Wonderpack.eco -->
+    <div class="lead-card" id="card3">
+      <div class="card-header" onclick="toggleCard('card3')">
+        <span class="signal-badge warm">Warm</span>
+        <div class="card-header-info">
+          <div class="lead-name">David Ramirez</div>
+          <div class="lead-company">Co-founder & CEO · Wonderpack.eco · Shoreham-by-Sea, England</div>
+          <div class="why-now-line">New facility signal · last 90 days · 51-200 employees · £10-25M revenue</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit · YES</span>
+        <span class="expand-icon">&#9660;</span>
+      </div>
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item">Co-founder & CEO · Wonderpack.eco</span>
+          <span class="identity-item">Shoreham-by-Sea, England, UK</span>
+          <span class="identity-item">51-200 employees</span>
+          <span class="identity-item">£10-25M revenue</span>
+          <span class="identity-item"><a href="https://wonderpack.eco" target="_blank">wonderpack.eco</a></span>
+        </div>
+        <div class="tag-row">
+          <span class="tag industry">3PL</span>
+          <span class="tag industry">eCommerce Fulfilment</span>
+          <span class="tag industry">Sustainable Logistics</span>
+          <span class="tag signal">New Facility Active</span>
+          <span class="tag signal">Ops Hiring Active</span>
+          <span class="tag context">Founder-Led</span>
+          <span class="tag context">5-Year Mark</span>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Signal Intelligence</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Primary Signal</div>
+              <div class="signal-timing">New facility · last 90 days</div>
+              <div class="signal-desc">Wonderpack.eco has added operational footprint in the last 90 days. At the 51-200 headcount stage in eCommerce fulfilment, facility expansion typically precedes the governance and operational model challenges that compound without structured intervention.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">Timing Signal</div>
+              <div class="signal-timing">5-year founder anniversary · May 2026</div>
+              <div class="signal-desc">David is approaching five years as co-founder and CEO of Wonderpack. The five-year mark in a founder-led 3PL is a natural inflection point: the operating model built for early-stage growth rarely scales cleanly to the next stage.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing</div>
+          <div class="intel-grid">
+            <div class="intel-cell"><div class="intel-cell-label">Leadership Movement</div><div class="intel-cell-value">No leadership movement in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Capital Activity</div><div class="intel-cell-value">No public funding activity in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Hiring Signals</div><div class="intel-cell-value">Active operations department hiring in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Expansion Signals</div><div class="intel-cell-value">New facility signal in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Growth Trajectory</div><div class="intel-cell-value">51-200 employees · £10-25M revenue · eco-focused 3PL at 5-year scaling inflection</div></div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div><div class="contact-label">Work Email</div><div class="contact-value">david.ramirez@wonderpack.eco</div></div>
+              <button class="copy-btn" onclick="copyToClipboard('david.ramirez@wonderpack.eco',this)">Copy</button>
+            </div>
+            <div class="contact-item">
+              <div><div class="contact-label">Mobile</div><div class="contact-value unavailable">Direct contact not on record</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div>
+              <div class="why-block-title">ICP Fit</div>
+              <div class="why-block-text">David co-founded and runs a UK eCommerce 3PL with a clear sustainability differentiation and an active expansion signal. The 51-200 headcount stage in fulfilment is precisely where founder-led operating models tend to hit their structural ceiling: throughput accuracy degrades, unit economics start creeping, and leadership bandwidth gets consumed by daily operations rather than growth. Rob's track record restoring operational performance in complex fulfilment environments is directly applicable here.</div>
+              <div class="fit-signal"><div class="fit-signal-label">Primary Fit Signal</div>New facility plus ops hiring active at the 5-year founder scaling inflection</div>
+            </div>
+            <div>
+              <div class="why-block-title">Connection Angle</div>
+              <div class="why-block-text">Rob's background at Elovate eFulfilment, where he led operational transformation in a PE-backed 3PL at exactly this scale, gives the outreach a specific and credible anchor. The methodology: restore control, strengthen execution, and build businesses that grow with discipline, maps directly to Wonderpack's current stage.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal</div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="note3">Wonderpack is doing something few 3PLs manage: building operational discipline alongside a genuine sustainability model. Five years in and clearly scaling. Would value connecting with a founder navigating that growth stage from the inside.</div>
+            <div class="char-count">232 characters</div>
+            <button class="copy-action-btn" onclick="copyElementText('note3',this)">Copy Note</button>
+          </div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Outreach Email</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject</div>
+              <div class="email-subject-value" id="subj3">Wonderpack's operational growth stage</div>
+              <div class="email-body" id="body3">Wonderpack is one of the more interesting 3PLs to watch in the UK right now. Five years in, with a clear sustainability thesis and an eCommerce fulfilment model that is genuinely differentiated. I noticed the business has been expanding its operational footprint recently.
+
+At the 51-200 headcount stage in fulfilment, the operating model that got the business here rarely scales cleanly to the next stage without structural work. The gap tends to show up in throughput accuracy, leadership bandwidth being absorbed by daily operations, or unit economics starting to creep.
+
+I work with founders at this exact stage as a fractional COO. Worth a 15-minute conversation if the operational build is something you are actively thinking about.</div>
+              <div class="email-meta">
+                <span class="email-word-count">122 words</span>
+                <span class="email-safe-label">Zero buzzwords</span>
+              </div>
+              <button class="copy-action-btn" onclick="copyFullEmail('subj3','body3',this)">Copy Full Email</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Follow-Up Sequence</div>
+          <div class="nurture-grid">
+            <div class="nurture-card">
+              <div class="nurture-day">Day 1</div>
+              <div class="nurture-action">Connection Request</div>
+              <div class="nurture-script">"Wonderpack is doing something few 3PLs manage: building operational discipline alongside a genuine sustainability model. Five years in and clearly scaling. Would value connecting with a founder navigating that growth stage from the inside."</div>
+            </div>
+            <div class="nurture-card">
+              <div class="nurture-day">Day 7</div>
+              <div class="nurture-action">Value Drop</div>
+              <div class="nurture-script">"Wonderpack's fifth anniversary this month is a good marker. Five years into a founder-led 3PL with a clear sustainability angle is further than most get. The inflection point at this stage is usually structural: what built the business here rarely scales it to the next level without redesigning the operating model."</div>
+            </div>
+            <div class="nurture-card">
+              <div class="nurture-day">Day 14</div>
+              <div class="nurture-action">Diagnostic Question</div>
+              <div class="nurture-script">"For a 3PL at Wonderpack's stage, eCommerce-focused with an active expansion, which operational constraint is taking the most founder bandwidth right now: throughput capacity, leadership depth, or unit economics?"</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <a href="https://linkedin.com/in/ACoAAAYCfu4Bz1xdbLGBqegVruXKf3-W2-UxmOA" target="_blank" class="linkedin-btn" title="LinkedIn profile · may require login">View on LinkedIn</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 4: Roger Sumner Rivers - Parcelhero -->
+    <div class="lead-card" id="card4">
+      <div class="card-header" onclick="toggleCard('card4')">
+        <span class="signal-badge warm">Warm</span>
+        <div class="card-header-info">
+          <div class="lead-name">Roger Sumner Rivers</div>
+          <div class="lead-company">CEO & Founder · Parcelhero · London, England</div>
+          <div class="why-now-line">Operations hiring active · last 90 days · 51-200 employees · £10-25M revenue</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit · YES</span>
+        <span class="expand-icon">&#9660;</span>
+      </div>
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item">CEO & Founder · Parcelhero</span>
+          <span class="identity-item">London, England, UK</span>
+          <span class="identity-item">51-200 employees</span>
+          <span class="identity-item">£10-25M revenue</span>
+          <span class="identity-item"><a href="https://parcelhero.com" target="_blank">parcelhero.com</a></span>
+        </div>
+        <div class="tag-row">
+          <span class="tag industry">Parcel Delivery</span>
+          <span class="tag industry">Courier Aggregation</span>
+          <span class="tag industry">Logistics Tech</span>
+          <span class="tag signal">Ops Hiring Active</span>
+          <span class="tag context">Founder-Led · 23 Years</span>
+          <span class="tag context">51-200 Employees</span>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Signal Intelligence</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Primary Signal</div>
+              <div class="signal-timing">Operations hiring · last 90 days</div>
+              <div class="signal-desc">Parcelhero has been actively growing its operations team in the last 90 days. At 23 years in, operations headcount growth typically signals a scaling moment, a service expansion, or a constraint in the existing operational model that additional resource is being used to address.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">Context Signal</div>
+              <div class="signal-timing">23-year founder tenure · Jan 2026 anniversary</div>
+              <div class="signal-desc">Roger has led Parcelhero from founding. At that tenure and this scale, the operational infrastructure has been built incrementally rather than designed for the business as it now stands. This is the most common structural pattern in founder-led logistics at the 51-200 headcount stage.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing</div>
+          <div class="intel-grid">
+            <div class="intel-cell"><div class="intel-cell-label">Leadership Movement</div><div class="intel-cell-value">No leadership movement in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Capital Activity</div><div class="intel-cell-value">No public funding activity in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Hiring Signals</div><div class="intel-cell-value">Active operations department hiring in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Expansion Signals</div><div class="intel-cell-value">No expansion signals in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Growth Trajectory</div><div class="intel-cell-value">51-200 employees · £10-25M revenue · 23-year founder-led UK parcel aggregator</div></div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div><div class="contact-label">Work Email</div><div class="contact-value">roger@parcelhero.com</div></div>
+              <button class="copy-btn" onclick="copyToClipboard('roger@parcelhero.com',this)">Copy</button>
+            </div>
+            <div class="contact-item">
+              <div><div class="contact-label">Mobile</div><div class="contact-value unavailable">Direct contact not on record</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div>
+              <div class="why-block-title">ICP Fit</div>
+              <div class="why-block-text">Roger has built Parcelhero over 23 years into a recognised UK courier aggregation platform. The operational infrastructure at that tenure level has typically evolved in layers rather than been designed for the business as it currently stands. At 51-200 headcount with active operations hiring, the gap between what the commercial model demands and what the operational model can deliver is a predictable pressure point. Rob's track record identifying and resolving exactly that gap is the core offer.</div>
+              <div class="fit-signal"><div class="fit-signal-label">Primary Fit Signal</div>Ops hiring active at 23-year founder-led business, classic incremental ops build signal</div>
+            </div>
+            <div>
+              <div class="why-block-title">Connection Angle</div>
+              <div class="why-block-text">Rob's background managing multi-carrier logistics operations, including performance improvement work across UK-wide distribution networks, gives the conversation specific credibility. The focus on cost-to-serve, carrier and materials handling frameworks, and leadership depth below the founder level maps directly to what Parcelhero's stage requires.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal</div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="note4">Twenty-three years building Parcelhero is a track record most logistics founders don't reach. The operational complexity at that tenure and that scale is significant. Worth connecting with someone whose background sits in exactly that territory.</div>
+            <div class="char-count">239 characters</div>
+            <button class="copy-action-btn" onclick="copyElementText('note4',this)">Copy Note</button>
+          </div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Outreach Email</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject</div>
+              <div class="email-subject-value" id="subj4">Parcelhero's operations layer</div>
+              <div class="email-body" id="body4">Twenty-three years building Parcelhero from the ground up is a track record that speaks for itself. I noticed the operations team has been actively growing over the last few months.
+
+At that tenure and that scale, the operational infrastructure has usually been built incrementally rather than designed for what the business is currently becoming. Most founder-led logistics businesses at the 51-200 headcount stage reach a point where the gap between what commercial can sell and what operations can deliver becomes the primary constraint.
+
+I work with founders and CEOs in logistics and fulfilment as a fractional COO, typically around periods where the operating model needs to be rebuilt rather than simply expanded. Worth a 15-minute conversation if that is a live question at Parcelhero.</div>
+              <div class="email-meta">
+                <span class="email-word-count">125 words</span>
+                <span class="email-safe-label">Zero buzzwords</span>
+              </div>
+              <button class="copy-action-btn" onclick="copyFullEmail('subj4','body4',this)">Copy Full Email</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Follow-Up Sequence</div>
+          <div class="nurture-grid">
+            <div class="nurture-card">
+              <div class="nurture-day">Day 1</div>
+              <div class="nurture-action">Connection Request</div>
+              <div class="nurture-script">"Twenty-three years building Parcelhero is a track record most logistics founders don't reach. The operational complexity at that tenure and that scale is significant. Worth connecting with someone whose background sits in exactly that territory."</div>
+            </div>
+            <div class="nurture-card">
+              <div class="nurture-day">Day 7</div>
+              <div class="nurture-action">Value Drop</div>
+              <div class="nurture-script">"Parcelhero's model, aggregating carriers and competing on service in the UK courier market, requires a very specific operational architecture. At 23 years in, that infrastructure has likely been built in layers. Most founder-led logistics businesses at this tenure reach a point where the operational layer becomes the limiting factor on commercial growth."</div>
+            </div>
+            <div class="nurture-card">
+              <div class="nurture-day">Day 14</div>
+              <div class="nurture-action">Diagnostic Question</div>
+              <div class="nurture-script">"At Parcelhero's current stage, is the primary operational constraint on the service proposition sitting in carrier management, the internal operations layer, or the cost structure on delivery?"</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <a href="https://linkedin.com/in/ACoAAAQYi70B9ZcRtESX0tFaFhMv_QltT3puqnU" target="_blank" class="linkedin-btn" title="LinkedIn profile · may require login">View on LinkedIn</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 5: Jay Rogerson - Response-Able Solutions -->
+    <div class="lead-card" id="card5">
+      <div class="card-header" onclick="toggleCard('card5')">
+        <span class="signal-badge warm">Warm</span>
+        <div class="card-header-info">
+          <div class="lead-name">Jay Rogerson</div>
+          <div class="lead-company">CEO · Response-Able Solutions Ltd · Nottingham, England</div>
+          <div class="why-now-line">New CEO role (from Commercial Director) · ops hiring active · last 90 days · 51-200 employees</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit · YES</span>
+        <span class="expand-icon">&#9660;</span>
+      </div>
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item">CEO · Response-Able Solutions Ltd</span>
+          <span class="identity-item">Nottingham, England, UK</span>
+          <span class="identity-item">51-200 employees</span>
+          <span class="identity-item">£10-25M revenue</span>
+          <span class="identity-item"><a href="https://responseablesolutions.co.uk" target="_blank">responseablesolutions.co.uk</a></span>
+        </div>
+        <div class="tag-row">
+          <span class="tag industry">Vehicle Delivery</span>
+          <span class="tag industry">Motor Trade Logistics</span>
+          <span class="tag industry">Transport Solutions</span>
+          <span class="tag signal">New CEO Role · July 2025</span>
+          <span class="tag signal">Ops Hiring Active</span>
+          <span class="tag context">Role Change: Commercial Director > CEO</span>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Signal Intelligence</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Primary Signal</div>
+              <div class="signal-timing">Ops hiring · last 90 days</div>
+              <div class="signal-desc">Response-Able Solutions has been actively growing its operations team in the last 90 days. Combined with a new CEO in the seat, the operations hiring signal suggests the business is at a structural inflection: a new leader building out the team needed to match the growth ambition.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">Prospect Intelligence</div>
+              <div class="signal-timing">Role change · approximately 10 months ago</div>
+              <div class="signal-desc">Jay stepped up from Commercial Director to CEO at Response-Able approximately 10 months ago. The first 12-18 months in a new CEO seat is the highest-leverage period for establishing the operating model. The decisions made now compound for years.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing</div>
+          <div class="intel-grid">
+            <div class="intel-cell"><div class="intel-cell-label">Leadership Movement</div><div class="intel-cell-value">CEO role change approximately 10 months ago · Commercial Director promoted to CEO</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Capital Activity</div><div class="intel-cell-value">No public funding activity in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Hiring Signals</div><div class="intel-cell-value">Active operations department hiring in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Expansion Signals</div><div class="intel-cell-value">No expansion signals in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Growth Trajectory</div><div class="intel-cell-value">51-200 employees · £10-25M revenue · UK motor trade and corporate vehicle delivery</div></div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Prospect Intelligence</div>
+          <div class="intel-callout">
+            <div class="intel-callout-label">Role Change Detected</div>
+            Jay Rogerson stepped into the CEO role at Response-Able Solutions approximately 10 months ago, having previously served as Commercial Director at the same business. The transition from commercial leadership to full operational accountability is one of the most structurally demanding role shifts in logistics. The operating model designed for the commercial director's vantage point rarely transfers cleanly to what a CEO needs to manage.
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div><div class="contact-label">Personal Email</div><div class="contact-value">jay.rogerson@gmail.com</div></div>
+              <button class="copy-btn" onclick="copyToClipboard('jay.rogerson@gmail.com',this)">Copy</button>
+            </div>
+            <div class="contact-item">
+              <div><div class="contact-label">Mobile</div><div class="contact-value">+44 7436 815089</div></div>
+              <button class="copy-btn" onclick="copyToClipboard('+447436815089',this)">Copy</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div>
+              <div class="why-block-title">ICP Fit</div>
+              <div class="why-block-text">Jay inherited full operational accountability approximately 10 months ago after building the commercial side of the business. The operating model he now owns was built under a different structural mandate. With operations hiring active and a new CEO still establishing his leadership baseline, this is precisely the window where fractional COO engagement has highest leverage: building the governance framework and operational discipline before the growth ambition outruns the infrastructure.</div>
+              <div class="fit-signal"><div class="fit-signal-label">Primary Fit Signal</div>New CEO 10 months in + active ops hiring = highest-leverage COO engagement window</div>
+            </div>
+            <div>
+              <div class="why-block-title">Connection Angle</div>
+              <div class="why-block-text">Rob's specific track record of stepping into newly complex leadership situations, including Elovate as board-appointed COO and Cristal Vista Group in post-acquisition integration, maps directly to what Jay is navigating. The angle is peer-level and specific: the commercial-to-CEO transition creates a predictable set of operational gaps that Rob's methodology is built to close.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal</div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="note5">Stepping into CEO at Response-Able after leading the commercial function is a significant transition. The operating model that worked from a commercial director's vantage point rarely transfers cleanly once you're accountable for the whole business. Worth connecting.</div>
+            <div class="char-count">255 characters</div>
+            <button class="copy-action-btn" onclick="copyElementText('note5',this)">Copy Note</button>
+          </div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Outreach Email</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject</div>
+              <div class="email-subject-value" id="subj5">New CEO chapter at Response-Able</div>
+              <div class="email-body" id="body5">Stepping into the CEO role at Response-Able after building the commercial function is a significant transition. The operating model that worked from a commercial director's vantage point looks very different once you are accountable for the whole business. I noticed the operations team has also been actively growing over the past few months.
+
+The first 18 months of a new CEO's tenure tend to be the highest-leverage period for getting the operating model right. Decisions around governance cadence, decision rights, and operational accountability taken now tend to compound for years either way.
+
+I work with logistics CEOs at this transition stage as a fractional COO. Worth a 15-minute conversation to see if there is a relevant overlap.</div>
+              <div class="email-meta">
+                <span class="email-word-count">123 words</span>
+                <span class="email-safe-label">Zero buzzwords</span>
+              </div>
+              <button class="copy-action-btn" onclick="copyFullEmail('subj5','body5',this)">Copy Full Email</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Follow-Up Sequence</div>
+          <div class="nurture-grid">
+            <div class="nurture-card">
+              <div class="nurture-day">Day 1</div>
+              <div class="nurture-action">Connection Request</div>
+              <div class="nurture-script">"Stepping into CEO at Response-Able after leading the commercial function is a significant transition. The operating model that worked from a commercial director's vantage point rarely transfers cleanly once you're accountable for the whole business. Worth connecting."</div>
+            </div>
+            <div class="nurture-card">
+              <div class="nurture-day">Day 7</div>
+              <div class="nurture-action">Value Drop</div>
+              <div class="nurture-script">"The transition from Commercial Director to CEO at Response-Able is a more significant structural shift than most incoming CEOs anticipate. The commercial skillset that built the revenue base doesn't automatically transfer to the operating model decisions a CEO needs to make. The first year in the seat tends to reveal which operational foundations are solid and which ones need rebuilding."</div>
+            </div>
+            <div class="nurture-card">
+              <div class="nurture-day">Day 14</div>
+              <div class="nurture-action">Diagnostic Question</div>
+              <div class="nurture-script">"Now you're 10 months into the CEO role at Response-Able, where does the biggest gap sit between where the business is and where you want it to be: the operations layer, the commercial model, or the leadership team below you?"</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <a href="https://linkedin.com/in/ACoAAA9MY9cB9_-GuNQTg3MXeXyg4gvlkn0UVrk" target="_blank" class="linkedin-btn" title="LinkedIn profile · may require login">View on LinkedIn</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- PIPELINE MATH -->
+    <div class="pipeline-math">
+      <div class="pipeline-math-text">
+        Full delivery includes <strong>40 ICP-matched buyer profiles per month</strong>, each carrying an active market signal from the last 90 days. That is <strong>10 profiles per week</strong>, deduplicated globally, with direct contact details and ready-to-send outreach on every card. This sample shows five.
+      </div>
+    </div>
+
+    <!-- VISUALS SECTION -->
+    <div class="visuals-section">
+      <div class="visuals-header">
+        <div class="visuals-copy">
+          <h3>Visual Graphics Engine</h3>
+          <p>Every delivery includes finished LinkedIn visuals produced specifically for your voice and your ICP. Each asset is built to stop the scroll and drive handraiser responses from the buyers on your target list.</p>
+          <ul class="visuals-list">
+            <li><span class="visuals-list-dot">+</span>Carousel slides with topic-specific copy and your brand palette</li>
+            <li><span class="visuals-list-dot">+</span>Post graphics paired to teaching and opinion posts</li>
+            <li><span class="visuals-list-dot">+</span>Standalone infographics for monthly deep-dive posts</li>
+          </ul>
+        </div>
+        <div>
+          <div class="visuals-tiles">
+            <div class="visual-tile carousel">
+              <div class="visual-tile-inner">
+                <div class="tile-accent-bar"></div>
+                <div class="tile-lines">
+                  <div class="tile-line full"></div>
+                  <div class="tile-line medium"></div>
+                  <div class="tile-line short"></div>
+                  <div class="tile-line medium"></div>
+                </div>
+              </div>
+              <div class="tile-label">Carousel</div>
+            </div>
+            <div class="visual-tile post">
+              <div class="visual-tile-inner">
+                <div class="tile-accent-bar"></div>
+                <div class="tile-lines">
+                  <div class="tile-line medium"></div>
+                  <div class="tile-line full"></div>
+                  <div class="tile-line short"></div>
+                </div>
+              </div>
+              <div class="tile-label">Post Graphic</div>
+            </div>
+            <div class="visual-tile infographic">
+              <div class="visual-tile-inner">
+                <div class="tile-accent-bar"></div>
+                <div class="tile-lines">
+                  <div class="tile-line full"></div>
+                  <div class="tile-line medium"></div>
+                  <div class="tile-line full"></div>
+                  <div class="tile-line short"></div>
+                </div>
+              </div>
+              <div class="tile-label">Infographic</div>
+            </div>
+          </div>
+          <div class="visuals-note">
+            <strong>Sample visual themes for Rob:</strong> Ops Complexity Timeline · Governance Cadence vs Headcount · 5 Signs Your Logistics Business Has Outgrown Its Operating Model
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA FOOTER -->
+    <div class="cta-footer">
+      <div class="cta-footer-headline">This is what one week of delivery looks like.</div>
+      <div class="cta-footer-subhead">Full delivery includes 40 buyer profiles per month, 18 pieces of LinkedIn content in your voice, and finished visuals. All of it lands in your inbox every Monday at 9 AM. Approximately 30 minutes of your time per week to review, approve, and act.</div>
+      <a href="https://calendly.com/saurabh_zentro/30-min" target="_blank" class="cta-footer-btn">Book a 30-Min Fit Call</a>
+      <div class="cta-footer-note">No commitment required · cancel anytime · direct access to Saurabh</div>
+    </div>
+
+  </div><!-- end pipeline view -->
+
+  <!-- ===== CONTENT ENGINE VIEW ===== -->
+  <div id="view-content" class="view">
+
+    <div class="personalised-banner">Personalised for Rob P.</div>
+
+    <div class="welcome-banner">
+      <div class="welcome-tag">Content Engine · Sample Delivery</div>
+      <div class="welcome-text">
+        Two sample LinkedIn posts written in your voice, Rob, derived from how you describe your work and methodology on your profile. <strong>A teaching post and a handraiser post</strong>, both built to generate conversations with the logistics and fulfilment CEOs you are targeting. Full delivery includes 12 posts, 2 long-form articles, 2 carousels, and 2 infographics per month.
+      </div>
+    </div>
+
+    <div class="post-cards-grid">
+      <!-- TEACHING POST -->
+      <div class="post-card">
+        <div class="post-type-label">Teaching Post</div>
+        <div class="post-type-desc">Explains a pattern from your methodology. Designed to generate peer-level engagement and position you as the operator who has seen this play out at scale.</div>
+        <div class="post-text">Most logistics founders respond to operational friction the same way.
+
+They hire.
+
+Add a site manager here. An extra shift supervisor there. A new ops director when things get bad enough.
+
+The headcount goes up. The problem stays.
+
+What they are usually dealing with is not a staffing gap. It is a governance gap.
+
+No tier review structure. No decision rights mapped below the leadership layer. No standard work across sites. Every location running its own version of the operating model.
+
+You can double the headcount and the friction doubles with it.
+
+The businesses that scale operations without losing margin do not start with more people. They start with the operating model. Decision rights, performance cadence, standard work, leadership accountability at every tier.
+
+Headcount follows structure. It does not create it.</div>
+        <div class="post-cta-line">Comment AUDIT and I will send you a five-question operational diagnostic built for logistics and fulfilment businesses at the 50-500 headcount stage.</div>
+      </div>
+
+      <!-- HANDRAISER POST -->
+      <div class="post-card">
+        <div class="post-type-label">Handraiser Post</div>
+        <div class="post-type-desc">Addresses the exact pain point of your target buyer. Designed to generate LEAD comments from qualified CEOs and founders at the right stage.</div>
+        <div class="post-text">The signal is not dramatic.
+
+It does not arrive as a crisis. It arrives as friction.
+
+The founder is approving decisions that should be made two levels below. Every site has its own way of doing things. The P&L looks fine but cost-to-serve is creeping. The leadership layer below you is capable but not autonomous.
+
+Most logistics CEOs recognise the feeling. Few diagnose the cause correctly.
+
+They think they need better systems. Or more senior hires. Or a new site.
+
+The actual constraint is structural. The operating model was built for a smaller business. Decision rights were never mapped. Governance cadence was never designed. Standard work was never embedded at tier two and tier three.
+
+The business has outgrown its infrastructure. Not its people.
+
+If you are leading a logistics or fulfilment business between 50 and 500 people and this description is accurate, comment LEAD below.
+
+I will send you five real buyer profiles from your ICP, each with an active market signal from the last 90 days.</div>
+        <div class="post-cta-line">Comment LEAD below.</div>
+      </div>
+    </div>
+
+    <!-- VISUALS SECTION (CONTENT ENGINE) -->
+    <div class="visuals-section">
+      <div class="visuals-header">
+        <div class="visuals-copy">
+          <h3>Visual Graphics Engine</h3>
+          <p>Every post that benefits from a visual gets one. Carousels, post graphics, and standalone infographics are produced monthly, paired to the content calendar, and delivered as finished PNG files ready to attach and schedule.</p>
+          <p>The design system is built for LinkedIn's feed: high contrast, minimal text density, and visual logic that holds up at thumbnail size without a caption to explain it.</p>
+          <ul class="visuals-list">
+            <li><span class="visuals-list-dot">+</span>2 carousels per month · slide-by-slide with copy and finished visuals</li>
+            <li><span class="visuals-list-dot">+</span>Post graphics paired to teaching and opinion posts as needed</li>
+            <li><span class="visuals-list-dot">+</span>2 standalone infographics per month for deep-dive content</li>
+          </ul>
+        </div>
+        <div>
+          <div class="visuals-tiles">
+            <div class="visual-tile carousel">
+              <div class="visual-tile-inner">
+                <div class="tile-accent-bar"></div>
+                <div class="tile-lines">
+                  <div class="tile-line full"></div>
+                  <div class="tile-line medium"></div>
+                  <div class="tile-line short"></div>
+                  <div class="tile-line medium"></div>
+                </div>
+              </div>
+              <div class="tile-label">Carousel</div>
+            </div>
+            <div class="visual-tile post">
+              <div class="visual-tile-inner">
+                <div class="tile-accent-bar"></div>
+                <div class="tile-lines">
+                  <div class="tile-line medium"></div>
+                  <div class="tile-line full"></div>
+                  <div class="tile-line short"></div>
+                </div>
+              </div>
+              <div class="tile-label">Post Graphic</div>
+            </div>
+            <div class="visual-tile infographic">
+              <div class="visual-tile-inner">
+                <div class="tile-accent-bar"></div>
+                <div class="tile-lines">
+                  <div class="tile-line full"></div>
+                  <div class="tile-line medium"></div>
+                  <div class="tile-line full"></div>
+                  <div class="tile-line short"></div>
+                </div>
+              </div>
+              <div class="tile-label">Infographic</div>
+            </div>
+          </div>
+          <div class="visuals-note">
+            <strong>Sample visual themes for Rob:</strong> 5 Signs Your Logistics Business Has Outgrown Its Operating Model · Governance Cadence vs Headcount: The Real Margin Driver · The Ops Complexity Timeline: 50 to 500 Employees
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA FOOTER -->
+    <div class="cta-footer">
+      <div class="cta-footer-headline">40 buyer profiles. 18 pieces of content. Every month.</div>
+      <div class="cta-footer-subhead">Done for you, in your voice, delivered every Monday. You review, approve, and schedule. Approximately 30 minutes per week. The pipeline and the content work together: the content surfaces the buyers, the pipeline tells you exactly who they are.</div>
+      <a href="https://calendly.com/saurabh_zentro/30-min" target="_blank" class="cta-footer-btn">Book a 30-Min Fit Call</a>
+      <div class="cta-footer-note">No commitment required · cancel anytime · direct access to Saurabh</div>
+    </div>
+
+  </div><!-- end content view -->
+
+</main>
+
+<script>
+function showView(viewName, clickedEl) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view-' + viewName).classList.add('active');
+
+  // desktop tab buttons
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  // mobile tab pills
+  document.querySelectorAll('.mobile-tab-pill').forEach(b => b.classList.remove('active'));
+  // sidebar nav
+  document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+
+  if (clickedEl) clickedEl.classList.add('active');
+
+  // also sync sidebar
+  const navEl = document.getElementById('nav-' + viewName);
+  if (navEl) navEl.classList.add('active');
+}
+
+function toggleCard(cardId) {
+  const card = document.getElementById(cardId);
+  card.classList.toggle('expanded');
+}
+
+function copyToClipboard(text, btn) {
+  const el = document.createElement('textarea');
+  el.value = text;
+  document.body.appendChild(el);
+  el.select();
+  document.execCommand('copy');
+  document.body.removeChild(el);
+  if (btn) {
+    btn.textContent = 'Copied.';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+  }
+}
+
+function copyElementText(elementId, btn) {
+  const el = document.getElementById(elementId);
+  if (!el) return;
+  const charCountEl = el.querySelector('.char-count');
+  let text = el.textContent;
+  if (charCountEl) text = text.replace(charCountEl.textContent, '').trim();
+  copyToClipboard(text, btn);
+}
+
+function copyFullEmail(subjId, bodyId, btn) {
+  const subj = document.getElementById(subjId);
+  const body = document.getElementById(bodyId);
+  const text = 'Subject: ' + (subj ? subj.textContent.trim() : '') + '\n\n' + (body ? body.textContent.trim() : '');
+  copyToClipboard(text, btn);
+}
+</script>
+</body>
+</html>
