@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Pipeline Engine · Call-Exclusive Offer · Pipelind</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0A0A12;
+      --surface:   #12121E;
+      --surface2:  #1A1A2E;
+      --purple:    #6A66A3;
+      --purple-lt: #8A87BE;
+      --amber:     #FF9900;
+      --green:     #019047;
+      --green-lt:  #10B981;
+      --text-90:   rgba(255,255,255,0.90);
+      --text-72:   rgba(255,255,255,0.72);
+      --text-55:   rgba(255,255,255,0.55);
+      --text-30:   rgba(255,255,255,0.30);
+      --border:    rgba(255,255,255,0.08);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text-90);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ── */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 32px;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      background: rgba(10,10,18,0.95);
+      backdrop-filter: blur(12px);
+      z-index: 100;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 800;
+      font-size: 14.5px;
+      color: var(--text-90);
+      text-decoration: none;
+      letter-spacing: -0.03em;
+    }
+
+    .nav-logo-icon {
+      width: 40px;
+      height: 40px;
+      background: transparent;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .nav-badge {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--amber);
+      background: rgba(255,153,0,0.10);
+      border: 1px solid rgba(255,153,0,0.25);
+      padding: 5px 12px;
+      border-radius: 4px;
+    }
+
+    /* ── LAYOUT ── */
+    .container {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    section { padding: 56px 0; }
+    section + section { padding-top: 0; }
+
+    /* ── HERO ── */
+    .hero {
+      padding-top: 64px;
+      padding-bottom: 48px;
+      text-align: center;
+    }
+
+    .hero-eyebrow {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--purple-lt);
+      margin-bottom: 20px;
+      display: block;
+    }
+
+    .hero h1 {
+      font-size: clamp(28px, 5vw, 42px);
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      color: var(--text-90);
+      margin-bottom: 20px;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      color: var(--purple-lt);
+    }
+
+    .hero-sub {
+      font-size: 17px;
+      color: var(--text-72);
+      line-height: 1.65;
+      max-width: 520px;
+      margin: 0 auto 36px;
+    }
+
+    /* ── PRICE BANNER ── */
+    .trial-banner {
+      background: linear-gradient(135deg, rgba(106,102,163,0.18) 0%, rgba(106,102,163,0.06) 100%);
+      border: 1px solid rgba(106,102,163,0.35);
+      border-radius: 12px;
+      padding: 28px 32px;
+      text-align: center;
+      margin-bottom: 48px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .trial-banner::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--purple), transparent);
+    }
+
+    .trial-price-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+
+    .trial-free {
+      font-size: 36px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--text-90);
+    }
+
+    .trial-then {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text-55);
+    }
+
+    .trial-desc {
+      font-size: 14px;
+      color: var(--text-72);
+      margin-top: 6px;
+    }
+
+    .trial-desc strong { color: var(--text-90); }
+
+    /* ── STAT ROW ── */
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 40px;
+    }
+
+    .stat-cell {
+      background: var(--surface);
+      padding: 20px 16px;
+      text-align: center;
+    }
+
+    .stat-num {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--text-90);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .stat-num span { color: var(--purple-lt); }
+
+    .stat-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      color: var(--text-55);
+      line-height: 1.4;
+    }
+
+    /* ── DELIVERY CARD ── */
+    .delivery-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px 32px;
+      margin-bottom: 40px;
+    }
+
+    .card-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-55);
+      margin-bottom: 16px;
+    }
+
+    .delivery-card h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-90);
+      margin-bottom: 16px;
+    }
+
+    .check-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .check-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 14.5px;
+      color: var(--text-72);
+      line-height: 1.55;
+    }
+
+    .check-list li::before {
+      content: '✓';
+      color: var(--green-lt);
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .check-list li strong { color: var(--text-90); }
+
+    /* ── NOT INCLUDED NOTE ── */
+    .not-included {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin-top: 20px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .not-included-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      color: var(--text-30);
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .not-included p {
+      font-size: 13px;
+      color: var(--text-30);
+      line-height: 1.5;
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 48px 0;
+    }
+
+    /* ── BONUS SECTION ── */
+    .bonus-header {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .bonus-header .eyebrow {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--amber);
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .bonus-header h2 {
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text-90);
+    }
+
+    .bonus-header p {
+      font-size: 14.5px;
+      color: var(--text-55);
+      margin-top: 8px;
+    }
+
+    .bonus-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px 32px;
+      margin-bottom: 16px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+
+    .bonus-card:hover { border-color: rgba(106,102,163,0.40); }
+
+    .bonus-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px;
+      height: 100%;
+      background: var(--amber);
+      border-radius: 3px 0 0 3px;
+    }
+
+    .bonus-num {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 8px;
+    }
+
+    .bonus-card h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-90);
+      margin-bottom: 10px;
+      line-height: 1.4;
+    }
+
+    .bonus-card p {
+      font-size: 14.5px;
+      color: var(--text-72);
+      line-height: 1.6;
+    }
+
+    .bonus-tag {
+      display: inline-block;
+      margin-top: 12px;
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      color: var(--green-lt);
+      background: rgba(16,185,129,0.08);
+      border: 1px solid rgba(16,185,129,0.20);
+      padding: 4px 10px;
+      border-radius: 4px;
+    }
+
+    /* ── GUARANTEE ── */
+    .guarantee-block {
+      background: rgba(1,144,71,0.08);
+      border: 1px solid rgba(1,144,71,0.25);
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin: 40px 0;
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    .guarantee-icon {
+      font-size: 24px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .guarantee-block h4 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--green-lt);
+      margin-bottom: 6px;
+    }
+
+    .guarantee-block p {
+      font-size: 14px;
+      color: var(--text-72);
+      line-height: 1.6;
+    }
+
+    /* ── CTA BLOCK ── */
+    .cta-block {
+      background: linear-gradient(135deg, rgba(106,102,163,0.14) 0%, rgba(10,10,18,0) 100%);
+      border: 1px solid rgba(106,102,163,0.30);
+      border-radius: 16px;
+      padding: 40px 32px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-block::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--purple), transparent);
+    }
+
+    .cta-block h2 {
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+
+    .cta-block p {
+      font-size: 14.5px;
+      color: var(--text-72);
+      margin-bottom: 28px;
+      max-width: 440px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .pricing-display {
+      margin-bottom: 28px;
+    }
+
+    .price-trial {
+      font-family: 'Space Mono', monospace;
+      font-size: 13px;
+      color: var(--purple-lt);
+      letter-spacing: 0.05em;
+      margin-bottom: 6px;
+    }
+
+    .price-main {
+      font-size: 40px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--text-90);
+      line-height: 1;
+    }
+
+    .price-main sub {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--text-55);
+      vertical-align: baseline;
+      margin-left: 4px;
+    }
+
+    .price-note {
+      font-size: 13px;
+      color: var(--text-55);
+      margin-top: 6px;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      background: var(--purple);
+      color: #fff;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      padding: 16px 36px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.18s, transform 0.12s;
+      letter-spacing: -0.01em;
+      width: 100%;
+      max-width: 380px;
+    }
+
+    .btn-primary:hover {
+      background: var(--purple-lt);
+      transform: translateY(-1px);
+    }
+
+    .btn-alt {
+      display: inline-block;
+      color: var(--text-55);
+      font-size: 13px;
+      margin-top: 14px;
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    .btn-alt:hover { color: var(--text-72); }
+
+    /* ── TRUST SIGNALS ── */
+    .trust-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 24px;
+    }
+
+    .trust-item {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      color: var(--text-55);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .trust-item::before {
+      content: '✓';
+      color: var(--green-lt);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 24px;
+      text-align: center;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .footer-links a {
+      font-size: 13px;
+      color: var(--text-55);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    .footer-links a:hover { color: var(--text-72); }
+
+    footer p {
+      font-size: 12px;
+      color: var(--text-30);
+      line-height: 1.7;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 480px) {
+      nav { padding: 16px 20px; }
+      .container { padding: 0 20px; }
+      .delivery-card, .bonus-card, .cta-block { padding: 22px 20px; }
+      .trial-banner { padding: 22px 20px; }
+      .guarantee-block { padding: 20px; flex-direction: column; gap: 10px; }
+      .stat-row { grid-template-columns: repeat(3, 1fr); }
+      .stat-num { font-size: 22px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="https://pipelind.com" class="nav-logo">
+      <span class="nav-logo-icon">
+        <svg viewBox="0 0 52 32" fill="none" xmlns="http://www.w3.org/2000/svg" width="40" height="40">
+          <circle cx="7" cy="16" r="6" fill="#6A66A3"/>
+          <circle cx="7" cy="16" r="3" fill="#fff" opacity="0.25"/>
+          <line x1="13" y1="16" x2="20" y2="16" stroke="#6A66A3" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="26" cy="16" r="5" fill="#6A66A3" opacity="0.6"/>
+          <line x1="31" y1="16" x2="37" y2="16" stroke="url(#nav_grad)" stroke-width="2.5" stroke-linecap="round"/>
+          <defs><linearGradient id="nav_grad" x1="31" y1="16" x2="37" y2="16" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#6A66A3"/><stop offset="100%" stop-color="#FF9900"/></linearGradient></defs>
+          <circle cx="45" cy="16" r="7" fill="#FF9900"/>
+          <circle cx="45" cy="16" r="10.5" stroke="#FF9900" stroke-width="1.2" opacity="0.35"/>
+          <circle cx="45" cy="16" r="2.5" fill="#fff" opacity="0.7"/>
+        </svg>
+      </span>
+      <span>Pipelin<span style="color:#FF9900;">d</span></span>
+    </a>
+    <span class="nav-badge">Pipeline Engine · Call Offer</span>
+  </nav>
+
+  <div class="container">
+
+    <!-- HERO -->
+    <div class="hero">
+      <span class="hero-eyebrow">For qualified prospects on today's call only</span>
+      <h1>Your pipeline.<br/>40 buyer profiles.<br/><em>Every Monday.</em></h1>
+      <p class="hero-sub">
+        The Pipelind Pipeline Engine — 40 ICP-matched buyer profiles per month, each flagged by an active hiring, funding, or leadership signal, with three call-exclusive bonuses not available on the standard subscription page.
+      </p>
+    </div>
+
+    <!-- PRICE BANNER -->
+    <div class="trial-banner">
+      <div class="trial-price-row">
+        <span class="trial-free">$497</span>
+        <span class="trial-then">/ month</span>
+      </div>
+      <p class="trial-desc">
+        <strong>Pipeline Engine only — no content included.</strong> Month-to-month subscription via PayPal. Cancel anytime. No notice period.
+      </p>
+    </div>
+
+    <!-- STAT ROW -->
+    <div class="stat-row">
+      <div class="stat-cell">
+        <div class="stat-num">40<span>/mo</span></div>
+        <div class="stat-label">Buyer profiles<br/>per month</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">9<span>AM</span></div>
+        <div class="stat-label">Monday delivery<br/>your local time</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">30<span>min</span></div>
+        <div class="stat-label">Your time<br/>per week</div>
+      </div>
+    </div>
+
+    <!-- DELIVERY CARD -->
+    <div class="delivery-card">
+      <div class="card-label">Every Monday · 9 AM your local time</div>
+      <h3>What lands in your inbox each week</h3>
+      <ul class="check-list">
+        <li><strong>10 ICP-matched buyer profiles</strong> — each flagged by an active hiring, funding, or leadership signal. Custom Intelligence on why each person fits your methodology this week. Personalised connection note ready to send.</li>
+        <li><strong>15-minute strategy Loom every Monday</strong> — who these profiles are, what signal triggered each one, and what to watch for when you reach out.</li>
+        <li><strong>Monthly 30-minute optimisation call</strong> — review which profiles led to conversations, refine ICP filters, adjust targeting for the next month.</li>
+        <li><strong>Direct access to Saurabh</strong> — not an account manager. 24-hour response, Monday to Friday, via Slack or WhatsApp.</li>
+        <li><strong>Full onboarding included</strong> — 60-minute ICP extraction session. Vibe Prospecting filters locked to your practice. First delivery within 7 days.</li>
+      </ul>
+
+      <div class="not-included">
+        <span class="not-included-label">Not included</span>
+        <p>LinkedIn posts, articles, carousels, and infographics are not part of this plan. This plan delivers the Pipeline Engine only — buyer identification, signal analysis, and connection notes. Content engine available as an upgrade.</p>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- BONUS STACK -->
+    <div class="bonus-header">
+      <span class="eyebrow">Call-exclusive · not on the website</span>
+      <h2>Three bonuses included when you subscribe today</h2>
+      <p>These are not on the standard subscription page. Available only to prospects who subscribe on today's call.</p>
+    </div>
+
+    <div class="bonus-card">
+      <div class="bonus-num">Bonus 01</div>
+      <h3>Full LinkedIn Profile Audit + Rewrite Recommendations (PDF)</h3>
+      <p>
+        A written diagnostic of your current LinkedIn profile across headline, About, Featured, and Experience sections. Includes a scored breakdown of what is working against your positioning and a full rewrite recommendation for each section — specific to your fractional practice and ICP. Not a template. Not a checklist. Written for your profile, your offer, and your buyer.
+      </p>
+      <span class="bonus-tag">Delivered within 48 hours of onboarding</span>
+    </div>
+
+    <div class="bonus-card">
+      <div class="bonus-num">Bonus 02</div>
+      <h3>Custom 90-Day Content Blueprint (PDF)</h3>
+      <p>
+        Built directly from your onboarding session. Maps your specific content pillars to your ICP's active pain points. Includes 12 post angle ideas per pillar and a recommended posting sequence for the first 90 days. You enter month 1 with a full content strategy document — ready to execute whenever you are. Every angle is derived from the methodology, positioning, and buyer signals captured in your onboarding session.
+      </p>
+      <span class="bonus-tag">Delivered in week 1 alongside your first Monday package</span>
+    </div>
+
+    <div class="bonus-card">
+      <div class="bonus-num">Bonus 03</div>
+      <h3>ICP DM Conversion Playbook (PDF)</h3>
+      <p>
+        The 40 buyer profiles give you 40 names each month. This playbook tells you exactly what to say when they respond. Five conversation scripts written in your voice, for your buyer: responding to someone who engaged with a post, following up after a connection request accepts, handling an inbound "tell me more", converting a referral introduction, and re-engaging a prospect who went quiet. Every script matched to your ICP and offer.
+      </p>
+      <span class="bonus-tag">Delivered in week 1 alongside your first Monday package</span>
+    </div>
+
+    <!-- GUARANTEE -->
+    <div class="guarantee-block">
+      <div class="guarantee-icon">✓</div>
+      <div>
+        <h4>Monday Delivery Guarantee</h4>
+        <p>Your full package lands in your inbox by 9 AM your local time every Monday. If it does not arrive on time, that week is free. No exceptions. No excuses.</p>
+      </div>
+    </div>
+
+    <!-- CTA BLOCK -->
+    <div class="cta-block">
+      <h2>Start your Pipeline Engine today</h2>
+      <p>Subscribe now and your first Monday delivery — 10 ICP-matched buyer profiles with active buying signals — arrives within 7 days of your onboarding session.</p>
+
+      <div class="pricing-display">
+        <div class="price-trial">Pipeline Engine · month-to-month</div>
+        <div class="price-main">$497<sub>/ month</sub></div>
+        <div class="price-note">Cancel anytime · No notice period · Monday Delivery Guarantee</div>
+      </div>
+
+      <a
+        href="https://www.paypal.com/webapps/billing/plans/subscribe?plan_id=P-98G37975CA473483FNH4K4BI"
+        class="btn-primary"
+        target="_blank"
+        rel="noopener"
+      >
+        Subscribe via PayPal
+      </a>
+
+      <br/>
+      <a href="mailto:saurabh@pipelind.com" class="btn-alt">
+        Questions before subscribing? Email Saurabh →
+      </a>
+
+      <div class="trust-row">
+        <span class="trust-item">$497 / month</span>
+        <span class="trust-item">Cancel anytime</span>
+        <span class="trust-item">No notice period</span>
+        <span class="trust-item">Delivery guarantee</span>
+        <span class="trust-item">Direct operator access</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-links">
+      <a href="https://pipelind.com">pipelind.com</a>
+      <a href="mailto:saurabh@pipelind.com">saurabh@pipelind.com</a>
+      <a href="https://calendly.com/saurabh_zentro/30-min">Book a call</a>
+    </div>
+    <p>
+      By subscribing you agree to month-to-month billing via PayPal. Cancel anytime from your PayPal account — no notice period, no exit fees. First Monday delivery within 7 days of the onboarding session. This offer is available exclusively to prospects on a scheduled call with Saurabh M. and is not listed publicly.
+    </p>
+    <p style="margin-top:12px;">© 2026 Pipelind · Saurabh M.</p>
+  </footer>
+
+</body>
+</html>
