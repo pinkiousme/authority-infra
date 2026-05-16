@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stephen R. · Lead Demo · WayFinder Finance</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #0A0A12; color: rgba(255,255,255,0.90); font-family: 'Plus Jakarta Sans', sans-serif; min-height: 100vh; }
+:root {
+  --bg: #0A0A12; --bg2: #12121E; --bg3: #0E0E19;
+  --primary: #6A66A3; --primary-light: #9B98C4;
+  --accent: #FF9900; --success: #019047; --success-light: #5AC88A;
+  --text: rgba(255,255,255,0.90); --text-dim: rgba(255,255,255,0.72); --text-muted: rgba(255,255,255,0.55);
+  --border: rgba(106,102,163,0.25); --border-hover: rgba(106,102,163,0.55);
+  --hot: #FF4444; --warm: #FF9900;
+}
+
+/* ── SIDEBAR ── */
+.sidebar {
+  position: fixed; top: 0; left: 0; width: 240px; height: 100vh;
+  background: var(--bg2); border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; padding: 24px 20px; z-index: 100;
+}
+.sidebar-logo { font-family: 'Space Mono', monospace; font-size: 13px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--primary-light); margin-bottom: 28px; }
+.prospect-block { margin-bottom: 32px; }
+.prospect-label { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px; }
+.prospect-name { font-size: 17px; font-weight: 800; color: var(--text); line-height: 1.25; }
+.prospect-meta { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--text-muted);
+  letter-spacing: .06em; margin-top: 4px; }
+.nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 8px;
+  cursor: pointer; margin-bottom: 4px; font-size: 13px; font-weight: 600; color: var(--text-dim);
+  transition: all .15s; border: 1px solid transparent; }
+.nav-item:hover { background: rgba(106,102,163,0.10); color: var(--text); }
+.nav-item.active { background: rgba(106,102,163,0.15); color: var(--primary-light); border-color: var(--border); }
+.sidebar-footer { margin-top: auto; font-family: 'Space Mono', monospace; font-size: 10px;
+  color: var(--text-muted); letter-spacing: .04em; line-height: 1.8; }
+
+/* ── MOBILE TOPBAR ── */
+.mobile-topbar {
+  display: none; position: sticky; top: 0; z-index: 200;
+  background: var(--bg2); border-bottom: 1px solid var(--border);
+  padding: 14px 16px; align-items: center; justify-content: space-between;
+}
+.mobile-logo { font-family: 'Space Mono', monospace; font-size: 12px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--primary-light); }
+.mobile-prospect-name { font-size: 13px; font-weight: 700; color: var(--text); }
+
+/* ── MOBILE TABS ── */
+.mobile-tabs {
+  display: none; position: sticky; top: 53px; z-index: 199;
+  background: var(--bg); border-bottom: 1px solid var(--border);
+  padding: 10px 16px; gap: 8px;
+}
+.mobile-tab-pill { padding: 7px 16px; border-radius: 20px; font-size: 12px; font-weight: 700;
+  font-family: 'Space Mono', monospace; letter-spacing: .06em; text-transform: uppercase;
+  cursor: pointer; border: 1px solid var(--border); color: var(--text-muted); background: transparent;
+  transition: all .15s; }
+.mobile-tab-pill.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+/* ── MAIN ── */
+.main { margin-left: 240px; padding: 32px 36px; max-width: 1140px; }
+.tab-bar {
+  position: sticky; top: 0; z-index: 50; background: var(--bg);
+  border-bottom: 1px solid var(--border); display: flex; margin: -32px -36px 32px; padding: 0 36px;
+}
+.tab-btn { padding: 14px 22px; font-family: 'Space Mono', monospace; font-size: 11px;
+  font-weight: 700; letter-spacing: .10em; text-transform: uppercase; color: var(--text-muted);
+  cursor: pointer; border: none; background: transparent; border-bottom: 2px solid transparent;
+  transition: all .15s; }
+.tab-btn.active { color: var(--primary-light); border-bottom-color: var(--primary); }
+
+/* ── WELCOME BANNER ── */
+.welcome-banner { background: linear-gradient(135deg, rgba(106,102,163,0.10) 0%, rgba(255,153,0,0.05) 100%);
+  border: 1px solid var(--border); border-radius: 12px; padding: 24px 28px; margin-bottom: 28px; }
+.welcome-tag { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+.welcome-text { font-size: 14px; line-height: 1.75; color: var(--text-dim); }
+.welcome-text strong { color: var(--text); font-weight: 700; }
+
+/* ── ICP PANEL GRID ── */
+.icp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 32px; }
+.icp-panel { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 22px 24px; }
+.panel-title { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 16px; }
+.icp-item { display: flex; justify-content: space-between; align-items: flex-start;
+  padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 13px; }
+.icp-item:last-child { border-bottom: none; }
+.icp-label { color: var(--text-muted); font-size: 12px; }
+.icp-value { color: var(--text); font-weight: 600; text-align: right; max-width: 60%; }
+.quality-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.quality-metric { background: rgba(106,102,163,0.08); border: 1px solid var(--border);
+  border-radius: 8px; padding: 14px 16px; text-align: center; }
+.quality-num { font-size: 24px; font-weight: 800; color: var(--primary-light); }
+.quality-label { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--text-muted);
+  letter-spacing: .06em; text-transform: uppercase; margin-top: 4px; }
+.quality-note { font-size: 12px; color: var(--text-muted); line-height: 1.6; margin-top: 14px;
+  padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.05); }
+
+/* ── SECTION HEADER ── */
+.section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+.section-title { font-size: 13px; font-weight: 700; color: var(--text);
+  font-family: 'Space Mono', monospace; letter-spacing: .06em; text-transform: uppercase; }
+.section-count { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: .06em; }
+
+/* ── LEAD CARD SYSTEM ── */
+.lead-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px;
+  margin-bottom: 20px; overflow: hidden; transition: border-color .15s; }
+.lead-card:hover { border-color: var(--border-hover); }
+
+.card-header { padding: 18px 22px; cursor: pointer; display: flex; align-items: center; gap: 14px; }
+.signal-badge { font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; padding: 4px 10px; border-radius: 20px; white-space: nowrap; flex-shrink: 0; }
+.signal-badge.warm { background: rgba(255,153,0,0.12); color: var(--warm); border: 1px solid rgba(255,153,0,0.25); }
+.signal-badge.hot { background: rgba(255,68,68,0.15); color: var(--hot); border: 1px solid rgba(255,68,68,0.30); }
+.card-header-info { flex: 1; min-width: 0; }
+.lead-name { font-size: 17px; font-weight: 800; color: var(--text); line-height: 1.2; }
+.lead-company { font-size: 13px; color: var(--text-dim); margin-top: 2px; }
+.why-now-line { font-size: 12px; color: var(--accent); margin-top: 5px; font-weight: 600; }
+.expand-icon { color: var(--text-muted); font-size: 18px; flex-shrink: 0; transition: transform .2s; }
+.lead-card.expanded .expand-icon { transform: rotate(180deg); }
+.icp-fit-badge { font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: .10em; padding: 4px 10px; border-radius: 20px;
+  background: rgba(1,144,71,0.15); color: var(--success-light); border: 1px solid rgba(1,144,71,0.30); white-space: nowrap; flex-shrink: 0; }
+
+/* Card body */
+.card-body { display: none; border-top: 1px solid var(--border); }
+.lead-card.expanded .card-body { display: block; }
+
+/* Identity strip */
+.identity-strip { display: flex; flex-wrap: wrap; gap: 12px; padding: 14px 22px;
+  background: var(--bg3); border-bottom: 1px solid var(--border);
+  font-family: 'Space Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: .04em; }
+.identity-item a { color: var(--primary-light); text-decoration: none; }
+.identity-item a:hover { color: var(--text); }
+
+/* Tags */
+.tag-row { display: flex; flex-wrap: wrap; gap: 6px; padding: 12px 22px; border-bottom: 1px solid var(--border); }
+.tag { font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase; padding: 3px 9px; border-radius: 4px; }
+.tag.industry { background: rgba(106,102,163,0.15); color: var(--primary-light); }
+.tag.signal { background: rgba(255,153,0,0.12); color: var(--warm); }
+.tag.context { background: rgba(1,144,71,0.12); color: var(--success-light); }
+
+/* Card section */
+.card-section { padding: 20px 22px; border-bottom: 1px solid var(--border); }
+.card-section:last-child { border-bottom: none; }
+.card-section-title { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 14px; }
+.card-section-subtitle { font-family: 'Space Mono', monospace; font-size: 9px;
+  letter-spacing: .08em; color: rgba(255,255,255,0.35); text-transform: uppercase; margin-left: 8px; }
+
+/* Signal intelligence */
+.signal-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.signal-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+.signal-type { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .10em; text-transform: uppercase; color: var(--accent); margin-bottom: 5px; }
+.signal-timing { font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+.signal-desc { font-size: 12px; color: var(--text-dim); line-height: 1.6; }
+
+/* Intelligence briefing */
+.intel-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+.intel-cell { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; }
+.intel-cell-label { font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: .10em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 7px; }
+.intel-cell-value { font-size: 12px; color: var(--text-dim); line-height: 1.5; }
+.intel-cell-value.active { color: var(--accent); font-weight: 600; }
+
+/* Contact details */
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.contact-item { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px;
+  padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.contact-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: .10em;
+  text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px; }
+.contact-value { font-size: 13px; font-weight: 600; color: var(--text); word-break: break-all; }
+.copy-btn { font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase; padding: 5px 10px; border-radius: 5px;
+  border: 1px solid var(--border); background: transparent; color: var(--text-muted);
+  cursor: pointer; white-space: nowrap; flex-shrink: 0; transition: all .15s; }
+.copy-btn:hover { border-color: var(--primary); color: var(--primary-light); }
+.copy-btn.copied { color: var(--success-light); border-color: var(--success); }
+
+/* Why this lead */
+.why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.why-block-title { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .10em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; }
+.why-block-text { font-size: 13px; color: var(--text-dim); line-height: 1.75; }
+.fit-signal { background: rgba(1,144,71,0.10); border: 1px solid rgba(1,144,71,0.25);
+  border-radius: 6px; padding: 8px 12px; margin-top: 10px; font-size: 12px; color: var(--success-light); }
+.fit-signal-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: .10em;
+  text-transform: uppercase; color: var(--success); margin-bottom: 3px; font-weight: 700; }
+
+/* Outreach arsenal */
+.outreach-channel { margin-bottom: 18px; }
+.outreach-channel:last-child { margin-bottom: 0; }
+.outreach-channel-label { font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--primary-light); margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+.connection-note { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px;
+  padding: 14px 16px; font-size: 13px; color: var(--text-dim); line-height: 1.7; font-style: italic; }
+.char-count { font-family: 'Space Mono', monospace; font-size: 9px; color: var(--text-muted);
+  letter-spacing: .04em; margin-top: 8px; }
+.email-block { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 16px 18px; }
+.email-subject-label { font-family: 'Space Mono', monospace; font-size: 9px; color: var(--text-muted); letter-spacing: .06em; margin-bottom: 4px; }
+.email-subject-value { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+.email-body { font-size: 13px; color: var(--text-dim); line-height: 1.85; white-space: pre-line; }
+.email-meta { display: flex; justify-content: space-between; align-items: center;
+  margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.06); }
+.email-word-count { font-family: 'Space Mono', monospace; font-size: 9px; color: var(--text-muted); letter-spacing: .04em; }
+.email-safe-label { font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase; color: var(--success-light); }
+.copy-action-btn { display: inline-flex; align-items: center; gap: 6px; margin-top: 10px;
+  font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: .10em;
+  text-transform: uppercase; padding: 7px 14px; border-radius: 6px; border: 1px solid var(--border);
+  background: transparent; color: var(--text-muted); cursor: pointer; transition: all .15s; }
+.copy-action-btn:hover { border-color: var(--primary); color: var(--primary-light); }
+.copy-action-btn.copied { color: var(--success-light); border-color: var(--success); }
+
+/* Prospect intelligence callout */
+.intel-callout { background: rgba(255,153,0,0.07); border: 1px solid rgba(255,153,0,0.25);
+  border-radius: 8px; padding: 13px 16px; font-size: 12px; color: var(--text-dim); line-height: 1.65; }
+.intel-callout-label { font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin-bottom: 5px; }
+
+/* Nurture sequence */
+.nurture-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+.nurture-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+.nurture-day { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--primary-light); margin-bottom: 6px; }
+.nurture-action { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+.nurture-script { font-size: 12px; color: var(--text-dim); line-height: 1.65; font-style: italic; }
+
+/* Card footer */
+.card-footer { padding: 12px 22px; background: var(--bg3); border-top: 1px solid var(--border); display: flex; justify-content: flex-end; }
+.linkedin-btn { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase; padding: 8px 16px; border-radius: 6px;
+  border: 1px solid var(--border); color: var(--primary-light); text-decoration: none; transition: all .15s; }
+.linkedin-btn:hover { border-color: var(--primary); background: rgba(106,102,163,0.10); }
+
+/* Pipeline math panel */
+.pipeline-math { background: rgba(106,102,163,0.06); border: 1px solid var(--border);
+  border-radius: 12px; padding: 22px 28px; margin: 28px 0; text-align: center; }
+.pipeline-math-text { font-size: 15px; color: var(--text-dim); line-height: 1.8; }
+.pipeline-math-text strong { color: var(--primary-light); font-weight: 700; }
+
+/* Visual graphics section */
+.visuals-section { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; padding: 28px 32px; margin: 28px 0; }
+.visuals-header { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-bottom: 24px; }
+.visuals-copy h3 { font-size: 18px; font-weight: 800; color: var(--text); line-height: 1.3; margin-bottom: 12px; }
+.visuals-copy p { font-size: 13px; color: var(--text-dim); line-height: 1.75; margin-bottom: 10px; }
+.visuals-list { list-style: none; margin-top: 14px; }
+.visuals-list li { font-size: 13px; color: var(--text-dim); padding: 6px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04); display: flex; gap: 10px; }
+.visuals-list li:last-child { border-bottom: none; }
+.visuals-list-dot { color: var(--success-light); font-weight: 700; flex-shrink: 0; }
+.visuals-tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.visual-tile { border-radius: 10px; overflow: hidden; }
+.visual-tile-inner { aspect-ratio: 4/3; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 16px; }
+.visual-tile.carousel { background: linear-gradient(135deg, #1B2A4A 0%, #243655 100%); border: 1px solid rgba(240,165,0,0.20); }
+.visual-tile.post { background: linear-gradient(135deg, #1B2A4A 0%, #1D2D47 100%); border: 1px solid rgba(240,165,0,0.15); }
+.visual-tile.infographic { background: linear-gradient(135deg, #162238 0%, #1B2A4A 100%); border: 1px solid rgba(240,165,0,0.10); }
+.tile-accent-bar { width: 36px; height: 3px; background: #F0A500; border-radius: 2px; margin-bottom: 12px; }
+.tile-lines { width: 100%; }
+.tile-line { height: 7px; background: rgba(245,240,232,0.15); border-radius: 3px; margin-bottom: 6px; }
+.tile-line.short { width: 60%; }
+.tile-line.medium { width: 80%; }
+.tile-line.full { width: 100%; }
+.tile-label { font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); text-align: center; margin-top: 10px; padding: 6px; background: var(--bg3); }
+.visuals-note { font-size: 13px; color: var(--text-dim); text-align: center; margin-top: 18px;
+  padding-top: 18px; border-top: 1px solid var(--border); line-height: 1.7; }
+.visuals-note strong { color: var(--text); }
+
+/* CTA footer */
+.cta-footer { margin-top: 36px; background: linear-gradient(135deg, rgba(255,153,0,0.08) 0%, rgba(106,102,163,0.06) 100%);
+  border: 1px solid rgba(255,153,0,0.30); border-radius: 12px; padding: 36px 40px; text-align: center; }
+.cta-footer-headline { font-size: 22px; font-weight: 800; color: var(--text); letter-spacing: -.01em; margin-bottom: 14px; line-height: 1.3; }
+.cta-footer-subhead { font-size: 14px; color: var(--text-dim); line-height: 1.8; max-width: 680px; margin: 0 auto 26px; }
+.cta-footer-btn { display: inline-block; background: var(--accent); color: var(--bg);
+  padding: 15px 34px; border-radius: 8px; font-family: 'Space Mono', monospace;
+  font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em;
+  text-decoration: none; transition: background .15s; margin-bottom: 14px; }
+.cta-footer-btn:hover { background: #ffb340; }
+.cta-footer-note { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: .04em; }
+
+/* Content engine post cards */
+.post-cards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 28px; }
+.post-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 24px 26px; }
+.post-type-label { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--primary-light); margin-bottom: 6px; }
+.post-type-desc { font-size: 11px; color: var(--text-muted); margin-bottom: 16px;
+  padding-bottom: 16px; border-bottom: 1px solid var(--border); line-height: 1.5; }
+.post-text { font-size: 13px; color: var(--text-dim); line-height: 1.85; white-space: pre-line; }
+.post-cta-line { margin-top: 14px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.06);
+  font-size: 12px; color: var(--accent); font-weight: 600; }
+
+/* View containers */
+.view { display: none; }
+.view.active { display: block; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+  .mobile-topbar { display: flex; }
+  .mobile-tabs { display: flex; }
+  .main { margin-left: 0; padding: 16px; }
+  .tab-bar { display: none; }
+  .icp-grid { grid-template-columns: 1fr; }
+  .signal-cards { grid-template-columns: 1fr; }
+  .intel-grid { grid-template-columns: 1fr 1fr; }
+  .contact-grid { grid-template-columns: 1fr; }
+  .why-grid { grid-template-columns: 1fr; }
+  .nurture-grid { grid-template-columns: 1fr; }
+  .post-cards-grid { grid-template-columns: 1fr; }
+  .visuals-header { grid-template-columns: 1fr; }
+  .card-header { flex-wrap: wrap; gap: 8px; }
+  .lead-name { font-size: 15px; }
+  .cta-footer { padding: 24px 20px; }
+  .cta-footer-btn { width: 100%; text-align: center; display: block; }
+  .email-meta { flex-direction: column; align-items: flex-start; gap: 8px; }
+}
+@media (max-width: 480px) {
+  .intel-grid { grid-template-columns: 1fr; }
+  .visuals-tiles { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- Mobile topbar -->
+<div class="mobile-topbar">
+  <div class="mobile-logo">Pipelind</div>
+  <div class="mobile-prospect-name">Stephen's Report</div>
+</div>
+
+<!-- Mobile tab pills -->
+<div class="mobile-tabs">
+  <button class="mobile-tab-pill active" onclick="showView('pipeline', this)">Pipeline Engine</button>
+  <button class="mobile-tab-pill" onclick="showView('content', this)">Content Engine</button>
+</div>
+
+<!-- Desktop sidebar -->
+<nav class="sidebar">
+  <div class="sidebar-logo">Pipelind</div>
+  <div class="prospect-block">
+    <div class="prospect-label">Personalized For</div>
+    <div class="prospect-name">Stephen R.</div>
+    <div class="prospect-meta">May 2026 · Lead Demo</div>
+  </div>
+  <div class="nav-item active" id="nav-pipeline" onclick="showView('pipeline', this)">Pipeline Engine</div>
+  <div class="nav-item" id="nav-content" onclick="showView('content', this)">Content Engine</div>
+  <div class="sidebar-footer">Personalized build<br>Real signal data<br>Sample of your full delivery</div>
+</nav>
+
+<!-- Main content -->
+<main class="main">
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="showView('pipeline', this)">Pipeline Engine</button>
+    <button class="tab-btn" onclick="showView('content', this)">Content Engine</button>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- PIPELINE ENGINE VIEW -->
+  <!-- ══════════════════════════════════════════ -->
+  <div class="view active" id="view-pipeline">
+
+    <div class="welcome-banner">
+      <div class="welcome-tag">Pipeline Engine · Sample Report</div>
+      <div class="welcome-text">
+        Stephen, below are <strong>3 ICP-matched buyer profiles</strong> from your target market. Each company carries an active financial signal detected in the last 90 days. Finance team buildout, department scaling, or a leadership transition that opens the window for a fractional CFO conversation. This is a sample of what arrives every Monday for WayFinder Finance clients.
+      </div>
+    </div>
+
+    <!-- ICP Panel Grid -->
+    <div class="icp-grid">
+      <div class="icp-panel">
+        <div class="panel-title">Target Buyer Profile</div>
+        <div class="icp-item">
+          <span class="icp-label">Buyer Titles</span>
+          <span class="icp-value">CEO, Founder, Co-Founder</span>
+        </div>
+        <div class="icp-item">
+          <span class="icp-label">Revenue Range</span>
+          <span class="icp-value">$2M to $50M</span>
+        </div>
+        <div class="icp-item">
+          <span class="icp-label">Team Size</span>
+          <span class="icp-value">10 to 200 employees</span>
+        </div>
+        <div class="icp-item">
+          <span class="icp-label">Sectors</span>
+          <span class="icp-value">Manufacturing, Construction, Wholesale, Services</span>
+        </div>
+        <div class="icp-item">
+          <span class="icp-label">Geography</span>
+          <span class="icp-value">United States</span>
+        </div>
+        <div class="icp-item">
+          <span class="icp-label">Active Signals</span>
+          <span class="icp-value">Finance hiring, Business scaling, Leadership transition</span>
+        </div>
+      </div>
+      <div class="icp-panel">
+        <div class="panel-title">Sample Quality</div>
+        <div class="quality-grid">
+          <div class="quality-metric">
+            <div class="quality-num">3</div>
+            <div class="quality-label">ICP-Matched</div>
+          </div>
+          <div class="quality-metric">
+            <div class="quality-num">100%</div>
+            <div class="quality-label">US-Based</div>
+          </div>
+          <div class="quality-metric">
+            <div class="quality-num">3</div>
+            <div class="quality-label">Active Signals</div>
+          </div>
+          <div class="quality-metric">
+            <div class="quality-num">3</div>
+            <div class="quality-label">Verified Contact</div>
+          </div>
+        </div>
+        <div class="quality-note">All profiles carry at least one active market signal detected in the last 90 days. Professional contact details verified against current data sources.</div>
+      </div>
+    </div>
+
+    <!-- Section header -->
+    <div class="section-header">
+      <span class="section-title">ICP-Matched Buyers</span>
+      <span class="section-count">3 of 40 monthly leads</span>
+    </div>
+
+    <!-- ─────────────────────────────── -->
+    <!-- CARD 1: Aaron Witt · BuildWitt -->
+    <!-- ─────────────────────────────── -->
+    <div class="lead-card expanded" id="card-1">
+      <div class="card-header" onclick="toggleCard('card-1')">
+        <span class="signal-badge warm">WARM</span>
+        <div class="card-header-info">
+          <div class="lead-name">Aaron Witt</div>
+          <div class="lead-company">Founder · BuildWitt</div>
+          <div class="why-now-line">Finance department hiring detected at BuildWitt · last 90 days</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit: YES</span>
+        <span class="expand-icon">&#9662;</span>
+      </div>
+      <div class="card-body">
+
+        <div class="identity-strip">
+          <span class="identity-item"><a href="https://buildwitt.com" target="_blank">buildwitt.com</a></span>
+          <span class="identity-item">Nashville, Tennessee</span>
+          <span class="identity-item">51-200 employees</span>
+          <span class="identity-item">$10M-$25M revenue</span>
+          <span class="identity-item">Construction · Workforce Tech</span>
+        </div>
+
+        <div class="tag-row">
+          <span class="tag industry">Construction</span>
+          <span class="tag industry">Workforce Platform</span>
+          <span class="tag signal">Finance Hiring · Last 90 Days</span>
+          <span class="tag context">51-200 Employees</span>
+          <span class="tag context">US · Tennessee</span>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Active Market Signals</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Finance Department Hiring</div>
+              <div class="signal-timing">Detected within last 90 days</div>
+              <div class="signal-desc">BuildWitt has been actively hiring in its finance function, indicating a deliberate investment in financial infrastructure. Companies at this revenue stage typically hire in finance when bookkeeping can no longer support the planning and reporting decisions leadership needs.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">Department Headcount Growth</div>
+              <div class="signal-timing">Detected within last 90 days</div>
+              <div class="signal-desc">Broader headcount expansion at BuildWitt signals the business is scaling across multiple functions simultaneously. Cross-department growth at $10M-$25M creates cash flow complexity and profitability visibility gaps that strategic finance is built to address.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing <span class="card-section-subtitle">Configured for Stephen's Practice</span></div>
+          <div class="intel-grid">
+            <div class="intel-cell">
+              <div class="intel-cell-label">Leadership Movement</div>
+              <div class="intel-cell-value">No leadership movement detected in last 90 days</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Capital Activity</div>
+              <div class="intel-cell-value">No public funding activity in last 90 days</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Hiring Signals</div>
+              <div class="intel-cell-value active">Finance department hiring trend detected · last 90 days</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Expansion Signals</div>
+              <div class="intel-cell-value active">Overall department headcount growth detected · last 90 days</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Growth Trajectory</div>
+              <div class="intel-cell-value">Scaling construction workforce platform; 51-200 employees at $10M-$25M revenue stage</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Work Email · Verified</div>
+                <div class="contact-value">aaron@buildwitt.com</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('aaron@buildwitt.com', this)">Copy</button>
+            </div>
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Mobile</div>
+                <div class="contact-value">+1 (623) 505-9088</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('+16235059088', this)">Copy</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div class="why-block">
+              <div class="why-block-title">ICP Fit for Stephen</div>
+              <div class="why-block-text">BuildWitt is at the $10M-$25M revenue stage where financial decisions are becoming more consequential than the bookkeeping infrastructure was built to handle. Aaron is the founder, making him the decision-maker for a fractional CFO engagement. Stephen's background scaling operations from the ground up in industrial and construction-adjacent sectors makes this a natural match. The active finance hiring signal confirms they're building capacity and aware of the gap.</div>
+              <div class="fit-signal">
+                <div class="fit-signal-label">Strongest Fit Signal</div>
+                Finance department hiring at BuildWitt detected within the last 90 days. Founder-led, construction-adjacent, revenue stage aligns exactly with WayFinder Finance's engagement zone.
+              </div>
+            </div>
+            <div class="why-block">
+              <div class="why-block-title">Why They're Looking</div>
+              <div class="why-block-text">Aaron has built BuildWitt from a content operation into a $10M-$25M workforce platform. Adding to the finance function is the moment founders realize bookkeeping no longer covers the strategic questions. Cash flow forecasting, profitability by service line, and planning for the next phase of hiring are the questions that start coming up more often than existing reporting can answer. The gap between what the bookkeeper provides and what a CEO needs to decide tends to widen fast at this stage.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal <span class="card-section-subtitle">2 Channels Ready</span></div>
+
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="conn-note-1">
+              Noticed BuildWitt has been adding to its finance function. At that revenue stage, the shift from bookkeeping to strategic finance is where most founders feel the gap. Would love to connect if that's on your mind.
+              <div class="char-count">218 characters · LinkedIn limit: 300</div>
+            </div>
+            <button class="copy-action-btn" onclick="copyElementText('conn-note-1', this)">Copy Connection Note</button>
+          </div>
+
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Email Draft · Ready to Send</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject Line</div>
+              <div class="email-subject-value" id="email-subj-1">Finance team growth at BuildWitt</div>
+              <div class="email-body" id="email-body-1">Aaron,
+
+Noticed BuildWitt has been adding to its finance team over the past several weeks.
+
+At $10M to $25M in revenue, most founder-led businesses are navigating a similar transition. The reporting is there. The bookkeeping is handled. What tends to be missing is visibility into which parts of the business are actually driving margin, a cash flow model that gives leadership something to plan around, and reporting that translates data into the three or four decisions that matter most. The full-time CFO hire doesn't make sense yet, so that gap tends to stay open longer than it should.
+
+WayFinder Finance works with growing businesses at exactly that stage. The focus is building financial infrastructure that translates data into decisions, not just more reports.
+
+Would you be open to a 15-minute conversation to see if there's a fit?
+
+Stephen Reber
+WayFinder Finance · wayfinderfinance.com</div>
+              <div class="email-meta">
+                <span class="email-word-count">~130 words · safe for cold send</span>
+                <span class="email-safe-label">Ready to Send</span>
+              </div>
+            </div>
+            <button class="copy-action-btn" onclick="copyFullEmail('email-subj-1', 'email-body-1', this)">Copy Email Draft</button>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Follow-Up Sequence <span class="card-section-subtitle">Built for This Lead's Signal</span></div>
+          <div class="nurture-grid">
+            <div class="nurture-card">
+              <div class="nurture-day">Day 1</div>
+              <div class="nurture-action">Connection Note Sent</div>
+              <div class="nurture-script">"Noticed BuildWitt has been adding to its finance function. At that revenue stage, the shift from bookkeeping to strategic finance is where most founders feel the gap. Would love to connect if that's on your mind."</div>
+            </div>
+            <div class="nurture-card">
+              <div class="nurture-day">Day 7</div>
+              <div class="nurture-action">Value-First Follow-Up</div>
+              <div class="nurture-script">"At $10M to $25M, one of the most consistent gaps isn't the data. It's the translation layer. Most founders can read a P&amp;L. Fewer have visibility into which customers, products, or segments are actually driving their margin. That's typically the first thing strategic finance addresses."</div>
+            </div>
+            <div class="nurture-card">
+              <div class="nurture-day">Day 14</div>
+              <div class="nurture-action">Soft Diagnostic Question</div>
+              <div class="nurture-script">"BuildWitt has been investing in its finance team. When you're in that transition from bookkeeping to strategic finance, what's the specific visibility gap you're trying to close first?"</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <a class="linkedin-btn" href="https://linkedin.com/in/aaronwitt" target="_blank">View on LinkedIn →</a>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ──────────────────────────────────────────── -->
+    <!-- CARD 2: Clay Rudick · Rudick Construction  -->
+    <!-- ──────────────────────────────────────────── -->
+    <div class="lead-card" id="card-2">
+      <div class="card-header" onclick="toggleCard('card-2')">
+        <span class="signal-badge warm">WARM</span>
+        <div class="card-header-info">
+          <div class="lead-name">Clay Rudick</div>
+          <div class="lead-company">CEO · Rudick Construction Group</div>
+          <div class="why-now-line">Finance team expansion signal at Rudick Construction Group · last 90 days</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit: YES</span>
+        <span class="expand-icon">&#9662;</span>
+      </div>
+      <div class="card-body">
+
+        <div class="identity-strip">
+          <span class="identity-item"><a href="https://rudickgroup.com" target="_blank">rudickgroup.com</a></span>
+          <span class="identity-item">Dallas, Texas</span>
+          <span class="identity-item">51-200 employees</span>
+          <span class="identity-item">$10M-$25M revenue</span>
+          <span class="identity-item">Commercial Construction</span>
+        </div>
+
+        <div class="tag-row">
+          <span class="tag industry">Commercial Construction</span>
+          <span class="tag industry">General Contractor</span>
+          <span class="tag signal">Finance Hiring · Last 90 Days</span>
+          <span class="tag context">Texas + Louisiana</span>
+          <span class="tag context">51-200 Employees</span>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Active Market Signals</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Finance Department Hiring</div>
+              <div class="signal-timing">Detected within last 90 days</div>
+              <div class="signal-desc">Rudick Construction Group has been adding to its finance team, a signal that the business is deliberately investing in financial capacity. Commercial contractors at $10M-$25M typically make this move when project complexity and multi-site operations outpace the existing reporting infrastructure.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">Business Scaling Activity</div>
+              <div class="signal-timing">Detected within last 90 days</div>
+              <div class="signal-desc">Operational activity at Rudick indicates the business is in an active growth phase. At this revenue range, sustained project growth without a dedicated CFO function tends to compress margins and create working capital exposure that goes undetected until it becomes a cash flow event.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing <span class="card-section-subtitle">Configured for Stephen's Practice</span></div>
+          <div class="intel-grid">
+            <div class="intel-cell">
+              <div class="intel-cell-label">Leadership Movement</div>
+              <div class="intel-cell-value">No leadership movement detected in last 90 days</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Capital Activity</div>
+              <div class="intel-cell-value">No public funding activity in last 90 days</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Hiring Signals</div>
+              <div class="intel-cell-value active">Finance department hiring trend detected · last 90 days</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Expansion Signals</div>
+              <div class="intel-cell-value">No expansion signals in last 90 days</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Growth Trajectory</div>
+              <div class="intel-cell-value">$10M-$25M commercial contractor; 40+ year operating history; 51-200 employees; multi-state operations in Texas and Louisiana</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Work Email · Verified</div>
+                <div class="contact-value">crudick@rudickgroup.com</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('crudick@rudickgroup.com', this)">Copy</button>
+            </div>
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Mobile</div>
+                <div class="contact-value">+1 (337) 412-0049</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('+13374120049', this)">Copy</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div class="why-block">
+              <div class="why-block-title">ICP Fit for Stephen</div>
+              <div class="why-block-text">Rudick Construction Group is a $10M-$25M commercial contractor led by the family CEO, Clay Rudick. Four decades of operating history means established revenue, complex project financials, and regional multi-site complexity that creates real CFO need. Stephen's background scaling finance infrastructure in large industrial and construction operations translates directly to what Clay's business requires. The finance hiring signal confirms they're actively building capacity.</div>
+              <div class="fit-signal">
+                <div class="fit-signal-label">Strongest Fit Signal</div>
+                Finance department hiring at a $10M-$25M commercial GC. CEO is the decision-maker. Multi-state operations create exactly the cash flow and profitability complexity WayFinder Finance addresses.
+              </div>
+            </div>
+            <div class="why-block">
+              <div class="why-block-title">Why They're Looking</div>
+              <div class="why-block-text">A commercial contractor with 40+ years of history and 51-200 employees is running complex project-level financials without a dedicated CFO function. Clay understands from experience that margin discipline and cash flow predictability separate a sustainable construction business from a vulnerable one. The finance hiring activity indicates Rudick is making a deliberate investment in financial capacity, which often precedes a conversation about whether fractional CFO support is more effective than hiring directly into the gap.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal <span class="card-section-subtitle">2 Channels Ready</span></div>
+
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="conn-note-2">
+              Noticed Rudick Construction has been building out the finance team. At your revenue stage, project-level margin clarity and cash flow visibility tend to be the pressure points. Would love to connect.
+              <div class="char-count">207 characters · LinkedIn limit: 300</div>
+            </div>
+            <button class="copy-action-btn" onclick="copyElementText('conn-note-2', this)">Copy Connection Note</button>
+          </div>
+
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Email Draft · Ready to Send</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject Line</div>
+              <div class="email-subject-value" id="email-subj-2">Finance activity at Rudick Construction Group</div>
+              <div class="email-body" id="email-body-2">Clay,
+
+Noticed Rudick Construction has been building out its finance team recently.
+
+Commercial contractors at $10M to $25M typically reach the same inflection point. The reporting is there, but the translation from numbers to operational decisions gets harder as project complexity and revenue grow. Project-level margin, cash flow tied to billing cycles, and regional cost visibility become the pressure points that basic financial reporting was never designed to address. With decades of operating history and a team of 50 to 200, Rudick is at exactly the stage where that clarity starts to matter more.
+
+WayFinder Finance works with founder-led businesses through that transition. If you're thinking about how to close that gap, I'd be happy to talk through what that looks like.
+
+Fifteen minutes is enough to figure out if it's worth exploring further.
+
+Stephen Reber
+WayFinder Finance · wayfinderfinance.com</div>
+              <div class="email-meta">
+                <span class="email-word-count">~130 words · safe for cold send</span>
+                <span class="email-safe-label">Ready to Send</span>
+              </div>
+            </div>
+            <button class="copy-action-btn" onclick="copyFullEmail('email-subj-2', 'email-body-2', this)">Copy Email Draft</button>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Follow-Up Sequence <span class="card-section-subtitle">Built for This Lead's Signal</span></div>
+          <div class="nurture-grid">
+            <div class="nurture-card">
+              <div class="nurture-day">Day 1</div>
+              <div class="nurture-action">Connection Note Sent</div>
+              <div class="nurture-script">"Noticed Rudick Construction has been building out the finance team. At your revenue stage, project-level margin clarity and cash flow visibility tend to be the pressure points. Would love to connect."</div>
+            </div>
+            <div class="nurture-card">
+              <div class="nurture-day">Day 7</div>
+              <div class="nurture-action">Value-First Follow-Up</div>
+              <div class="nurture-script">"Commercial contractors at your revenue stage tend to feel the same pressure point. The financials are accurate. The reporting is timely. What tends to be missing is visibility into which projects are actually profitable and why. That analysis is where the strategic finance work usually starts."</div>
+            </div>
+            <div class="nurture-card">
+              <div class="nurture-day">Day 14</div>
+              <div class="nurture-action">Soft Diagnostic Question</div>
+              <div class="nurture-script">"As Rudick grows, is project-level profitability and cash flow visibility the primary financial priority, or is there a different pressure point driving the finance team buildout?"</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <a class="linkedin-btn" href="https://linkedin.com/in/clay-rudick-b3416119" target="_blank">View on LinkedIn →</a>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ─────────────────────────────────────────── -->
+    <!-- CARD 3: Scott Shelander · AlarMax Distributors -->
+    <!-- ─────────────────────────────────────────── -->
+    <div class="lead-card" id="card-3">
+      <div class="card-header" onclick="toggleCard('card-3')">
+        <span class="signal-badge warm">WARM</span>
+        <div class="card-header-info">
+          <div class="lead-name">Scott Shelander</div>
+          <div class="lead-company">President &amp; CEO · AlarMax Distributors</div>
+          <div class="why-now-line">Finance hiring at AlarMax · CEO role milestone (1 year) · last 90 days</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit: YES</span>
+        <span class="expand-icon">&#9662;</span>
+      </div>
+      <div class="card-body">
+
+        <div class="identity-strip">
+          <span class="identity-item"><a href="https://alarmax.com" target="_blank">alarmax.com</a></span>
+          <span class="identity-item">Pittsburgh, Pennsylvania</span>
+          <span class="identity-item">51-200 employees</span>
+          <span class="identity-item">$25M-$75M revenue</span>
+          <span class="identity-item">Wholesale Distribution</span>
+        </div>
+
+        <div class="tag-row">
+          <span class="tag industry">Wholesale Distribution</span>
+          <span class="tag industry">Security Products</span>
+          <span class="tag signal">Finance Hiring · Last 90 Days</span>
+          <span class="tag signal">CEO Milestone · 1 Year</span>
+          <span class="tag context">Nationwide Branches</span>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Active Market Signals</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Finance Department Hiring</div>
+              <div class="signal-timing">Detected within last 90 days</div>
+              <div class="signal-desc">AlarMax has been actively building financial capacity, consistent with a leadership team establishing a new operating baseline. For a wholesale distributor at $25M-$75M, this signal often precedes a broader conversation about financial visibility and reporting infrastructure under the current CEO.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">Leadership Transition Milestone</div>
+              <div class="signal-timing">Approximately 5 months ago</div>
+              <div class="signal-desc">Scott Shelander is approximately one year into the President and CEO role at AlarMax. The first 12 months in a new leadership seat at a business this size is the window when financial infrastructure decisions tend to get made or deferred for another year.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing <span class="card-section-subtitle">Configured for Stephen's Practice</span></div>
+          <div class="intel-grid">
+            <div class="intel-cell">
+              <div class="intel-cell-label">Leadership Movement</div>
+              <div class="intel-cell-value active">Scott Shelander approximately 1 year into President &amp; CEO role at AlarMax · January 2025</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Capital Activity</div>
+              <div class="intel-cell-value">No public funding activity in last 90 days</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Hiring Signals</div>
+              <div class="intel-cell-value active">Finance department hiring activity detected · last 90 days</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Expansion Signals</div>
+              <div class="intel-cell-value">No expansion signals in last 90 days</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Growth Trajectory</div>
+              <div class="intel-cell-value">Nationwide wholesale distributor; $25M-$75M revenue; 51-200 employees across multiple branch locations; security, AV, and communications distribution</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Work Email</div>
+                <div class="contact-value">sshelander@alarmax.com</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('sshelander@alarmax.com', this)">Copy</button>
+            </div>
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Mobile</div>
+                <div class="contact-value">+1 (724) 972-6625</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('+17249726625', this)">Copy</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Prospect Intelligence</div>
+          <div class="intel-callout">
+            <div class="intel-callout-label">Leadership Milestone Detected</div>
+            Scott Shelander is approximately one year into the President and CEO role at AlarMax Distributors. The transition from the initial "learn the business" phase to the "change what needs to change" phase typically happens around month 12. This is the window when financial infrastructure questions, reporting restructures, and profitability analysis priorities tend to surface and move from deferred to active.
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div class="why-block">
+              <div class="why-block-title">ICP Fit for Stephen</div>
+              <div class="why-block-text">Scott is one year into the President and CEO role at a $25M-$75M wholesale distributor with nationwide branch operations. New leadership at a business this size creates a financial reset window. Inventory management, margin by product line, and working capital cycles are the pressure points at this scale, and they are exactly the territory where WayFinder Finance delivers fastest. The combination of a leadership milestone and active finance hiring is a two-signal timing match.</div>
+              <div class="fit-signal">
+                <div class="fit-signal-label">Strongest Fit Signal</div>
+                New CEO at $25M-$75M wholesale business + active finance hiring. The first 12-18 months of new leadership at this revenue scale is the highest-intent window for fractional CFO engagement.
+              </div>
+            </div>
+            <div class="why-block">
+              <div class="why-block-title">Why They're Looking</div>
+              <div class="why-block-text">Twelve months into the CEO role, Scott is at the stage where the initial orientation period is ending and the operating changes period is beginning. Wholesale distributors at $25M-$75M typically carry margin compression at specific product categories that only becomes visible with the right profitability analysis. The finance hiring activity at AlarMax indicates that financial clarity is an active priority for this leadership team, not a future consideration.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal <span class="card-section-subtitle">2 Channels Ready</span></div>
+
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="conn-note-3">
+              Noticed you're about a year into the CEO role at AlarMax. That's typically when the financial reset conversation starts. Would love to connect and compare notes.
+              <div class="char-count">170 characters · LinkedIn limit: 300</div>
+            </div>
+            <button class="copy-action-btn" onclick="copyElementText('conn-note-3', this)">Copy Connection Note</button>
+          </div>
+
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Email Draft · Ready to Send</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject Line</div>
+              <div class="email-subject-value" id="email-subj-3">One year into the role at AlarMax</div>
+              <div class="email-body" id="email-body-3">Scott,
+
+Noticed you're approximately one year into the President and CEO role at AlarMax.
+
+That first year running a $25M to $75M wholesale distributor tends to surface a consistent set of questions. Where is margin actually coming from by product line. How inventory turns map to working capital cycles. Whether the financial reporting structure in place serves the direction you're taking the business. Most incoming CEOs at this scale either build toward a full-time CFO hire or bring in fractional support to establish their operating baseline while they figure out what they actually need.
+
+If you're working through that question now, WayFinder Finance works with businesses at exactly this scale and stage. A 15-minute call is enough to figure out whether a conversation is worth having.
+
+Stephen Reber
+WayFinder Finance · wayfinderfinance.com</div>
+              <div class="email-meta">
+                <span class="email-word-count">~120 words · safe for cold send</span>
+                <span class="email-safe-label">Ready to Send</span>
+              </div>
+            </div>
+            <button class="copy-action-btn" onclick="copyFullEmail('email-subj-3', 'email-body-3', this)">Copy Email Draft</button>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Follow-Up Sequence <span class="card-section-subtitle">Built for This Lead's Signal</span></div>
+          <div class="nurture-grid">
+            <div class="nurture-card">
+              <div class="nurture-day">Day 1</div>
+              <div class="nurture-action">Connection Note Sent</div>
+              <div class="nurture-script">"Noticed you're about a year into the CEO role at AlarMax. That's typically when the financial reset conversation starts. Would love to connect and compare notes."</div>
+            </div>
+            <div class="nurture-card">
+              <div class="nurture-day">Day 7</div>
+              <div class="nurture-action">Value-First Follow-Up</div>
+              <div class="nurture-script">"Year one in a new CEO role at a distributor your size typically means inheriting financial reporting built for a different set of questions. The margin visibility, working capital clarity, and segment-level profitability analysis a fresh strategic direction requires usually takes 6 to 12 months to build properly without dedicated support."</div>
+            </div>
+            <div class="nurture-card">
+              <div class="nurture-day">Day 14</div>
+              <div class="nurture-action">Soft Diagnostic Question</div>
+              <div class="nurture-script">"At AlarMax's scale, margin visibility by product line and working capital management tend to be the first questions a new CEO prioritizes. Which of those is the more pressing focus for you right now?"</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <a class="linkedin-btn" href="https://linkedin.com/in/scotteshelander" target="_blank">View on LinkedIn →</a>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Pipeline math -->
+    <div class="pipeline-math">
+      <div class="pipeline-math-text">
+        Three leads like these are delivered every week in the full system, 40 per month, each with an active signal detected in the last 90 days.
+        Over 12 weeks: <strong>120 ICP-matched buyers</strong> in Stephen's network, each carrying direct contact details and ready-to-send outreach.
+        The math from there is Stephen's to run.
+      </div>
+    </div>
+
+    <!-- Visual graphics section -->
+    <div class="visuals-section">
+      <div class="visuals-header">
+        <div class="visuals-copy">
+          <h3>Every Monday, your content arrives finished.</h3>
+          <p>The leads are one side of the system. The content is the other. Decision-makers skim before they read. A post without a visual is half a post. Consultants who post with structured visuals consistently outperform those who post text alone, not because their thinking is sharper, but because the visual stops the scroll long enough for the thinking to land.</p>
+          <p>Every piece that benefits from a visual gets one. Finished. Attached. Ready to schedule.</p>
+          <ul class="visuals-list">
+            <li><span class="visuals-list-dot">→</span> 3 LinkedIn posts per week in your voice, formatted and ready</li>
+            <li><span class="visuals-list-dot">→</span> Carousel covers, quote graphics, and infographics as finished PNG files</li>
+            <li><span class="visuals-list-dot">→</span> 15-minute strategy Loom walking through the week's package</li>
+            <li><span class="visuals-list-dot">→</span> Zero design work on your end</li>
+          </ul>
+        </div>
+        <div>
+          <div class="visuals-tiles">
+            <div class="visual-tile carousel">
+              <div class="visual-tile-inner">
+                <div class="tile-accent-bar"></div>
+                <div class="tile-lines">
+                  <div class="tile-line full"></div>
+                  <div class="tile-line medium"></div>
+                  <div class="tile-line short"></div>
+                </div>
+              </div>
+              <div class="tile-label">Carousel Cover</div>
+            </div>
+            <div class="visual-tile post">
+              <div class="visual-tile-inner">
+                <div class="tile-accent-bar"></div>
+                <div class="tile-lines">
+                  <div class="tile-line medium"></div>
+                  <div class="tile-line full"></div>
+                  <div class="tile-line short"></div>
+                </div>
+              </div>
+              <div class="tile-label">Post Visual</div>
+            </div>
+            <div class="visual-tile infographic">
+              <div class="visual-tile-inner">
+                <div class="tile-accent-bar"></div>
+                <div class="tile-lines">
+                  <div class="tile-line full"></div>
+                  <div class="tile-line short"></div>
+                  <div class="tile-line medium"></div>
+                </div>
+              </div>
+              <div class="tile-label">Infographic</div>
+            </div>
+          </div>
+          <div class="visuals-note">
+            <strong>Visuals are finished and attached in the Monday package.</strong><br>
+            You schedule. Nothing to design. Nothing to brief.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA footer -->
+    <div class="cta-footer">
+      <div class="cta-footer-headline">This is what one week of the full system looks like for Stephen.</div>
+      <div class="cta-footer-subhead">
+        Every Monday: 10 ICP-matched buyers with full signal intelligence, direct contact details, and outreach ready to send. Plus 3 posts and finished visuals in your voice. 30 minutes of your time per week.
+      </div>
+      <a class="cta-footer-btn" href="https://calendly.com/saurabh_zentro/30-min" target="_blank">Book Your 20-Min Fit Call →</a>
+      <div class="cta-footer-note">No pitch. No deck. We talk through your specific situation and confirm whether this is the right fit.</div>
+    </div>
+
+  </div><!-- end pipeline view -->
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- CONTENT ENGINE VIEW -->
+  <!-- ══════════════════════════════════════════ -->
+  <div class="view" id="view-content">
+
+    <div class="welcome-banner">
+      <div class="welcome-tag">Content Engine · Sample Posts</div>
+      <div class="welcome-text">
+        These two posts are written in <strong>your voice</strong>, based on how you describe the work at WayFinder Finance. The teaching post anchors your methodology. The handraiser post is designed to pull qualified buyer conversations into your inbox. Both follow your natural sentence patterns and the way you frame the fractional CFO value proposition.
+      </div>
+    </div>
+
+    <!-- Post cards grid -->
+    <div class="post-cards-grid">
+      <div class="post-card">
+        <div class="post-type-label">Teaching Post</div>
+        <div class="post-type-desc">A methodology post that builds authority by explaining a pattern your buyers face. Designed to earn saves and shares from founders in your ICP.</div>
+        <div class="post-text">Cash flow management is not a bookkeeping problem.
+
+A bookkeeper records what happened.
+A CFO builds the model that tells you what is coming.
+
+Most founder-led businesses between $2M and $15M have solid bookkeeping. Accurate records, clean categorization, timely reconciliations.
+
+What they don't have is visibility into the next 90 days. Which customers are paying late. Which product lines are dragging margin. Where working capital is tied up and why.
+
+The gap is not the data. The data is usually there.
+
+The gap is the translation layer. Someone who can convert financial information into the three or four decisions that actually move the business.
+
+That translation is what strategic finance is for.</div>
+        <div class="post-cta-line">CTA: Comment INSIGHT and I will send you a one-page breakdown of where fractional CFO support tends to move the needle first in a growing business.</div>
+      </div>
+
+      <div class="post-card">
+        <div class="post-type-label">Handraiser Post</div>
+        <div class="post-type-desc">Designed to generate LEAD comments from founders who need what WayFinder Finance delivers. Surfaces buyer intent directly from your LinkedIn audience.</div>
+        <div class="post-text">Most growing businesses don't need a full-time CFO.
+
+They need someone who can answer three questions:
+
+Where is the cash?
+Which parts of the business are actually profitable?
+What does the next 12 months look like if we make this hire or that investment?
+
+At $2M to $20M in revenue, those three questions tend to go unanswered for months at a time. The bookkeeper handles the records. The CPA shows up at tax time. The financial clarity that leadership needs to make decisions sits in between.
+
+A fractional CFO fills that gap at a fraction of the cost of a full-time hire. The engagement is scoped to what the business actually needs right now. No long-term contract, no overhead.
+
+If your reporting isn't answering those three questions, the gap is the same one most founders at your stage are carrying.</div>
+        <div class="post-cta-line">CTA: Comment LEAD and I will build you a sample pipeline of five buyers in your specific market who are at exactly this stage.</div>
+      </div>
+    </div>
+
+    <!-- Visual graphics section (expanded copy) -->
+    <div class="visuals-section">
+      <div class="visuals-header">
+        <div class="visuals-copy">
+          <h3>Content without visuals is half a system.</h3>
+          <p>Most consultants post text. The ones building consistent inbound post text with structure behind it. A carousel that breaks down a framework visually gets saved. A quote graphic gets shared. An infographic gets screenshotted. Saves, shares, and screenshots reach buyers who never followed you. That is organic reach you do not have to pay for.</p>
+          <p>The full system produces the visuals. You attach and schedule.</p>
+          <ul class="visuals-list">
+            <li><span class="visuals-list-dot">→</span> 2 carousels per month with finished slide visuals</li>
+            <li><span class="visuals-list-dot">→</span> 2 standalone infographics per month</li>
+            <li><span class="visuals-list-dot">→</span> Post graphics for any text post that benefits from one</li>
+            <li><span class="visuals-list-dot">→</span> All delivered as finished PNG files in the Monday package</li>
+          </ul>
+        </div>
+        <div>
+          <div class="visuals-tiles">
+            <div class="visual-tile carousel">
+              <div class="visual-tile-inner">
+                <div class="tile-accent-bar"></div>
+                <div class="tile-lines">
+                  <div class="tile-line full"></div>
+                  <div class="tile-line medium"></div>
+                  <div class="tile-line short"></div>
+                </div>
+              </div>
+              <div class="tile-label">Carousel Cover</div>
+            </div>
+            <div class="visual-tile post">
+              <div class="visual-tile-inner">
+                <div class="tile-accent-bar"></div>
+                <div class="tile-lines">
+                  <div class="tile-line medium"></div>
+                  <div class="tile-line full"></div>
+                  <div class="tile-line short"></div>
+                </div>
+              </div>
+              <div class="tile-label">Post Visual</div>
+            </div>
+            <div class="visual-tile infographic">
+              <div class="visual-tile-inner">
+                <div class="tile-accent-bar"></div>
+                <div class="tile-lines">
+                  <div class="tile-line full"></div>
+                  <div class="tile-line short"></div>
+                  <div class="tile-line medium"></div>
+                </div>
+              </div>
+              <div class="tile-label">Infographic</div>
+            </div>
+          </div>
+          <div class="visuals-note">
+            <strong>18 content pieces per month. Finished. Attached. Ready to schedule.</strong><br>
+            You schedule from your own account. Zero design work on your end.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA footer -->
+    <div class="cta-footer">
+      <div class="cta-footer-headline">This is what one week of the full system looks like for Stephen.</div>
+      <div class="cta-footer-subhead">
+        Every Monday: 10 ICP-matched buyers with full signal intelligence, direct contact details, and outreach ready to send. Plus 3 posts and finished visuals in your voice. 30 minutes of your time per week.
+      </div>
+      <a class="cta-footer-btn" href="https://calendly.com/saurabh_zentro/30-min" target="_blank">Book Your 20-Min Fit Call →</a>
+      <div class="cta-footer-note">No pitch. No deck. We talk through your specific situation and confirm whether this is the right fit.</div>
+    </div>
+
+  </div><!-- end content view -->
+
+</main>
+
+<script>
+function showView(name, triggerEl) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view-' + name).classList.add('active');
+
+  document.querySelectorAll('.nav-item, .tab-btn, .mobile-tab-pill').forEach(el => el.classList.remove('active'));
+
+  const navEl = document.getElementById('nav-' + name);
+  if (navEl) navEl.classList.add('active');
+
+  document.querySelectorAll('.tab-btn, .mobile-tab-pill').forEach(btn => {
+    if (btn.getAttribute('onclick') && btn.getAttribute('onclick').includes("'" + name + "'")) {
+      btn.classList.add('active');
+    }
+  });
+}
+
+function toggleCard(cardId) {
+  document.getElementById(cardId).classList.toggle('expanded');
+}
+
+function copyToClipboard(text, btn) {
+  navigator.clipboard.writeText(text).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = 'Copied.';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 2000);
+  }).catch(() => {
+    const el = document.createElement('textarea');
+    el.value = text;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+    const orig = btn.textContent;
+    btn.textContent = 'Copied.'; btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+function copyElementText(elementId, btn) {
+  const el = document.getElementById(elementId);
+  if (!el) return;
+  const charCountEl = el.querySelector('.char-count');
+  let text = el.textContent;
+  if (charCountEl) text = text.replace(charCountEl.textContent, '').trim();
+  copyToClipboard(text, btn);
+}
+
+function copyFullEmail(subjId, bodyId, btn) {
+  const subj = document.getElementById(subjId);
+  const body = document.getElementById(bodyId);
+  const text = 'Subject: ' + (subj ? subj.textContent.trim() : '') + '\n\n' + (body ? body.textContent.trim() : '');
+  copyToClipboard(text, btn);
+}
+</script>
+</body>
+</html>
