@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brian's Lead Demo · Pipelind</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#0A0A12;--bg2:#12121E;--bg3:#0E0E19;
+  --primary:#6A66A3;--primary-light:#9B98C4;
+  --accent:#FF9900;--success:#019047;--success-light:#5AC88A;
+  --text:rgba(255,255,255,0.90);--text-dim:rgba(255,255,255,0.72);
+  --text-muted:rgba(255,255,255,0.55);
+  --border:rgba(106,102,163,0.25);--border-hover:rgba(106,102,163,0.55);
+  --hot:#FF4444;--warm:#FF9900;
+}
+body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;min-height:100vh;}
+
+/* SIDEBAR */
+.sidebar{position:fixed;top:0;left:0;width:240px;height:100vh;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:24px 20px;z-index:100;}
+.sidebar-logo{font-family:'Space Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--primary-light);margin-bottom:28px;}
+.prospect-block{margin-bottom:32px;}
+.prospect-label{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px;}
+.prospect-name{font-size:17px;font-weight:800;color:var(--text);line-height:1.25;}
+.prospect-meta{font-family:'Space Mono',monospace;font-size:10px;color:var(--text-muted);letter-spacing:.06em;margin-top:4px;}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;cursor:pointer;margin-bottom:4px;font-size:13px;font-weight:600;color:var(--text-dim);transition:all .15s;border:1px solid transparent;}
+.nav-item:hover{background:rgba(106,102,163,0.10);color:var(--text);}
+.nav-item.active{background:rgba(106,102,163,0.15);color:var(--primary-light);border-color:var(--border);}
+.sidebar-footer{margin-top:auto;font-family:'Space Mono',monospace;font-size:10px;color:var(--text-muted);letter-spacing:.04em;line-height:1.8;}
+
+/* MOBILE */
+.mobile-topbar{display:none;position:sticky;top:0;z-index:200;background:var(--bg2);border-bottom:1px solid var(--border);padding:14px 16px;align-items:center;justify-content:space-between;}
+.mobile-logo{font-family:'Space Mono',monospace;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--primary-light);}
+.mobile-prospect-name{font-size:13px;font-weight:700;color:var(--text);}
+.mobile-tabs{display:none;position:sticky;top:53px;z-index:199;background:var(--bg);border-bottom:1px solid var(--border);padding:10px 16px;gap:8px;}
+.mobile-tab-pill{padding:7px 16px;border-radius:20px;font-size:12px;font-weight:700;font-family:'Space Mono',monospace;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;border:1px solid var(--border);color:var(--text-muted);background:transparent;transition:all .15s;}
+.mobile-tab-pill.active{background:var(--primary);color:#fff;border-color:var(--primary);}
+
+/* MAIN */
+.main{margin-left:240px;padding:32px 36px;max-width:1140px;}
+.tab-bar{position:sticky;top:0;z-index:50;background:var(--bg);border-bottom:1px solid var(--border);display:flex;margin:-32px -36px 32px;padding:0 36px;}
+.tab-btn{padding:14px 22px;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--text-muted);cursor:pointer;border:none;background:transparent;border-bottom:2px solid transparent;transition:all .15s;}
+.tab-btn.active{color:var(--primary-light);border-bottom-color:var(--primary);}
+
+/* WELCOME */
+.welcome-banner{background:linear-gradient(135deg,rgba(106,102,163,0.10) 0%,rgba(255,153,0,0.05) 100%);border:1px solid var(--border);border-radius:12px;padding:24px 28px;margin-bottom:28px;}
+.welcome-tag{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;}
+.welcome-text{font-size:14px;line-height:1.75;color:var(--text-dim);}
+.welcome-text strong{color:var(--text);font-weight:700;}
+
+/* ICP GRID */
+.icp-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:32px;}
+.icp-panel{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:22px 24px;}
+.panel-title{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:16px;}
+.icp-item{display:flex;justify-content:space-between;align-items:flex-start;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05);font-size:13px;}
+.icp-item:last-child{border-bottom:none;}
+.icp-label{color:var(--text-muted);font-size:12px;}
+.icp-value{color:var(--text);font-weight:600;text-align:right;max-width:60%;}
+.quality-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.quality-metric{background:rgba(106,102,163,0.08);border:1px solid var(--border);border-radius:8px;padding:14px 16px;text-align:center;}
+.quality-num{font-size:24px;font-weight:800;color:var(--primary-light);}
+.quality-label{font-family:'Space Mono',monospace;font-size:10px;color:var(--text-muted);letter-spacing:.06em;text-transform:uppercase;margin-top:4px;}
+.quality-note{font-size:12px;color:var(--text-muted);line-height:1.6;margin-top:14px;padding-top:14px;border-top:1px solid var(--border);}
+
+/* SECTION HEADER */
+.section-header{margin-bottom:20px;}
+.section-title{font-size:20px;font-weight:800;color:var(--text);}
+.section-sub{font-family:'Space Mono',monospace;font-size:11px;color:var(--text-muted);letter-spacing:.06em;margin-top:4px;}
+
+/* LEAD CARDS */
+.lead-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;margin-bottom:12px;overflow:hidden;transition:border-color .15s;}
+.lead-card:hover{border-color:var(--border-hover);}
+.card-header{display:flex;align-items:center;gap:14px;padding:18px 22px;cursor:pointer;}
+.signal-badge{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:5px 10px;border-radius:5px;flex-shrink:0;}
+.signal-badge.hot{background:rgba(255,68,68,0.15);color:var(--hot);border:1px solid rgba(255,68,68,0.30);}
+.signal-badge.warm{background:rgba(255,153,0,0.12);color:var(--warm);border:1px solid rgba(255,153,0,0.30);}
+.card-header-info{flex:1;min-width:0;}
+.lead-name{font-size:16px;font-weight:800;color:var(--text);}
+.lead-company{font-size:13px;color:var(--text-dim);margin-top:2px;}
+.why-now-line{font-size:12px;color:var(--accent);margin-top:4px;font-weight:600;}
+.icp-fit-badge{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;padding:5px 10px;border-radius:5px;background:rgba(1,144,71,0.12);color:var(--success-light);border:1px solid rgba(1,144,71,0.30);flex-shrink:0;white-space:nowrap;}
+.expand-icon{color:var(--text-muted);font-size:12px;transition:transform .2s;flex-shrink:0;}
+.lead-card.expanded .expand-icon{transform:rotate(180deg);}
+.card-body{display:none;padding:0 22px 22px;}
+.lead-card.expanded .card-body{display:block;}
+
+/* IDENTITY */
+.identity-strip{display:flex;flex-wrap:wrap;gap:6px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.05);margin-bottom:14px;}
+.identity-item{font-family:'Space Mono',monospace;font-size:11px;color:var(--text-muted);letter-spacing:.04em;}
+.identity-item a{color:var(--primary-light);text-decoration:none;}
+.identity-item a:hover{text-decoration:underline;}
+.identity-item::after{content:' ·';color:var(--border);margin-left:6px;}
+.identity-item:last-child::after{display:none;}
+
+/* TAGS */
+.tag-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px;}
+.tag{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:5px;}
+.tag.industry{background:rgba(106,102,163,0.12);color:var(--primary-light);border:1px solid rgba(106,102,163,0.25);}
+.tag.signal{background:rgba(255,153,0,0.10);color:var(--accent);border:1px solid rgba(255,153,0,0.25);}
+.tag.context{background:rgba(1,144,71,0.10);color:var(--success-light);border:1px solid rgba(1,144,71,0.25);}
+
+/* SECTIONS */
+.card-section{margin-bottom:22px;}
+.card-section-title{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:12px;}
+.card-section-subtitle{color:var(--primary-light);margin-left:8px;font-weight:400;text-transform:none;letter-spacing:0;font-size:11px;}
+
+/* SIGNALS */
+.signal-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.signal-card{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:14px 16px;}
+.signal-type{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--accent);margin-bottom:4px;}
+.signal-timing{font-size:12px;color:var(--text-muted);margin-bottom:8px;}
+.signal-desc{font-size:13px;color:var(--text-dim);line-height:1.65;}
+
+/* INTEL GRID */
+.intel-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;}
+.intel-cell{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px 14px;}
+.intel-cell-label{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px;}
+.intel-cell-value{font-size:12px;color:var(--text-dim);line-height:1.55;}
+
+/* CONTACT */
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.contact-item{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.contact-label{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--text-muted);margin-bottom:4px;}
+.contact-value{font-size:13px;color:var(--text);font-weight:600;}
+.contact-value.unavailable{color:var(--text-muted);font-weight:400;font-style:italic;}
+.copy-btn{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.06em;padding:6px 12px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--text-muted);cursor:pointer;flex-shrink:0;transition:all .15s;}
+.copy-btn:hover{border-color:var(--primary);color:var(--primary-light);}
+.copy-btn.copied{color:var(--success-light);border-color:var(--success);}
+
+/* WHY */
+.why-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.why-block{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:16px;}
+.why-block-title{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--primary-light);margin-bottom:10px;}
+.why-block-text{font-size:13px;color:var(--text-dim);line-height:1.7;}
+.fit-signal{margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.05);}
+.fit-signal-label{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--success-light);margin-bottom:4px;}
+.fit-signal-text{font-size:12px;color:var(--text-dim);line-height:1.6;}
+
+/* OUTREACH */
+.outreach-channel{margin-bottom:16px;}
+.outreach-channel-label{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px;}
+.connection-note{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:14px 16px;font-size:13px;color:var(--text-dim);line-height:1.7;margin-bottom:8px;}
+.char-count{font-family:'Space Mono',monospace;font-size:10px;color:var(--text-muted);margin-top:8px;}
+.email-block{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:14px 16px;margin-bottom:8px;}
+.email-subject-label{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--text-muted);margin-bottom:4px;}
+.email-subject-value{font-size:13px;font-weight:700;color:var(--text);margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,0.06);}
+.email-body{font-size:13px;color:var(--text-dim);line-height:1.8;white-space:pre-line;}
+.email-meta{display:flex;align-items:center;justify-content:space-between;margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.06);}
+.email-word-count{font-family:'Space Mono',monospace;font-size:10px;color:var(--text-muted);}
+.email-safe-label{font-family:'Space Mono',monospace;font-size:10px;color:var(--success-light);}
+.copy-action-btn{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.06em;padding:8px 16px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--text-muted);cursor:pointer;transition:all .15s;}
+.copy-action-btn:hover{border-color:var(--primary);color:var(--primary-light);}
+.copy-action-btn.copied{color:var(--success-light);border-color:var(--success);}
+
+/* INTEL CALLOUT */
+.intel-callout{background:rgba(255,153,0,0.07);border:1px solid rgba(255,153,0,0.25);border-radius:8px;padding:13px 16px;font-size:12px;color:var(--text-dim);line-height:1.65;}
+.intel-callout-label{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:5px;}
+
+/* NURTURE */
+.nurture-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+.nurture-card{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:14px 16px;}
+.nurture-day{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--primary-light);margin-bottom:6px;}
+.nurture-action{font-size:13px;font-weight:700;color:var(--text);margin-bottom:8px;}
+.nurture-script{font-size:12px;color:var(--text-dim);line-height:1.65;font-style:italic;}
+
+/* CARD FOOTER */
+.card-footer{padding:12px 22px;background:var(--bg3);border-top:1px solid var(--border);display:flex;justify-content:flex-end;}
+.linkedin-btn{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:8px 16px;border-radius:6px;border:1px solid var(--border);color:var(--primary-light);text-decoration:none;transition:all .15s;}
+.linkedin-btn:hover{border-color:var(--primary);background:rgba(106,102,163,0.10);}
+
+/* PIPELINE MATH */
+.pipeline-math{background:rgba(106,102,163,0.06);border:1px solid var(--border);border-radius:12px;padding:22px 28px;margin:28px 0;text-align:center;}
+.pipeline-math-text{font-size:15px;color:var(--text-dim);line-height:1.8;}
+.pipeline-math-text strong{color:var(--primary-light);font-weight:700;}
+
+/* VISUALS */
+.visuals-section{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:28px 32px;margin:28px 0;}
+.visuals-header{display:grid;grid-template-columns:1fr 1fr;gap:32px;}
+.visuals-copy h3{font-size:18px;font-weight:800;color:var(--text);line-height:1.3;margin-bottom:12px;}
+.visuals-copy p{font-size:13px;color:var(--text-dim);line-height:1.75;margin-bottom:10px;}
+.visuals-list{list-style:none;margin-top:14px;}
+.visuals-list li{font-size:13px;color:var(--text-dim);padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.04);display:flex;gap:10px;}
+.visuals-list li:last-child{border-bottom:none;}
+.visuals-list-dot{color:var(--success-light);font-weight:700;flex-shrink:0;}
+.visuals-tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.visual-tile{border-radius:10px;overflow:hidden;}
+.visual-tile-inner{aspect-ratio:4/3;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px;}
+.visual-tile.carousel{background:linear-gradient(135deg,#1B2A4A 0%,#243655 100%);border:1px solid rgba(240,165,0,0.20);}
+.visual-tile.post{background:linear-gradient(135deg,#1B2A4A 0%,#1D2D47 100%);border:1px solid rgba(240,165,0,0.15);}
+.visual-tile.infographic{background:linear-gradient(135deg,#162238 0%,#1B2A4A 100%);border:1px solid rgba(240,165,0,0.10);}
+.tile-accent-bar{width:36px;height:3px;background:#F0A500;border-radius:2px;margin-bottom:12px;}
+.tile-lines{width:100%;}
+.tile-line{height:7px;background:rgba(245,240,232,0.15);border-radius:3px;margin-bottom:6px;}
+.tile-line.short{width:60%;}
+.tile-line.medium{width:80%;}
+.tile-line.full{width:100%;}
+.tile-label{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);text-align:center;margin-top:10px;padding:6px;background:var(--bg3);}
+.visuals-note{font-size:13px;color:var(--text-dim);text-align:center;margin-top:18px;padding-top:18px;border-top:1px solid var(--border);line-height:1.7;}
+.visuals-note strong{color:var(--text);}
+
+/* CTA FOOTER */
+.cta-footer{margin-top:36px;background:linear-gradient(135deg,rgba(255,153,0,0.08) 0%,rgba(106,102,163,0.06) 100%);border:1px solid rgba(255,153,0,0.30);border-radius:12px;padding:36px 40px;text-align:center;}
+.cta-footer-headline{font-size:22px;font-weight:800;color:var(--text);letter-spacing:-.01em;margin-bottom:14px;line-height:1.3;}
+.cta-footer-subhead{font-size:14px;color:var(--text-dim);line-height:1.8;max-width:680px;margin:0 auto 26px;}
+.cta-footer-btn{display:inline-block;background:var(--accent);color:var(--bg);padding:15px 34px;border-radius:8px;font-family:'Space Mono',monospace;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;text-decoration:none;transition:background .15s;margin-bottom:14px;}
+.cta-footer-btn:hover{background:#ffb340;}
+.cta-footer-note{font-family:'Space Mono',monospace;font-size:11px;color:var(--text-muted);letter-spacing:.04em;}
+
+/* POST CARDS */
+.post-cards-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:28px;}
+.post-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:24px 26px;}
+.post-type-label{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--primary-light);margin-bottom:6px;}
+.post-type-desc{font-size:11px;color:var(--text-muted);margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--border);line-height:1.5;}
+.post-text{font-size:13px;color:var(--text-dim);line-height:1.85;white-space:pre-line;}
+.post-cta-line{margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.06);font-size:12px;color:var(--accent);font-weight:600;}
+
+/* VIEWS */
+.view{display:none;}
+.view.active{display:block;}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .sidebar{display:none;}
+  .mobile-topbar{display:flex;}
+  .mobile-tabs{display:flex;}
+  .main{margin-left:0;padding:16px;}
+  .tab-bar{display:none;}
+  .icp-grid{grid-template-columns:1fr;}
+  .signal-cards{grid-template-columns:1fr;}
+  .intel-grid{grid-template-columns:1fr 1fr;}
+  .contact-grid{grid-template-columns:1fr;}
+  .why-grid{grid-template-columns:1fr;}
+  .nurture-grid{grid-template-columns:1fr;}
+  .post-cards-grid{grid-template-columns:1fr;}
+  .visuals-header{grid-template-columns:1fr;}
+  .card-header{flex-wrap:wrap;gap:8px;}
+  .lead-name{font-size:15px;}
+  .cta-footer{padding:24px 20px;}
+  .cta-footer-btn{width:100%;text-align:center;display:block;}
+  .email-meta{flex-direction:column;align-items:flex-start;gap:8px;}
+}
+@media(max-width:480px){
+  .intel-grid{grid-template-columns:1fr;}
+  .visuals-tiles{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<div class="mobile-topbar">
+  <div class="mobile-logo">Pipelind</div>
+  <div class="mobile-prospect-name">Brian's Report</div>
+</div>
+<div class="mobile-tabs">
+  <button class="mobile-tab-pill active" onclick="showView('pipeline',this)">Pipeline Engine</button>
+  <button class="mobile-tab-pill" onclick="showView('content',this)">Content Engine</button>
+</div>
+
+<nav class="sidebar">
+  <div class="sidebar-logo">Pipelind</div>
+  <div class="prospect-block">
+    <div class="prospect-label">Personalised For</div>
+    <div class="prospect-name">Brian F. C.</div>
+    <div class="prospect-meta">May 2026 · Lead Demo</div>
+  </div>
+  <div class="nav-item active" id="nav-pipeline" onclick="showView('pipeline',this)">Pipeline Engine</div>
+  <div class="nav-item" id="nav-content" onclick="showView('content',this)">Content Engine</div>
+  <div class="sidebar-footer">Personalised build<br>Real signal data<br>Sample of full delivery</div>
+</nav>
+
+<main class="main">
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="showView('pipeline',this)">Pipeline Engine</button>
+    <button class="tab-btn" onclick="showView('content',this)">Content Engine</button>
+  </div>
+
+  <!-- ═══ PIPELINE ENGINE ═══ -->
+  <div class="view active" id="view-pipeline">
+
+    <div class="welcome-banner">
+      <div class="welcome-tag">Personalised For Brian F. Califano · CFO Systems, LLC</div>
+      <div class="welcome-text"><strong>5 founders and CEOs actively building finance infrastructure at growth-stage software companies.</strong> Each profile carries a live market signal from the last 90 days. The intelligence briefing on every card is configured for your practice: embedded operating CFO for $10M-$100M companies navigating the growth inflection and preparing for strategic exit or expansion.</div>
+    </div>
+
+    <div class="icp-grid">
+      <div class="icp-panel">
+        <div class="panel-title">Target Buyer Profile</div>
+        <div class="icp-item"><span class="icp-label">Buyer Titles</span><span class="icp-value">CEO, Co-founder, Founder</span></div>
+        <div class="icp-item"><span class="icp-label">Company Stage</span><span class="icp-value">Post Series A/B, $10M-$100M Revenue</span></div>
+        <div class="icp-item"><span class="icp-label">Headcount</span><span class="icp-value">50-500 Employees</span></div>
+        <div class="icp-item"><span class="icp-label">Trigger Signals</span><span class="icp-value">Finance Hiring, Funding Activity</span></div>
+        <div class="icp-item"><span class="icp-label">Geography</span><span class="icp-value">US, CA, GB, AU</span></div>
+      </div>
+      <div class="icp-panel">
+        <div class="panel-title">Sample Quality</div>
+        <div class="quality-grid">
+          <div class="quality-metric"><div class="quality-num">5</div><div class="quality-label">ICP-Matched</div></div>
+          <div class="quality-metric"><div class="quality-num">100%</div><div class="quality-label">Signal Active</div></div>
+          <div class="quality-metric"><div class="quality-num">5</div><div class="quality-label">Emails Live</div></div>
+          <div class="quality-metric"><div class="quality-num">90d</div><div class="quality-label">Signal Window</div></div>
+        </div>
+        <div class="quality-note">Each lead verified against your ICP: founder or CEO, growth-stage SaaS, recent finance or capital signal, Tier 1 geography. All 5 carry verified work email addresses.</div>
+      </div>
+    </div>
+
+    <div class="section-header">
+      <div class="section-title">ICP-Matched Buyers</div>
+      <div class="section-sub">5 of 40 monthly leads · Active signals, last 90 days</div>
+    </div>
+
+    <!-- ─── CARD 1: ADAM JACKSON / BRAINTRUST ─── -->
+    <div class="lead-card expanded" id="card-1">
+      <div class="card-header" onclick="toggleCard('card-1')">
+        <span class="signal-badge warm">WARM</span>
+        <div class="card-header-info">
+          <div class="lead-name">Adam Jackson</div>
+          <div class="lead-company">Founder &amp; CEO · Braintrust</div>
+          <div class="why-now-line">Finance team expansion and capital activity detected within last 90 days</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit: YES</span>
+        <span class="expand-icon">&#9662;</span>
+      </div>
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item"><a href="https://usebraintrust.com" target="_blank">usebraintrust.com</a></span>
+          <span class="identity-item">San Francisco, CA</span>
+          <span class="identity-item">201-500 employees</span>
+          <span class="identity-item">$25M-$75M revenue</span>
+          <span class="identity-item">AI Recruiting / SaaS</span>
+        </div>
+        <div class="tag-row">
+          <span class="tag industry">Founder &amp; CEO</span>
+          <span class="tag industry">$25M-$75M Revenue</span>
+          <span class="tag industry">201-500 Employees</span>
+          <span class="tag signal">Finance Team Hiring</span>
+          <span class="tag signal">Capital Activity</span>
+          <span class="tag context">Enterprise AI Platform</span>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Active Market Signals</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Finance Department Hiring</div>
+              <div class="signal-timing">Within last 90 days</div>
+              <div class="signal-desc">Braintrust is actively building its finance function at a revenue stage where AI recruiting platform economics tend to diverge from unit economics. Finance team expansion here signals a transition from basic reporting to strategic financial infrastructure that can model the impact of decisions before they are made.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">Capital Activity</div>
+              <div class="signal-timing">Within last 90 days</div>
+              <div class="signal-desc">Capital deployment signal detected at Braintrust. Post-funding periods create acute demand for strategic CFO oversight: investor reporting cadence, cash deployment modeling, and runway visibility by product and customer segment. These are decisions that require embedded financial judgment, not outsourced accounting.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing <span class="card-section-subtitle">Configured for Brian's Practice</span></div>
+          <div class="intel-grid">
+            <div class="intel-cell"><div class="intel-cell-label">Leadership Movement</div><div class="intel-cell-value">No leadership movement detected in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Capital Activity</div><div class="intel-cell-value">Active capital deployment signal detected within last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Hiring Signals</div><div class="intel-cell-value">Finance department hiring activity detected within last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Expansion Signals</div><div class="intel-cell-value">No expansion signals detected in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Growth Trajectory</div><div class="intel-cell-value">201-500 employees, $25M-$75M ARR. AI recruiting platform with Fortune 1000 enterprise clients including Nestle, Goldman Sachs, and Nike.</div></div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div><div class="contact-label">Work Email</div><div class="contact-value">adam@usebraintrust.com</div></div>
+              <button class="copy-btn" onclick="copyToClipboard('adam@usebraintrust.com',this)">Copy</button>
+            </div>
+            <div class="contact-item">
+              <div><div class="contact-label">Mobile</div><div class="contact-value">+1 (650) 248-4868</div></div>
+              <button class="copy-btn" onclick="copyToClipboard('+16502484868',this)">Copy</button>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div class="why-block">
+              <div class="why-block-title">ICP Fit for Brian</div>
+              <div class="why-block-text">Adam is the founder and CEO of an AI recruiting platform at $25M-$75M revenue, squarely in the growth band Brian's practice is built for. Braintrust has enterprise traction, active capital deployment, and a finance team in build-out mode. The company sits at the stage Brian describes precisely: hiring faster than the financial model can surface which customer segments are actually profitable. M&A advisory relevance is high given Braintrust's marketplace architecture and Fortune 1000 client base.</div>
+              <div class="fit-signal">
+                <div class="fit-signal-label">Strongest Fit Signal</div>
+                <div class="fit-signal-text">Finance team expansion alongside capital activity at $25M-$75M, the exact inflection Brian's embedded CFO model is built to serve.</div>
+              </div>
+            </div>
+            <div class="why-block">
+              <div class="why-block-title">Why They're Looking</div>
+              <div class="why-block-text">Braintrust has capital to deploy and is actively building the finance function to manage that deployment. At $25M-$75M with enterprise clients and a marketplace model, the questions that matter are no longer whether the business is profitable. They are which customers are generating margin, where cash squeezes before revenue catches up, and what the financial model says about the next growth phase. A founder running that business cannot answer those questions without strategic CFO infrastructure in place.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal <span class="card-section-subtitle">2 Channels Ready</span></div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="conn-note-1">Noticed Braintrust is building out the finance function. At $25M-$75M, recruiting platform economics tend to diverge from unit economics quickly. The financial model that works at $10M usually does not answer the questions that matter at $50M. Would value connecting.<div class="char-count">262 characters · LinkedIn limit: 300</div></div>
+            <button class="copy-action-btn" onclick="copyElementText('conn-note-1',this)">Copy Connection Note</button>
+          </div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Email Draft · Ready to Send</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject Line</div>
+              <div class="email-subject-value" id="email-subj-1">Braintrust's finance team expansion</div>
+              <div class="email-body" id="email-body-1">Adam,
+
+Noticed Braintrust has been actively building out its finance function. At the $25M-$75M revenue range, that kind of investment usually signals the company is moving from reporting on what happened to needing financial strategy that drives what happens next.
+
+That transition is where most growth-stage companies lose the most ground. The numbers exist, but they stop answering the questions that matter: which customers are actually profitable by margin, not just by contract value? Where does cash squeeze before revenue catches up? What breaks first if the platform scales another 30%?
+
+I work directly with founders at this stage as an embedded financial partner. Inside the business, helping drive those decisions in real time.
+
+Worth a 15-minute conversation to see if there is any overlap?
+
+Brian F. Califano
+CFO Systems, LLC · cfosystemsllc.com</div>
+              <div class="email-meta"><span class="email-word-count">131 words · safe for cold send</span><span class="email-safe-label">Ready to Send</span></div>
+            </div>
+            <button class="copy-action-btn" onclick="copyFullEmail('email-subj-1','email-body-1',this)">Copy Email Draft</button>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Prospect Intelligence</div>
+          <div class="intel-callout">
+            <div class="intel-callout-label">Job Anniversary Detected</div>
+            Adam reached the 8-year mark at Braintrust approximately 17 days ago. Long-tenure founders at this milestone are typically revisiting the strategic and financial infrastructure that has scaled with the company. That review often surfaces gaps that have been growing quietly for years.
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Nurture Sequence · 3-Touch</div>
+          <div class="nurture-grid">
+            <div class="nurture-card"><div class="nurture-day">Day 1</div><div class="nurture-action">LinkedIn Connection</div><div class="nurture-script">"Noticed Braintrust is building out the finance function. At $25M-$75M, recruiting platform economics tend to diverge from unit economics quickly. The financial model that works at $10M usually does not answer the questions that matter at $50M. Would value connecting."</div></div>
+            <div class="nurture-card"><div class="nurture-day">Day 7</div><div class="nurture-action">Value Drop</div><div class="nurture-script">"Braintrust sits at an interesting stage for financial architecture. AI recruiting platforms compounding through the $25M range typically start running into cash flow timing mismatches as enterprise contract count grows faster than payment cycles. Worth having visibility on that before it shows up in the numbers."</div></div>
+            <div class="nurture-card"><div class="nurture-day">Day 14</div><div class="nurture-action">Diagnostic Question</div><div class="nurture-script">"What does your current financial model tell you about which customer segments are profitable after fully loaded success and support costs? That tends to be the question that surfaces the clearest financial lever at this stage."</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer"><a class="linkedin-btn" href="https://linkedin.com/in/ACoAAAAQ_s8B-xfHEjh79TObC0SHbbbwZ4Q13oI" target="_blank" title="URL may require LinkedIn login">View on LinkedIn →</a></div>
+    </div>
+
+    <!-- ─── CARD 2: TEJAS MANOHAR / HIGHTOUCH ─── -->
+    <div class="lead-card" id="card-2">
+      <div class="card-header" onclick="toggleCard('card-2')">
+        <span class="signal-badge warm">WARM</span>
+        <div class="card-header-info">
+          <div class="lead-name">Tejas Manohar</div>
+          <div class="lead-company">Co-founder &amp; Co-CEO · Hightouch</div>
+          <div class="why-now-line">Finance team build-out and funding activity detected within last 90 days</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit: YES</span>
+        <span class="expand-icon">&#9662;</span>
+      </div>
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item"><a href="https://hightouch.com" target="_blank">hightouch.com</a></span>
+          <span class="identity-item">San Francisco, CA</span>
+          <span class="identity-item">201-500 employees</span>
+          <span class="identity-item">$75M-$200M revenue</span>
+          <span class="identity-item">Data Activation / AI / SaaS</span>
+        </div>
+        <div class="tag-row">
+          <span class="tag industry">Co-founder &amp; Co-CEO</span>
+          <span class="tag industry">$75M-$200M Revenue</span>
+          <span class="tag industry">201-500 Employees</span>
+          <span class="tag signal">Finance Team Build-out</span>
+          <span class="tag signal">Funding Activity</span>
+          <span class="tag context">Data/AI Platform</span>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Active Market Signals</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Finance Team Build-out</div>
+              <div class="signal-timing">Within last 90 days</div>
+              <div class="signal-desc">Hightouch is expanding its finance function during active platform maturation. Data and AI platforms at $75M-$200M revenue face margin complexity across product lines that standard financial reporting cannot model accurately without dedicated infrastructure built for multi-product economics.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">Funding Activity</div>
+              <div class="signal-timing">Within last 90 days</div>
+              <div class="signal-desc">Capital activity detected at Hightouch. Funded data platforms at this revenue stage need financial modeling that tracks not just total revenue but infrastructure cost curves and contribution margin by product and customer cohort, to support the next capital conversation clearly.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing <span class="card-section-subtitle">Configured for Brian's Practice</span></div>
+          <div class="intel-grid">
+            <div class="intel-cell"><div class="intel-cell-label">Leadership Movement</div><div class="intel-cell-value">No leadership movement detected in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Capital Activity</div><div class="intel-cell-value">Capital activity signal detected within last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Hiring Signals</div><div class="intel-cell-value">Finance team expansion activity detected within last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Expansion Signals</div><div class="intel-cell-value">No office or market expansion signals detected</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Growth Trajectory</div><div class="intel-cell-value">201-500 employees, $75M-$200M ARR. AI and data activation platform for marketing and personalization with Fortune 1000 enterprise client base.</div></div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div><div class="contact-label">Work Email</div><div class="contact-value">tejas.manohar@hightouch.io</div></div>
+              <button class="copy-btn" onclick="copyToClipboard('tejas.manohar@hightouch.io',this)">Copy</button>
+            </div>
+            <div class="contact-item">
+              <div><div class="contact-label">Mobile</div><div class="contact-value">+1 (615) 974-7843</div></div>
+              <button class="copy-btn" onclick="copyToClipboard('+16159747843',this)">Copy</button>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div class="why-block">
+              <div class="why-block-title">ICP Fit for Brian</div>
+              <div class="why-block-text">Tejas co-founded and co-runs a data and AI platform at $75M-$200M, the upper band of Brian's core ICP. Hightouch operates in a space where infrastructure cost curves compound against SaaS revenue in ways that standard accounting does not surface. Brian's embedded CFO model is built specifically for this kind of multi-product financial complexity. The combination of capital activity and finance team expansion signals an inflection that requires strategic financial architecture, not operational reporting.</div>
+              <div class="fit-signal">
+                <div class="fit-signal-label">Strongest Fit Signal</div>
+                <div class="fit-signal-text">Finance team build-out alongside funding activity at $75M-$200M, where multi-product margin visibility becomes critical for the next capital conversation.</div>
+              </div>
+            </div>
+            <div class="why-block">
+              <div class="why-block-title">Why They're Looking</div>
+              <div class="why-block-text">Platforms at Hightouch's scale face investor reporting pressure alongside ongoing product expansion costs. The margin story has to be clear enough to support the next capital conversation. That clarity requires financial modeling by product line and by customer cohort, not just total revenue. Active finance team growth alongside capital deployment signals the company is aware of this gap and actively working to close it. The window for a strategic CFO engagement is now.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal <span class="card-section-subtitle">2 Channels Ready</span></div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="conn-note-2">Noticed Hightouch has been growing its finance team alongside active capital deployment. Data platforms at $75M-$200M tend to face a specific gap between what reporting shows and what the margin story needs to say for the next capital conversation. Would love to connect.<div class="char-count">260 characters · LinkedIn limit: 300</div></div>
+            <button class="copy-action-btn" onclick="copyElementText('conn-note-2',this)">Copy Connection Note</button>
+          </div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Email Draft · Ready to Send</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject Line</div>
+              <div class="email-subject-value" id="email-subj-2">Hightouch's financial infrastructure as the platform scales</div>
+              <div class="email-body" id="email-body-2">Tejas,
+
+Noticed Hightouch has been actively growing its finance team alongside capital activity. Data and AI platforms at the $75M-$200M revenue stage face a specific financial complexity: investor reporting obligations, unit economics under pressure from product expansion, and margin drift that is hard to isolate by product line without the right architecture underneath it.
+
+The visibility problem is not a data problem. It is a model problem. Most founders in that range have reporting that tells them what happened last quarter. The decisions that matter require knowing what will break next quarter.
+
+I work with founders as an embedded financial partner, focused on this exact growth band. Happy to spend 15 minutes seeing if there is any fit.
+
+Brian F. Califano
+CFO Systems, LLC · cfosystemsllc.com</div>
+              <div class="email-meta"><span class="email-word-count">127 words · safe for cold send</span><span class="email-safe-label">Ready to Send</span></div>
+            </div>
+            <button class="copy-action-btn" onclick="copyFullEmail('email-subj-2','email-body-2',this)">Copy Email Draft</button>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Nurture Sequence · 3-Touch</div>
+          <div class="nurture-grid">
+            <div class="nurture-card"><div class="nurture-day">Day 1</div><div class="nurture-action">LinkedIn Connection</div><div class="nurture-script">"Noticed Hightouch has been growing its finance team alongside active capital deployment. Data platforms at $75M-$200M tend to face a specific gap between what reporting shows and what the margin story needs to say for the next capital conversation. Would love to connect."</div></div>
+            <div class="nurture-card"><div class="nurture-day">Day 7</div><div class="nurture-action">Value Drop</div><div class="nurture-script">"Data activation platforms at Hightouch's scale tend to have a specific margin structure. Infrastructure cost curves do not always match SaaS revenue recognition timing. That spread tends to surface in fundraising conversations before it shows up cleanly in the reporting."</div></div>
+            <div class="nurture-card"><div class="nurture-day">Day 14</div><div class="nurture-action">Diagnostic Question</div><div class="nurture-script">"How are you currently modeling unit economics by product line as the platform expands into new use cases? That tends to be where the most consequential financial decisions compound at this stage."</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer"><a class="linkedin-btn" href="https://linkedin.com/in/ACoAABSv2jUBW80nxF4ANVwoiP0UcOk_Hpy8TFA" target="_blank" title="URL may require LinkedIn login">View on LinkedIn →</a></div>
+    </div>
+
+    <!-- ─── CARD 3: SRIKRISHNAN GANESAN / ROCKETLANE ─── -->
+    <div class="lead-card" id="card-3">
+      <div class="card-header" onclick="toggleCard('card-3')">
+        <span class="signal-badge warm">WARM</span>
+        <div class="card-header-info">
+          <div class="lead-name">Srikrishnan Ganesan</div>
+          <div class="lead-company">Co-founder &amp; CEO · Rocketlane</div>
+          <div class="why-now-line">Finance department hiring and capital deployment detected within last 90 days</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit: YES</span>
+        <span class="expand-icon">&#9662;</span>
+      </div>
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item"><a href="https://rocketlane.com" target="_blank">rocketlane.com</a></span>
+          <span class="identity-item">San Francisco, CA</span>
+          <span class="identity-item">201-500 employees</span>
+          <span class="identity-item">$75M-$200M revenue</span>
+          <span class="identity-item">PSA / Customer Onboarding / SaaS</span>
+        </div>
+        <div class="tag-row">
+          <span class="tag industry">Co-founder &amp; CEO</span>
+          <span class="tag industry">$75M-$200M Revenue</span>
+          <span class="tag industry">201-500 Employees</span>
+          <span class="tag signal">Finance Hiring</span>
+          <span class="tag signal">Capital Deployment</span>
+          <span class="tag context">PSA Platform</span>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Active Market Signals</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Finance Department Hiring</div>
+              <div class="signal-timing">Within last 90 days</div>
+              <div class="signal-desc">Rocketlane is building its finance team at a stage where PSA and onboarding platform economics become complex. Project-level profitability is notoriously difficult to model accurately, and finance team growth here signals the business is reaching the scale where that visibility becomes operationally critical.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">Capital Deployment</div>
+              <div class="signal-timing">Within last 90 days</div>
+              <div class="signal-desc">Capital activity detected at Rocketlane. At $75M-$200M revenue, capital deployment decisions require financial architecture that can answer questions about contribution by product, by customer profile, and by delivery configuration, not just total contract value.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing <span class="card-section-subtitle">Configured for Brian's Practice</span></div>
+          <div class="intel-grid">
+            <div class="intel-cell"><div class="intel-cell-label">Leadership Movement</div><div class="intel-cell-value">No leadership movement detected in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Capital Activity</div><div class="intel-cell-value">Funding activity signal detected within last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Hiring Signals</div><div class="intel-cell-value">Finance department hiring detected within last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Expansion Signals</div><div class="intel-cell-value">No expansion signals detected in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Growth Trajectory</div><div class="intel-cell-value">201-500 employees, $75M-$200M ARR. Purpose-built PSA and customer onboarding platform serving project-led SaaS organizations globally.</div></div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div><div class="contact-label">Work Email</div><div class="contact-value">srikrishnan@rocketlane.com</div></div>
+              <button class="copy-btn" onclick="copyToClipboard('srikrishnan@rocketlane.com',this)">Copy</button>
+            </div>
+            <div class="contact-item">
+              <div><div class="contact-label">Mobile</div><div class="contact-value">+1 (650) 866-8865</div></div>
+              <button class="copy-btn" onclick="copyToClipboard('+16508668865',this)">Copy</button>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div class="why-block">
+              <div class="why-block-title">ICP Fit for Brian</div>
+              <div class="why-block-text">Srikrishnan co-founded and runs Rocketlane, a PSA and customer onboarding platform at $75M-$200M. The company's own product is built around project profitability and delivery efficiency, making it an acute case: Rocketlane needs to know its own project-level margins with the same precision it provides to customers. Brian's embedded CFO experience and M&A advisory expertise are particularly relevant given Rocketlane's strategic positioning in the project management SaaS ecosystem.</div>
+              <div class="fit-signal">
+                <div class="fit-signal-label">Strongest Fit Signal</div>
+                <div class="fit-signal-text">Finance team growth at a stage where PSA platform margins require granular visibility across delivery configurations and customer profiles.</div>
+              </div>
+            </div>
+            <div class="why-block">
+              <div class="why-block-title">Why They're Looking</div>
+              <div class="why-block-text">Growing a PSA platform through the $75M-$200M range means increasingly complex revenue recognition, multi-client delivery margin analysis, and international financial structure. The business has likely outpaced the financial infrastructure that was adequate at $25M. Active finance team expansion signals Srikrishnan knows this. Parallel capital deployment makes the timing acute: the financial model needs to support both operational clarity and investor reporting simultaneously.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal <span class="card-section-subtitle">2 Channels Ready</span></div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="conn-note-3">Noticed Rocketlane's finance team has been expanding. PSA platforms at scale have a specific financial challenge: knowing your own project-level margins with the same precision the product provides to customers. That visibility gap tends to be material at this revenue stage. Would value connecting.<div class="char-count">276 characters · LinkedIn limit: 300</div></div>
+            <button class="copy-action-btn" onclick="copyElementText('conn-note-3',this)">Copy Connection Note</button>
+          </div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Email Draft · Ready to Send</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject Line</div>
+              <div class="email-subject-value" id="email-subj-3">Rocketlane's financial complexity as the platform matures</div>
+              <div class="email-body" id="email-body-3">Srikrishnan,
+
+Noticed Rocketlane has been expanding its finance team over the last several weeks. A PSA and customer onboarding platform at $75M-$200M revenue has a specific financial challenge: project-level profitability is notoriously hard to model accurately when your own product is the infrastructure your team runs on.
+
+The question that matters at this stage is not whether the business is profitable. It is whether you can see which services, which client profiles, and which delivery configurations are actually carrying the margin and which ones are absorbing it quietly.
+
+I work with founders as an embedded CFO partner focused on that $10M-$100M growth band. Hands-on, not advisory. Focused on decisions, not reports.
+
+Interested in 15 minutes to see if there is any overlap?
+
+Brian F. Califano
+CFO Systems, LLC · cfosystemsllc.com</div>
+              <div class="email-meta"><span class="email-word-count">138 words · safe for cold send</span><span class="email-safe-label">Ready to Send</span></div>
+            </div>
+            <button class="copy-action-btn" onclick="copyFullEmail('email-subj-3','email-body-3',this)">Copy Email Draft</button>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Prospect Intelligence</div>
+          <div class="intel-callout">
+            <div class="intel-callout-label">Job Anniversary Detected</div>
+            Srikrishnan passed his 6-year anniversary at Rocketlane approximately 21 days ago. Six-year milestone for a SaaS co-founder often coincides with the first serious conversation about financial architecture for the next growth phase. The timing alongside the current capital and hiring signals makes this an elevated-priority outreach window.
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Nurture Sequence · 3-Touch</div>
+          <div class="nurture-grid">
+            <div class="nurture-card"><div class="nurture-day">Day 1</div><div class="nurture-action">LinkedIn Connection</div><div class="nurture-script">"Noticed Rocketlane's finance team has been expanding. PSA platforms at scale have a specific financial challenge: knowing your own project-level margins with the same precision the product provides to customers. That visibility gap tends to be material at this revenue stage. Would value connecting."</div></div>
+            <div class="nurture-card"><div class="nurture-day">Day 7</div><div class="nurture-action">Value Drop</div><div class="nurture-script">"Six years building Rocketlane means the original financial model is likely running on assumptions that no longer reflect the actual business. PSA platforms especially tend to have margin complexity buried in project delivery that standard accounting does not surface until it is already a problem."</div></div>
+            <div class="nurture-card"><div class="nurture-day">Day 14</div><div class="nurture-action">Diagnostic Question</div><div class="nurture-script">"Which customer segments in your portfolio are driving the most profitable revenue after accounting for actual delivery cost per engagement? That question tends to reveal the clearest margin lever at the $75M-$200M stage."</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer"><a class="linkedin-btn" href="https://linkedin.com/in/ACoAAAC0kZMBsyGTkhNu1iWuETGlZuJ2OiWEN2Q" target="_blank" title="URL may require LinkedIn login">View on LinkedIn →</a></div>
+    </div>
+
+    <!-- ─── CARD 4: EMIR ATLI / HOCKEYSTACK ─── -->
+    <div class="lead-card" id="card-4">
+      <div class="card-header" onclick="toggleCard('card-4')">
+        <span class="signal-badge warm">WARM</span>
+        <div class="card-header-info">
+          <div class="lead-name">Emir Atli</div>
+          <div class="lead-company">Co-founder &amp; CRO · HockeyStack</div>
+          <div class="why-now-line">Recent funding round detected within last 90 days</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit: YES</span>
+        <span class="expand-icon">&#9662;</span>
+      </div>
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item"><a href="https://hockeystack.com" target="_blank">hockeystack.com</a></span>
+          <span class="identity-item">San Francisco, CA</span>
+          <span class="identity-item">51-200 employees</span>
+          <span class="identity-item">$10M-$25M revenue</span>
+          <span class="identity-item">Revenue Intelligence / AI / SaaS</span>
+        </div>
+        <div class="tag-row">
+          <span class="tag industry">Co-founder &amp; CRO</span>
+          <span class="tag industry">$10M-$25M Revenue</span>
+          <span class="tag industry">51-200 Employees</span>
+          <span class="tag signal">Recent Funding Round</span>
+          <span class="tag context">B2B Revenue Intelligence</span>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Active Market Signals</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Recent Funding Round</div>
+              <div class="signal-timing">Within last 90 days</div>
+              <div class="signal-desc">HockeyStack has received new capital investment within the last quarter. Post-funding inflection points at the $10M-$25M range are where founders face the most consequential financial modeling questions: hire ahead of revenue or preserve runway? That decision requires unit economics clarity the company likely does not yet have in structured form.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">Growth Stage Signal</div>
+              <div class="signal-timing">Active · 51-200 employees</div>
+              <div class="signal-desc">B2B revenue intelligence platforms at this stage often operate with imprecise internal financial attribution. The product tracks revenue signals for clients, but the company's own unit economics by customer and by segment require a financial model built specifically for enterprise SaaS at the growth stage.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing <span class="card-section-subtitle">Configured for Brian's Practice</span></div>
+          <div class="intel-grid">
+            <div class="intel-cell"><div class="intel-cell-label">Leadership Movement</div><div class="intel-cell-value">No leadership movement detected in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Capital Activity</div><div class="intel-cell-value">Active funding signal detected within last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Hiring Signals</div><div class="intel-cell-value">No finance department hiring trend detected</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Expansion Signals</div><div class="intel-cell-value">No expansion signals detected in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Growth Trajectory</div><div class="intel-cell-value">51-200 employees, $10M-$25M ARR. AI platform for B2B revenue teams. Scaling through early growth stage with enterprise client focus.</div></div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div><div class="contact-label">Work Email</div><div class="contact-value">emir@hockeystack.com</div></div>
+              <button class="copy-btn" onclick="copyToClipboard('emir@hockeystack.com',this)">Copy</button>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div class="why-block">
+              <div class="why-block-title">ICP Fit for Brian</div>
+              <div class="why-block-text">Emir co-founded HockeyStack, a B2B revenue intelligence platform at $10M-$25M, the early-growth stage Brian describes where the financial model that got the company here is typically not the one that can answer what happens if you hire ahead of revenue to accelerate. HockeyStack's product helps clients with revenue attribution, which makes the conversation natural: the company's own financial attribution likely has gaps that an embedded CFO could surface and close.</div>
+              <div class="fit-signal">
+                <div class="fit-signal-label">Strongest Fit Signal</div>
+                <div class="fit-signal-text">Recent funding round at $10M-$25M, the classic inflection point where strategic CFO engagement produces the highest leverage on capital deployment decisions.</div>
+              </div>
+            </div>
+            <div class="why-block">
+              <div class="why-block-title">Why They're Looking</div>
+              <div class="why-block-text">Post-funding, HockeyStack faces the build-vs-buy and hire-vs-preserve decisions that define the next 18 months of product and headcount investment. Without a financial model that tracks real unit economics by segment, those decisions get made on instinct rather than data. The platform's own positioning as a revenue intelligence tool makes a fractional CFO engagement particularly credible: it is the same argument HockeyStack makes to its own customers, applied internally.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal <span class="card-section-subtitle">2 Channels Ready</span></div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="conn-note-4">Noticed HockeyStack's recent capital activity. Revenue intelligence platforms at $10M-$25M post-funding face the sharpest financial modeling question of the growth stage: hire ahead of revenue or preserve runway? That decision needs unit economics clarity most companies at this stage do not yet have. Would love to connect.<div class="char-count">297 characters · LinkedIn limit: 300</div></div>
+            <button class="copy-action-btn" onclick="copyElementText('conn-note-4',this)">Copy Connection Note</button>
+          </div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Email Draft · Ready to Send</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject Line</div>
+              <div class="email-subject-value" id="email-subj-4">HockeyStack's financial architecture at the growth stage</div>
+              <div class="email-body" id="email-body-4">Emir,
+
+Noticed HockeyStack has had active capital movement recently. Revenue intelligence platforms scaling through the $10M-$25M range face a specific inflection: the financial model that got the business here is usually not the one that can answer what happens if you hire ahead of revenue to accelerate, or what the unit economics actually look like by customer segment.
+
+Revenue attribution is your product. Financial attribution at the company level is a different problem, and it tends to get harder as B2B SaaS sales cycle complexity compounds with headcount growth.
+
+I work with growth-stage founders as an embedded financial partner at this stage. Inside the business, focused on the decisions that affect what you can build next.
+
+Worth 15 minutes to see if there is any fit?
+
+Brian F. Califano
+CFO Systems, LLC · cfosystemsllc.com</div>
+              <div class="email-meta"><span class="email-word-count">130 words · safe for cold send</span><span class="email-safe-label">Ready to Send</span></div>
+            </div>
+            <button class="copy-action-btn" onclick="copyFullEmail('email-subj-4','email-body-4',this)">Copy Email Draft</button>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Nurture Sequence · 3-Touch</div>
+          <div class="nurture-grid">
+            <div class="nurture-card"><div class="nurture-day">Day 1</div><div class="nurture-action">LinkedIn Connection</div><div class="nurture-script">"Noticed HockeyStack's recent capital activity. Revenue intelligence platforms at $10M-$25M post-funding face the sharpest financial modeling question of the growth stage: hire ahead of revenue or preserve runway? That decision needs unit economics clarity most companies at this stage do not yet have. Would love to connect."</div></div>
+            <div class="nurture-card"><div class="nurture-day">Day 7</div><div class="nurture-action">Value Drop</div><div class="nurture-script">"B2B revenue intelligence at the company level is different from revenue intelligence as a product. Platforms at the $10M-$25M stage often have their clearest financial leverage in unit economics clarity, not go-to-market. The question is whether the financial model is set up to surface it."</div></div>
+            <div class="nurture-card"><div class="nurture-day">Day 14</div><div class="nurture-action">Diagnostic Question</div><div class="nurture-script">"What is your current visibility into LTV versus CAC by customer segment? That tends to be the number that determines whether the post-funding hiring plan creates leverage or dilutes it."</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer"><a class="linkedin-btn" href="https://linkedin.com/in/ACoAABvDA9MB9AZL22PMDd9P_31PBb8n9FgDdug" target="_blank" title="URL may require LinkedIn login">View on LinkedIn →</a></div>
+    </div>
+
+    <!-- ─── CARD 5: AMJAD MASAD / REPLIT ─── -->
+    <div class="lead-card" id="card-5">
+      <div class="card-header" onclick="toggleCard('card-5')">
+        <span class="signal-badge warm">WARM</span>
+        <div class="card-header-info">
+          <div class="lead-name">Amjad Masad</div>
+          <div class="lead-company">CEO · Replit</div>
+          <div class="why-now-line">Finance team expansion and capital activity detected within last 90 days</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit: YES</span>
+        <span class="expand-icon">&#9662;</span>
+      </div>
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item"><a href="https://replit.com" target="_blank">replit.com</a></span>
+          <span class="identity-item">Foster City, CA</span>
+          <span class="identity-item">201-500 employees</span>
+          <span class="identity-item">$75M-$200M revenue</span>
+          <span class="identity-item">Developer Platform / SaaS</span>
+        </div>
+        <div class="tag-row">
+          <span class="tag industry">CEO / Founder</span>
+          <span class="tag industry">$75M-$200M Revenue</span>
+          <span class="tag industry">201-500 Employees</span>
+          <span class="tag signal">Finance Department Hiring</span>
+          <span class="tag signal">Capital Activity</span>
+          <span class="tag context">500K+ Business Users</span>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Active Market Signals</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Finance Team Expansion</div>
+              <div class="signal-timing">Within last 90 days</div>
+              <div class="signal-desc">Replit is actively growing its finance function as the platform reaches significant scale. A platform with 500,000-plus business users across multiple product tiers creates a financial structure that standard SaaS accounting models are not designed to handle with the clarity needed for strategic decisions and exit preparation.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">Capital Activity</div>
+              <div class="signal-timing">Within last 90 days</div>
+              <div class="signal-desc">Capital deployment signal detected at Replit. For a company at this user density and product scale, capital deployment intersects with strategic options that may include international expansion, M&A activity, or positioning for a transaction. Each scenario requires different financial architecture to execute well.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing <span class="card-section-subtitle">Configured for Brian's Practice</span></div>
+          <div class="intel-grid">
+            <div class="intel-cell"><div class="intel-cell-label">Leadership Movement</div><div class="intel-cell-value">No leadership movement detected in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Capital Activity</div><div class="intel-cell-value">Capital activity signal detected within last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Hiring Signals</div><div class="intel-cell-value">Finance team expansion detected within last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Expansion Signals</div><div class="intel-cell-value">Platform expansion detected: 500,000+ business users across multiple product tiers and pricing structures.</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Growth Trajectory</div><div class="intel-cell-value">201-500 employees, $75M-$200M ARR. Agentic software creation platform serving millions of users and 500K+ business accounts with multi-product architecture.</div></div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div><div class="contact-label">Work Email</div><div class="contact-value">amasad@replit.com</div></div>
+              <button class="copy-btn" onclick="copyToClipboard('amasad@replit.com',this)">Copy</button>
+            </div>
+            <div class="contact-item">
+              <div><div class="contact-label">Mobile</div><div class="contact-value">+1 (917) 854-1987</div></div>
+              <button class="copy-btn" onclick="copyToClipboard('+19178541987',this)">Copy</button>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div class="why-block">
+              <div class="why-block-title">ICP Fit for Brian</div>
+              <div class="why-block-text">Amjad has been building Replit for a decade, running a platform that now serves over 500,000 business users with multi-product architecture and enterprise scale. At $75M-$200M revenue with active capital deployment, Replit is at the stage where financial architecture decisions made now will define what exit or expansion options become available in 24-36 months. Brian's M&A advisory and exit preparation expertise makes this card particularly high-value: Replit is exactly the kind of platform where that expertise produces disproportionate leverage.</div>
+              <div class="fit-signal">
+                <div class="fit-signal-label">Strongest Fit Signal</div>
+                <div class="fit-signal-text">Finance department expansion alongside capital activity at a platform with 500K+ business users, where M&A and exit preparation are live strategic considerations.</div>
+              </div>
+            </div>
+            <div class="why-block">
+              <div class="why-block-title">Why They're Looking</div>
+              <div class="why-block-text">A platform with 500,000-plus business users across multiple product tiers has financial complexity that the original SaaS model cannot handle accurately. Revenue recognition across user tiers, international revenue structure, and multi-product contribution margin all require dedicated financial architecture. That complexity becomes acute at exactly this revenue range. Active finance team growth alongside capital deployment confirms the company is aware of the gap and working to close it. The M&A and exit conversation is likely already happening internally.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal <span class="card-section-subtitle">2 Channels Ready</span></div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="conn-note-5">Noticed Replit is building out the finance function alongside the platform's expansion. At 500K-plus business users and that revenue scale, the financial architecture decisions being made now tend to define the exit and expansion options available two to three years out. Would value connecting.<div class="char-count">267 characters · LinkedIn limit: 300</div></div>
+            <button class="copy-action-btn" onclick="copyElementText('conn-note-5',this)">Copy Connection Note</button>
+          </div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Email Draft · Ready to Send</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject Line</div>
+              <div class="email-subject-value" id="email-subj-5">Replit's financial structure as the platform scales</div>
+              <div class="email-body" id="email-body-5">Amjad,
+
+Noticed Replit has been building out its finance function alongside the platform's significant expansion. At 500,000-plus business users and a revenue range that puts the company in serious growth territory, the financial decisions being made now tend to define exit and expansion options two to three years ahead.
+
+The complexity at that stage is not accounting. It is financial architecture: multi-product unit economics, international revenue structure, and the question of which customer cohorts are actually compounding versus which are absorbing cost at margin.
+
+I work with founders as an embedded operating CFO at this stage, focused specifically on the $10M-$100M growth band and the M&A and exit preparation that follows it.
+
+Happy to spend 15 minutes seeing if there is any fit.
+
+Brian F. Califano
+CFO Systems, LLC · cfosystemsllc.com</div>
+              <div class="email-meta"><span class="email-word-count">133 words · safe for cold send</span><span class="email-safe-label">Ready to Send</span></div>
+            </div>
+            <button class="copy-action-btn" onclick="copyFullEmail('email-subj-5','email-body-5',this)">Copy Email Draft</button>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Prospect Intelligence</div>
+          <div class="intel-callout">
+            <div class="intel-callout-label">Job Anniversary Detected</div>
+            Amjad passed his 10-year anniversary at Replit approximately 26 days ago. Decade-tenure founders at platform scale often begin serious consideration of exit or expansion options at this milestone. The financial architecture decisions made in the next 12-24 months will largely determine which options are available and on what terms.
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Nurture Sequence · 3-Touch</div>
+          <div class="nurture-grid">
+            <div class="nurture-card"><div class="nurture-day">Day 1</div><div class="nurture-action">LinkedIn Connection</div><div class="nurture-script">"Noticed Replit is building out the finance function alongside the platform's expansion. At 500K-plus business users and that revenue scale, the financial architecture decisions being made now tend to define the exit and expansion options available two to three years out. Would value connecting."</div></div>
+            <div class="nurture-card"><div class="nurture-day">Day 7</div><div class="nurture-action">Value Drop</div><div class="nurture-script">"Ten years building Replit and 500,000-plus business users is a significant platform. At that scale, the financial architecture questions that matter most are about international revenue structure, multi-product unit economics, and how the current structure looks to a strategic buyer or partner two years from now."</div></div>
+            <div class="nurture-card"><div class="nurture-day">Day 14</div><div class="nurture-action">Diagnostic Question</div><div class="nurture-script">"Has the company's financial model been updated to reflect the current multi-product, multi-user-type structure? That tends to be the first place strategic clarity breaks down at this scale, and it compounds as the platform grows."</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer"><a class="linkedin-btn" href="https://linkedin.com/in/ACoAAAKoldoBqSsiXY_DHsXdSk1slibabeTvDDY" target="_blank" title="URL may require LinkedIn login">View on LinkedIn →</a></div>
+    </div>
+
+    <!-- PIPELINE MATH -->
+    <div class="pipeline-math">
+      <div class="pipeline-math-text">Five leads like these are delivered every week in the full system. Over 12 weeks: <strong>120 ICP-matched buyers</strong> in Brian's network, each carrying an active signal. The math from there is Brian's to run.</div>
+    </div>
+
+    <!-- VISUAL GRAPHICS (Pipeline) -->
+    <div class="visuals-section">
+      <div class="visuals-header">
+        <div class="visuals-copy">
+          <h3>Every Monday, your content arrives finished.</h3>
+          <p>The leads are one side of the system. The content is the other. Decision-makers skim before they read. A post without a visual is half a post. Consultants who post with structured visuals consistently outperform those who post text alone, not because their thinking is sharper, but because the visual stops the scroll long enough for the thinking to land.</p>
+          <p>Every piece that benefits from a visual gets one. Finished. Attached. Ready to schedule.</p>
+          <ul class="visuals-list">
+            <li><span class="visuals-list-dot">→</span> 3 LinkedIn posts per week in your voice, formatted and ready</li>
+            <li><span class="visuals-list-dot">→</span> Carousel covers, quote graphics, and infographics, finished PNG files</li>
+            <li><span class="visuals-list-dot">→</span> 15-minute strategy Loom walking through the week's package</li>
+            <li><span class="visuals-list-dot">→</span> Zero design work on your end. Zero</li>
+          </ul>
+        </div>
+        <div>
+          <div class="visuals-tiles">
+            <div class="visual-tile carousel"><div class="visual-tile-inner"><div class="tile-accent-bar"></div><div class="tile-lines"><div class="tile-line full"></div><div class="tile-line medium"></div><div class="tile-line short"></div></div></div><div class="tile-label">Carousel Cover</div></div>
+            <div class="visual-tile post"><div class="visual-tile-inner"><div class="tile-accent-bar"></div><div class="tile-lines"><div class="tile-line medium"></div><div class="tile-line full"></div><div class="tile-line short"></div></div></div><div class="tile-label">Post Visual</div></div>
+            <div class="visual-tile infographic"><div class="visual-tile-inner"><div class="tile-accent-bar"></div><div class="tile-lines"><div class="tile-line full"></div><div class="tile-line short"></div><div class="tile-line medium"></div></div></div><div class="tile-label">Infographic</div></div>
+          </div>
+          <div class="visuals-note"><strong>Visuals are finished and attached in the Monday package.</strong><br>You schedule. Nothing to design. Nothing to brief.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA FOOTER -->
+    <div class="cta-footer">
+      <div class="cta-footer-headline">This is what one week of the full system looks like for Brian.</div>
+      <div class="cta-footer-subhead">Every Monday: 10 ICP-matched buyers with full signal intelligence, direct contact details, and outreach ready to send. Plus 3 posts and finished visuals in your voice. 30 minutes of your time per week.</div>
+      <a class="cta-footer-btn" href="https://calendly.com/saurabh_zentro/30-min" target="_blank">Book Your 20-Min Fit Call →</a>
+      <div class="cta-footer-note">No pitch. No deck. We talk through your specific situation and confirm whether this is the right fit.</div>
+    </div>
+
+  </div><!-- end view-pipeline -->
+
+  <!-- ═══ CONTENT ENGINE ═══ -->
+  <div class="view" id="view-content">
+
+    <div class="welcome-banner">
+      <div class="welcome-tag">Content Engine · Brian F. Califano</div>
+      <div class="welcome-text"><strong>Two sample posts in your voice,</strong> built from your About section, your positioning, and the diagnostic language you use with clients. The teaching post targets founders navigating the growth-stage financial inflection. The handraiser is designed to surface business owners preparing for a sale in the next 24-36 months.</div>
+    </div>
+
+    <div class="post-cards-grid">
+      <div class="post-card">
+        <div class="post-type-label">Teaching Post</div>
+        <div class="post-type-desc">Explains the financial visibility gap at the $10M-$100M growth stage. Targets founders experiencing margin drift and cash flow complexity. Designed to generate saves and DM requests from founders at the inflection Brian serves.</div>
+        <div class="post-text">Most SaaS founders celebrate hitting $10M ARR.
+
+Then something strange happens.
+
+Cash flow gets tighter. Margins drift. The team is growing but profitability is harder to explain.
+
+Not harder to find. Harder to explain.
+
+That disconnect is a financial infrastructure problem.
+
+Your accounting tells you what happened. It does not tell you what is happening or what will break first.
+
+At $10M to $50M, you need a model that answers three questions before you make decisions:
+
+Which customers are actually profitable, not just by contract value?
+
+Where does cash squeeze before revenue catches up?
+
+What breaks first if we grow 30% next year?
+
+Most founders are running a company where the numbers exist but do not drive decisions.
+
+That is not a revenue problem. That is an operating CFO problem.</div>
+        <div class="post-cta-line">Comment FORECAST and I will send you a self-assessment for identifying where your financial blind spots are costing you decisions.</div>
+      </div>
+      <div class="post-card">
+        <div class="post-type-label">Handraiser Post</div>
+        <div class="post-type-desc">Surfaces business owners preparing for a sale in the next 24-36 months. Drives EXIT comment responses from owners who underestimate how early preparation affects valuation. Delivers the lead magnet Brian references in his existing post.</div>
+        <div class="post-text">Business owners who maximize exit value do one thing differently.
+
+Not two things. One.
+
+They prepare the business to operate without them. They do it years before they sell.
+
+Not when they decide to sell. Not when they get an unsolicited offer. Before.
+
+Buyers pay for future earnings, transferability, and certainty.
+
+They discount for dependence, unclear margins, and owner-locked operations.
+
+The preparation window that matters is 18 to 36 months before your target exit.
+
+Most owners start 6 months out.
+
+By then, the valuation decisions are already made.
+
+Most of the value left on the table was not lost in the negotiation.
+
+It was lost in the years before you started preparing the business to be sold.</div>
+        <div class="post-cta-line">Comment EXIT and I will send you the evaluation guide I use with clients at the start of every exit preparation engagement.</div>
+      </div>
+    </div>
+
+    <!-- VISUAL GRAPHICS (Content) -->
+    <div class="visuals-section">
+      <div class="visuals-header">
+        <div class="visuals-copy">
+          <h3>Content without visuals is half a system.</h3>
+          <p>Most consultants post text. The ones building consistent inbound post text with structure behind it. A carousel that breaks down a framework visually gets saved. A quote graphic gets shared. An infographic gets screenshotted. Saves, shares, and screenshots reach buyers who never followed you. That is organic reach you do not have to pay for.</p>
+          <p>The full system produces the visuals. You attach and schedule.</p>
+          <ul class="visuals-list">
+            <li><span class="visuals-list-dot">→</span> 2 carousels per month with finished slide visuals</li>
+            <li><span class="visuals-list-dot">→</span> 2 standalone infographics per month</li>
+            <li><span class="visuals-list-dot">→</span> Post graphics for any text post that benefits from one</li>
+            <li><span class="visuals-list-dot">→</span> All delivered as finished PNG files in the Monday package</li>
+          </ul>
+        </div>
+        <div>
+          <div class="visuals-tiles">
+            <div class="visual-tile carousel"><div class="visual-tile-inner"><div class="tile-accent-bar"></div><div class="tile-lines"><div class="tile-line full"></div><div class="tile-line medium"></div><div class="tile-line short"></div></div></div><div class="tile-label">Carousel Cover</div></div>
+            <div class="visual-tile post"><div class="visual-tile-inner"><div class="tile-accent-bar"></div><div class="tile-lines"><div class="tile-line medium"></div><div class="tile-line full"></div><div class="tile-line short"></div></div></div><div class="tile-label">Post Visual</div></div>
+            <div class="visual-tile infographic"><div class="visual-tile-inner"><div class="tile-accent-bar"></div><div class="tile-lines"><div class="tile-line full"></div><div class="tile-line short"></div><div class="tile-line medium"></div></div></div><div class="tile-label">Infographic</div></div>
+          </div>
+          <div class="visuals-note"><strong>18 content pieces per month. Finished. Attached. Ready to schedule.</strong><br>You schedule from your own account. Zero design work on your end.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA FOOTER -->
+    <div class="cta-footer">
+      <div class="cta-footer-headline">This is what one week of the full system looks like for Brian.</div>
+      <div class="cta-footer-subhead">Every Monday: 10 ICP-matched buyers with full signal intelligence, direct contact details, and outreach ready to send. Plus 3 posts and finished visuals in your voice. 30 minutes of your time per week.</div>
+      <a class="cta-footer-btn" href="https://calendly.com/saurabh_zentro/30-min" target="_blank">Book Your 20-Min Fit Call →</a>
+      <div class="cta-footer-note">No pitch. No deck. We talk through your specific situation and confirm whether this is the right fit.</div>
+    </div>
+
+  </div><!-- end view-content -->
+
+</main>
+
+<script>
+function showView(name,triggerEl){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById('view-'+name).classList.add('active');
+  document.querySelectorAll('.nav-item,.tab-btn,.mobile-tab-pill').forEach(el=>el.classList.remove('active'));
+  const navEl=document.getElementById('nav-'+name);
+  if(navEl)navEl.classList.add('active');
+  document.querySelectorAll('.tab-btn,.mobile-tab-pill').forEach(btn=>{
+    if(btn.getAttribute('onclick')&&btn.getAttribute('onclick').includes("'"+name+"'"))btn.classList.add('active');
+  });
+}
+function toggleCard(cardId){
+  document.getElementById(cardId).classList.toggle('expanded');
+}
+function copyToClipboard(text,btn){
+  navigator.clipboard.writeText(text).then(()=>{
+    const orig=btn.textContent;btn.textContent='Copied.';btn.classList.add('copied');
+    setTimeout(()=>{btn.textContent=orig;btn.classList.remove('copied');},2000);
+  }).catch(()=>{
+    const el=document.createElement('textarea');el.value=text;
+    document.body.appendChild(el);el.select();document.execCommand('copy');document.body.removeChild(el);
+    btn.textContent='Copied.';btn.classList.add('copied');
+    setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied');},2000);
+  });
+}
+function copyElementText(elementId,btn){
+  const el=document.getElementById(elementId);if(!el)return;
+  const charCountEl=el.querySelector('.char-count');
+  let text=el.textContent;
+  if(charCountEl)text=text.replace(charCountEl.textContent,'').trim();
+  copyToClipboard(text,btn);
+}
+function copyFullEmail(subjId,bodyId,btn){
+  const subj=document.getElementById(subjId);
+  const body=document.getElementById(bodyId);
+  const text='Subject: '+(subj?subj.textContent.trim():'')+'\n\n'+(body?body.textContent.trim():'');
+  copyToClipboard(text,btn);
+}
+</script>
+</body>
+</html>
