@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daniel Z. · Pipeline Lead Demo · Pipelind</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:#0A0A12; --bg2:#12121E; --bg3:#0E0E19;
+      --primary:#6A66A3; --primary-light:#9B98C4;
+      --accent:#FF9900; --success:#019047; --success-light:#5AC88A;
+      --text:rgba(255,255,255,0.90); --text-dim:rgba(255,255,255,0.72); --text-muted:rgba(255,255,255,0.55);
+      --border:rgba(106,102,163,0.25); --border-hover:rgba(106,102,163,0.55);
+      --hot:#FF4444; --warm:#FF9900;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;min-height:100vh}
+    .sidebar{position:fixed;top:0;left:0;width:240px;height:100vh;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:24px 20px;z-index:100}
+    .sidebar-logo{font-family:'Space Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--primary-light);margin-bottom:28px}
+    .prospect-block{margin-bottom:32px}
+    .prospect-label{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px}
+    .prospect-name{font-size:17px;font-weight:800;color:var(--text);line-height:1.25}
+    .prospect-meta{font-family:'Space Mono',monospace;font-size:10px;color:var(--text-muted);letter-spacing:.06em;margin-top:4px}
+    .nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;cursor:pointer;margin-bottom:4px;font-size:13px;font-weight:600;color:var(--text-dim);transition:all .15s;border:1px solid transparent}
+    .nav-item:hover{background:rgba(106,102,163,0.10);color:var(--text)}
+    .nav-item.active{background:rgba(106,102,163,0.15);color:var(--primary-light);border-color:var(--border)}
+    .sidebar-footer{margin-top:auto;font-family:'Space Mono',monospace;font-size:10px;color:var(--text-muted);letter-spacing:.04em;line-height:1.8}
+    .mobile-topbar{display:none;position:sticky;top:0;z-index:200;background:var(--bg2);border-bottom:1px solid var(--border);padding:14px 16px;align-items:center;justify-content:space-between}
+    .mobile-logo{font-family:'Space Mono',monospace;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--primary-light)}
+    .mobile-prospect-name{font-size:13px;font-weight:700;color:var(--text)}
+    .mobile-tabs{display:none;position:sticky;top:53px;z-index:199;background:var(--bg);border-bottom:1px solid var(--border);padding:10px 16px;gap:8px}
+    .mobile-tab-pill{padding:7px 16px;border-radius:20px;font-size:12px;font-weight:700;font-family:'Space Mono',monospace;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;border:1px solid var(--border);color:var(--text-muted);background:transparent;transition:all .15s}
+    .mobile-tab-pill.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+    .main{margin-left:240px;padding:32px 36px;max-width:1140px}
+    .tab-bar{position:sticky;top:0;z-index:50;background:var(--bg);border-bottom:1px solid var(--border);display:flex;margin:-32px -36px 32px;padding:0 36px}
+    .tab-btn{padding:14px 22px;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--text-muted);cursor:pointer;border:none;background:transparent;border-bottom:2px solid transparent;transition:all .15s}
+    .tab-btn.active{color:var(--primary-light);border-bottom-color:var(--primary)}
+    .welcome-banner{background:linear-gradient(135deg,rgba(106,102,163,0.10) 0%,rgba(255,153,0,0.05) 100%);border:1px solid var(--border);border-radius:12px;padding:24px 28px;margin-bottom:28px}
+    .welcome-tag{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+    .welcome-text{font-size:14px;line-height:1.75;color:var(--text-dim)}
+    .welcome-text strong{color:var(--text);font-weight:700}
+    .icp-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:32px}
+    .icp-panel{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:22px 24px}
+    .panel-title{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:16px}
+    .icp-item{display:flex;justify-content:space-between;align-items:flex-start;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05);font-size:13px}
+    .icp-item:last-child{border-bottom:none}
+    .icp-label{color:var(--text-muted);font-size:12px}
+    .icp-value{color:var(--text);font-weight:600;text-align:right;max-width:60%}
+    .quality-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .quality-metric{background:rgba(106,102,163,0.08);border:1px solid var(--border);border-radius:8px;padding:14px 16px;text-align:center}
+    .quality-num{font-size:24px;font-weight:800;color:var(--primary-light)}
+    .quality-label{font-family:'Space Mono',monospace;font-size:10px;color:var(--text-muted);letter-spacing:.06em;text-transform:uppercase;margin-top:4px}
+    .quality-note{font-size:12px;color:var(--text-muted);line-height:1.6;margin-top:14px;padding-top:14px;border-top:1px solid var(--border)}
+    .section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+    .section-title{font-size:18px;font-weight:800;color:var(--text)}
+    .section-sub{font-family:'Space Mono',monospace;font-size:11px;color:var(--text-muted);letter-spacing:.06em}
+    .lead-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:16px;transition:border-color .15s}
+    .lead-card:hover{border-color:var(--border-hover)}
+    .card-header{display:flex;align-items:center;gap:14px;padding:18px 22px;cursor:pointer;user-select:none}
+    .signal-badge{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:4px;flex-shrink:0}
+    .signal-badge.hot{background:rgba(255,68,68,0.15);color:var(--hot);border:1px solid rgba(255,68,68,0.30)}
+    .signal-badge.warm{background:rgba(255,153,0,0.12);color:var(--warm);border:1px solid rgba(255,153,0,0.28)}
+    .card-header-info{flex:1;min-width:0}
+    .lead-name{font-size:16px;font-weight:800;color:var(--text)}
+    .lead-company{font-size:13px;color:var(--text-dim);margin-top:2px}
+    .why-now-line{font-family:'Space Mono',monospace;font-size:10px;color:var(--accent);letter-spacing:.04em;margin-top:4px}
+    .icp-fit-badge{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:4px;background:rgba(1,144,71,0.12);color:var(--success-light);border:1px solid rgba(1,144,71,0.28);flex-shrink:0}
+    .expand-icon{font-size:14px;color:var(--text-muted);flex-shrink:0;transition:transform .2s}
+    .lead-card.expanded .expand-icon{transform:rotate(180deg)}
+    .card-body{display:none;border-top:1px solid var(--border);padding:22px}
+    .lead-card.expanded .card-body{display:block}
+    .identity-strip{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:14px}
+    .identity-item{font-family:'Space Mono',monospace;font-size:11px;color:var(--text-muted);letter-spacing:.04em}
+    .identity-item a{color:var(--primary-light);text-decoration:none}
+    .identity-item a:hover{color:var(--text)}
+    .identity-sep{color:rgba(106,102,163,0.40)}
+    .tag-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+    .tag{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:4px}
+    .tag.industry{background:rgba(106,102,163,0.12);color:var(--primary-light);border:1px solid rgba(106,102,163,0.22)}
+    .tag.signal{background:rgba(255,153,0,0.10);color:var(--accent);border:1px solid rgba(255,153,0,0.22)}
+    .tag.context{background:rgba(1,144,71,0.08);color:var(--success-light);border:1px solid rgba(1,144,71,0.18)}
+    .card-section{margin-bottom:24px}
+    .card-section-title{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+    .card-section-subtitle{font-weight:400;color:rgba(255,255,255,0.35);text-transform:none;letter-spacing:0;font-family:'Plus Jakarta Sans',sans-serif;font-size:11px}
+    .signal-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .signal-card{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:14px 16px}
+    .signal-type{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--accent);margin-bottom:4px}
+    .signal-timing{font-size:12px;font-weight:700;color:var(--text);margin-bottom:8px}
+    .signal-desc{font-size:12px;color:var(--text-dim);line-height:1.65}
+    .intel-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .intel-cell{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px 14px}
+    .intel-cell:last-child:nth-child(odd){grid-column:1/-1}
+    .intel-cell-label{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--text-muted);margin-bottom:5px}
+    .intel-cell-value{font-size:12px;color:var(--text-dim);line-height:1.5}
+    .contact-grid{display:grid;gap:10px}
+    .contact-item{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center}
+    .contact-label{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--text-muted);margin-bottom:4px}
+    .contact-value{font-size:13px;color:var(--text);font-weight:600}
+    .copy-btn{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:6px 12px;border-radius:6px;border:1px solid var(--border);color:var(--text-muted);background:transparent;cursor:pointer;transition:all .15s;flex-shrink:0}
+    .copy-btn:hover{border-color:var(--primary);color:var(--primary-light)}
+    .copy-btn.copied{color:var(--success-light);border-color:var(--success)}
+    .why-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .why-block{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:16px 18px}
+    .why-block-title{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--primary-light);margin-bottom:10px}
+    .why-block-text{font-size:12px;color:var(--text-dim);line-height:1.7;margin-bottom:12px}
+    .fit-signal{background:rgba(106,102,163,0.08);border:1px solid rgba(106,102,163,0.20);border-radius:6px;padding:10px 12px}
+    .fit-signal-label{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--primary-light);margin-bottom:4px}
+    .fit-signal-text{font-size:12px;color:var(--text-dim);line-height:1.5}
+    .outreach-channel{margin-bottom:18px}
+    .outreach-channel-label{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--text-muted);margin-bottom:10px}
+    .connection-note{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:14px 16px;font-size:13px;color:var(--text-dim);line-height:1.7;margin-bottom:10px}
+    .char-count{font-family:'Space Mono',monospace;font-size:10px;color:var(--text-muted);margin-top:8px;letter-spacing:.04em}
+    .email-block{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:16px 18px;margin-bottom:10px}
+    .email-subject-label{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--text-muted);margin-bottom:5px}
+    .email-subject-value{font-size:14px;font-weight:700;color:var(--text);margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+    .email-body{font-size:13px;color:var(--text-dim);line-height:1.75;white-space:pre-line}
+    .email-meta{display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:12px;border-top:1px solid var(--border)}
+    .email-word-count{font-family:'Space Mono',monospace;font-size:10px;color:var(--text-muted);letter-spacing:.04em}
+    .email-safe-label{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;color:var(--success-light);letter-spacing:.06em}
+    .copy-action-btn{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:8px 16px;border-radius:6px;border:1px solid var(--border);color:var(--text-muted);background:transparent;cursor:pointer;transition:all .15s}
+    .copy-action-btn:hover{border-color:var(--primary);color:var(--primary-light)}
+    .copy-action-btn.copied{color:var(--success-light);border-color:var(--success)}
+    .intel-callout{background:rgba(255,153,0,0.07);border:1px solid rgba(255,153,0,0.25);border-radius:8px;padding:13px 16px;font-size:12px;color:var(--text-dim);line-height:1.65}
+    .intel-callout-label{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:5px}
+    .nurture-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+    .nurture-card{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:14px 16px}
+    .nurture-day{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--primary-light);margin-bottom:6px}
+    .nurture-action{font-size:13px;font-weight:700;color:var(--text);margin-bottom:8px}
+    .nurture-script{font-size:12px;color:var(--text-dim);line-height:1.65;font-style:italic}
+    .card-footer{padding:12px 22px;background:var(--bg3);border-top:1px solid var(--border);display:flex;justify-content:flex-end}
+    .linkedin-btn{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:8px 16px;border-radius:6px;border:1px solid var(--border);color:var(--primary-light);text-decoration:none;transition:all .15s}
+    .linkedin-btn:hover{border-color:var(--primary);background:rgba(106,102,163,0.10)}
+    .pipeline-math{background:rgba(106,102,163,0.06);border:1px solid var(--border);border-radius:12px;padding:22px 28px;margin:28px 0;text-align:center}
+    .pipeline-math-text{font-size:15px;color:var(--text-dim);line-height:1.8}
+    .pipeline-math-text strong{color:var(--primary-light);font-weight:700}
+    .visuals-section{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:28px 32px;margin:28px 0}
+    .visuals-header{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-bottom:24px}
+    .visuals-copy h3{font-size:18px;font-weight:800;color:var(--text);line-height:1.3;margin-bottom:12px}
+    .visuals-copy p{font-size:13px;color:var(--text-dim);line-height:1.75;margin-bottom:10px}
+    .visuals-list{list-style:none;margin-top:14px}
+    .visuals-list li{font-size:13px;color:var(--text-dim);padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.04);display:flex;gap:10px}
+    .visuals-list li:last-child{border-bottom:none}
+    .visuals-list-dot{color:var(--success-light);font-weight:700;flex-shrink:0}
+    .visuals-tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    .visual-tile{border-radius:10px;overflow:hidden}
+    .visual-tile-inner{aspect-ratio:4/3;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px}
+    .visual-tile.carousel{background:linear-gradient(135deg,#1B2A4A 0%,#243655 100%);border:1px solid rgba(240,165,0,0.20)}
+    .visual-tile.post{background:linear-gradient(135deg,#1B2A4A 0%,#1D2D47 100%);border:1px solid rgba(240,165,0,0.15)}
+    .visual-tile.infographic{background:linear-gradient(135deg,#162238 0%,#1B2A4A 100%);border:1px solid rgba(240,165,0,0.10)}
+    .tile-accent-bar{width:36px;height:3px;background:#F0A500;border-radius:2px;margin-bottom:12px}
+    .tile-lines{width:100%}
+    .tile-line{height:7px;background:rgba(245,240,232,0.15);border-radius:3px;margin-bottom:6px}
+    .tile-line.short{width:60%}.tile-line.medium{width:80%}.tile-line.full{width:100%}
+    .tile-label{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);text-align:center;margin-top:10px;padding:6px;background:var(--bg3)}
+    .visuals-note{font-size:13px;color:var(--text-dim);text-align:center;margin-top:18px;padding-top:18px;border-top:1px solid var(--border);line-height:1.7}
+    .visuals-note strong{color:var(--text)}
+    .cta-footer{margin-top:36px;background:linear-gradient(135deg,rgba(255,153,0,0.08) 0%,rgba(106,102,163,0.06) 100%);border:1px solid rgba(255,153,0,0.30);border-radius:12px;padding:36px 40px;text-align:center}
+    .cta-footer-headline{font-size:22px;font-weight:800;color:var(--text);letter-spacing:-.01em;margin-bottom:14px;line-height:1.3}
+    .cta-footer-subhead{font-size:14px;color:var(--text-dim);line-height:1.8;max-width:680px;margin:0 auto 26px}
+    .cta-footer-btn{display:inline-block;background:var(--accent);color:var(--bg);padding:15px 34px;border-radius:8px;font-family:'Space Mono',monospace;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;text-decoration:none;transition:background .15s;margin-bottom:14px}
+    .cta-footer-btn:hover{background:#ffb340}
+    .cta-footer-note{font-family:'Space Mono',monospace;font-size:11px;color:var(--text-muted);letter-spacing:.04em}
+    .post-cards-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:28px}
+    .post-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:24px 26px}
+    .post-type-label{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--primary-light);margin-bottom:6px}
+    .post-type-desc{font-size:11px;color:var(--text-muted);margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--border);line-height:1.5}
+    .post-text{font-size:13px;color:var(--text-dim);line-height:1.85;white-space:pre-line}
+    .post-cta-line{margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.06);font-size:12px;color:var(--accent);font-weight:600}
+    .post-copy-btn{margin-top:14px}
+    .view{display:none}.view.active{display:block}
+    @media(max-width:768px){
+      .sidebar{display:none}.mobile-topbar{display:flex}.mobile-tabs{display:flex}
+      .main{margin-left:0;padding:16px}.tab-bar{display:none}
+      .icp-grid{grid-template-columns:1fr}.signal-cards{grid-template-columns:1fr}
+      .intel-grid{grid-template-columns:1fr 1fr}.contact-grid{grid-template-columns:1fr}
+      .why-grid{grid-template-columns:1fr}.nurture-grid{grid-template-columns:1fr}
+      .post-cards-grid{grid-template-columns:1fr}.visuals-header{grid-template-columns:1fr}
+      .card-header{flex-wrap:wrap;gap:8px}.lead-name{font-size:15px}
+      .cta-footer{padding:24px 20px}.cta-footer-btn{width:100%;text-align:center;display:block}
+      .email-meta{flex-direction:column;align-items:flex-start;gap:8px}
+    }
+    @media(max-width:480px){.intel-grid{grid-template-columns:1fr}.visuals-tiles{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<div class="mobile-topbar">
+  <div class="mobile-logo">Pipelind</div>
+  <div class="mobile-prospect-name">Daniel's Report</div>
+</div>
+<div class="mobile-tabs">
+  <button class="mobile-tab-pill active" onclick="showView('pipeline',this)">Pipeline Engine</button>
+  <button class="mobile-tab-pill" onclick="showView('content',this)">Content Engine</button>
+</div>
+<nav class="sidebar">
+  <div class="sidebar-logo">Pipelind</div>
+  <div class="prospect-block">
+    <div class="prospect-label">Personalized For</div>
+    <div class="prospect-name">Daniel Z.</div>
+    <div class="prospect-meta">May 2026 &middot; Lead Demo</div>
+  </div>
+  <div class="nav-item active" id="nav-pipeline" onclick="showView('pipeline',this)">&#9632;&nbsp; Pipeline Engine</div>
+  <div class="nav-item" id="nav-content" onclick="showView('content',this)">&#9632;&nbsp; Content Engine</div>
+  <div class="sidebar-footer">Personalized build<br>Real signal data<br>Sample of your full delivery</div>
+</nav>
+<main class="main">
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="showView('pipeline',this)">Pipeline Engine</button>
+    <button class="tab-btn" onclick="showView('content',this)">Content Engine</button>
+  </div>
+
+  <!-- PIPELINE ENGINE VIEW -->
+  <div id="view-pipeline" class="view active">
+    <div class="welcome-banner">
+      <div class="welcome-tag">Pipeline Engine &middot; Daniel's Sample</div>
+      <div class="welcome-text"><strong>5 ICP-matched buyers for Daniel's fractional CFO practice.</strong> Every company below shows an active market signal from the last 90 days — finance department hiring, new location expansion, or company-wide headcount surge. These are the conditions that create demand for fractional CFO engagement: operational complexity outpacing financial visibility. Each card carries direct contact details and ready-to-send outreach.</div>
+    </div>
+
+    <div class="icp-grid">
+      <div class="icp-panel">
+        <div class="panel-title">Target Buyer Profile</div>
+        <div class="icp-item"><span class="icp-label">Buyer Title</span><span class="icp-value">Owner / CEO / President / COO</span></div>
+        <div class="icp-item"><span class="icp-label">Company Type</span><span class="icp-value">Home Service, Construction, Field-Service Operators</span></div>
+        <div class="icp-item"><span class="icp-label">Revenue</span><span class="icp-value">$5M &ndash; $75M</span></div>
+        <div class="icp-item"><span class="icp-label">Employees</span><span class="icp-value">11 &ndash; 200</span></div>
+        <div class="icp-item"><span class="icp-label">Geography</span><span class="icp-value">United States</span></div>
+        <div class="icp-item"><span class="icp-label">Signal Triggers</span><span class="icp-value">Finance hiring, new location, headcount expansion</span></div>
+      </div>
+      <div class="icp-panel">
+        <div class="panel-title">Sample Quality</div>
+        <div class="quality-grid">
+          <div class="quality-metric"><div class="quality-num">5/5</div><div class="quality-label">ICP Match</div></div>
+          <div class="quality-metric"><div class="quality-num">5/5</div><div class="quality-label">Active Signal</div></div>
+          <div class="quality-metric"><div class="quality-num">5/5</div><div class="quality-label">Contact Ready</div></div>
+          <div class="quality-metric"><div class="quality-num">0</div><div class="quality-label">Duplicates</div></div>
+        </div>
+        <div class="quality-note">Every lead carries at least one active market signal from the last 90 days. Work email and mobile verified on all 5. No same parent company twice.</div>
+      </div>
+    </div>
+
+    <div class="section-header">
+      <div class="section-title">ICP-Matched Buyers</div>
+      <div class="section-sub">5 of 40 monthly leads</div>
+    </div>
+
+    <!-- CARD 1: Clay Rudick -->
+    <div class="lead-card expanded" id="card-1">
+      <div class="card-header" onclick="toggleCard('card-1')">
+        <span class="signal-badge hot">HOT</span>
+        <div class="card-header-info">
+          <div class="lead-name">Clay Rudick</div>
+          <div class="lead-company">Chief Executive Officer &middot; Rudick Construction Group</div>
+          <div class="why-now-line">Finance department hiring activity approximately 18 days ago &middot; Dallas, TX</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit: YES</span>
+        <span class="expand-icon">&#9662;</span>
+      </div>
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item"><a href="https://rudickgroup.com" target="_blank">rudickgroup.com</a></span>
+          <span class="identity-item identity-sep">&middot;</span>
+          <span class="identity-item">Dallas, Texas, US</span>
+          <span class="identity-item identity-sep">&middot;</span>
+          <span class="identity-item">51&ndash;200 employees</span>
+          <span class="identity-item identity-sep">&middot;</span>
+          <span class="identity-item">$10M&ndash;$25M Revenue</span>
+          <span class="identity-item identity-sep">&middot;</span>
+          <span class="identity-item">Commercial GC</span>
+        </div>
+        <div class="tag-row">
+          <span class="tag industry">Construction</span>
+          <span class="tag industry">Commercial GC</span>
+          <span class="tag signal">Finance Hiring &middot; 18 days ago</span>
+          <span class="tag context">40-Year Operator</span>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Active Market Signals</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Finance Dept Hiring</div>
+              <div class="signal-timing">Approximately 18 days ago</div>
+              <div class="signal-desc">Rudick Construction Group is actively expanding its finance team. For a 40-year GC running simultaneous projects across Louisiana and Texas, finance hiring signals the business is outgrowing what the existing financial team can accurately track and model.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">Multi-State Complexity</div>
+              <div class="signal-timing">Active signal window</div>
+              <div class="signal-desc">Multi-state project volume at $10M&ndash;$25M revenue creates WIP complexity, progress billing cycles, and payroll timing risk that staff-level accounting cannot address. The gap between bookkeeping and strategic CFO function is where the conversation starts.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing <span class="card-section-subtitle">Configured for Daniel's Practice</span></div>
+          <div class="intel-grid">
+            <div class="intel-cell"><div class="intel-cell-label">Leadership Movement</div><div class="intel-cell-value">No leadership movement in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Capital Activity</div><div class="intel-cell-value">No public funding activity in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Hiring Signals</div><div class="intel-cell-value">Finance department hiring activity detected &middot; approximately 18 days ago</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Expansion Signals</div><div class="intel-cell-value">No expansion signals in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Growth Trajectory</div><div class="intel-cell-value">51&ndash;200 employees &middot; $10M&ndash;$25M annual revenue &middot; 40+ year market presence across TX and LA</div></div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div><div class="contact-label">Work Email</div><div class="contact-value">crudick@rudickgroup.com</div></div>
+              <button class="copy-btn" onclick="copyToClipboard('crudick@rudickgroup.com',this)">Copy</button>
+            </div>
+            <div class="contact-item">
+              <div><div class="contact-label">Mobile</div><div class="contact-value">+1 337 412 0049</div></div>
+              <button class="copy-btn" onclick="copyToClipboard('+13374120049',this)">Copy</button>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div class="why-block">
+              <div class="why-block-title">ICP Fit for Daniel</div>
+              <div class="why-block-text">Rudick Construction Group is a full-service commercial GC across Louisiana and Texas with four decades of project history and $10M&ndash;$25M in revenue. Clay manages the cash flow complexity that comes from multi-phase projects, WIP billing cycles, and multiple customer types running simultaneously. This is the profile where the gap between revenue on paper and cash in the bank is most acute and most costly.</div>
+              <div class="fit-signal"><div class="fit-signal-label">Strongest Fit Signal</div><div class="fit-signal-text">Finance department hiring 18 days ago signals Clay is actively building financial infrastructure, not just maintaining the status quo.</div></div>
+            </div>
+            <div class="why-block">
+              <div class="why-block-title">Why They're Looking</div>
+              <div class="why-block-text">A construction company at this scale and tenure typically runs on financial systems built for an earlier version of the business. Gross margin per project type is rarely broken out. Cash timing across simultaneous projects creates payroll risk. Bringing on finance staff manages volume but does not replace strategic CFO function. That gap is where fractional CFO conversations begin.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal <span class="card-section-subtitle">2 Channels Ready</span></div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="conn-note-1">Noticed Rudick Construction Group is actively building out finance capacity in Texas. Running a 40-year GC at this scale comes with real cash flow complexity. Would love to connect and follow your story.<div class="char-count">191 characters &middot; LinkedIn limit: 300</div></div>
+            <button class="copy-action-btn" onclick="copyElementText('conn-note-1',this)">Copy Connection Note</button>
+          </div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Email Draft &middot; Ready to Send</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject Line</div>
+              <div class="email-subject-value" id="email-subj-1">Rudick Construction Group &mdash; finance team expansion</div>
+              <div class="email-body" id="email-body-1">Clay,
+
+Noticed Rudick Construction Group has been actively expanding finance capacity over the last few weeks. Four decades operating across Louisiana and Texas at $10M&ndash;$25M revenue means significant financial complexity, and adding staff-level finance support often highlights the gap between bookkeeping and strategic financial management.
+
+The Cash Flow Magnifier framework I use with home service and construction companies is designed for businesses at this stage: forward-looking scenario planning, profitability by job type, and cash position modeling ahead of payroll cycles. Most owners I work with did not know what they were missing until they saw the model built for their specific operation.
+
+Worth a 15-minute conversation to see whether the timing is right for Rudick's current phase?
+
+Daniel Zabala
+Solidify Solutions &middot; solidifycfosolutions.com</div>
+              <div class="email-meta"><span class="email-word-count">120 words &middot; safe for cold send</span><span class="email-safe-label">Ready to Send</span></div>
+            </div>
+            <button class="copy-action-btn" onclick="copyFullEmail('email-subj-1','email-body-1',this)">Copy Email Draft</button>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">3-Touch Nurture Sequence</div>
+          <div class="nurture-grid">
+            <div class="nurture-card"><div class="nurture-day">Day 1</div><div class="nurture-action">LinkedIn Connection</div><div class="nurture-script">"Noticed Rudick Construction Group is actively building out finance capacity in Texas. Running a 40-year GC at this scale comes with real cash flow complexity. Would love to connect and follow your story."</div></div>
+            <div class="nurture-card"><div class="nurture-day">Day 7</div><div class="nurture-action">Value Drop</div><div class="nurture-script">"Rudick's 40-year track record across Louisiana and Texas is rare in commercial GC. Curious how the finance team is structured at this scale, most firms this age run leaner than the revenue warrants."</div></div>
+            <div class="nurture-card"><div class="nurture-day">Day 14</div><div class="nurture-action">Diagnostic Question</div><div class="nurture-script">"When managing simultaneous projects across two states, how are you currently modeling cash position across active WIP before payroll week?"</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer"><a class="linkedin-btn" href="https://linkedin.com/in/ACoAAAPCjxgB_S_F5-Ctkk5RBwGNEAIIL4rJdSE" target="_blank" title="ACoA URL - may require login">View on LinkedIn &rarr;</a></div>
+    </div>
+
+    <!-- CARD 2: Eric Desimone -->
+    <div class="lead-card" id="card-2">
+      <div class="card-header" onclick="toggleCard('card-2')">
+        <span class="signal-badge warm">WARM</span>
+        <div class="card-header-info">
+          <div class="lead-name">Eric Desimone</div>
+          <div class="lead-company">Chief Executive Officer &middot; DeSimone Builders</div>
+          <div class="why-now-line">New office expansion approximately 45 days ago &middot; CEO in seat approximately 15 months &middot; New York, NY</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit: YES</span>
+        <span class="expand-icon">&#9662;</span>
+      </div>
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item"><a href="https://desimonebuilders.com" target="_blank">desimonebuilders.com</a></span>
+          <span class="identity-item identity-sep">&middot;</span>
+          <span class="identity-item">New York, NY, US</span>
+          <span class="identity-item identity-sep">&middot;</span>
+          <span class="identity-item">51&ndash;200 employees</span>
+          <span class="identity-item identity-sep">&middot;</span>
+          <span class="identity-item">$10M&ndash;$25M Revenue</span>
+          <span class="identity-item identity-sep">&middot;</span>
+          <span class="identity-item">General Contractor</span>
+        </div>
+        <div class="tag-row">
+          <span class="tag industry">Construction</span>
+          <span class="tag industry">General Contractor</span>
+          <span class="tag signal">New Location &middot; 45 days ago</span>
+          <span class="tag context">New CEO &middot; 15 Months</span>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Active Market Signals</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">New Office / Location</div>
+              <div class="signal-timing">Approximately 45 days ago</div>
+              <div class="signal-desc">DeSimone Builders opened a new location approximately 45 days ago. New site overhead arrives before new billings stabilize. The 60&ndash;90 day cash timing lag is where companies at this stage most often need forward cash modeling.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">New CEO in Seat</div>
+              <div class="signal-timing">Approximately 15 months</div>
+              <div class="signal-desc">Eric stepped into the CEO role approximately 15 months ago. The first 12&ndash;24 months in a new CEO seat at a construction firm is when financial blind spots surface as operational problems: job costing gaps, cash timing surprises, margin compression across project types.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing <span class="card-section-subtitle">Configured for Daniel's Practice</span></div>
+          <div class="intel-grid">
+            <div class="intel-cell"><div class="intel-cell-label">Leadership Movement</div><div class="intel-cell-value">CEO appointment approximately 15 months ago &middot; Eric joined from advisory and YPO membership background</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Capital Activity</div><div class="intel-cell-value">No public funding activity in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Hiring Signals</div><div class="intel-cell-value">No department hiring trend detected</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Expansion Signals</div><div class="intel-cell-value">New office location activity approximately 45 days ago</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Growth Trajectory</div><div class="intel-cell-value">51&ndash;200 employees &middot; $10M&ndash;$25M annual revenue &middot; active NYC growth phase</div></div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div><div class="contact-label">Work Email</div><div class="contact-value">edesimone@desimonebuilders.com</div></div>
+              <button class="copy-btn" onclick="copyToClipboard('edesimone@desimonebuilders.com',this)">Copy</button>
+            </div>
+            <div class="contact-item">
+              <div><div class="contact-label">Mobile</div><div class="contact-value">+1 917 991 6582</div></div>
+              <button class="copy-btn" onclick="copyToClipboard('+19179916582',this)">Copy</button>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div class="why-block">
+              <div class="why-block-title">ICP Fit for Daniel</div>
+              <div class="why-block-text">DeSimone Builders is a New York general contractor with $10M&ndash;$25M in revenue and 51&ndash;200 employees. Eric joined as CEO approximately 15 months ago. The first 12&ndash;24 months in a new CEO role at a construction firm is when financial blind spots become operational problems: job costing inconsistencies, cash timing surprises, and margin compression across project types all surface together.</div>
+              <div class="fit-signal"><div class="fit-signal-label">Strongest Fit Signal</div><div class="fit-signal-text">New office expansion approximately 45 days ago combined with a CEO 15 months in seat. Two conditions that compound cash flow complexity simultaneously.</div></div>
+            </div>
+            <div class="why-block">
+              <div class="why-block-title">Why They're Looking</div>
+              <div class="why-block-text">New CEO. New location. Growing team. Each creates financial complexity that was not present at the previous scale. If DeSimone's financial infrastructure was built for a smaller, simpler version of the business, it is now running behind the operational reality. Every condition that triggers a CFO conversation is already active.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Prospect Intelligence</div>
+          <div class="intel-callout">
+            <div class="intel-callout-label">Company Change Detected</div>
+            Eric moved into the CEO role at DeSimone Builders approximately 15 months ago, transitioning from an advisory and YPO membership background. The first 12&ndash;18 months in a new CEO seat at a construction firm is the highest-intent window for building financial infrastructure the previous role never required.
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal <span class="card-section-subtitle">2 Channels Ready</span></div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="conn-note-2">Saw DeSimone Builders expanding in New York, new location, growing team. Stepping into a CEO role at that growth stage means financial infrastructure gets stress-tested fast. New site overhead always arrives before new billings stabilize. Would love to connect.<div class="char-count">253 characters &middot; LinkedIn limit: 300</div></div>
+            <button class="copy-action-btn" onclick="copyElementText('conn-note-2',this)">Copy Connection Note</button>
+          </div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Email Draft &middot; Ready to Send</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject Line</div>
+              <div class="email-subject-value" id="email-subj-2">DeSimone Builders &mdash; new location, cash timing</div>
+              <div class="email-body" id="email-body-2">Eric,
+
+Noticed DeSimone Builders opened a new location recently. Growth moves in construction almost always create a 60&ndash;90 day lag where cash timing does not match the revenue picture. New site overhead arrives before new billings stabilize.
+
+I work with construction company owners on forward cash flow visibility: 13-week forecasts, job-type profitability breakdowns, and revenue pipeline modeling that connects active bids to incoming cash. The owners who benefit most are typically running a $10M&ndash;$25M book with a financial system built for a smaller version of the company.
+
+If that resonates, worth a short conversation to see whether DeSimone is at that inflection point.
+
+Daniel Zabala
+Solidify Solutions &middot; solidifycfosolutions.com</div>
+              <div class="email-meta"><span class="email-word-count">112 words &middot; safe for cold send</span><span class="email-safe-label">Ready to Send</span></div>
+            </div>
+            <button class="copy-action-btn" onclick="copyFullEmail('email-subj-2','email-body-2',this)">Copy Email Draft</button>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">3-Touch Nurture Sequence</div>
+          <div class="nurture-grid">
+            <div class="nurture-card"><div class="nurture-day">Day 1</div><div class="nurture-action">LinkedIn Connection</div><div class="nurture-script">"Saw DeSimone Builders expanding in New York, new location, growing team. Stepping into a CEO role at that growth stage means financial infrastructure gets stress-tested fast. Would love to connect."</div></div>
+            <div class="nurture-card"><div class="nurture-day">Day 7</div><div class="nurture-action">Value Drop</div><div class="nurture-script">"New location openings in construction typically generate 60&ndash;90 days of cash timing disruption before the new site's billings stabilize. Happy to share a quick framework if that is relevant right now."</div></div>
+            <div class="nurture-card"><div class="nurture-day">Day 14</div><div class="nurture-action">Diagnostic Question</div><div class="nurture-script">"At DeSimone's current size and growth pace, are you tracking profitability by project type separately from overall topline revenue? That distinction is usually the first number worth separating."</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer"><a class="linkedin-btn" href="https://linkedin.com/in/ACoAAAGI9zsBVQ6HHb-SmaMLlLS05dFNGHkSlGU" target="_blank" title="ACoA URL - may require login">View on LinkedIn &rarr;</a></div>
+    </div>
+
+    <!-- CARD 3: Chris Farrington / BIG Construction -->
+    <div class="lead-card" id="card-3">
+      <div class="card-header" onclick="toggleCard('card-3')">
+        <span class="signal-badge warm">WARM</span>
+        <div class="card-header-info">
+          <div class="lead-name">Chris Farrington</div>
+          <div class="lead-company">President &middot; BIG Construction</div>
+          <div class="why-now-line">Company-wide headcount expansion approximately 38 days ago &middot; Chicago, IL</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit: YES</span>
+        <span class="expand-icon">&#9662;</span>
+      </div>
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item"><a href="https://buildbig.com" target="_blank">buildbig.com</a></span>
+          <span class="identity-item identity-sep">&middot;</span>
+          <span class="identity-item">Chicago, IL, US</span>
+          <span class="identity-item identity-sep">&middot;</span>
+          <span class="identity-item">51&ndash;200 employees</span>
+          <span class="identity-item identity-sep">&middot;</span>
+          <span class="identity-item">$10M&ndash;$25M Revenue</span>
+          <span class="identity-item identity-sep">&middot;</span>
+          <span class="identity-item">Commercial Construction</span>
+        </div>
+        <div class="tag-row">
+          <span class="tag industry">Construction</span>
+          <span class="tag industry">Human-Centered GC</span>
+          <span class="tag signal">Headcount Surge &middot; 38 days ago</span>
+          <span class="tag context">2-Year President</span>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Active Market Signals</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Company-Wide Headcount Surge</div>
+              <div class="signal-timing">Approximately 38 days ago</div>
+              <div class="signal-desc">BIG Construction shows a company-wide headcount increase approximately 38 days ago. Rapid crew expansion at $10M&ndash;$25M revenue means the cost structure has changed faster than the financial model tracking it. Margin compression at the project level is the first place that shows up.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">Payroll Risk Signal</div>
+              <div class="signal-timing">Active signal window</div>
+              <div class="signal-desc">Scaled headcount without a corresponding update to the cash flow model creates payroll timing risk. The gap between new labor costs and new project billings is where most construction companies first feel cash flow stress during a growth phase.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing <span class="card-section-subtitle">Configured for Daniel's Practice</span></div>
+          <div class="intel-grid">
+            <div class="intel-cell"><div class="intel-cell-label">Leadership Movement</div><div class="intel-cell-value">No leadership movement in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Capital Activity</div><div class="intel-cell-value">No public funding activity in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Hiring Signals</div><div class="intel-cell-value">Company-wide headcount expansion detected &middot; approximately 38 days ago</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Expansion Signals</div><div class="intel-cell-value">No expansion signals in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Growth Trajectory</div><div class="intel-cell-value">51&ndash;200 employees &middot; $10M&ndash;$25M annual revenue &middot; multi-state presence (IL, FL)</div></div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div><div class="contact-label">Work Email</div><div class="contact-value">cfarrington@buildbig.com</div></div>
+              <button class="copy-btn" onclick="copyToClipboard('cfarrington@buildbig.com',this)">Copy</button>
+            </div>
+            <div class="contact-item">
+              <div><div class="contact-label">Mobile</div><div class="contact-value">+1 847 343 8030</div></div>
+              <button class="copy-btn" onclick="copyToClipboard('+18473438030',this)">Copy</button>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div class="why-block">
+              <div class="why-block-title">ICP Fit for Daniel</div>
+              <div class="why-block-text">BIG Construction is a human-centered commercial GC with a multi-state presence. Chris has been President for 2 years and the company experienced significant headcount growth in the last 38 days. This is the profile where payroll has scaled faster than the financial visibility to support it, and margin per project type becomes the critical unknown the owner cannot currently see.</div>
+              <div class="fit-signal"><div class="fit-signal-label">Strongest Fit Signal</div><div class="fit-signal-text">Company-wide headcount expansion 38 days ago at a $10M&ndash;$25M book of business. Cost structure has changed; financial model very likely has not.</div></div>
+            </div>
+            <div class="why-block">
+              <div class="why-block-title">Why They're Looking</div>
+              <div class="why-block-text">Rapid headcount growth in construction means payroll complexity, benefits overhead, and crew cost allocation all increase simultaneously. If the financial model was built around a smaller headcount, the margin picture is now inaccurate. Chris needs to know which project types are actually profitable at the new cost structure, not just what the topline looks like.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal <span class="card-section-subtitle">2 Channels Ready</span></div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="conn-note-3">Noticed BIG Construction has been scaling headcount significantly. At $10M+ in project volume, rapid crew growth means payroll scales before billing catches up. That lag is where cash flow stress usually starts. Would love to connect.<div class="char-count">229 characters &middot; LinkedIn limit: 300</div></div>
+            <button class="copy-action-btn" onclick="copyElementText('conn-note-3',this)">Copy Connection Note</button>
+          </div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Email Draft &middot; Ready to Send</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject Line</div>
+              <div class="email-subject-value" id="email-subj-3">BIG Construction &mdash; headcount growth, margin modeling</div>
+              <div class="email-body" id="email-body-3">Chris,
+
+Noticed BIG Construction has been scaling headcount significantly in recent weeks. At $10M&ndash;$25M in project volume, rapid crew expansion almost always means the cost structure has changed faster than the financial model tracking it. The first place that shows up is margin compression at the project level.
+
+I work with construction company owners on profitability by job type and payroll-aware cash modeling. The question I usually start with: do you know which project types are most profitable at your current cost structure, or primarily what the topline looks like? Those are very different numbers.
+
+Happy to walk through the framework in 15 minutes if the timing is right.
+
+Daniel Zabala
+Solidify Solutions &middot; solidifycfosolutions.com</div>
+              <div class="email-meta"><span class="email-word-count">117 words &middot; safe for cold send</span><span class="email-safe-label">Ready to Send</span></div>
+            </div>
+            <button class="copy-action-btn" onclick="copyFullEmail('email-subj-3','email-body-3',this)">Copy Email Draft</button>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">3-Touch Nurture Sequence</div>
+          <div class="nurture-grid">
+            <div class="nurture-card"><div class="nurture-day">Day 1</div><div class="nurture-action">LinkedIn Connection</div><div class="nurture-script">"Noticed BIG Construction has been scaling headcount significantly. At $10M+ in project volume, rapid crew growth means payroll scales before billing catches up. That lag is where cash flow stress usually starts. Would love to connect."</div></div>
+            <div class="nurture-card"><div class="nurture-day">Day 7</div><div class="nurture-action">Value Drop</div><div class="nurture-script">"BIG's human-centered model is a differentiator. Curious whether the pricing model has kept pace with the headcount increase. Margin per project type is one of the first things to drift during a growth phase."</div></div>
+            <div class="nurture-card"><div class="nurture-day">Day 14</div><div class="nurture-action">Diagnostic Question</div><div class="nurture-script">"When BIG scaled headcount recently, did the project pipeline adjust alongside it? The lag between new capacity and new billings is where cash flow stress usually appears first."</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer"><a class="linkedin-btn" href="https://linkedin.com/in/ACoAAAE2t7QBy9YHa6ibNThljHkiQMDIaiAnpVw" target="_blank" title="ACoA URL - may require login">View on LinkedIn &rarr;</a></div>
+    </div>
+
+    <!-- CARD 4: William Allen / Pete Fowler Construction -->
+    <div class="lead-card" id="card-4">
+      <div class="card-header" onclick="toggleCard('card-4')">
+        <span class="signal-badge warm">WARM</span>
+        <div class="card-header-info">
+          <div class="lead-name">William Allen</div>
+          <div class="lead-company">Chief Operating Officer &middot; Pete Fowler Construction</div>
+          <div class="why-now-line">Operations department hiring approximately 55 days ago &middot; $25M&ndash;$75M revenue &middot; Huntington Beach, CA</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit: YES</span>
+        <span class="expand-icon">&#9662;</span>
+      </div>
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item"><a href="https://petefowler.com" target="_blank">petefowler.com</a></span>
+          <span class="identity-item identity-sep">&middot;</span>
+          <span class="identity-item">Huntington Beach, CA, US</span>
+          <span class="identity-item identity-sep">&middot;</span>
+          <span class="identity-item">51&ndash;200 employees</span>
+          <span class="identity-item identity-sep">&middot;</span>
+          <span class="identity-item">$25M&ndash;$75M Revenue</span>
+          <span class="identity-item identity-sep">&middot;</span>
+          <span class="identity-item">Construction Services</span>
+        </div>
+        <div class="tag-row">
+          <span class="tag industry">Construction Services</span>
+          <span class="tag industry">Consulting and Inspection</span>
+          <span class="tag signal">Ops Hiring &middot; 55 days ago</span>
+          <span class="tag context">$25M&ndash;$75M Revenue</span>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Active Market Signals</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Operations Dept Hiring</div>
+              <div class="signal-timing">Approximately 55 days ago</div>
+              <div class="signal-desc">Pete Fowler Construction is actively growing its operations team. At $25M&ndash;$75M revenue, scaling operations without an aligned forward cash model means resource allocation decisions are made on backward-looking financial data.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">Revenue Complexity Signal</div>
+              <div class="signal-timing">Ongoing structural signal</div>
+              <div class="signal-desc">Pete Fowler's service mix across consulting, inspection, management, and expert testimony creates highly irregular revenue timing. Cash-weighted backlog analysis becomes critical at this revenue level and service breadth, not optional.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing <span class="card-section-subtitle">Configured for Daniel's Practice</span></div>
+          <div class="intel-grid">
+            <div class="intel-cell"><div class="intel-cell-label">Leadership Movement</div><div class="intel-cell-value">No leadership movement in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Capital Activity</div><div class="intel-cell-value">No public funding activity in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Hiring Signals</div><div class="intel-cell-value">Operations department hiring activity &middot; approximately 55 days ago</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Expansion Signals</div><div class="intel-cell-value">No expansion signals in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Growth Trajectory</div><div class="intel-cell-value">51&ndash;200 employees &middot; $25M&ndash;$75M annual revenue &middot; national construction consulting footprint</div></div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div><div class="contact-label">Work Email</div><div class="contact-value">william.allen@petefowler.com</div></div>
+              <button class="copy-btn" onclick="copyToClipboard('william.allen@petefowler.com',this)">Copy</button>
+            </div>
+            <div class="contact-item">
+              <div><div class="contact-label">Mobile</div><div class="contact-value">+1 937 672 0372</div></div>
+              <button class="copy-btn" onclick="copyToClipboard('+19376720372',this)">Copy</button>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div class="why-block">
+              <div class="why-block-title">ICP Fit for Daniel</div>
+              <div class="why-block-text">Pete Fowler Construction delivers professional services across consulting, inspection, estimating, management, and expert testimony. At $25M&ndash;$75M in revenue, William operates as COO in a context where financial clarity and operational clarity are deeply linked. Operations scaling without an aligned financial forecast creates exactly the conditions Daniel's Cash Flow Magnifier framework addresses.</div>
+              <div class="fit-signal"><div class="fit-signal-label">Strongest Fit Signal</div><div class="fit-signal-text">At $25M&ndash;$75M revenue with a diverse service mix, Pete Fowler is at the scale where informal financial systems create real risk, not just inconvenience.</div></div>
+            </div>
+            <div class="why-block">
+              <div class="why-block-title">Why They're Looking</div>
+              <div class="why-block-text">Pete Fowler's revenue arrives in irregular patterns tied to project stage and engagement type. Cash timing visibility at this revenue level is not optional. An operations team scaling without an aligned forward cash model means the decisions being made today are built on last month's data, not next quarter's position.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal <span class="card-section-subtitle">2 Channels Ready</span></div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="conn-note-4">Noticed Pete Fowler Construction growing its operations team. At $25M+ revenue with that service breadth, consulting, inspection, management, testimony, cash flow timing across active engagements is rarely straightforward. Would like to connect.<div class="char-count">237 characters &middot; LinkedIn limit: 300</div></div>
+            <button class="copy-action-btn" onclick="copyElementText('conn-note-4',this)">Copy Connection Note</button>
+          </div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Email Draft &middot; Ready to Send</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject Line</div>
+              <div class="email-subject-value" id="email-subj-4">Pete Fowler Construction &mdash; operations scaling, cash modeling</div>
+              <div class="email-body" id="email-body-4">William,
+
+Noticed Pete Fowler Construction has been actively growing the operations team. At $25M&ndash;$75M revenue with a diverse service mix, cash timing is rarely straightforward. Revenue arrives in irregular patterns tied to project stage and engagement type, which makes forward cash modeling critical rather than optional.
+
+I work with construction service firms on 13-week cash forecasts, cash-weighted backlog analysis, and profitability by service line. The owners I work with most often realize their financial system was built to report on the past, not forecast the next 90 days.
+
+Worth a quick conversation to see whether that is relevant to where Pete Fowler is right now?
+
+Daniel Zabala
+Solidify Solutions &middot; solidifycfosolutions.com</div>
+              <div class="email-meta"><span class="email-word-count">114 words &middot; safe for cold send</span><span class="email-safe-label">Ready to Send</span></div>
+            </div>
+            <button class="copy-action-btn" onclick="copyFullEmail('email-subj-4','email-body-4',this)">Copy Email Draft</button>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">3-Touch Nurture Sequence</div>
+          <div class="nurture-grid">
+            <div class="nurture-card"><div class="nurture-day">Day 1</div><div class="nurture-action">LinkedIn Connection</div><div class="nurture-script">"Noticed Pete Fowler Construction growing its operations team. At $25M+ revenue with that service breadth, cash flow timing across active engagements is rarely straightforward. Would like to connect."</div></div>
+            <div class="nurture-card"><div class="nurture-day">Day 7</div><div class="nurture-action">Value Drop</div><div class="nurture-script">"Pete Fowler's range of services means revenue timing is highly irregular across engagements. Curious how you are forecasting cash position across active engagements, by project type or primarily by overall backlog?"</div></div>
+            <div class="nurture-card"><div class="nurture-day">Day 14</div><div class="nurture-action">Diagnostic Question</div><div class="nurture-script">"Most construction services firms at Pete Fowler's scale track backlog but not cash-weighted backlog. Is that a distinction you currently have visibility on?"</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer"><a class="linkedin-btn" href="https://linkedin.com/in/ACoAAAGKTlsBPFa0U9z5fXMcUGVa8ytM4HsXYa4" target="_blank" title="ACoA URL - may require login">View on LinkedIn &rarr;</a></div>
+    </div>
+
+    <!-- CARD 5: Nure Aiza-bezares / Toll International -->
+    <div class="lead-card" id="card-5">
+      <div class="card-header" onclick="toggleCard('card-5')">
+        <span class="signal-badge warm">WARM</span>
+        <div class="card-header-info">
+          <div class="lead-name">Nure Aiza-bezares</div>
+          <div class="lead-company">President &middot; Toll International LLC</div>
+          <div class="why-now-line">Finance department hiring approximately 72 days ago &middot; 20-year NYC infrastructure operator &middot; New York, NY</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit: YES</span>
+        <span class="expand-icon">&#9662;</span>
+      </div>
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item"><a href="https://tollintl.com" target="_blank">tollintl.com</a></span>
+          <span class="identity-item identity-sep">&middot;</span>
+          <span class="identity-item">New York, NY, US</span>
+          <span class="identity-item identity-sep">&middot;</span>
+          <span class="identity-item">51&ndash;200 employees</span>
+          <span class="identity-item identity-sep">&middot;</span>
+          <span class="identity-item">$10M&ndash;$25M Revenue</span>
+          <span class="identity-item identity-sep">&middot;</span>
+          <span class="identity-item">Infrastructure Construction</span>
+        </div>
+        <div class="tag-row">
+          <span class="tag industry">Construction</span>
+          <span class="tag industry">NYC Infrastructure</span>
+          <span class="tag signal">Finance Hiring &middot; 72 days ago</span>
+          <span class="tag context">20-Year Operator</span>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Active Market Signals</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Finance Dept Hiring</div>
+              <div class="signal-timing">Approximately 72 days ago</div>
+              <div class="signal-desc">Toll International LLC is adding finance capacity. For a 20-year NYC infrastructure contractor at $10M&ndash;$25M revenue, finance hiring signals growth beyond existing financial infrastructure or recognition that the current system is not providing adequate forward visibility.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">Municipal Contract Complexity</div>
+              <div class="signal-timing">Ongoing structural signal</div>
+              <div class="signal-desc">NYC infrastructure contracts carry unique cash timing challenges: approval cycles, retainage holdbacks, and payment schedule mismatches. These create chronic gaps between project revenue and cash position that a forward cash model directly addresses.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing <span class="card-section-subtitle">Configured for Daniel's Practice</span></div>
+          <div class="intel-grid">
+            <div class="intel-cell"><div class="intel-cell-label">Leadership Movement</div><div class="intel-cell-value">No leadership movement in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Capital Activity</div><div class="intel-cell-value">No public funding activity in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Hiring Signals</div><div class="intel-cell-value">Finance department hiring signals detected &middot; approximately 72 days ago</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Expansion Signals</div><div class="intel-cell-value">No expansion signals in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Growth Trajectory</div><div class="intel-cell-value">51&ndash;200 employees &middot; $10M&ndash;$25M annual revenue &middot; 20+ year NYC infrastructure contractor</div></div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div><div class="contact-label">Work Email</div><div class="contact-value">nure@tollintl.com</div></div>
+              <button class="copy-btn" onclick="copyToClipboard('nure@tollintl.com',this)">Copy</button>
+            </div>
+            <div class="contact-item">
+              <div><div class="contact-label">Mobile</div><div class="contact-value">+1 917 579 0642</div></div>
+              <button class="copy-btn" onclick="copyToClipboard('+19175790642',this)">Copy</button>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div class="why-block">
+              <div class="why-block-title">ICP Fit for Daniel</div>
+              <div class="why-block-text">Toll International LLC operates in NYC infrastructure construction with Nure as President for 20+ years. At $10M&ndash;$25M revenue and 51&ndash;200 employees, this is a firm with deep operational history and likely equally deep-rooted financial habits. Finance department hiring signals they are building capacity, which often surfaces the gaps the existing system was quietly masking.</div>
+              <div class="fit-signal"><div class="fit-signal-label">Strongest Fit Signal</div><div class="fit-signal-text">20+ years in the President role at a growing infrastructure contractor combined with active finance hiring. The pattern that precedes a CFO-level conversation.</div></div>
+            </div>
+            <div class="why-block">
+              <div class="why-block-title">Why They're Looking</div>
+              <div class="why-block-text">NYC infrastructure contracts involve complex billing cycles: municipal approval timelines, retainage, payment schedule mismatches. At $10M&ndash;$25M with a long operating history, Toll's financial infrastructure may be optimized for a version of the business that has since grown. Profitability per contract type and cash position modeling across municipal timelines is exactly where a fractional CFO engagement starts.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal <span class="card-section-subtitle">2 Channels Ready</span></div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="conn-note-5">Noticed Toll International has been adding finance capacity recently. Twenty-plus years in NYC infrastructure construction means deep operational knowledge and often financial systems built for an earlier version of the business. Would like to connect.<div class="char-count">248 characters &middot; LinkedIn limit: 300</div></div>
+            <button class="copy-action-btn" onclick="copyElementText('conn-note-5',this)">Copy Connection Note</button>
+          </div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Email Draft &middot; Ready to Send</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject Line</div>
+              <div class="email-subject-value" id="email-subj-5">Toll International &mdash; finance capacity, NYC infrastructure timing</div>
+              <div class="email-body" id="email-body-5">Nure,
+
+Noticed Toll International has been expanding finance capacity recently. Twenty-plus years in NYC infrastructure construction means deep operational knowledge, and often equally deep-rooted financial systems that were built for a previous version of the business.
+
+Municipal and infrastructure contracts carry unique cash timing challenges: approval cycles, retainage holdbacks, payment schedule mismatches. Companies at Toll's revenue level that have not modeled forward cash by contract type often find the bank account does not reflect the project pipeline accurately.
+
+The Cash Flow Magnifier I use with construction companies addresses exactly that. Worth 15 minutes to see whether it is the right conversation for where Toll International is heading?
+
+Daniel Zabala
+Solidify Solutions &middot; solidifycfosolutions.com</div>
+              <div class="email-meta"><span class="email-word-count">111 words &middot; safe for cold send</span><span class="email-safe-label">Ready to Send</span></div>
+            </div>
+            <button class="copy-action-btn" onclick="copyFullEmail('email-subj-5','email-body-5',this)">Copy Email Draft</button>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">3-Touch Nurture Sequence</div>
+          <div class="nurture-grid">
+            <div class="nurture-card"><div class="nurture-day">Day 1</div><div class="nurture-action">LinkedIn Connection</div><div class="nurture-script">"Noticed Toll International has been adding finance capacity recently. Twenty-plus years in NYC infrastructure construction means deep operational knowledge and often financial systems built for an earlier version of the business. Would like to connect."</div></div>
+            <div class="nurture-card"><div class="nurture-day">Day 7</div><div class="nurture-action">Value Drop</div><div class="nurture-script">"NYC infrastructure contracts typically carry 45&ndash;90 day payment cycles tied to municipal approval timelines. After 20 years in this market, is your cash model forward-looking or primarily retrospective?"</div></div>
+            <div class="nurture-card"><div class="nurture-day">Day 14</div><div class="nurture-action">Diagnostic Question</div><div class="nurture-script">"At Toll International's tenure and scale, which contract types are most profitable, and do you have that broken out separately from overall revenue? That is usually the most revealing number in NYC infrastructure."</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer"><a class="linkedin-btn" href="https://linkedin.com/in/ACoAAAKUvw4BVOuAU45T72Pk-HPFcgJvto3sV70" target="_blank" title="ACoA URL - may require login">View on LinkedIn &rarr;</a></div>
+    </div>
+
+    <!-- PIPELINE MATH -->
+    <div class="pipeline-math">
+      <div class="pipeline-math-text">
+        Five leads like these are delivered every week in the full system. Over 12 weeks: <strong>120 ICP-matched buyers</strong> in Daniel's network, each carrying an active signal. The math from there is Daniel's to run.
+      </div>
+    </div>
+
+    <!-- VISUALS SECTION (Pipeline tab) -->
+    <div class="visuals-section">
+      <div class="visuals-header">
+        <div class="visuals-copy">
+          <h3>Every Monday, your content arrives finished.</h3>
+          <p>The leads are one side of the system. The content is the other. Decision-makers skim before they read. A post without a visual is half a post. Consultants who post with structured visuals consistently outperform those who post text alone, not because their thinking is sharper, but because the visual stops the scroll long enough for the thinking to land.</p>
+          <p>Every piece that benefits from a visual gets one. Finished. Attached. Ready to schedule.</p>
+          <ul class="visuals-list">
+            <li><span class="visuals-list-dot">&rarr;</span> 3 LinkedIn posts per week in your voice, formatted and ready</li>
+            <li><span class="visuals-list-dot">&rarr;</span> Carousel covers, quote graphics, and infographics &mdash; finished PNG files</li>
+            <li><span class="visuals-list-dot">&rarr;</span> 15-minute strategy Loom walking through the week's package</li>
+            <li><span class="visuals-list-dot">&rarr;</span> Zero design work on your end. Zero</li>
+          </ul>
+        </div>
+        <div>
+          <div class="visuals-tiles">
+            <div class="visual-tile carousel"><div class="visual-tile-inner"><div class="tile-accent-bar"></div><div class="tile-lines"><div class="tile-line full"></div><div class="tile-line medium"></div><div class="tile-line short"></div></div></div><div class="tile-label">Carousel Cover</div></div>
+            <div class="visual-tile post"><div class="visual-tile-inner"><div class="tile-accent-bar"></div><div class="tile-lines"><div class="tile-line medium"></div><div class="tile-line full"></div><div class="tile-line short"></div></div></div><div class="tile-label">Post Visual</div></div>
+            <div class="visual-tile infographic"><div class="visual-tile-inner"><div class="tile-accent-bar"></div><div class="tile-lines"><div class="tile-line full"></div><div class="tile-line short"></div><div class="tile-line medium"></div></div></div><div class="tile-label">Infographic</div></div>
+          </div>
+          <div class="visuals-note"><strong>Visuals are finished and attached in the Monday package.</strong><br>You schedule. Nothing to design. Nothing to brief.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cta-footer">
+      <div class="cta-footer-headline">This is what one week of the full system looks like for Daniel.</div>
+      <div class="cta-footer-subhead">Every Monday: 10 ICP-matched buyers with full signal intelligence, direct contact details, and outreach ready to send. Plus 3 posts and finished visuals in your voice. 30 minutes of your time per week.</div>
+      <a class="cta-footer-btn" href="https://calendly.com/saurabh_zentro/30-min" target="_blank">Book Your 20-Min Fit Call &rarr;</a>
+      <div class="cta-footer-note">No pitch. No deck. We talk through your specific situation and confirm whether this is the right fit.</div>
+    </div>
+  </div><!-- end view-pipeline -->
+
+  <!-- CONTENT ENGINE VIEW -->
+  <div id="view-content" class="view">
+    <div class="welcome-banner">
+      <div class="welcome-tag">Content Engine &middot; Daniel's Sample</div>
+      <div class="welcome-text"><strong>Two sample posts written in Daniel's voice.</strong> Extracted from his post language and the patterns he uses consistently: declarative openers, diagnostic framing, specific numbers, structural contrast, flat declarative closers. Every week, 3 posts arrive like this, in Daniel's voice, formatted and ready to schedule from his own account.</div>
+    </div>
+
+    <div class="post-cards-grid">
+      <div class="post-card">
+        <div class="post-type-label">Teaching Post</div>
+        <div class="post-type-desc">Explains a pattern from Daniel's Cash Flow Magnifier methodology. Educates the buyer. Positions Daniel as the diagnostic, not the cheerleader.</div>
+        <div class="post-text" id="teaching-post">Stop reviewing last month's P&amp;L and calling it financial management.
+
+A P&amp;L tells you what happened.
+
+It does not tell you whether payroll clears next Thursday.
+It does not tell you which job type is actually making you money.
+It does not tell you if you can open a second location without a cash crisis.
+
+Three reports do that.
+
+1. 13-Week Cash Flow Forecast
+Cash in, cash out, week by week. You know before things get tight, not after.
+
+2. Job-Type Profitability Breakdown
+Not all revenue is equal. HVAC installs, service calls, maintenance contracts: different margins, different labor intensity, different risk. This tells you which work to chase.
+
+3. 90-Day Revenue Pipeline Map
+Connects your current bids and scheduled jobs to the cash you will actually see.
+
+Most home service owners watch revenue.
+
+Revenue does not tell you if you are safe.
+
+The real advantage is knowing your cash position before it shows up in your bank account.</div>
+        <div class="post-cta-line">Comment FORECAST and I will send you the exact three-report template I use to build this for a home service company.</div>
+        <button class="copy-action-btn post-copy-btn" onclick="copyPostText('teaching-post',this)">Copy Post</button>
+      </div>
+
+      <div class="post-card">
+        <div class="post-type-label">Handraiser Post</div>
+        <div class="post-type-desc">Designed to drive qualified comments from construction and home service company owners who recognize themselves in the problem described.</div>
+        <div class="post-text" id="handraiser-post">Revenue is not the same as cash.
+
+Home service owners learn this the hard way.
+
+Topline is growing. New jobs. Bigger contracts. Busy crews.
+
+The bank account is not keeping pace.
+
+This is not a revenue problem. It is almost always one of four things:
+
+Insurance reimbursements landing 45 to 60 days late.
+WIP jobs billed after the work is done instead of during.
+Payroll hitting before client payments clear.
+High-revenue job types running on thinner margins than you realize.
+
+Every one of these is a cash timing and visibility problem.
+
+The business is performing. The financial system is not tracking it accurately enough to give you the picture you need before decisions have to be made.
+
+If your revenue is growing but your cash is not following, the gap is in the numbers you are not yet measuring.</div>
+        <div class="post-cta-line">Comment CLARITY and I will send you the three metrics I check first when a home service company owner describes this situation.</div>
+        <button class="copy-action-btn post-copy-btn" onclick="copyPostText('handraiser-post',this)">Copy Post</button>
+      </div>
+    </div>
+
+    <!-- VISUALS SECTION (Content tab) -->
+    <div class="visuals-section">
+      <div class="visuals-header">
+        <div class="visuals-copy">
+          <h3>Content without visuals is half a system.</h3>
+          <p>Most consultants post text. The ones building consistent inbound post text with structure behind it. A carousel that breaks down a framework visually gets saved. A quote graphic gets shared. An infographic gets screenshotted. Saves, shares, and screenshots reach buyers who never followed you. That is organic reach you do not have to pay for.</p>
+          <p>The full system produces the visuals. You attach and schedule.</p>
+          <ul class="visuals-list">
+            <li><span class="visuals-list-dot">&rarr;</span> 2 carousels per month with finished slide visuals</li>
+            <li><span class="visuals-list-dot">&rarr;</span> 2 standalone infographics per month</li>
+            <li><span class="visuals-list-dot">&rarr;</span> Post graphics for any text post that benefits from one</li>
+            <li><span class="visuals-list-dot">&rarr;</span> All delivered as finished PNG files in the Monday package</li>
+          </ul>
+        </div>
+        <div>
+          <div class="visuals-tiles">
+            <div class="visual-tile carousel"><div class="visual-tile-inner"><div class="tile-accent-bar"></div><div class="tile-lines"><div class="tile-line full"></div><div class="tile-line medium"></div><div class="tile-line short"></div></div></div><div class="tile-label">Carousel Cover</div></div>
+            <div class="visual-tile post"><div class="visual-tile-inner"><div class="tile-accent-bar"></div><div class="tile-lines"><div class="tile-line medium"></div><div class="tile-line full"></div><div class="tile-line short"></div></div></div><div class="tile-label">Post Visual</div></div>
+            <div class="visual-tile infographic"><div class="visual-tile-inner"><div class="tile-accent-bar"></div><div class="tile-lines"><div class="tile-line full"></div><div class="tile-line short"></div><div class="tile-line medium"></div></div></div><div class="tile-label">Infographic</div></div>
+          </div>
+          <div class="visuals-note"><strong>18 content pieces per month. Finished. Attached. Ready to schedule.</strong><br>You schedule from your own account. Zero design work on your end.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cta-footer">
+      <div class="cta-footer-headline">This is what one week of the full system looks like for Daniel.</div>
+      <div class="cta-footer-subhead">Every Monday: 10 ICP-matched buyers with full signal intelligence, direct contact details, and outreach ready to send. Plus 3 posts and finished visuals in your voice. 30 minutes of your time per week.</div>
+      <a class="cta-footer-btn" href="https://calendly.com/saurabh_zentro/30-min" target="_blank">Book Your 20-Min Fit Call &rarr;</a>
+      <div class="cta-footer-note">No pitch. No deck. We talk through your specific situation and confirm whether this is the right fit.</div>
+    </div>
+  </div><!-- end view-content -->
+
+</main>
+
+<script>
+function showView(name, triggerEl) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view-' + name).classList.add('active');
+  document.querySelectorAll('.nav-item, .tab-btn, .mobile-tab-pill').forEach(el => el.classList.remove('active'));
+  const navEl = document.getElementById('nav-' + name);
+  if (navEl) navEl.classList.add('active');
+  document.querySelectorAll('.tab-btn, .mobile-tab-pill').forEach(btn => {
+    if (btn.getAttribute('onclick') && btn.getAttribute('onclick').includes("'" + name + "'")) {
+      btn.classList.add('active');
+    }
+  });
+}
+
+function toggleCard(cardId) {
+  document.getElementById(cardId).classList.toggle('expanded');
+}
+
+function copyToClipboard(text, btn) {
+  navigator.clipboard.writeText(text).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = 'Copied.';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 2000);
+  }).catch(() => {
+    const el = document.createElement('textarea');
+    el.value = text;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+    btn.textContent = 'Copied.';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+function copyElementText(elementId, btn) {
+  const el = document.getElementById(elementId);
+  if (!el) return;
+  const charCountEl = el.querySelector('.char-count');
+  let text = el.textContent;
+  if (charCountEl) text = text.replace(charCountEl.textContent, '').trim();
+  copyToClipboard(text, btn);
+}
+
+function copyFullEmail(subjId, bodyId, btn) {
+  const subj = document.getElementById(subjId);
+  const body = document.getElementById(bodyId);
+  const text = 'Subject: ' + (subj ? subj.textContent.trim() : '') + '\n\n' + (body ? body.textContent.trim() : '');
+  copyToClipboard(text, btn);
+}
+
+function copyPostText(postId, btn) {
+  const el = document.getElementById(postId);
+  if (!el) return;
+  copyToClipboard(el.textContent.trim(), btn);
+}
+</script>
+</body>
+</html>
