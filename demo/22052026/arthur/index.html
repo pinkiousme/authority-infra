@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arthur M. · Lead Demo · Pipelind</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{background:#0A0A12;color:rgba(255,255,255,0.90);font-family:'Plus Jakarta Sans',sans-serif;min-height:100vh;}
+:root{
+  --bg:#0A0A12;--bg2:#12121E;--bg3:#0E0E19;
+  --primary:#6A66A3;--primary-light:#9B98C4;
+  --accent:#FF9900;--success:#019047;--success-light:#5AC88A;
+  --text:rgba(255,255,255,0.90);--text-dim:rgba(255,255,255,0.72);--text-muted:rgba(255,255,255,0.55);
+  --border:rgba(106,102,163,0.25);--border-hover:rgba(106,102,163,0.55);
+  --hot:#FF4444;--warm:#FF9900;
+}
+/* SIDEBAR */
+.sidebar{position:fixed;top:0;left:0;width:240px;height:100vh;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:24px 20px;z-index:100;}
+.sidebar-logo{font-family:'Space Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--primary-light);margin-bottom:28px;}
+.prospect-block{margin-bottom:32px;}
+.prospect-label{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px;}
+.prospect-name{font-size:17px;font-weight:800;color:var(--text);line-height:1.25;}
+.prospect-meta{font-family:'Space Mono',monospace;font-size:10px;color:var(--text-muted);letter-spacing:.06em;margin-top:4px;}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;cursor:pointer;margin-bottom:4px;font-size:13px;font-weight:600;color:var(--text-dim);transition:all .15s;border:1px solid transparent;}
+.nav-item:hover{background:rgba(106,102,163,0.10);color:var(--text);}
+.nav-item.active{background:rgba(106,102,163,0.15);color:var(--primary-light);border-color:var(--border);}
+.sidebar-footer{margin-top:auto;font-family:'Space Mono',monospace;font-size:10px;color:var(--text-muted);letter-spacing:.04em;line-height:1.8;}
+/* MOBILE */
+.mobile-topbar{display:none;position:sticky;top:0;z-index:200;background:var(--bg2);border-bottom:1px solid var(--border);padding:14px 16px;align-items:center;justify-content:space-between;}
+.mobile-logo{font-family:'Space Mono',monospace;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--primary-light);}
+.mobile-prospect-name{font-size:13px;font-weight:700;color:var(--text);}
+.mobile-tabs{display:none;position:sticky;top:53px;z-index:199;background:var(--bg);border-bottom:1px solid var(--border);padding:10px 16px;gap:8px;}
+.mobile-tab-pill{padding:7px 16px;border-radius:20px;font-size:12px;font-weight:700;font-family:'Space Mono',monospace;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;border:1px solid var(--border);color:var(--text-muted);background:transparent;transition:all .15s;}
+.mobile-tab-pill.active{background:var(--primary);color:#fff;border-color:var(--primary);}
+/* MAIN */
+.main{margin-left:240px;padding:32px 36px;max-width:1140px;}
+/* TAB BAR */
+.tab-bar{position:sticky;top:0;z-index:50;background:var(--bg);border-bottom:1px solid var(--border);display:flex;margin:-32px -36px 32px;padding:0 36px;}
+.tab-btn{padding:14px 22px;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--text-muted);cursor:pointer;border:none;background:transparent;border-bottom:2px solid transparent;transition:all .15s;}
+.tab-btn.active{color:var(--primary-light);border-bottom-color:var(--primary);}
+/* WELCOME BANNER */
+.welcome-banner{background:linear-gradient(135deg,rgba(106,102,163,0.10) 0%,rgba(255,153,0,0.05) 100%);border:1px solid var(--border);border-radius:12px;padding:24px 28px;margin-bottom:28px;}
+.welcome-tag{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;}
+.welcome-text{font-size:14px;line-height:1.75;color:var(--text-dim);}
+.welcome-text strong{color:var(--text);font-weight:700;}
+/* ICP GRID */
+.icp-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:32px;}
+.icp-panel{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:22px 24px;}
+.panel-title{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:16px;}
+.icp-item{display:flex;justify-content:space-between;align-items:flex-start;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05);font-size:13px;}
+.icp-item:last-child{border-bottom:none;}
+.icp-label{color:var(--text-muted);font-size:12px;}
+.icp-value{color:var(--text);font-weight:600;text-align:right;max-width:60%;}
+.quality-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.quality-metric{background:rgba(106,102,163,0.08);border:1px solid var(--border);border-radius:8px;padding:14px 16px;text-align:center;}
+.quality-num{font-size:24px;font-weight:800;color:var(--primary-light);}
+.quality-label{font-family:'Space Mono',monospace;font-size:10px;color:var(--text-muted);letter-spacing:.06em;text-transform:uppercase;margin-top:4px;}
+.quality-note{font-size:12px;color:var(--text-muted);line-height:1.6;margin-top:14px;}
+/* SECTION HEADER */
+.section-header{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:16px;}
+.section-title{font-size:18px;font-weight:800;color:var(--text);}
+.section-sub{font-family:'Space Mono',monospace;font-size:10px;color:var(--text-muted);letter-spacing:.08em;}
+/* LEAD CARD */
+.lead-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;margin-bottom:16px;overflow:hidden;}
+.card-header{display:flex;align-items:flex-start;gap:14px;padding:18px 22px;cursor:pointer;}
+.card-header:hover{background:rgba(255,255,255,0.02);}
+.signal-badge{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:4px;flex-shrink:0;margin-top:2px;}
+.signal-badge.hot{background:rgba(255,68,68,0.12);color:var(--hot);border:1px solid rgba(255,68,68,0.30);}
+.signal-badge.warm{background:rgba(255,153,0,0.10);color:var(--warm);border:1px solid rgba(255,153,0,0.30);}
+.card-header-info{flex:1;}
+.lead-name{font-size:17px;font-weight:800;color:var(--text);}
+.lead-company{font-size:13px;color:var(--text-dim);margin-top:3px;}
+.why-now-line{font-size:11px;color:var(--accent);margin-top:5px;font-family:'Space Mono',monospace;letter-spacing:.04em;}
+.icp-fit-badge{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:4px;background:rgba(1,144,71,0.12);color:var(--success-light);border:1px solid rgba(1,144,71,0.30);flex-shrink:0;margin-top:2px;}
+.expand-icon{font-size:14px;color:var(--text-muted);flex-shrink:0;transition:transform .2s;margin-top:4px;}
+.lead-card.expanded .expand-icon{transform:rotate(180deg);}
+.card-body{display:none;}
+.lead-card.expanded .card-body{display:block;}
+/* IDENTITY STRIP */
+.identity-strip{display:flex;flex-wrap:wrap;gap:10px;padding:12px 22px;border-bottom:1px solid var(--border);background:rgba(0,0,0,0.15);}
+.identity-item{font-family:'Space Mono',monospace;font-size:10px;color:var(--text-muted);letter-spacing:.06em;}
+.identity-item a{color:var(--primary-light);text-decoration:none;}
+.identity-item a:hover{color:var(--text);}
+/* TAGS */
+.tag-row{display:flex;flex-wrap:wrap;gap:6px;padding:12px 22px;border-bottom:1px solid var(--border);}
+.tag{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:20px;}
+.tag.industry{background:rgba(106,102,163,0.12);color:var(--primary-light);border:1px solid rgba(106,102,163,0.25);}
+.tag.signal{background:rgba(255,153,0,0.10);color:var(--warm);border:1px solid rgba(255,153,0,0.25);}
+.tag.context{background:rgba(1,144,71,0.10);color:var(--success-light);border:1px solid rgba(1,144,71,0.25);}
+/* CARD SECTION */
+.card-section{padding:20px 22px;border-bottom:1px solid var(--border);}
+.card-section:last-child{border-bottom:none;}
+.card-section-title{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:14px;}
+.card-section-subtitle{color:var(--accent);margin-left:8px;font-size:9px;}
+/* SIGNAL CARDS */
+.signal-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.signal-card{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:14px 16px;}
+.signal-type{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--accent);margin-bottom:4px;}
+.signal-timing{font-size:11px;color:var(--text-muted);margin-bottom:8px;font-style:italic;}
+.signal-desc{font-size:13px;color:var(--text-dim);line-height:1.65;}
+/* INTEL GRID */
+.intel-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+.intel-cell{background:var(--bg3);padding:12px 16px;}
+.intel-cell-label{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px;}
+.intel-cell-value{font-size:12px;color:var(--text-dim);line-height:1.5;}
+/* CONTACT */
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.contact-item{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;gap:12px;}
+.contact-label{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px;}
+.contact-value{font-size:13px;color:var(--text);font-weight:600;}
+.contact-value.unavailable{color:var(--text-muted);font-style:italic;font-weight:400;font-size:12px;}
+.copy-btn{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:6px 12px;border-radius:4px;border:1px solid var(--border);color:var(--primary-light);background:transparent;cursor:pointer;transition:all .15s;flex-shrink:0;white-space:nowrap;}
+.copy-btn:hover{border-color:var(--primary);background:rgba(106,102,163,0.10);}
+.copy-btn.copied{color:var(--success-light);border-color:var(--success);}
+/* WHY GRID */
+.why-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.why-block{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:16px 18px;}
+.why-block-title{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--primary-light);margin-bottom:10px;}
+.why-block-text{font-size:13px;color:var(--text-dim);line-height:1.70;}
+.fit-signal{margin-top:12px;padding-top:10px;border-top:1px solid var(--border);}
+.fit-signal-label{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--success-light);margin-bottom:6px;}
+.fit-signal-text{font-size:12px;color:var(--text-dim);line-height:1.5;}
+/* OUTREACH */
+.outreach-channel{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:16px 18px;margin-bottom:12px;}
+.outreach-channel-label{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--text-muted);margin-bottom:12px;}
+.connection-note{font-size:13px;color:var(--text-dim);line-height:1.70;font-style:italic;padding:12px 14px;background:var(--bg2);border-radius:6px;margin-bottom:10px;border:1px solid var(--border);}
+.char-count{font-family:'Space Mono',monospace;font-size:9px;color:var(--text-muted);margin-top:8px;letter-spacing:.06em;}
+.copy-action-btn{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:8px 16px;border-radius:6px;border:1px solid var(--border);color:var(--primary-light);background:transparent;cursor:pointer;transition:all .15s;display:inline-block;}
+.copy-action-btn:hover{border-color:var(--primary);color:var(--primary-light);}
+.copy-action-btn.copied{color:var(--success-light);border-color:var(--success);}
+.email-block{padding:14px 16px;background:var(--bg2);border-radius:6px;margin-bottom:10px;border:1px solid var(--border);}
+.email-subject-label{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--text-muted);margin-bottom:4px;}
+.email-subject-value{font-size:13px;color:var(--text);font-weight:700;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--border);}
+.email-body{font-size:13px;color:var(--text-dim);line-height:1.82;white-space:pre-line;}
+.email-meta{display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:10px;border-top:1px solid var(--border);}
+.email-word-count{font-family:'Space Mono',monospace;font-size:9px;color:var(--text-muted);letter-spacing:.06em;}
+.email-safe-label{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--success-light);}
+/* PROSPECT INTEL CALLOUT */
+.intel-callout{background:rgba(255,153,0,0.07);border:1px solid rgba(255,153,0,0.25);border-radius:8px;padding:13px 16px;font-size:12px;color:var(--text-dim);line-height:1.65;}
+.intel-callout-label{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:5px;}
+/* NURTURE */
+.nurture-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+.nurture-card{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:14px 16px;}
+.nurture-day{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--primary-light);margin-bottom:6px;}
+.nurture-action{font-size:13px;font-weight:700;color:var(--text);margin-bottom:8px;}
+.nurture-script{font-size:12px;color:var(--text-dim);line-height:1.65;font-style:italic;}
+/* CARD FOOTER */
+.card-footer{padding:12px 22px;background:var(--bg3);border-top:1px solid var(--border);display:flex;justify-content:flex-end;}
+.linkedin-btn{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:8px 16px;border-radius:6px;border:1px solid var(--border);color:var(--primary-light);text-decoration:none;transition:all .15s;display:inline-block;}
+.linkedin-btn:hover{border-color:var(--primary);background:rgba(106,102,163,0.10);}
+/* PIPELINE MATH */
+.pipeline-math{background:rgba(106,102,163,0.06);border:1px solid var(--border);border-radius:12px;padding:22px 28px;margin:28px 0;text-align:center;}
+.pipeline-math-text{font-size:15px;color:var(--text-dim);line-height:1.8;}
+.pipeline-math-text strong{color:var(--primary-light);font-weight:700;}
+/* VISUALS SECTION */
+.visuals-section{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:28px 32px;margin:28px 0;}
+.visuals-header{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-bottom:24px;}
+.visuals-copy h3{font-size:18px;font-weight:800;color:var(--text);line-height:1.3;margin-bottom:12px;}
+.visuals-copy p{font-size:13px;color:var(--text-dim);line-height:1.75;margin-bottom:10px;}
+.visuals-list{list-style:none;margin-top:14px;}
+.visuals-list li{font-size:13px;color:var(--text-dim);padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.04);display:flex;gap:10px;}
+.visuals-list li:last-child{border-bottom:none;}
+.visuals-list-dot{color:var(--success-light);font-weight:700;flex-shrink:0;}
+.visuals-tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.visual-tile{border-radius:10px;overflow:hidden;}
+.visual-tile-inner{aspect-ratio:4/3;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px;}
+.visual-tile.carousel{background:linear-gradient(135deg,#1B2A4A 0%,#243655 100%);border:1px solid rgba(240,165,0,0.20);}
+.visual-tile.post{background:linear-gradient(135deg,#1B2A4A 0%,#1D2D47 100%);border:1px solid rgba(240,165,0,0.15);}
+.visual-tile.infographic{background:linear-gradient(135deg,#162238 0%,#1B2A4A 100%);border:1px solid rgba(240,165,0,0.10);}
+.tile-accent-bar{width:36px;height:3px;background:#F0A500;border-radius:2px;margin-bottom:12px;}
+.tile-lines{width:100%;}
+.tile-line{height:7px;background:rgba(245,240,232,0.15);border-radius:3px;margin-bottom:6px;}
+.tile-line.short{width:60%;}
+.tile-line.medium{width:80%;}
+.tile-line.full{width:100%;}
+.tile-label{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);text-align:center;margin-top:10px;padding:6px;background:var(--bg3);}
+.visuals-note{font-size:13px;color:var(--text-dim);text-align:center;margin-top:18px;padding-top:18px;border-top:1px solid var(--border);line-height:1.7;}
+.visuals-note strong{color:var(--text);}
+/* CTA FOOTER */
+.cta-footer{margin-top:36px;background:linear-gradient(135deg,rgba(255,153,0,0.08) 0%,rgba(106,102,163,0.06) 100%);border:1px solid rgba(255,153,0,0.30);border-radius:12px;padding:36px 40px;text-align:center;}
+.cta-footer-headline{font-size:22px;font-weight:800;color:var(--text);letter-spacing:-.01em;margin-bottom:14px;line-height:1.3;}
+.cta-footer-subhead{font-size:14px;color:var(--text-dim);line-height:1.8;max-width:680px;margin:0 auto 26px;}
+.cta-footer-btn{display:inline-block;background:var(--accent);color:var(--bg);padding:15px 34px;border-radius:8px;font-family:'Space Mono',monospace;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;text-decoration:none;transition:background .15s;margin-bottom:14px;}
+.cta-footer-btn:hover{background:#ffb340;}
+.cta-footer-note{font-family:'Space Mono',monospace;font-size:11px;color:var(--text-muted);letter-spacing:.04em;}
+/* POST CARDS */
+.post-cards-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:28px;}
+.post-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:24px 26px;}
+.post-type-label{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--primary-light);margin-bottom:6px;}
+.post-type-desc{font-size:11px;color:var(--text-muted);margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--border);line-height:1.5;}
+.post-text{font-size:13px;color:var(--text-dim);line-height:1.85;white-space:pre-line;}
+.post-cta-line{margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.06);font-size:12px;color:var(--accent);font-weight:600;}
+/* VIEWS */
+.view{display:none;}
+.view.active{display:block;}
+/* RESPONSIVE */
+@media(max-width:768px){
+  .sidebar{display:none;}
+  .mobile-topbar{display:flex;}
+  .mobile-tabs{display:flex;}
+  .main{margin-left:0;padding:16px;}
+  .tab-bar{display:none;}
+  .icp-grid{grid-template-columns:1fr;}
+  .signal-cards{grid-template-columns:1fr;}
+  .intel-grid{grid-template-columns:1fr 1fr;}
+  .contact-grid{grid-template-columns:1fr;}
+  .why-grid{grid-template-columns:1fr;}
+  .nurture-grid{grid-template-columns:1fr;}
+  .post-cards-grid{grid-template-columns:1fr;}
+  .visuals-header{grid-template-columns:1fr;}
+  .card-header{flex-wrap:wrap;gap:8px;}
+  .lead-name{font-size:15px;}
+  .cta-footer{padding:24px 20px;}
+  .cta-footer-btn{width:100%;text-align:center;display:block;}
+  .email-meta{flex-direction:column;align-items:flex-start;gap:8px;}
+}
+@media(max-width:480px){
+  .intel-grid{grid-template-columns:1fr;}
+  .visuals-tiles{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- MOBILE TOPBAR -->
+<div class="mobile-topbar">
+  <div class="mobile-logo">Pipelind</div>
+  <div class="mobile-prospect-name">Arthur's Report</div>
+</div>
+<!-- MOBILE TAB PILLS -->
+<div class="mobile-tabs">
+  <button class="mobile-tab-pill active" onclick="showView('pipeline',this)">Pipeline Engine</button>
+  <button class="mobile-tab-pill" onclick="showView('content',this)">Content Engine</button>
+</div>
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="sidebar-logo">Pipelind</div>
+  <div class="prospect-block">
+    <div class="prospect-label">Personalized For</div>
+    <div class="prospect-name">Arthur M.</div>
+    <div class="prospect-meta">May 2026 · Lead Demo</div>
+  </div>
+  <div class="nav-item active" id="nav-pipeline" onclick="showView('pipeline',this)">&#9632; Pipeline Engine</div>
+  <div class="nav-item" id="nav-content" onclick="showView('content',this)">&#9632; Content Engine</div>
+  <div class="sidebar-footer">Personalized build<br>Real signal data<br>Sample of full delivery</div>
+</nav>
+
+<!-- MAIN -->
+<main class="main">
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="showView('pipeline',this)">Pipeline Engine</button>
+    <button class="tab-btn" onclick="showView('content',this)">Content Engine</button>
+  </div>
+
+  <!-- PIPELINE ENGINE VIEW -->
+  <div class="view active" id="view-pipeline">
+
+    <div class="welcome-banner">
+      <div class="welcome-tag">Pipeline Engine · Personalized for Arthur</div>
+      <div class="welcome-text">Five buyers from your ICP, each carrying an active market signal from the last 90 days. Every card is built around the diagnostic-first model AJM runs: <strong>companies where a named financial outcome is identifiable within 90 days.</strong> Oil &amp; Gas, Mining, and Logistics operators at the $25M-$200M mark, private, with capital or leadership activity underway. Direct contact details and ready-to-send outreach on every card.</div>
+    </div>
+
+    <div class="icp-grid">
+      <div class="icp-panel">
+        <div class="panel-title">Target Buyer Profile · Arthur's ICP</div>
+        <div class="icp-item"><span class="icp-label">Buyer Title</span><span class="icp-value">CEO / CTO / COO</span></div>
+        <div class="icp-item"><span class="icp-label">Revenue Range</span><span class="icp-value">$25M to $200M</span></div>
+        <div class="icp-item"><span class="icp-label">Company Stage</span><span class="icp-value">Private · Active Capital Event</span></div>
+        <div class="icp-item"><span class="icp-label">Industries</span><span class="icp-value">Oil &amp; Gas · Mining · Logistics</span></div>
+        <div class="icp-item"><span class="icp-label">Geography</span><span class="icp-value">US · CA · GB · AU · SG</span></div>
+        <div class="icp-item"><span class="icp-label">Signal Triggers</span><span class="icp-value">Funding · M&amp;A · Finance Hiring · Leadership Change</span></div>
+      </div>
+      <div class="icp-panel">
+        <div class="panel-title">Sample Quality · This Pull</div>
+        <div class="quality-grid">
+          <div class="quality-metric"><div class="quality-num">5</div><div class="quality-label">ICP-Matched Profiles</div></div>
+          <div class="quality-metric"><div class="quality-num">3</div><div class="quality-label">Direct Emails Verified</div></div>
+          <div class="quality-metric"><div class="quality-num">4</div><div class="quality-label">Mobile Numbers Live</div></div>
+          <div class="quality-metric"><div class="quality-num">5</div><div class="quality-label">Active Signals &lt;90 Days</div></div>
+        </div>
+        <div class="quality-note">All 5 profiles carry at least one active market signal. Signals sourced from live company event data. No manual research required.</div>
+      </div>
+    </div>
+
+    <div class="section-header">
+      <div class="section-title">ICP-Matched Buyers</div>
+      <div class="section-sub">5 of 40 monthly leads</div>
+    </div>
+
+    <!-- CARD 1: AARON SWANSON -->
+    <div class="lead-card expanded" id="card-1">
+      <div class="card-header" onclick="toggleCard('card-1')">
+        <span class="signal-badge warm">WARM</span>
+        <div class="card-header-info">
+          <div class="lead-name">Aaron Swanson</div>
+          <div class="lead-company">Chief Technology Officer · Diversified (Oil &amp; Gas Extraction)</div>
+          <div class="why-now-line">Finance department hiring signal detected within last 90 days · $75M-$200M revenue · 201-500 employees</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit: YES</span>
+        <span class="expand-icon">&#9662;</span>
+      </div>
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item"><a href="https://dwl-usa.com" target="_blank">dwl-usa.com</a></span>
+          <span class="identity-item">Reserve, Louisiana, USA</span>
+          <span class="identity-item">201-500 employees</span>
+          <span class="identity-item">$75M-$200M revenue</span>
+          <span class="identity-item">Oil &amp; Gas Extraction</span>
+        </div>
+        <div class="tag-row">
+          <span class="tag industry">Oil &amp; Gas</span>
+          <span class="tag industry">Oilfield Technology</span>
+          <span class="tag signal">Finance Hiring Signal</span>
+          <span class="tag signal">Capital Activity &lt;90 Days</span>
+          <span class="tag context">AI &amp; Robotics Expansion</span>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Active Market Signals</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Finance Department Activity</div>
+              <div class="signal-timing">Approximately within last 90 days</div>
+              <div class="signal-desc">Diversified has been actively hiring within its finance function. A company expanding into AI-driven oilfield analytics and robotics at this revenue scale needs a financial narrative that connects capital allocation to named returns at the board level, not just operational metrics.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">Capital Efficiency Pressure</div>
+              <div class="signal-timing">Ongoing · Expansion phase</div>
+              <div class="signal-desc">Diversified's push into automated sample collection and AI-powered formation evaluation creates a specific capital story that the board and any lender partners will need to see in financial terms. The technology investment needs a financial narrative built around it before the next board cycle.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing <span class="card-section-subtitle">Configured for Arthur's Practice</span></div>
+          <div class="intel-grid">
+            <div class="intel-cell"><div class="intel-cell-label">Leadership Movement</div><div class="intel-cell-value">No leadership movement detected in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Capital Activity</div><div class="intel-cell-value">Active capital signal within last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Hiring Signals</div><div class="intel-cell-value">Finance department hiring detected within last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Expansion Signals</div><div class="intel-cell-value">AI and robotics capability expansion documented, Gulf of Mexico operations</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Growth Trajectory</div><div class="intel-cell-value">$75M-$200M revenue · 201-500 employees · Oil &amp; Gas Extraction (NAICS 211)</div></div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div><div class="contact-label">Work Email</div><div class="contact-value">aaronswanson@dwl-usa.com</div></div>
+              <button class="copy-btn" onclick="copyToClipboard('aaronswanson@dwl-usa.com',this)">Copy</button>
+            </div>
+            <div class="contact-item">
+              <div><div class="contact-label">Mobile</div><div class="contact-value">+1 985 212 5801</div></div>
+              <button class="copy-btn" onclick="copyToClipboard('+19852125801',this)">Copy</button>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div class="why-block">
+              <div class="why-block-title">ICP Fit for Arthur</div>
+              <div class="why-block-text">Diversified operates in the oil and gas extraction and exploration services sector at a revenue range where AJM's diagnostic-first engagement model produces the clearest named outcomes. A company expanding AI and robotics capabilities at the $75M-$200M mark typically has capital allocated to technology without a financial narrative tied to a specific board-level return. That is exactly the gap the AJM diagnostic is built to identify in the first session.</div>
+              <div class="fit-signal">
+                <div class="fit-signal-label">Strongest Fit Signal</div>
+                <div class="fit-signal-text">Finance department hiring combined with technology expansion at this revenue scale signals a capital allocation story that needs senior financial translation before the next board cycle.</div>
+              </div>
+            </div>
+            <div class="why-block">
+              <div class="why-block-title">Why They're Looking</div>
+              <div class="why-block-text">Diversified is investing in AI-driven formation evaluation and automated robotics across Gulf of Mexico operations. That level of capital commitment creates a board-level question that finance alone typically cannot answer: what is the named return on this investment, expressed as a number, within a defined period. The finance hiring signal suggests the business is aware of the gap. The question is whether the financial narrative is being built proactively or will be needed under pressure at the next lender or board meeting.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal <span class="card-section-subtitle">2 Channels Ready</span></div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="conn-note-1">Noticed Diversified has been building out its AI-driven logging and robotics capabilities across the Gulf. Activity at that scale tends to surface some specific capital structure questions. Would love to connect.
+              <div class="char-count">204 characters · LinkedIn limit: 300</div>
+            </div>
+            <button class="copy-action-btn" onclick="copyElementText('conn-note-1',this)">Copy Connection Note</button>
+          </div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Email Draft · Ready to Send</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject Line</div>
+              <div class="email-subject-value" id="email-subj-1">Diversified's AI expansion and a financial question worth flagging</div>
+              <div class="email-body" id="email-body-1">Aaron,
+
+Noticed Diversified has been expanding its AI-driven logging and robotics capabilities across the Gulf of Mexico. Work at that scale, moving into automated data collection and high-resolution compositional analysis while managing the underlying capital structure, tends to create financial questions that do not always surface in standard reporting.
+
+At AJM, we work with companies in the $75M to $200M range across oil and gas exploration services. The engagement starts with a diagnostic that identifies one specific financial outcome the business should be producing, expressed as a named number, within 90 days.
+
+Worth a 15-minute conversation to see whether any of that is relevant to where Diversified is right now?
+
+Arthur Madden
+AJM Solutions Inc. · ajmsolutions.ca</div>
+              <div class="email-meta">
+                <span class="email-word-count">129 words · safe for cold send</span>
+                <span class="email-safe-label">Ready to Send</span>
+              </div>
+            </div>
+            <button class="copy-action-btn" onclick="copyFullEmail('email-subj-1','email-body-1',this)">Copy Email Draft</button>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Nurture Sequence · 14-Day Follow-Through</div>
+          <div class="nurture-grid">
+            <div class="nurture-card">
+              <div class="nurture-day">Day 1</div>
+              <div class="nurture-action">Send Connection Note</div>
+              <div class="nurture-script">Use the LinkedIn connection note above. Reference the Gulf AI expansion specifically. No pitch, no call ask.</div>
+            </div>
+            <div class="nurture-card">
+              <div class="nurture-day">Day 7</div>
+              <div class="nurture-action">Value Drop</div>
+              <div class="nurture-script">"Diversified's move into AI-driven formation evaluation is one of the more interesting capital allocation questions in the Gulf right now. The companies doing this well tend to have a financial narrative that connects the technology investment to a named return at the board level. Happy to share how we have seen this structured if useful."</div>
+            </div>
+            <div class="nurture-card">
+              <div class="nurture-day">Day 14</div>
+              <div class="nurture-action">Diagnostic Question</div>
+              <div class="nurture-script">"When Diversified's board reviews the AI and robotics investment at the next reporting cycle, is the financial return case expressed as a named number, or is it still framed as a strategic capability story?"</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a class="linkedin-btn" href="https://linkedin.com/in/ACoAAABaPRwBdL7Ae4APzbM8FgEZS541mwmVsTI" target="_blank" title="LinkedIn URL may require login">View on LinkedIn &rarr;</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 2: LES BRAND -->
+    <div class="lead-card" id="card-2">
+      <div class="card-header" onclick="toggleCard('card-2')">
+        <span class="signal-badge warm">WARM</span>
+        <div class="card-header-info">
+          <div class="lead-name">Les Brand</div>
+          <div class="lead-company">Chief Executive Officer · Supply Chain Solutions, LLC (Logistics)</div>
+          <div class="why-now-line">M&amp;A or capital activity signal detected within last 90 days · $25M-$75M revenue · 24-year tenured CEO</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit: YES</span>
+        <span class="expand-icon">&#9662;</span>
+      </div>
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item"><a href="https://scsolutionsinc.com" target="_blank">scsolutionsinc.com</a></span>
+          <span class="identity-item">Grand Rapids, Michigan, USA</span>
+          <span class="identity-item">201-500 employees</span>
+          <span class="identity-item">$25M-$75M revenue</span>
+          <span class="identity-item">Logistics &amp; Supply Chain</span>
+        </div>
+        <div class="tag-row">
+          <span class="tag industry">Logistics</span>
+          <span class="tag industry">3PL / Transportation</span>
+          <span class="tag signal">M&amp;A Signal &lt;90 Days</span>
+          <span class="tag signal">Capital Activity &lt;90 Days</span>
+          <span class="tag context">Long-Tenured Founder CEO</span>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Active Market Signals</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">M&amp;A or Capital Event</div>
+              <div class="signal-timing">Approximately within last 90 days</div>
+              <div class="signal-desc">Supply Chain Solutions has shown active capital or M&A activity in the last 90 days. At $25M-$75M in revenue in logistics and 3PL services, this type of activity typically creates a specific set of financial narrative questions: whether the reporting infrastructure tells the right story to the parties on the other side of the transaction.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">Operational Inflection Point</div>
+              <div class="signal-timing">Tenure indicator · 24 years as CEO</div>
+              <div class="signal-desc">Les Brand has led Supply Chain Solutions for over two decades. A 24-year tenured CEO at a logistics business in active capital discussions is typically at a strategic inflection point: succession, acquisition, or capital structure change. Each scenario creates a specific financial translation requirement that sits between operational reporting and what capital partners need to see.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing <span class="card-section-subtitle">Configured for Arthur's Practice</span></div>
+          <div class="intel-grid">
+            <div class="intel-cell"><div class="intel-cell-label">Leadership Movement</div><div class="intel-cell-value">No leadership movement detected in last 90 days · Les Brand has been CEO for 24+ years</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Capital Activity</div><div class="intel-cell-value">Active capital or M&amp;A signal within last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Hiring Signals</div><div class="intel-cell-value">No department hiring trend detected</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Expansion Signals</div><div class="intel-cell-value">No expansion signals detected in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Growth Trajectory</div><div class="intel-cell-value">$25M-$75M revenue · 201-500 employees · Transportation &amp; Warehousing (NAICS 48)</div></div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div><div class="contact-label">Work Email</div><div class="contact-value">lgbrand@scsolutionsinc.com</div></div>
+              <button class="copy-btn" onclick="copyToClipboard('lgbrand@scsolutionsinc.com',this)">Copy</button>
+            </div>
+            <div class="contact-item">
+              <div><div class="contact-label">Mobile</div><div class="contact-value">+1 616 836 7074</div></div>
+              <button class="copy-btn" onclick="copyToClipboard('+16168367074',this)">Copy</button>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div class="why-block">
+              <div class="why-block-title">ICP Fit for Arthur</div>
+              <div class="why-block-text">Supply Chain Solutions sits at the intersection of two AJM engagement types: a mid-market logistics operator at the $25M-$75M mark with active capital activity, and a long-tenured founder CEO at a potential inflection point in the business lifecycle. Both scenarios, M&A preparation and capital structure review, require the kind of financial narrative translation that AJM's diagnostic is specifically built to produce. The business has operational depth. The question is whether the financial story holds up to outside scrutiny.</div>
+              <div class="fit-signal">
+                <div class="fit-signal-label">Strongest Fit Signal</div>
+                <div class="fit-signal-text">Active M&A or capital signal on a 24-year tenured CEO's business at this revenue scale is one of the clearest indicators of an AJM-relevant engagement window.</div>
+              </div>
+            </div>
+            <div class="why-block">
+              <div class="why-block-title">Why They're Looking</div>
+              <div class="why-block-text">A logistics business with 20-plus years of operational history and active capital or M&A activity in the last 90 days is almost certainly navigating a transaction, a refinancing, or a conversation with a capital partner that requires a clean financial narrative. The internal reporting, built for operations, rarely translates cleanly to what buyers, lenders, or investment partners need to see. That gap is where Les Brand needs a senior financial perspective right now.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal <span class="card-section-subtitle">2 Channels Ready</span></div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="conn-note-2">Noticed Supply Chain Solutions has been active on the capital side recently. Two decades of operational depth at that revenue scale usually brings some specific financial questions into focus. Would love to connect.
+              <div class="char-count">213 characters · LinkedIn limit: 300</div>
+            </div>
+            <button class="copy-action-btn" onclick="copyElementText('conn-note-2',this)">Copy Connection Note</button>
+          </div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Email Draft · Ready to Send</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject Line</div>
+              <div class="email-subject-value" id="email-subj-2">Supply Chain Solutions' recent capital activity and a financial question</div>
+              <div class="email-body" id="email-body-2">Les,
+
+Noticed Supply Chain Solutions has been active on the capital or M&A side recently. At $25M-$75M in revenue with two decades of operational depth behind the business, that kind of activity typically creates a specific set of financial questions around structure, lender relationships, and what the financial narrative looks like to the parties on the other side of the transaction.
+
+At AJM, we work with mid-market logistics and transportation companies at exactly these inflection points. The engagement starts with a diagnostic that identifies what the financial data is actually telling the business, then builds the narrative that holds up at the board and capital partner level.
+
+Worth a 15-minute conversation to see if any of that maps to what Supply Chain Solutions is working through right now?
+
+Arthur Madden
+AJM Solutions Inc. · ajmsolutions.ca</div>
+              <div class="email-meta">
+                <span class="email-word-count">138 words · safe for cold send</span>
+                <span class="email-safe-label">Ready to Send</span>
+              </div>
+            </div>
+            <button class="copy-action-btn" onclick="copyFullEmail('email-subj-2','email-body-2',this)">Copy Email Draft</button>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Nurture Sequence · 14-Day Follow-Through</div>
+          <div class="nurture-grid">
+            <div class="nurture-card">
+              <div class="nurture-day">Day 1</div>
+              <div class="nurture-action">Send Connection Note</div>
+              <div class="nurture-script">Use the LinkedIn connection note above. Lead with the capital activity observation. No pitch, no call ask in the first message.</div>
+            </div>
+            <div class="nurture-card">
+              <div class="nurture-day">Day 7</div>
+              <div class="nurture-action">Value Drop</div>
+              <div class="nurture-script">"Supply chain businesses at the $25M-$75M mark with two-plus decades of operational depth often discover the financial reporting was built for running the business, not for the capital conversation. That gap tends to matter most when the transaction moves from exploratory to serious. Happy to share how we typically approach this."</div>
+            </div>
+            <div class="nurture-card">
+              <div class="nurture-day">Day 14</div>
+              <div class="nurture-action">Diagnostic Question</div>
+              <div class="nurture-script">"When the capital or M&amp;A conversation moves forward at Supply Chain Solutions, does the financial narrative exist in the form that institutional partners and lenders actually need to see it, or is that still the internal reporting?"</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a class="linkedin-btn" href="https://linkedin.com/in/ACoAAAAZg-4BTXiw45LVeSYpUqugkP0wO0vFrVI" target="_blank" title="LinkedIn URL may require login">View on LinkedIn &rarr;</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 3: ADRIAN MENDOZA -->
+    <div class="lead-card" id="card-3">
+      <div class="card-header" onclick="toggleCard('card-3')">
+        <span class="signal-badge warm">WARM</span>
+        <div class="card-header-info">
+          <div class="lead-name">Adrian Mendoza</div>
+          <div class="lead-company">Chief Operating Officer · GOWell (Oil &amp; Gas Technology · Singapore)</div>
+          <div class="why-now-line">New COO joined from Schlumberger approximately 90 days ago · first 90 days in seat · $25M-$75M revenue</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit: YES</span>
+        <span class="expand-icon">&#9662;</span>
+      </div>
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item"><a href="https://gowell.energy" target="_blank">gowell.energy</a></span>
+          <span class="identity-item">Singapore (HQ)</span>
+          <span class="identity-item">201-500 employees</span>
+          <span class="identity-item">$25M-$75M revenue</span>
+          <span class="identity-item">Wireline Logging Technology</span>
+        </div>
+        <div class="tag-row">
+          <span class="tag industry">Oil &amp; Gas Technology</span>
+          <span class="tag industry">Wireline Logging</span>
+          <span class="tag signal">New COO Arrival &lt;90 Days</span>
+          <span class="tag signal">Capital Activity &lt;90 Days</span>
+          <span class="tag context">Schlumberger Background</span>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Active Market Signals</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">New Executive Arrival</div>
+              <div class="signal-timing">Approximately 90 days ago · February 2026</div>
+              <div class="signal-desc">Adrian Mendoza joined GOWell as Chief Operating Officer in February 2026, moving from Schlumberger where he served as VP South and East Asia Regional Manager for Cameron Group. The first 90 days in a new COO seat at a company in this revenue range is the highest-intent window for a fractional CFO engagement: the incoming operator is building their picture of the business and has not yet settled into inherited assumptions.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">Capital Activity Signal</div>
+              <div class="signal-timing">Approximately within last 90 days</div>
+              <div class="signal-desc">GOWell has shown active capital signals alongside the leadership change. A new COO arriving from a global oil-field services major into a $25M-$75M wireline technology business tends to accelerate exactly the kind of financial assessment and capital structure review that AJM's diagnostic is built to support in the first session.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing <span class="card-section-subtitle">Configured for Arthur's Practice</span></div>
+          <div class="intel-grid">
+            <div class="intel-cell"><div class="intel-cell-label">Leadership Movement</div><div class="intel-cell-value">New COO joined approximately 90 days ago from Schlumberger (VP South and East Asia, Cameron Group)</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Capital Activity</div><div class="intel-cell-value">Active capital signal within last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Hiring Signals</div><div class="intel-cell-value">No department hiring trend detected</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Expansion Signals</div><div class="intel-cell-value">No expansion signals detected in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Growth Trajectory</div><div class="intel-cell-value">$25M-$75M revenue · 201-500 employees · Wireline Logging, Latin America, Middle East, Asia Pacific, North America</div></div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item" style="grid-column:1/-1;">
+              <div><div class="contact-label">Direct Contact</div><div class="contact-value unavailable">Direct contact not on record · LinkedIn outreach recommended</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div class="why-block">
+              <div class="why-block-title">ICP Fit for Arthur</div>
+              <div class="why-block-text">Adrian Mendoza is a senior operations executive from Schlumberger stepping into a new COO role at a $25M-$75M oil and gas technology company. This is exactly the scenario AJM's diagnostic-first model is built for: a new executive arriving with a mandate to understand and improve the business, operating in a company where the financial narrative has not yet been built for the perspective of the new leadership. The first 90 days in this seat is the window where AJM's engagement produces the clearest named outcome.</div>
+              <div class="fit-signal">
+                <div class="fit-signal-label">Strongest Fit Signal</div>
+                <div class="fit-signal-text">New COO from Schlumberger stepping into a $25M-$75M wireline tech company within last 90 days. First 90 days in a new seat is the highest-intent window for this engagement type.</div>
+              </div>
+            </div>
+            <div class="why-block">
+              <div class="why-block-title">Why They're Looking</div>
+              <div class="why-block-text">Adrian is building his operational picture of GOWell right now. A COO arriving from a global major into a company one-tenth the size faces an immediate question: does the financial data tell a coherent story about what this business actually is, and where the specific financial opportunities are. That is the diagnostic AJM runs in the first session. The fact that GOWell also has active capital signals alongside the leadership change means the financial translation is needed under dual pressure, not just internally.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Prospect Intelligence</div>
+          <div class="intel-callout">
+            <div class="intel-callout-label">Company Change Detected</div>
+            Adrian Mendoza moved from Schlumberger (VP South and East Asia Regional Manager, Cameron Group) to Chief Operating Officer at GOWell in approximately February 2026. The first 90 days in a new COO seat at a company of this size and sector is the highest-intent window for a fractional CFO engagement. The incoming executive has not yet inherited the assumptions of the prior financial reporting and is actively building their picture of the business.
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal <span class="card-section-subtitle">2 Channels Ready</span></div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="conn-note-3">Noticed you moved from Schlumberger to lead operations at GOWell earlier this year. The first 90 days in a new COO seat at a company in that revenue range typically surfaces some financial questions worth getting right early. Would love to connect.
+              <div class="char-count">241 characters · LinkedIn limit: 300</div>
+            </div>
+            <button class="copy-action-btn" onclick="copyElementText('conn-note-3',this)">Copy Connection Note</button>
+          </div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Message Draft · Ready to Send</div>
+            <div class="email-block">
+              <div class="email-subject-label">Message Opening</div>
+              <div class="email-subject-value" id="email-subj-3">Your transition to GOWell and the first-90-days financial question</div>
+              <div class="email-body" id="email-body-3">Adrian,
+
+Noticed you moved from Schlumberger to lead operations at GOWell earlier this year. The first 90 days in a new COO seat at a company in the $25M-$75M range, particularly in wireline logging and oilfield technology, tends to surface a specific set of financial and operational questions that are worth getting right before they become inherited assumptions.
+
+At AJM, we work with companies at this revenue range across oil and gas technology and services. The diagnostic we run identifies one named financial outcome the business should be producing within 90 days, which is particularly useful when a new executive is still building their picture of the operation.
+
+Worth a short conversation to see if any of that maps to what you are working through at GOWell right now?
+
+Arthur Madden
+AJM Solutions Inc. · ajmsolutions.ca</div>
+              <div class="email-meta">
+                <span class="email-word-count">148 words · suitable for LinkedIn message</span>
+                <span class="email-safe-label">Ready to Send</span>
+              </div>
+            </div>
+            <button class="copy-action-btn" onclick="copyFullEmail('email-subj-3','email-body-3',this)">Copy Message Draft</button>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Nurture Sequence · 14-Day Follow-Through</div>
+          <div class="nurture-grid">
+            <div class="nurture-card">
+              <div class="nurture-day">Day 1</div>
+              <div class="nurture-action">Send Connection Note</div>
+              <div class="nurture-script">Use the LinkedIn connection note above. Reference the move from Schlumberger specifically. First-90-days framing is the opening. No pitch, no call ask.</div>
+            </div>
+            <div class="nurture-card">
+              <div class="nurture-day">Day 7</div>
+              <div class="nurture-action">Value Drop</div>
+              <div class="nurture-script">"The first 90 days in a new COO role at a company in the wireline logging space typically surfaces some questions that sit at the intersection of operations and finance and do not show up in the standard reporting. Happy to share what we typically find in the first diagnostic if that would be useful at this stage."</div>
+            </div>
+            <div class="nurture-card">
+              <div class="nurture-day">Day 14</div>
+              <div class="nurture-action">Diagnostic Question</div>
+              <div class="nurture-script">"Now that you are a few months into GOWell: is the operational picture you have built translating cleanly into the financial story the board and capital partners see, or is there a gap worth closing before the next reporting cycle?"</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a class="linkedin-btn" href="https://linkedin.com/in/ACoAAALjUicBhCNiryVG3TzyprEocyaGbCkvbZQ" target="_blank" title="LinkedIn URL may require login">View on LinkedIn &rarr;</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 4: EDDIE LEE -->
+    <div class="lead-card" id="card-4">
+      <div class="card-header" onclick="toggleCard('card-4')">
+        <span class="signal-badge warm">WARM</span>
+        <div class="card-header-info">
+          <div class="lead-name">Eddie Lee, P.E.</div>
+          <div class="lead-company">Chief Executive Officer · Quantium Solutions (Logistics &amp; Fulfilment · Singapore)</div>
+          <div class="why-now-line">M&amp;A or capital activity signal detected within last 90 days · 10-country APAC network · $25M-$75M revenue</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit: YES</span>
+        <span class="expand-icon">&#9662;</span>
+      </div>
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item"><a href="https://quantiumsolutions.com" target="_blank">quantiumsolutions.com</a></span>
+          <span class="identity-item">Singapore (HQ)</span>
+          <span class="identity-item">201-500 employees</span>
+          <span class="identity-item">$25M-$75M revenue</span>
+          <span class="identity-item">Cross-Border Logistics</span>
+        </div>
+        <div class="tag-row">
+          <span class="tag industry">Logistics</span>
+          <span class="tag industry">Cross-Border Fulfilment</span>
+          <span class="tag signal">Capital Signal &lt;90 Days</span>
+          <span class="tag signal">M&amp;A Activity &lt;90 Days</span>
+          <span class="tag context">10-Country APAC Network</span>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Active Market Signals</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Capital or M&amp;A Event</div>
+              <div class="signal-timing">Approximately within last 90 days</div>
+              <div class="signal-desc">Quantium Solutions has shown active capital or M&A signals within the last 90 days. A cross-border logistics and fulfilment business operating across 10 countries in Asia Pacific at this revenue scale creates a specific financial narrative challenge when capital is moving: the internal reporting, built for operational management across multiple jurisdictions, rarely translates cleanly to institutional partners or capital markets outside the region.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">Cross-Border Finance Complexity</div>
+              <div class="signal-timing">Structural · ongoing</div>
+              <div class="signal-desc">Quantium's 10-country APAC network creates multi-jurisdiction financial reporting complexity that is exactly the kind of situation where Canadian-standard governance and capital markets discipline is what institutional partners require. AJM has a documented track record in MENA, GCC, and international operations where this cross-border financial translation is the specific need.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing <span class="card-section-subtitle">Configured for Arthur's Practice</span></div>
+          <div class="intel-grid">
+            <div class="intel-cell"><div class="intel-cell-label">Leadership Movement</div><div class="intel-cell-value">No leadership movement detected in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Capital Activity</div><div class="intel-cell-value">Active capital or M&amp;A signal within last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Hiring Signals</div><div class="intel-cell-value">No department hiring trend detected</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Expansion Signals</div><div class="intel-cell-value">Active cross-border logistics network across 10 countries in Asia Pacific</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Growth Trajectory</div><div class="intel-cell-value">$25M-$75M revenue · 201-500 employees · Transportation &amp; Warehousing · Singapore HQ</div></div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div><div class="contact-label">Work Email</div><div class="contact-value">eddie.lee@quantiumsolutions.com</div></div>
+              <button class="copy-btn" onclick="copyToClipboard('eddie.lee@quantiumsolutions.com',this)">Copy</button>
+            </div>
+            <div class="contact-item">
+              <div><div class="contact-label">Mobile</div><div class="contact-value">+1 513 435 1400</div></div>
+              <button class="copy-btn" onclick="copyToClipboard('+15134351400',this)">Copy</button>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div class="why-block">
+              <div class="why-block-title">ICP Fit for Arthur</div>
+              <div class="why-block-text">Eddie Lee leads a Singapore-based cross-border logistics business with active capital signals and a 10-country network that creates multi-jurisdiction financial complexity. This is a direct match for AJM's cross-border finance architecture work: the specific scenario where the operational reporting does not translate to institutional capital partners outside Asia Pacific without a senior financial translation. AJM's international capital markets experience, including MENA and GCC work, maps directly to what a Singapore-based operator needs when accessing non-regional capital.</div>
+              <div class="fit-signal">
+                <div class="fit-signal-label">Strongest Fit Signal</div>
+                <div class="fit-signal-text">Active M&A or capital signal on a 10-country cross-border logistics business in Singapore where AJM's international capital markets experience is the specific credential required.</div>
+              </div>
+            </div>
+            <div class="why-block">
+              <div class="why-block-title">Why They're Looking</div>
+              <div class="why-block-text">Quantium Solutions is navigating a capital or M&A event with a 10-country logistics footprint in Asia Pacific. The financial story that works internally across those jurisdictions does not automatically translate to what institutional partners or capital markets outside the region need to see. Eddie Lee needs a financial perspective that understands both the operational complexity and the governance standards that international capital requires. That is the specific intersection AJM occupies.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal <span class="card-section-subtitle">2 Channels Ready</span></div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="conn-note-4">Noticed Quantium Solutions has been active on the capital or M&A side recently. Running a 10-country logistics network creates some specific financial narrative questions when institutional capital is involved. Would love to connect.
+              <div class="char-count">230 characters · LinkedIn limit: 300</div>
+            </div>
+            <button class="copy-action-btn" onclick="copyElementText('conn-note-4',this)">Copy Connection Note</button>
+          </div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Email Draft · Ready to Send</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject Line</div>
+              <div class="email-subject-value" id="email-subj-4">Quantium Solutions' capital activity and the cross-border finance question</div>
+              <div class="email-body" id="email-body-4">Eddie,
+
+Noticed Quantium Solutions has been active on the capital or M&A side recently. Running a cross-border logistics and fulfilment network across 10 countries in Asia Pacific at this revenue range creates some specific financial reporting and governance questions, particularly around how the business story translates to institutional partners and capital markets outside the region.
+
+At AJM, we work with companies navigating cross-border capital markets and international governance structures. We have worked with companies in MENA, GCC, and across global markets where Canadian financial governance standards are precisely what institutional partners require at the table.
+
+Worth a 15-minute conversation to see whether the financial structure behind Quantium's story is positioned the way it needs to be for the next stage?
+
+Arthur Madden
+AJM Solutions Inc. · ajmsolutions.ca</div>
+              <div class="email-meta">
+                <span class="email-word-count">132 words · safe for cold send</span>
+                <span class="email-safe-label">Ready to Send</span>
+              </div>
+            </div>
+            <button class="copy-action-btn" onclick="copyFullEmail('email-subj-4','email-body-4',this)">Copy Email Draft</button>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Nurture Sequence · 14-Day Follow-Through</div>
+          <div class="nurture-grid">
+            <div class="nurture-card">
+              <div class="nurture-day">Day 1</div>
+              <div class="nurture-action">Send Connection Note</div>
+              <div class="nurture-script">Use the LinkedIn connection note above. Lead with the capital signal and the 10-country network complexity. No pitch, no call ask in the first message.</div>
+            </div>
+            <div class="nurture-card">
+              <div class="nurture-day">Day 7</div>
+              <div class="nurture-action">Value Drop</div>
+              <div class="nurture-script">"Cross-border logistics businesses with multi-jurisdiction networks in APAC face a specific challenge: the financial narrative that works internally almost never translates cleanly to institutional partners outside the region. Happy to share how we have approached this with comparable businesses if useful."</div>
+            </div>
+            <div class="nurture-card">
+              <div class="nurture-day">Day 14</div>
+              <div class="nurture-action">Diagnostic Question</div>
+              <div class="nurture-script">"When Quantium presents its financial story to institutional partners or capital markets stakeholders outside Asia Pacific, is that narrative built for the specific governance standards those partners require, or is it the internal reporting translated?"</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a class="linkedin-btn" href="https://linkedin.com/in/ACoAAAWto6ABitBjWQ0O7NLx0KzoDes2M6V8uIY" target="_blank" title="LinkedIn URL may require login">View on LinkedIn &rarr;</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 5: TRENT LONEY -->
+    <div class="lead-card" id="card-5">
+      <div class="card-header" onclick="toggleCard('card-5')">
+        <span class="signal-badge warm">WARM</span>
+        <div class="card-header-info">
+          <div class="lead-name">Trent Loney</div>
+          <div class="lead-company">Chief Executive Officer · Precision Group (Oil &amp; Gas Inspection &amp; Integrity)</div>
+          <div class="why-now-line">Capital or funding activity signal detected within last 90 days · $75M-$200M revenue · Louisiana &amp; New Mexico operations</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit: YES</span>
+        <span class="expand-icon">&#9662;</span>
+      </div>
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item"><a href="https://theprecisiongroup.com" target="_blank">theprecisiongroup.com</a></span>
+          <span class="identity-item">Hobbs, New Mexico / Raceland, Louisiana, USA</span>
+          <span class="identity-item">201-500 employees</span>
+          <span class="identity-item">$75M-$200M revenue</span>
+          <span class="identity-item">Oil &amp; Gas Inspection Services</span>
+        </div>
+        <div class="tag-row">
+          <span class="tag industry">Oil &amp; Gas Services</span>
+          <span class="tag industry">Asset Inspection &amp; Integrity</span>
+          <span class="tag signal">Capital Signal &lt;90 Days</span>
+          <span class="tag signal">Funding Activity &lt;90 Days</span>
+          <span class="tag context">Gulf &amp; Southwest Operations</span>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Active Market Signals</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Capital or Funding Event</div>
+              <div class="signal-timing">Approximately within last 90 days</div>
+              <div class="signal-desc">Precision Group has shown active capital or funding signals within the last 90 days. At $75M-$200M in revenue in oil and gas inspection and integrity services, a capital event creates a specific financial requirement: the reporting infrastructure built for operational management rarely holds up under lender or investor scrutiny without a financial narrative built specifically for that audience.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">Operational Finance Signal</div>
+              <div class="signal-timing">Ongoing · capital cycle</div>
+              <div class="signal-desc">Precision Group's operations span non-destructive testing, pipeline inspection, and asset integrity services across Louisiana and New Mexico. At this revenue scale and with capital activity underway, the financial story needs to translate across multiple service lines and operational geographies in a way that boards and lenders can evaluate clearly.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing <span class="card-section-subtitle">Configured for Arthur's Practice</span></div>
+          <div class="intel-grid">
+            <div class="intel-cell"><div class="intel-cell-label">Leadership Movement</div><div class="intel-cell-value">No leadership movement detected in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Capital Activity</div><div class="intel-cell-value">Active capital or funding signal within last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Hiring Signals</div><div class="intel-cell-value">No department hiring trend detected</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Expansion Signals</div><div class="intel-cell-value">No expansion signals detected in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Growth Trajectory</div><div class="intel-cell-value">$75M-$200M revenue · 201-500 employees · Oil &amp; Gas Exploration Services (NAICS 211, SIC 1382)</div></div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div><div class="contact-label">Direct Email</div><div class="contact-value unavailable">Direct contact not on record</div></div>
+            </div>
+            <div class="contact-item">
+              <div><div class="contact-label">Mobile</div><div class="contact-value">+1 985 870 8394</div></div>
+              <button class="copy-btn" onclick="copyToClipboard('+19858708394',this)">Copy</button>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div class="why-block">
+              <div class="why-block-title">ICP Fit for Arthur</div>
+              <div class="why-block-text">Precision Group operates in oil and gas inspection and integrity services at $75M-$200M in revenue, with active capital signals and multi-geography operations. This is the revenue range and sector type where AJM's diagnostic-first engagement identifies named financial outcomes most clearly. A capital event at this scale in oil and gas services requires a financial narrative that covers multiple service lines, regulatory environments, and lender expectations simultaneously. That is the specific financial translation AJM is built to produce.</div>
+              <div class="fit-signal">
+                <div class="fit-signal-label">Strongest Fit Signal</div>
+                <div class="fit-signal-text">Active capital or funding event at a $75M-$200M oil and gas inspection business with multi-state operations. The financial narrative required for this audience is exactly the AJM engagement type.</div>
+              </div>
+            </div>
+            <div class="why-block">
+              <div class="why-block-title">Why They're Looking</div>
+              <div class="why-block-text">Precision Group is working through a capital or funding event with operations spanning Louisiana and New Mexico in oil and gas inspection, integrity, and engineering. The financial reporting built for daily operations, tracking projects, technician deployments, and service contracts, does not automatically translate into the capital story that lenders and investors need. Trent Loney needs that translation to hold up under scrutiny. The active signal suggests the window is open right now.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal <span class="card-section-subtitle">2 Channels Ready</span></div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="conn-note-5">Noticed Precision Group has been active on the capital side recently. Running a $75M-$200M inspection and integrity business in oil and gas with active capital signals is usually a good time to have a senior financial perspective in the room. Would love to connect.
+              <div class="char-count">264 characters · LinkedIn limit: 300</div>
+            </div>
+            <button class="copy-action-btn" onclick="copyElementText('conn-note-5',this)">Copy Connection Note</button>
+          </div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Email Draft · via LinkedIn (no email on record)</div>
+            <div class="email-block">
+              <div class="email-subject-label">Message Opening</div>
+              <div class="email-subject-value" id="email-subj-5">Precision Group's capital activity and a financial question worth examining</div>
+              <div class="email-body" id="email-body-5">Trent,
+
+Noticed Precision Group has been active on the capital or funding side recently. Running a $75M-$200M asset inspection and integrity business in oil and gas, with operations across Louisiana and New Mexico, creates a specific set of financial structure and narrative questions that tend to surface when capital is moving.
+
+At AJM, we work with companies in this revenue range across oil and gas services. The engagement starts with a diagnostic that identifies one specific financial outcome the business should be producing within 90 days, then builds the financial narrative that holds up at the board and lender level under the scrutiny those parties apply.
+
+Worth a short conversation to see whether that maps to what Precision Group is working through right now?
+
+Arthur Madden
+AJM Solutions Inc. · ajmsolutions.ca</div>
+              <div class="email-meta">
+                <span class="email-word-count">133 words · suitable for LinkedIn message</span>
+                <span class="email-safe-label">Ready to Send</span>
+              </div>
+            </div>
+            <button class="copy-action-btn" onclick="copyFullEmail('email-subj-5','email-body-5',this)">Copy Message Draft</button>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Nurture Sequence · 14-Day Follow-Through</div>
+          <div class="nurture-grid">
+            <div class="nurture-card">
+              <div class="nurture-day">Day 1</div>
+              <div class="nurture-action">Send Connection Note</div>
+              <div class="nurture-script">Use the LinkedIn connection note above. Lead with the capital signal and the revenue scale observation. No pitch, no call ask in the first message.</div>
+            </div>
+            <div class="nurture-card">
+              <div class="nurture-day">Day 7</div>
+              <div class="nurture-action">Value Drop</div>
+              <div class="nurture-script">"Oil and gas inspection businesses in the $75M-$200M range that are working through a capital event often find the financial reporting was built for running the operation, not for the capital conversation. The gap tends to matter most before the transaction gets serious. Happy to share what we typically find in the first diagnostic."</div>
+            </div>
+            <div class="nurture-card">
+              <div class="nurture-day">Day 14</div>
+              <div class="nurture-action">Diagnostic Question</div>
+              <div class="nurture-script">"As Precision Group works through its current capital activity, is the financial narrative ready to hold up at the lender and board level in the form those parties actually need to see it, or is that still the operational reporting?"</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a class="linkedin-btn" href="https://linkedin.com/in/ACoAAAMx61UBQPdU6lWTsGEtszSbL0_YOsSd4vM" target="_blank" title="LinkedIn URL may require login">View on LinkedIn &rarr;</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- PIPELINE MATH -->
+    <div class="pipeline-math">
+      <div class="pipeline-math-text">
+        Five leads like these are delivered every week in the full system.
+        Over 12 weeks: <strong>120 ICP-matched buyers</strong> in Arthur's network,
+        each carrying an active signal. The math from there is Arthur's to run.
+      </div>
+    </div>
+
+    <!-- VISUALS SECTION -->
+    <div class="visuals-section">
+      <div class="visuals-header">
+        <div class="visuals-copy">
+          <h3>Every Monday, your content arrives finished.</h3>
+          <p>The leads are one side of the system. The content is the other. Decision-makers skim before they read. A post without a visual is half a post. Consultants who post with structured visuals consistently outperform those who post text alone, not because their thinking is sharper, but because the visual stops the scroll long enough for the thinking to land.</p>
+          <p>Every piece that benefits from a visual gets one. Finished. Attached. Ready to schedule.</p>
+          <ul class="visuals-list">
+            <li><span class="visuals-list-dot">&rarr;</span> 3 LinkedIn posts per week in your voice, formatted and ready</li>
+            <li><span class="visuals-list-dot">&rarr;</span> Carousel covers, quote graphics, and infographics, finished PNG files</li>
+            <li><span class="visuals-list-dot">&rarr;</span> 15-minute strategy Loom walking through the week's package</li>
+            <li><span class="visuals-list-dot">&rarr;</span> Zero design work on your end. Zero</li>
+          </ul>
+        </div>
+        <div>
+          <div class="visuals-tiles">
+            <div class="visual-tile carousel"><div class="visual-tile-inner"><div class="tile-accent-bar"></div><div class="tile-lines"><div class="tile-line full"></div><div class="tile-line medium"></div><div class="tile-line short"></div></div></div><div class="tile-label">Carousel Cover</div></div>
+            <div class="visual-tile post"><div class="visual-tile-inner"><div class="tile-accent-bar"></div><div class="tile-lines"><div class="tile-line medium"></div><div class="tile-line full"></div><div class="tile-line short"></div></div></div><div class="tile-label">Post Visual</div></div>
+            <div class="visual-tile infographic"><div class="visual-tile-inner"><div class="tile-accent-bar"></div><div class="tile-lines"><div class="tile-line full"></div><div class="tile-line short"></div><div class="tile-line medium"></div></div></div><div class="tile-label">Infographic</div></div>
+          </div>
+          <div class="visuals-note"><strong>Visuals are finished and attached in the Monday package.</strong><br>You schedule. Nothing to design. Nothing to brief.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA FOOTER -->
+    <div class="cta-footer">
+      <div class="cta-footer-headline">This is what one week of the full system looks like for Arthur.</div>
+      <div class="cta-footer-subhead">Every Monday: 10 ICP-matched buyers with full signal intelligence, direct contact details, and outreach ready to send. Plus 3 posts and finished visuals in your voice. 30 minutes of your time per week.</div>
+      <a class="cta-footer-btn" href="https://calendly.com/saurabh_zentro/30-min" target="_blank">Book Your 20-Min Fit Call &rarr;</a>
+      <div class="cta-footer-note">No pitch. No deck. We talk through your specific situation and confirm whether this is the right fit.</div>
+    </div>
+
+  </div><!-- end pipeline view -->
+
+  <!-- CONTENT ENGINE VIEW -->
+  <div class="view" id="view-content">
+
+    <div class="welcome-banner">
+      <div class="welcome-tag">Content Engine · Arthur's Voice</div>
+      <div class="welcome-text">Two sample posts built from your LinkedIn positioning and recent writing. One teaching post built around the diagnostic-first model. One handraiser designed to surface CEOs and founders who are sitting on financial data they cannot act on. <strong>Both written in your register: clinical, peer-level, no buzzwords, no closing questions.</strong></div>
+    </div>
+
+    <div class="post-cards-grid">
+      <div class="post-card">
+        <div class="post-type-label">Teaching Post</div>
+        <div class="post-type-desc">Explains the diagnostic-first model. Surfaces why most fractional CFO engagements miss the point before they start. Builds authority with buyers who are evaluating whether to hire a fractional CFO.</div>
+        <div class="post-text">Most fractional CFO engagements miss the point before they start.
+
+Not because the CFO lacks experience. Because nobody defined, in writing, what the engagement was supposed to produce.
+
+There is a version of fractional CFO work where the deliverable is presence. Attended the board meeting. Reviewed the financials. Cleaned up the reporting.
+
+That version produces a very senior person maintaining the status quo at senior-person rates.
+
+At AJM, we run a diagnostic before agreeing to any engagement. The diagnostic identifies one thing: the specific financial outcome that engagement must produce, expressed as a named number, measurable within 90 days.
+
+If we cannot identify that number in the first session, the engagement is not ready.
+
+Not because the company lacks problems. Because a fractional CFO without a defined outcome is a very expensive way to have informed conversations.
+
+The companies that get the most from fractional CFO work start by defining what "getting the most" actually means, in dollars.</div>
+        <div class="post-cta-line">Comment DIAGNOSTIC and I will send you the three questions we use before any engagement starts.</div>
+      </div>
+      <div class="post-card">
+        <div class="post-type-label">Handraiser Post</div>
+        <div class="post-type-desc">Designed to drive comments and DMs from CEOs and founders who have the exact problem AJM solves: a board that cannot act on the data in front of it. Surfaces qualified buyers through self-identification.</div>
+        <div class="post-text">The dashboard is full. The reports go out every month.
+
+The board still cannot agree on what the business is telling them.
+
+This is the most common financial problem in mid-market companies. It almost never gets described as a financial problem. It gets described as a communication problem, a data quality problem, or a leadership alignment issue.
+
+The actual problem: Finance, Operations, and IT are generating three versions of the same story. Nobody has translated them into a single number the board can act on.
+
+One data set. Three narratives. No decision.
+
+This is what fractional CFO work is actually for. Not the reporting. The translation.
+
+The companies that solve this fastest start with one diagnostic question: what is the specific financial outcome this business should be producing in the next 90 days, expressed as a named number?
+
+If your board is sitting on data it cannot act on, that question is the right place to start.</div>
+        <div class="post-cta-line">Comment TRANSLATE and I will walk you through how we close this gap in the first 90 days.</div>
+      </div>
+    </div>
+
+    <!-- VISUALS SECTION (CONTENT ENGINE VERSION) -->
+    <div class="visuals-section">
+      <div class="visuals-header">
+        <div class="visuals-copy">
+          <h3>Content without visuals is half a system.</h3>
+          <p>Most consultants post text. The ones building consistent inbound post text with structure behind it. A carousel that breaks down a framework visually gets saved. A quote graphic gets shared. An infographic gets screenshotted. Saves, shares, and screenshots reach buyers who never followed you. That is organic reach you do not have to pay for.</p>
+          <p>The full system produces the visuals. You attach and schedule.</p>
+          <ul class="visuals-list">
+            <li><span class="visuals-list-dot">&rarr;</span> 2 carousels per month with finished slide visuals</li>
+            <li><span class="visuals-list-dot">&rarr;</span> 2 standalone infographics per month</li>
+            <li><span class="visuals-list-dot">&rarr;</span> Post graphics for any text post that benefits from one</li>
+            <li><span class="visuals-list-dot">&rarr;</span> All delivered as finished PNG files in the Monday package</li>
+          </ul>
+        </div>
+        <div>
+          <div class="visuals-tiles">
+            <div class="visual-tile carousel"><div class="visual-tile-inner"><div class="tile-accent-bar"></div><div class="tile-lines"><div class="tile-line full"></div><div class="tile-line medium"></div><div class="tile-line short"></div></div></div><div class="tile-label">Carousel Cover</div></div>
+            <div class="visual-tile post"><div class="visual-tile-inner"><div class="tile-accent-bar"></div><div class="tile-lines"><div class="tile-line medium"></div><div class="tile-line full"></div><div class="tile-line short"></div></div></div><div class="tile-label">Post Visual</div></div>
+            <div class="visual-tile infographic"><div class="visual-tile-inner"><div class="tile-accent-bar"></div><div class="tile-lines"><div class="tile-line full"></div><div class="tile-line short"></div><div class="tile-line medium"></div></div></div><div class="tile-label">Infographic</div></div>
+          </div>
+          <div class="visuals-note"><strong>18 content pieces per month. Finished. Attached. Ready to schedule.</strong><br>You schedule from your own account. Zero design work on your end.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA FOOTER -->
+    <div class="cta-footer">
+      <div class="cta-footer-headline">This is what one week of the full system looks like for Arthur.</div>
+      <div class="cta-footer-subhead">Every Monday: 10 ICP-matched buyers with full signal intelligence, direct contact details, and outreach ready to send. Plus 3 posts and finished visuals in your voice. 30 minutes of your time per week.</div>
+      <a class="cta-footer-btn" href="https://calendly.com/saurabh_zentro/30-min" target="_blank">Book Your 20-Min Fit Call &rarr;</a>
+      <div class="cta-footer-note">No pitch. No deck. We talk through your specific situation and confirm whether this is the right fit.</div>
+    </div>
+
+  </div><!-- end content view -->
+
+</main>
+
+<script>
+function showView(name, triggerEl) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view-' + name).classList.add('active');
+  document.querySelectorAll('.nav-item, .tab-btn, .mobile-tab-pill').forEach(el => el.classList.remove('active'));
+  var navEl = document.getElementById('nav-' + name);
+  if (navEl) navEl.classList.add('active');
+  document.querySelectorAll('.tab-btn, .mobile-tab-pill').forEach(function(btn) {
+    if (btn.getAttribute('onclick') && btn.getAttribute('onclick').indexOf("'" + name + "'") > -1) {
+      btn.classList.add('active');
+    }
+  });
+}
+function toggleCard(cardId) {
+  document.getElementById(cardId).classList.toggle('expanded');
+}
+function copyToClipboard(text, btn) {
+  navigator.clipboard.writeText(text).then(function() {
+    var orig = btn.textContent;
+    btn.textContent = 'Copied.';
+    btn.classList.add('copied');
+    setTimeout(function() { btn.textContent = orig; btn.classList.remove('copied'); }, 2000);
+  }).catch(function() {
+    var el = document.createElement('textarea');
+    el.value = text;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+    btn.textContent = 'Copied.'; btn.classList.add('copied');
+    setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+function copyElementText(elementId, btn) {
+  var el = document.getElementById(elementId);
+  if (!el) return;
+  var charCountEl = el.querySelector('.char-count');
+  var text = el.textContent;
+  if (charCountEl) text = text.replace(charCountEl.textContent, '').trim();
+  copyToClipboard(text, btn);
+}
+function copyFullEmail(subjId, bodyId, btn) {
+  var subj = document.getElementById(subjId);
+  var body = document.getElementById(bodyId);
+  var text = 'Subject: ' + (subj ? subj.textContent.trim() : '') + '\n\n' + (body ? body.textContent.trim() : '');
+  copyToClipboard(text, btn);
+}
+</script>
+</body>
+</html>
