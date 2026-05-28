@@ -1,0 +1,1570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>David A. · Pipelind Lead Demo · May 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0A0A12;
+  --bg2: #12121E;
+  --bg3: #0E0E19;
+  --primary: #6A66A3;
+  --primary-light: #9B98C4;
+  --accent: #FF9900;
+  --success: #019047;
+  --success-light: #5AC88A;
+  --text: rgba(255,255,255,0.90);
+  --text-dim: rgba(255,255,255,0.72);
+  --text-muted: rgba(255,255,255,0.55);
+  --border: rgba(106,102,163,0.25);
+  --border-hover: rgba(106,102,163,0.55);
+  --hot: #FF4444;
+  --warm: #FF9900;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif; min-height: 100vh; }
+
+/* SIDEBAR */
+.sidebar {
+  position: fixed; top: 0; left: 0; width: 240px; height: 100vh;
+  background: var(--bg2); border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; padding: 24px 20px; z-index: 100;
+}
+.sidebar-logo { font-family: 'Space Mono', monospace; font-size: 13px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--primary-light); margin-bottom: 28px; }
+.prospect-block { margin-bottom: 32px; }
+.prospect-label { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px; }
+.prospect-name { font-size: 17px; font-weight: 800; color: var(--text); line-height: 1.25; }
+.prospect-meta { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--text-muted);
+  letter-spacing: .06em; margin-top: 4px; }
+.nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 8px;
+  cursor: pointer; margin-bottom: 4px; font-size: 13px; font-weight: 600; color: var(--text-dim);
+  transition: all .15s; border: 1px solid transparent; }
+.nav-item:hover { background: rgba(106,102,163,0.10); color: var(--text); }
+.nav-item.active { background: rgba(106,102,163,0.15); color: var(--primary-light); border-color: var(--border); }
+.sidebar-footer { margin-top: auto; font-family: 'Space Mono', monospace; font-size: 10px;
+  color: var(--text-muted); letter-spacing: .04em; line-height: 1.8; }
+
+/* MOBILE TOP BAR */
+.mobile-topbar {
+  display: none; position: sticky; top: 0; z-index: 200;
+  background: var(--bg2); border-bottom: 1px solid var(--border);
+  padding: 14px 16px; align-items: center; justify-content: space-between;
+}
+.mobile-logo { font-family: 'Space Mono', monospace; font-size: 12px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--primary-light); }
+.mobile-prospect-name { font-size: 13px; font-weight: 700; color: var(--text); }
+
+/* MOBILE TABS */
+.mobile-tabs {
+  display: none; position: sticky; top: 53px; z-index: 199;
+  background: var(--bg); border-bottom: 1px solid var(--border);
+  padding: 10px 16px; gap: 8px; overflow-x: auto;
+}
+.mobile-tab-pill { padding: 7px 16px; border-radius: 20px; font-size: 12px; font-weight: 700;
+  font-family: 'Space Mono', monospace; letter-spacing: .06em; text-transform: uppercase;
+  cursor: pointer; border: 1px solid var(--border); color: var(--text-muted); background: transparent;
+  transition: all .15s; white-space: nowrap; }
+.mobile-tab-pill.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+/* MAIN */
+.main { margin-left: 240px; padding: 32px 36px; max-width: 1140px; }
+
+/* DESKTOP TAB BAR */
+.tab-bar {
+  position: sticky; top: 0; z-index: 50; background: var(--bg);
+  border-bottom: 1px solid var(--border); display: flex; margin: -32px -36px 32px; padding: 0 36px;
+}
+.tab-btn { padding: 14px 22px; font-family: 'Space Mono', monospace; font-size: 11px;
+  font-weight: 700; letter-spacing: .10em; text-transform: uppercase; color: var(--text-muted);
+  cursor: pointer; border: none; background: transparent; border-bottom: 2px solid transparent;
+  transition: all .15s; }
+.tab-btn.active { color: var(--primary-light); border-bottom-color: var(--primary); }
+
+/* WELCOME BANNER */
+.welcome-banner { background: linear-gradient(135deg, rgba(106,102,163,0.10) 0%, rgba(255,153,0,0.05) 100%);
+  border: 1px solid var(--border); border-radius: 12px; padding: 24px 28px; margin-bottom: 28px; }
+.welcome-tag { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+.welcome-text { font-size: 14px; line-height: 1.75; color: var(--text-dim); }
+.welcome-text strong { color: var(--text); font-weight: 700; }
+
+/* MARKET PULSE PANEL */
+.pulse-panel {
+  background: rgba(255,153,0,0.05); border: 1px solid rgba(255,153,0,0.20);
+  border-radius: 10px; padding: 18px 22px; margin-bottom: 24px;
+}
+.pulse-label { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+.pulse-text { font-size: 13px; color: var(--text-dim); line-height: 1.75; }
+
+/* ICP GRID */
+.icp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 28px; }
+.icp-panel { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 18px 20px; }
+.icp-panel-label { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 12px; }
+.icp-row { display: flex; justify-content: space-between; align-items: center;
+  padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 12px; }
+.icp-row:last-child { border-bottom: none; }
+.icp-row-label { color: var(--text-muted); }
+.icp-row-value { color: var(--text); font-weight: 600; text-align: right; max-width: 55%; }
+.quality-stat { display: flex; align-items: center; justify-content: space-between; padding: 8px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04); }
+.quality-stat:last-child { border-bottom: none; }
+.quality-stat-label { font-size: 12px; color: var(--text-muted); }
+.quality-stat-value { font-size: 13px; font-weight: 700; color: var(--success-light); }
+
+/* SECTION HEADER */
+.section-header { display: flex; align-items: baseline; gap: 12px; margin-bottom: 16px; }
+.section-title { font-size: 18px; font-weight: 800; color: var(--text); }
+.section-sub { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--text-muted);
+  letter-spacing: .08em; text-transform: uppercase; }
+
+/* LEAD CARD */
+.lead-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px;
+  margin-bottom: 14px; overflow: hidden; transition: border-color .15s; }
+.lead-card:hover { border-color: var(--border-hover); }
+.card-header { display: flex; align-items: center; gap: 14px; padding: 18px 22px; cursor: pointer; }
+.signal-badge { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase; padding: 5px 10px; border-radius: 6px;
+  flex-shrink: 0; }
+.signal-badge.hot { background: rgba(255,68,68,0.15); color: var(--hot); border: 1px solid rgba(255,68,68,0.30); }
+.signal-badge.warm { background: rgba(255,153,0,0.12); color: var(--warm); border: 1px solid rgba(255,153,0,0.30); }
+.card-header-info { flex: 1; min-width: 0; }
+.lead-name { font-size: 16px; font-weight: 800; color: var(--text); }
+.lead-company { font-size: 12px; color: var(--text-dim); margin-top: 2px; }
+.why-now-line { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--accent);
+  margin-top: 4px; letter-spacing: .04em; }
+.icp-fit-badge { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  padding: 5px 10px; border-radius: 6px; background: rgba(1,144,71,0.12); color: var(--success-light);
+  border: 1px solid rgba(1,144,71,0.25); flex-shrink: 0; }
+.expand-icon { font-size: 12px; color: var(--text-muted); flex-shrink: 0; transition: transform .2s; }
+.lead-card.expanded .expand-icon { transform: rotate(180deg); }
+
+/* CARD BODY */
+.card-body { display: none; padding: 0 22px 22px; border-top: 1px solid var(--border); }
+.lead-card.expanded .card-body { display: block; }
+
+/* IDENTITY STRIP */
+.identity-strip { display: flex; flex-wrap: wrap; gap: 8px; padding: 14px 0; }
+.identity-item { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--text-muted);
+  letter-spacing: .06em; }
+.identity-item a { color: var(--primary-light); text-decoration: none; }
+.identity-item a:hover { text-decoration: underline; }
+.identity-sep { color: rgba(255,255,255,0.20); }
+
+/* TAGS */
+.tag-row { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 20px; }
+.tag { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: .07em;
+  text-transform: uppercase; padding: 4px 10px; border-radius: 20px; }
+.tag.industry { background: rgba(106,102,163,0.15); color: var(--primary-light); border: 1px solid rgba(106,102,163,0.30); }
+.tag.signal { background: rgba(255,153,0,0.12); color: var(--accent); border: 1px solid rgba(255,153,0,0.25); }
+.tag.context { background: rgba(1,144,71,0.10); color: var(--success-light); border: 1px solid rgba(1,144,71,0.20); }
+
+/* CARD SECTION */
+.card-section { margin-bottom: 22px; }
+.card-section-title { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 12px; }
+.card-section-subtitle { font-size: 11px; font-weight: 400; color: var(--text-muted); margin-left: 6px; }
+
+/* SIGNAL CARDS */
+.signal-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.signal-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+.signal-type { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin-bottom: 4px; }
+.signal-timing { font-size: 11px; color: var(--text-muted); margin-bottom: 8px; }
+.signal-desc { font-size: 13px; color: var(--text-dim); line-height: 1.65; }
+
+/* INTEL GRID */
+.intel-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.intel-cell { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; }
+.intel-cell-label { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px; }
+.intel-cell-value { font-size: 12px; color: var(--text-dim); line-height: 1.6; }
+
+/* CONTACT */
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.contact-item { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px;
+  padding: 12px 14px; display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.contact-label { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px; }
+.contact-value { font-size: 13px; color: var(--text); font-weight: 600; }
+.contact-value.unavailable { color: var(--text-muted); font-weight: 400; font-style: italic; }
+
+/* WHY GRID */
+.why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.why-block { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 16px 18px; }
+.why-block-title { font-size: 12px; font-weight: 700; color: var(--primary-light); margin-bottom: 10px; }
+.why-block-text { font-size: 13px; color: var(--text-dim); line-height: 1.7; }
+.fit-signal { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
+.fit-signal-label { font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: .10em; text-transform: uppercase; color: var(--success-light); margin-bottom: 4px; }
+
+/* OUTREACH */
+.outreach-channel { margin-bottom: 18px; }
+.outreach-channel-label { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .10em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; }
+.connection-note { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px;
+  padding: 14px 16px; font-size: 13px; color: var(--text-dim); line-height: 1.70; margin-bottom: 8px; }
+.char-count { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--text-muted);
+  margin-top: 8px; }
+.copy-action-btn { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase; padding: 8px 16px; border-radius: 6px;
+  border: 1px solid var(--border); color: var(--primary-light); background: transparent;
+  cursor: pointer; transition: all .15s; }
+.copy-action-btn:hover { border-color: var(--primary); background: rgba(106,102,163,0.10); }
+.copy-action-btn.copied { color: var(--success-light); border-color: rgba(1,144,71,0.40); }
+
+/* EMAIL */
+.email-block { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px;
+  padding: 16px 18px; margin-bottom: 8px; }
+.email-subject-label { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px; }
+.email-subject-value { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 14px;
+  padding-bottom: 14px; border-bottom: 1px solid var(--border); }
+.email-body { font-size: 13px; color: var(--text-dim); line-height: 1.75; white-space: pre-line; }
+.email-meta { display: flex; justify-content: space-between; align-items: center;
+  margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
+.email-word-count { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--text-muted); }
+.email-safe-label { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--success-light); }
+.email-copy-btn { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase; padding: 8px 16px; border-radius: 6px;
+  border: 1px solid var(--border); color: var(--primary-light); background: transparent;
+  cursor: pointer; transition: all .15s; }
+.email-copy-btn:hover { border-color: var(--primary); background: rgba(106,102,163,0.10); }
+.email-copy-btn.copied { color: var(--success-light); border-color: rgba(1,144,71,0.40); }
+
+/* COPY BTN INLINE */
+.copy-btn { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .07em; text-transform: uppercase; padding: 6px 12px; border-radius: 5px;
+  border: 1px solid var(--border); color: var(--primary-light); background: transparent;
+  cursor: pointer; transition: all .15s; flex-shrink: 0; }
+.copy-btn:hover { border-color: var(--primary); background: rgba(106,102,163,0.10); }
+.copy-btn.copied { color: var(--success-light); border-color: rgba(1,144,71,0.40); }
+
+/* CARD FOOTER */
+.card-footer { padding: 12px 22px; background: var(--bg3); border-top: 1px solid var(--border); display: flex; justify-content: flex-end; }
+.linkedin-btn { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase; padding: 8px 16px; border-radius: 6px;
+  border: 1px solid var(--border); color: var(--primary-light); text-decoration: none; transition: all .15s; }
+.linkedin-btn:hover { border-color: var(--primary); background: rgba(106,102,163,0.10); }
+
+/* PIPELINE MATH */
+.pipeline-math { background: rgba(106,102,163,0.06); border: 1px solid var(--border);
+  border-radius: 12px; padding: 22px 28px; margin: 28px 0; text-align: center; }
+.pipeline-math-text { font-size: 15px; color: var(--text-dim); line-height: 1.8; }
+.pipeline-math-text strong { color: var(--primary-light); font-weight: 700; }
+
+/* VISUAL SECTION */
+.visuals-section { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; padding: 28px 32px; margin: 28px 0; }
+.visuals-header { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-bottom: 24px; }
+.visuals-copy h3 { font-size: 18px; font-weight: 800; color: var(--text); line-height: 1.3; margin-bottom: 12px; }
+.visuals-copy p { font-size: 13px; color: var(--text-dim); line-height: 1.75; margin-bottom: 10px; }
+.visuals-list { list-style: none; margin-top: 14px; }
+.visuals-list li { font-size: 13px; color: var(--text-dim); padding: 6px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04); display: flex; gap: 10px; }
+.visuals-list li:last-child { border-bottom: none; }
+.visuals-list-dot { color: var(--success-light); font-weight: 700; flex-shrink: 0; }
+.visuals-tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.visual-tile { border-radius: 10px; overflow: hidden; }
+.visual-tile-inner { aspect-ratio: 4/3; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 16px; }
+.visual-tile.carousel { background: linear-gradient(135deg, #1B2A4A 0%, #243655 100%); border: 1px solid rgba(240,165,0,0.20); }
+.visual-tile.post { background: linear-gradient(135deg, #1B2A4A 0%, #1D2D47 100%); border: 1px solid rgba(240,165,0,0.15); }
+.visual-tile.infographic { background: linear-gradient(135deg, #162238 0%, #1B2A4A 100%); border: 1px solid rgba(240,165,0,0.10); }
+.tile-accent-bar { width: 36px; height: 3px; background: #F0A500; border-radius: 2px; margin-bottom: 12px; }
+.tile-lines { width: 100%; }
+.tile-line { height: 7px; background: rgba(245,240,232,0.15); border-radius: 3px; margin-bottom: 6px; }
+.tile-line.short { width: 60%; }
+.tile-line.medium { width: 80%; }
+.tile-line.full { width: 100%; }
+.tile-label { font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); text-align: center;
+  margin-top: 10px; padding: 6px; background: var(--bg3); }
+.visuals-note { font-size: 13px; color: var(--text-dim); text-align: center; margin-top: 18px;
+  padding-top: 18px; border-top: 1px solid var(--border); line-height: 1.7; }
+.visuals-note strong { color: var(--text); }
+
+/* CTA FOOTER */
+.cta-footer { margin-top: 36px; background: linear-gradient(135deg, rgba(255,153,0,0.08) 0%, rgba(106,102,163,0.06) 100%);
+  border: 1px solid rgba(255,153,0,0.30); border-radius: 12px; padding: 36px 40px; text-align: center; }
+.cta-footer-headline { font-size: 22px; font-weight: 800; color: var(--text); letter-spacing: -.01em; margin-bottom: 14px; line-height: 1.3; }
+.cta-footer-subhead { font-size: 14px; color: var(--text-dim); line-height: 1.8; max-width: 680px; margin: 0 auto 26px; }
+.cta-footer-btn { display: inline-block; background: var(--accent); color: var(--bg);
+  padding: 15px 34px; border-radius: 8px; font-family: 'Space Mono', monospace;
+  font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em;
+  text-decoration: none; transition: background .15s; margin-bottom: 14px; }
+.cta-footer-btn:hover { background: #ffb340; }
+.cta-footer-note { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: .04em; }
+
+/* CONTENT ENGINE POST CARDS */
+.post-cards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 28px; }
+.post-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 24px 26px; }
+.post-type-label { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--primary-light); margin-bottom: 6px; }
+.post-type-desc { font-size: 11px; color: var(--text-muted); margin-bottom: 16px;
+  padding-bottom: 16px; border-bottom: 1px solid var(--border); line-height: 1.5; }
+.post-text { font-size: 13px; color: var(--text-dim); line-height: 1.85; white-space: pre-line; }
+.post-cta-line { margin-top: 14px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.06);
+  font-size: 12px; color: var(--accent); font-weight: 600; }
+
+/* CONVERSATION ENGINE */
+.conv-engine-header { font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700;
+  letter-spacing: .10em; text-transform: uppercase; color: var(--accent); margin-bottom: 14px;
+  padding-bottom: 10px; border-bottom: 1px solid rgba(255,153,0,0.20); }
+.touch-block { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px;
+  padding: 14px 16px; margin-bottom: 10px; }
+.touch-label { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase; color: var(--primary-light); margin-bottom: 6px; }
+.touch-type-label { font-size: 11px; color: var(--text-muted); margin-bottom: 8px; }
+.touch-message { font-size: 13px; color: var(--text); line-height: 1.65; margin-bottom: 10px; }
+.touch-collapsed-indicator { font-size: 12px; color: rgba(255,255,255,0.45); font-style: italic; padding: 10px 0; }
+
+/* VIEWS */
+.view { display: none; }
+.view.active { display: block; }
+
+/* NURTURE GRID (unused but included for completeness) */
+.nurture-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+/* PERSONALIZED BANNER */
+.personalised-banner {
+  background: rgba(106,102,163,0.08); border: 1px solid rgba(106,102,163,0.30);
+  border-radius: 8px; padding: 8px 16px; display: inline-flex; align-items: center; gap: 8px;
+  font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: .10em;
+  text-transform: uppercase; color: var(--primary-light); margin-bottom: 20px;
+}
+.personalised-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--success-light); }
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+  .mobile-topbar { display: flex; }
+  .mobile-tabs { display: flex; }
+  .main { margin-left: 0; padding: 16px; }
+  .tab-bar { display: none; }
+  .icp-grid { grid-template-columns: 1fr; }
+  .signal-cards { grid-template-columns: 1fr; }
+  .intel-grid { grid-template-columns: 1fr 1fr; }
+  .contact-grid { grid-template-columns: 1fr; }
+  .why-grid { grid-template-columns: 1fr; }
+  .nurture-grid { grid-template-columns: 1fr; }
+  .post-cards-grid { grid-template-columns: 1fr; }
+  .visuals-header { grid-template-columns: 1fr; }
+  .card-header { flex-wrap: wrap; gap: 8px; }
+  .lead-name { font-size: 15px; }
+  .cta-footer { padding: 24px 20px; }
+  .cta-footer-btn { width: 100%; text-align: center; display: block; }
+  .email-meta { flex-direction: column; align-items: flex-start; gap: 8px; }
+}
+@media (max-width: 480px) {
+  .intel-grid { grid-template-columns: 1fr; }
+  .visuals-tiles { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- MOBILE TOP BAR -->
+<div class="mobile-topbar">
+  <div class="mobile-logo">Pipelind</div>
+  <div class="mobile-prospect-name">David's Report</div>
+</div>
+
+<!-- MOBILE TABS -->
+<div class="mobile-tabs">
+  <button class="mobile-tab-pill active" onclick="showView('pipeline', this)">Pipeline Engine</button>
+  <button class="mobile-tab-pill" onclick="showView('content', this)">Content Engine</button>
+</div>
+
+<!-- DESKTOP SIDEBAR -->
+<nav class="sidebar">
+  <div class="sidebar-logo">Pipelind</div>
+  <div class="prospect-block">
+    <div class="prospect-label">Personalized For</div>
+    <div class="prospect-name">David A.</div>
+    <div class="prospect-meta">May 2026 · Lead Demo</div>
+  </div>
+  <div class="nav-item active" id="nav-pipeline" onclick="showView('pipeline', this)">Pipeline Engine</div>
+  <div class="nav-item" id="nav-content" onclick="showView('content', this)">Content Engine</div>
+  <div class="sidebar-footer">Personalized build<br>Real signal data<br>Sample of your full delivery</div>
+</nav>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="showView('pipeline', this)">Pipeline Engine</button>
+    <button class="tab-btn" onclick="showView('content', this)">Content Engine</button>
+  </div>
+
+  <!-- ============================== PIPELINE ENGINE ============================== -->
+  <div class="view active" id="view-pipeline">
+
+    <div class="personalised-banner">
+      <div class="personalised-dot"></div>
+      Personalised for David Ashby · Quill Financial Services
+    </div>
+
+    <!-- WELCOME BANNER -->
+    <div class="welcome-banner">
+      <div class="welcome-tag">Pipeline Engine · 5 of 40 Monthly Leads</div>
+      <div class="welcome-text">
+        David, these are <strong>5 real buyer profiles</strong> matched to your ICP: business owners in real estate, construction, and healthcare doing $1M or more, where proactive financial strategy would directly change their tax, cash flow, or distribution picture. Every lead carries an <strong>active market signal</strong> from the last 90 days. Direct contact details and ready-to-send outreach are included on every card.
+      </div>
+    </div>
+
+    <!-- MARKET INTELLIGENCE PULSE -->
+    <div class="pulse-panel">
+      <div class="pulse-label">Market Intelligence Pulse · Week of 28 May 2026</div>
+      <div class="pulse-text">Finance department hiring signals across construction and real estate businesses in the $10M-$25M range, alongside headcount expansion at multiple healthcare companies. The pattern indicates owners at this revenue stage are building financial infrastructure after growth has already outpaced their existing systems. Content angle: the reactive-to-proactive CFO frame maps directly to owners making distribution and hiring decisions without models behind them.</div>
+    </div>
+
+    <!-- ICP PANEL GRID -->
+    <div class="icp-grid">
+      <div class="icp-panel">
+        <div class="icp-panel-label">Target Buyer Profile · David's ICP</div>
+        <div class="icp-row"><span class="icp-row-label">Business Stage</span><span class="icp-row-value">$1M+ Revenue · Growth Stage</span></div>
+        <div class="icp-row"><span class="icp-row-label">Industries</span><span class="icp-row-value">Real Estate, Construction, Healthcare</span></div>
+        <div class="icp-row"><span class="icp-row-label">Buyer Title</span><span class="icp-row-value">CEO, Founder, Owner, COO</span></div>
+        <div class="icp-row"><span class="icp-row-label">Company Size</span><span class="icp-row-value">11-200 Employees</span></div>
+        <div class="icp-row"><span class="icp-row-label">Geography</span><span class="icp-row-value">US, CA, GB, AU</span></div>
+        <div class="icp-row"><span class="icp-row-label">Signal Window</span><span class="icp-row-value">Last 90 Days</span></div>
+      </div>
+      <div class="icp-panel">
+        <div class="icp-panel-label">Sample Quality · This Pull</div>
+        <div class="quality-stat"><span class="quality-stat-label">Leads Shown</span><span class="quality-stat-value">5 of 40/mo</span></div>
+        <div class="quality-stat"><span class="quality-stat-label">ICP Fit Rate</span><span class="quality-stat-value">100%</span></div>
+        <div class="quality-stat"><span class="quality-stat-label">Active Signal Coverage</span><span class="quality-stat-value">5 / 5 leads</span></div>
+        <div class="quality-stat"><span class="quality-stat-label">Contact Email Available</span><span class="quality-stat-value">4 / 5 leads</span></div>
+        <div class="quality-stat"><span class="quality-stat-label">Mobile Available</span><span class="quality-stat-value">3 / 5 leads</span></div>
+        <div class="quality-stat"><span class="quality-stat-label">Deduplication</span><span class="quality-stat-value">Global · No Repeats</span></div>
+      </div>
+    </div>
+
+    <!-- SECTION HEADER -->
+    <div class="section-header">
+      <div class="section-title">ICP-Matched Buyers</div>
+      <div class="section-sub">5 of 40 monthly leads · real estate, construction, healthcare</div>
+    </div>
+
+    <!-- ============ CARD 1: AARON WITT ============ -->
+    <div class="lead-card expanded" id="card-1">
+      <div class="card-header" onclick="toggleCard('card-1')">
+        <span class="signal-badge warm">WARM</span>
+        <div class="card-header-info">
+          <div class="lead-name">Aaron Witt</div>
+          <div class="lead-company">Founder · BuildWitt · Nashville, TN</div>
+          <div class="why-now-line">Finance dept hiring signal · approximately 45 days ago</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit: YES</span>
+        <span class="expand-icon">&#9662;</span>
+      </div>
+
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item"><a href="https://buildwitt.com" target="_blank">buildwitt.com</a></span>
+          <span class="identity-sep">·</span>
+          <span class="identity-item">Nashville, Tennessee, US</span>
+          <span class="identity-sep">·</span>
+          <span class="identity-item">51-200 employees</span>
+          <span class="identity-sep">·</span>
+          <span class="identity-item">$10M-$25M revenue</span>
+          <span class="identity-sep">·</span>
+          <span class="identity-item">Construction</span>
+        </div>
+
+        <div class="tag-row">
+          <span class="tag industry">Construction</span>
+          <span class="tag industry">Founder-Owned</span>
+          <span class="tag signal">Finance Hiring · 45d</span>
+          <span class="tag signal">Headcount Expansion</span>
+          <span class="tag context">$10M-$25M Stage</span>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Active Market Signals</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Finance Dept Hiring</div>
+              <div class="signal-timing">Approximately 45 days ago</div>
+              <div class="signal-desc">BuildWitt is actively building out its finance function as headcount approaches the 51-200 range. For a construction founder at this revenue stage, hiring into finance usually signals that the existing accounting coverage is no longer keeping pace with the complexity of cash flow, payroll, and tax decisions.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">Headcount Expansion</div>
+              <div class="signal-timing">Active · last 90 days</div>
+              <div class="signal-desc">BuildWitt is scaling team size across departments, which typically precedes the distribution and entity structure questions that construction founders face when revenue and payroll both accelerate simultaneously. This is precisely when proactive CFO engagement changes the tax and cash flow picture.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing <span class="card-section-subtitle">Configured for David's Practice</span></div>
+          <div class="intel-grid">
+            <div class="intel-cell">
+              <div class="intel-cell-label">Leadership Movement</div>
+              <div class="intel-cell-value">No leadership movement in last 90 days</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Capital Activity</div>
+              <div class="intel-cell-value">No public funding activity in last 90 days</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Hiring Signals</div>
+              <div class="intel-cell-value">Finance department hiring trend detected · last 90 days</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Expansion Signals</div>
+              <div class="intel-cell-value">Headcount expansion detected across departments</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Growth Trajectory</div>
+              <div class="intel-cell-value">$10M-$25M revenue range · 51-200 employees · construction sector</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Work Email</div>
+                <div class="contact-value" id="email-val-1">aaron@buildwitt.com</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('aaron@buildwitt.com', this)">Copy</button>
+            </div>
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Mobile</div>
+                <div class="contact-value" id="mob-val-1">+16235059088</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('+16235059088', this)">Copy</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div class="why-block">
+              <div class="why-block-title">ICP Fit for David</div>
+              <div class="why-block-text">BuildWitt is a construction business at the $10M-$25M revenue stage with 51-200 employees - exactly the profile David targets. Aaron Witt as Founder carries both decision-making authority and direct P&L exposure, which is the profile where proactive CFO engagement has the highest return. Construction founders at this headcount level face payroll complexity, equipment tax decisions, and distribution timing questions that compound without a year-round financial strategy.</div>
+              <div class="fit-signal">
+                <div class="fit-signal-label">Strongest Fit Signal</div>
+                Construction founder at the $10M-$25M stage with an active finance department hiring signal - indicating the existing financial function is already at capacity.
+              </div>
+            </div>
+            <div class="why-block">
+              <div class="why-block-title">Why They're Looking</div>
+              <div class="why-block-text">At $10M-$25M with 51-200 employees, BuildWitt is at the stage where payroll, distribution, and equipment purchases have real tax consequences that a single year-end review cannot address. The finance hiring signal indicates the business is already feeling that pressure. A construction founder at this stage is typically weighing whether to hire internally or bring in fractional expertise - and the cost-of-mistake on that decision is significant. This is an active evaluation window.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal <span class="card-section-subtitle">2 Channels Ready</span></div>
+
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="conn-note-1">Noticed BuildWitt is expanding the team - the construction industry training space moves fast at this stage. The finance infrastructure usually gets built reactively when headcount hits your level. Would love to connect.<div class="char-count">226 characters · LinkedIn limit: 300</div></div>
+            <button class="copy-action-btn" onclick="copyElementText('conn-note-1', this)">Copy Connection Note</button>
+          </div>
+
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Email Draft · Ready to Send</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject Line</div>
+              <div class="email-subject-value" id="email-subj-1">Finance at the BuildWitt growth stage</div>
+              <div class="email-body" id="email-body-1">Aaron,
+
+Noticed BuildWitt has been building out the team over the last couple of months. Companies in the construction sector at your revenue stage tend to hit the same pressure point: the financial decisions are getting bigger, but the financial infrastructure has not kept pace.
+
+The pattern shows up in distribution timing, payroll structure, and how equipment purchases get modeled against the tax picture. It compounds when headcount and revenue are both accelerating simultaneously.
+
+I work with construction business owners at the $10M-$25M stage on exactly this. Worth a 15-minute conversation to see if any of this is live for you right now?
+
+David Ashby
+Quill Financial Services · quillfs.com</div>
+              <div class="email-meta">
+                <span class="email-word-count">112 words · safe for cold send</span>
+                <span class="email-safe-label">Ready to Send</span>
+              </div>
+            </div>
+            <button class="email-copy-btn" onclick="copyFullEmail('email-subj-1', 'email-body-1', this)">Copy Full Email</button>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="conv-engine-header">FULL DFY PIPELINE · 5-TOUCH CONVERSATION ENGINE</div>
+
+          <div class="touch-block">
+            <div class="touch-label">Day 0 · Connection Request</div>
+            <div class="touch-type-label">LinkedIn · 300 char max</div>
+            <div class="touch-message" id="touch-1-1">Noticed BuildWitt is expanding the team - the construction industry training space moves fast at this stage. The finance infrastructure usually gets built reactively when headcount hits your level. Would love to connect.</div>
+            <button class="copy-action-btn" onclick="copyElementText('touch-1-1', this)">Copy</button>
+          </div>
+
+          <div class="touch-block">
+            <div class="touch-label">Day 3-5 · After Connection Accepts</div>
+            <div class="touch-type-label">LinkedIn DM · Ice break · Zero pitch</div>
+            <div class="touch-message" id="touch-1-2">Thanks for connecting, Aaron. Saw that BuildWitt has been growing the team significantly this year - curious how that's been affecting the financial operations side. Is the cash flow forecasting keeping pace with the headcount expansion?</div>
+            <button class="copy-action-btn" onclick="copyElementText('touch-1-2', this)">Copy</button>
+          </div>
+
+          <div class="touch-block">
+            <div class="touch-label">Day 8-12 · Value Drop</div>
+            <div class="touch-type-label">LinkedIn DM · Expertise signal · No ask required</div>
+            <div class="touch-message" id="touch-1-3">Construction businesses at the $10M-$25M stage usually hit the same inflection point: headcount grows, payroll complexity multiplies, and the distribution timing decisions start having real tax consequences that were not on the radar a year earlier. The finance function that worked at $5M rarely holds at $15M without restructuring. Happy to share what has worked for construction founders in this range.</div>
+            <button class="copy-action-btn" onclick="copyElementText('touch-1-3', this)">Copy</button>
+          </div>
+
+          <div class="touch-block">
+            <div class="touch-label">Day 15-20 · Soft Ask</div>
+            <div class="touch-type-label">LinkedIn DM · Low pressure · No Calendly link</div>
+            <div class="touch-message" id="touch-1-4">I have worked with construction founders at BuildWitt's stage on the financial infrastructure piece - specifically the gap between what accounting handles and what a CFO function should be doing. If a 15-minute conversation makes sense, I am available this week.</div>
+            <button class="copy-action-btn" onclick="copyElementText('touch-1-4', this)">Copy</button>
+          </div>
+
+          <div class="touch-block">
+            <div class="touch-label">Day 25-30 · Clean Exit</div>
+            <div class="touch-type-label">LinkedIn DM · No pitch · Leave door open</div>
+            <div class="touch-message" id="touch-1-5">Timing may just not be right. If the finance infrastructure question comes up as BuildWitt keeps scaling, I am easy to find.</div>
+            <button class="copy-action-btn" onclick="copyElementText('touch-1-5', this)">Copy</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <a class="linkedin-btn" href="https://linkedin.com/in/ACoAABS4fgcBQudnvFEaXxLUL58OmDs6INLoTNM" target="_blank" title="Profile may require LinkedIn login">View on LinkedIn &rarr;</a>
+      </div>
+    </div><!-- /card-1 -->
+
+    <!-- ============ CARD 2: CLAY RUDICK ============ -->
+    <div class="lead-card" id="card-2">
+      <div class="card-header" onclick="toggleCard('card-2')">
+        <span class="signal-badge warm">WARM</span>
+        <div class="card-header-info">
+          <div class="lead-name">Clay Rudick</div>
+          <div class="lead-company">CEO · Rudick Construction Group · Dallas, TX</div>
+          <div class="why-now-line">Finance dept hiring signal · approximately 52 days ago</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit: YES</span>
+        <span class="expand-icon">&#9662;</span>
+      </div>
+
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item"><a href="https://rudickgroup.com" target="_blank">rudickgroup.com</a></span>
+          <span class="identity-sep">·</span>
+          <span class="identity-item">Dallas, Texas, US</span>
+          <span class="identity-sep">·</span>
+          <span class="identity-item">51-200 employees</span>
+          <span class="identity-sep">·</span>
+          <span class="identity-item">$10M-$25M revenue</span>
+          <span class="identity-sep">·</span>
+          <span class="identity-item">Commercial Construction</span>
+        </div>
+
+        <div class="tag-row">
+          <span class="tag industry">Commercial Construction</span>
+          <span class="tag industry">Multi-State Operations</span>
+          <span class="tag signal">Finance Hiring · 52d</span>
+          <span class="tag context">40 Years in Market</span>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Active Market Signals</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Finance Dept Hiring</div>
+              <div class="signal-timing">Approximately 52 days ago</div>
+              <div class="signal-desc">Rudick Construction Group is actively building out the finance function - a signal that the existing financial coverage is no longer sufficient for the complexity of a multi-state commercial contractor at $10M-$25M. Multi-state payroll and tax exposure compounds quickly without year-round CFO-level oversight.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">Project Pipeline Growth</div>
+              <div class="signal-timing">Active · last 90 days</div>
+              <div class="signal-desc">A commercial contractor with four decades in Louisiana and Texas operating at this revenue stage is likely managing project-based cash flow timing against subcontractor payments and state tax obligations simultaneously. The gap between what accounting covers and what a CFO function should cover is widest at this stage.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing <span class="card-section-subtitle">Configured for David's Practice</span></div>
+          <div class="intel-grid">
+            <div class="intel-cell">
+              <div class="intel-cell-label">Leadership Movement</div>
+              <div class="intel-cell-value">No leadership movement in last 90 days</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Capital Activity</div>
+              <div class="intel-cell-value">No public funding activity in last 90 days</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Hiring Signals</div>
+              <div class="intel-cell-value">Finance department hiring trend detected · last 90 days</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Expansion Signals</div>
+              <div class="intel-cell-value">No expansion signals in last 90 days</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Growth Trajectory</div>
+              <div class="intel-cell-value">$10M-$25M revenue · 51-200 employees · commercial and institutional construction · LA and TX markets</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Work Email</div>
+                <div class="contact-value" id="email-val-2">crudick@rudickgroup.com</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('crudick@rudickgroup.com', this)">Copy</button>
+            </div>
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Mobile</div>
+                <div class="contact-value" id="mob-val-2">+13374120049</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('+13374120049', this)">Copy</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div class="why-block">
+              <div class="why-block-title">ICP Fit for David</div>
+              <div class="why-block-text">Rudick Construction Group is a commercial contractor at $10M-$25M operating across Louisiana and Texas - multi-state operations at this scale create tax complexity that most construction CEOs are not actively managing year-round. Clay Rudick as CEO carries full financial decision authority. Commercial contractors face specific exposure around state payroll tax, project-based cash flow timing, and how subcontractor costs interact with the overall tax picture.</div>
+              <div class="fit-signal">
+                <div class="fit-signal-label">Strongest Fit Signal</div>
+                Commercial construction CEO at the exact revenue target with an active finance hiring signal - indicating the existing function is at capacity.
+              </div>
+            </div>
+            <div class="why-block">
+              <div class="why-block-title">Why They're Looking</div>
+              <div class="why-block-text">Multi-state commercial construction at $10M-$25M generates financial decisions that span project timelines, state tax obligations, and subcontractor payment structures. The finance hiring signal indicates the existing accounting coverage is at capacity. A CEO in this position is typically managing cash flow reactively against project milestones and has not modeled the full tax picture of their distribution strategy. This is an active infrastructure gap.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal <span class="card-section-subtitle">2 Channels Ready</span></div>
+
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="conn-note-2">Noticed Rudick Construction Group has been active in the Texas and Louisiana commercial build market - four decades in is a significant run. Growing at your level usually means financial decisions are outpacing the infrastructure behind them. Would love to connect.<div class="char-count">254 characters · LinkedIn limit: 300</div></div>
+            <button class="copy-action-btn" onclick="copyElementText('conn-note-2', this)">Copy Connection Note</button>
+          </div>
+
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Email Draft · Ready to Send</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject Line</div>
+              <div class="email-subject-value" id="email-subj-2">Financial infrastructure at the Rudick growth stage</div>
+              <div class="email-body" id="email-body-2">Clay,
+
+Noticed Rudick Construction Group has been building out the finance function - commercial contractors at your stage in Louisiana and Texas typically reach a point where the financial decisions are outpacing the systems behind them.
+
+It shows up in cash flow timing against project milestones, payroll tax exposure across multiple state operations, and how distributions get structured when the business is still in growth mode.
+
+I work with construction CEOs at the $10M-$25M range on this specific problem. Worth 15 minutes to see if it is live for you right now?
+
+David Ashby
+Quill Financial Services · quillfs.com</div>
+              <div class="email-meta">
+                <span class="email-word-count">106 words · safe for cold send</span>
+                <span class="email-safe-label">Ready to Send</span>
+              </div>
+            </div>
+            <button class="email-copy-btn" onclick="copyFullEmail('email-subj-2', 'email-body-2', this)">Copy Full Email</button>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="conv-engine-header">Touch 1 · Day 0 Connection Request</div>
+          <div class="touch-block">
+            <div class="touch-label">Day 0 · Connection Request</div>
+            <div class="touch-type-label">LinkedIn · 300 char max</div>
+            <div class="touch-message" id="touch-2-1">Noticed Rudick Construction Group has been active in the Texas and Louisiana commercial build market - four decades in is a significant run. Growing at your level usually means financial decisions are outpacing the infrastructure behind them. Would love to connect.</div>
+            <button class="copy-action-btn" onclick="copyElementText('touch-2-1', this)">Copy</button>
+          </div>
+          <div class="touch-collapsed-indicator">· · · 4 additional touches included in full delivery</div>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <a class="linkedin-btn" href="https://linkedin.com/in/ACoAAAPCjxgB_S_F5-Ctkk5RBwGNEAIIL4rJdSE" target="_blank" title="Profile may require LinkedIn login">View on LinkedIn &rarr;</a>
+      </div>
+    </div><!-- /card-2 -->
+
+    <!-- ============ CARD 3: CHRIS RESSA ============ -->
+    <div class="lead-card" id="card-3">
+      <div class="card-header" onclick="toggleCard('card-3')">
+        <span class="signal-badge warm">WARM</span>
+        <div class="card-header-info">
+          <div class="lead-name">Chris Ressa</div>
+          <div class="lead-company">COO · DLC Management Corp · New York, US</div>
+          <div class="why-now-line">Finance dept hiring signal · approximately 38 days ago</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit: YES</span>
+        <span class="expand-icon">&#9662;</span>
+      </div>
+
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item"><a href="https://dlcmgmt.com" target="_blank">dlcmgmt.com</a></span>
+          <span class="identity-sep">·</span>
+          <span class="identity-item">Elmsford, New York, US</span>
+          <span class="identity-sep">·</span>
+          <span class="identity-item">51-200 employees</span>
+          <span class="identity-sep">·</span>
+          <span class="identity-item">$10M-$25M revenue</span>
+          <span class="identity-sep">·</span>
+          <span class="identity-item">Real Estate Management</span>
+        </div>
+
+        <div class="tag-row">
+          <span class="tag industry">Real Estate</span>
+          <span class="tag industry">Multi-Market Portfolio</span>
+          <span class="tag signal">Finance Hiring · 38d</span>
+          <span class="tag context">5-Market US Operations</span>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Active Market Signals</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Finance Dept Hiring</div>
+              <div class="signal-timing">Approximately 38 days ago</div>
+              <div class="signal-desc">DLC Management Corp is actively building the finance team - for a retail real estate operator with portfolio presence across Atlanta, Buffalo, Chicago, Dallas, and DC, the finance decisions span multiple markets and property structures simultaneously. Year-end accounting alone cannot manage that complexity at this scale.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">Multi-Market Portfolio Complexity</div>
+              <div class="signal-timing">Ongoing · active signal</div>
+              <div class="signal-desc">A retail real estate portfolio at the $10M-$25M range with regional offices in five US markets generates cash flow timing decisions, property-level tax exposure, and entity structure questions that benefit directly from year-round CFO oversight. The proactive financial strategy David provides is the exact gap this operation currently has.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing <span class="card-section-subtitle">Configured for David's Practice</span></div>
+          <div class="intel-grid">
+            <div class="intel-cell">
+              <div class="intel-cell-label">Leadership Movement</div>
+              <div class="intel-cell-value">No leadership movement in last 90 days</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Capital Activity</div>
+              <div class="intel-cell-value">No public funding activity in last 90 days</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Hiring Signals</div>
+              <div class="intel-cell-value">Finance department hiring trend detected · approximately 38 days ago</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Expansion Signals</div>
+              <div class="intel-cell-value">Regional office presence active across Atlanta, Buffalo, Chicago, Dallas, Washington DC</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Growth Trajectory</div>
+              <div class="intel-cell-value">$10M-$25M revenue · 51-200 employees · retail real estate management · 5 US markets</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Work Email</div>
+                <div class="contact-value" id="email-val-3">cressa@dlcmgmt.com</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('cressa@dlcmgmt.com', this)">Copy</button>
+            </div>
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Mobile</div>
+                <div class="contact-value" id="mob-val-3">+19733494251</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('+19733494251', this)">Copy</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div class="why-block">
+              <div class="why-block-title">ICP Fit for David</div>
+              <div class="why-block-text">DLC Management Corp is a retail real estate management firm at $10M-$25M with a portfolio spanning five US markets - the exact scale where property-level tax decisions, entity structures, and cash flow timing benefit from year-round CFO oversight. Chris Ressa as COO carries operational and financial infrastructure decision authority. David's dual expertise in CFO strategy and tax code is the specific gap this operation needs.</div>
+              <div class="fit-signal">
+                <div class="fit-signal-label">Strongest Fit Signal</div>
+                Real estate COO at a multi-market portfolio with an active finance hiring signal - the infrastructure gap is already acknowledged internally.
+              </div>
+            </div>
+            <div class="why-block">
+              <div class="why-block-title">Why They're Looking</div>
+              <div class="why-block-text">Managing retail real estate across five US markets means cash flow timing, tax exposure, and entity decisions operate across multiple jurisdictions simultaneously. The finance hiring signal indicates existing accounting is not keeping pace with that operational complexity. A COO in this position needs year-round financial modeling, not a year-end report. The distribution timing and entity structure decisions have compounded costs if left reactive.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal <span class="card-section-subtitle">2 Channels Ready</span></div>
+
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="conn-note-3">Noticed DLC Management has been building the finance team - retail real estate portfolios across five US markets create the kind of cash flow and tax complexity that compounds quickly without year-round financial strategy. Would love to connect.<div class="char-count">234 characters · LinkedIn limit: 300</div></div>
+            <button class="copy-action-btn" onclick="copyElementText('conn-note-3', this)">Copy Connection Note</button>
+          </div>
+
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Email Draft · Ready to Send</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject Line</div>
+              <div class="email-subject-value" id="email-subj-3">Financial strategy at the DLC portfolio stage</div>
+              <div class="email-body" id="email-body-3">Chris,
+
+Noticed DLC Management Corp has been expanding the finance team - retail real estate portfolio management across five US markets means the financial decisions span multiple property structures, cash flow timelines, and a complicated tax picture that changes by jurisdiction.
+
+The cash flow forecasting and distribution timing problems tend to hit multi-market real estate operations at your scale simultaneously. When they do, the cost of reactive finance compounds fast.
+
+I work with real estate operators in the $10M-$25M range on exactly this. Worth a 15-minute conversation to see if any of this is on your radar?
+
+David Ashby
+Quill Financial Services · quillfs.com</div>
+              <div class="email-meta">
+                <span class="email-word-count">112 words · safe for cold send</span>
+                <span class="email-safe-label">Ready to Send</span>
+              </div>
+            </div>
+            <button class="email-copy-btn" onclick="copyFullEmail('email-subj-3', 'email-body-3', this)">Copy Full Email</button>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="conv-engine-header">Touch 1 · Day 0 Connection Request</div>
+          <div class="touch-block">
+            <div class="touch-label">Day 0 · Connection Request</div>
+            <div class="touch-type-label">LinkedIn · 300 char max</div>
+            <div class="touch-message" id="touch-3-1">Noticed DLC Management has been building the finance team - retail real estate portfolios across five US markets create the kind of cash flow and tax complexity that compounds quickly without year-round financial strategy. Would love to connect.</div>
+            <button class="copy-action-btn" onclick="copyElementText('touch-3-1', this)">Copy</button>
+          </div>
+          <div class="touch-collapsed-indicator">· · · 4 additional touches included in full delivery</div>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <a class="linkedin-btn" href="https://linkedin.com/in/ACoAAAFBv1UBPvoaJTp5C3anWAMJXdkOI5SLWFk" target="_blank" title="Profile may require LinkedIn login">View on LinkedIn &rarr;</a>
+      </div>
+    </div><!-- /card-3 -->
+
+    <!-- ============ CARD 4: JOHN CAUDWELL ============ -->
+    <div class="lead-card" id="card-4">
+      <div class="card-header" onclick="toggleCard('card-4')">
+        <span class="signal-badge warm">WARM</span>
+        <div class="card-header-info">
+          <div class="lead-name">John Caudwell</div>
+          <div class="lead-company">Founder & CEO · Caudwell · London, UK</div>
+          <div class="why-now-line">Expansion activity signal · approximately 60 days ago</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit: YES</span>
+        <span class="expand-icon">&#9662;</span>
+      </div>
+
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item"><a href="https://caudwell.com" target="_blank">caudwell.com</a></span>
+          <span class="identity-sep">·</span>
+          <span class="identity-item">London, United Kingdom</span>
+          <span class="identity-sep">·</span>
+          <span class="identity-item">51-200 employees</span>
+          <span class="identity-sep">·</span>
+          <span class="identity-item">$10M-$25M revenue</span>
+          <span class="identity-sep">·</span>
+          <span class="identity-item">Luxury Real Estate Development</span>
+        </div>
+
+        <div class="tag-row">
+          <span class="tag industry">Real Estate Development</span>
+          <span class="tag industry">Luxury Residential</span>
+          <span class="tag signal">Expansion Activity · 60d</span>
+          <span class="tag context">Cross-Jurisdiction Operations</span>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Active Market Signals</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Development Expansion</div>
+              <div class="signal-timing">Approximately 60 days ago</div>
+              <div class="signal-desc">Caudwell has been active across both Mayfair, London and the Cote d'Azur - cross-jurisdiction luxury residential development at this scale involves capital movement, entity structures, and distribution decisions that operate across multiple tax regimes simultaneously. The proactive modeling David provides is exactly what this type of operation requires.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">Capital Movement Signal</div>
+              <div class="signal-timing">Active · last 90 days</div>
+              <div class="signal-desc">A luxury development operation at $10M-$25M operating in both UK and French markets is making financial decisions with cross-border tax consequences that year-end accounting cannot fully capture. The entity structure and distribution timing decisions at this level are among the highest-stakes decisions David's practice is built to handle.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing <span class="card-section-subtitle">Configured for David's Practice</span></div>
+          <div class="intel-grid">
+            <div class="intel-cell">
+              <div class="intel-cell-label">Leadership Movement</div>
+              <div class="intel-cell-value">No leadership movement in last 90 days</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Capital Activity</div>
+              <div class="intel-cell-value">No public funding activity in last 90 days</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Hiring Signals</div>
+              <div class="intel-cell-value">No department hiring trend detected</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Expansion Signals</div>
+              <div class="intel-cell-value">Active development pipeline across Mayfair, London and Cote d'Azur</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Growth Trajectory</div>
+              <div class="intel-cell-value">$10M-$25M revenue · 51-200 employees · luxury residential development · UK and France</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Work Email</div>
+                <div class="contact-value" id="email-val-4">john.caudwell@caudwell.com</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('john.caudwell@caudwell.com', this)">Copy</button>
+            </div>
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Mobile</div>
+                <div class="contact-value unavailable">Direct contact not on record</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div class="why-block">
+              <div class="why-block-title">ICP Fit for David</div>
+              <div class="why-block-text">Caudwell is a luxury residential development company operating in Mayfair and the Cote d'Azur - cross-jurisdiction real estate development at $10M-$25M involves complex entity structures, capital movement, and distribution decisions across two tax regimes. John Caudwell as Founder and CEO holds full financial authority. David's combination of CFO-level strategy and deep tax expertise is the specific capability this type of operation needs most.</div>
+              <div class="fit-signal">
+                <div class="fit-signal-label">Strongest Fit Signal</div>
+                Cross-jurisdiction real estate founder with active expansion signals - financial modeling across UK and French markets requires exactly the proactive CFO engagement David provides.
+              </div>
+            </div>
+            <div class="why-block">
+              <div class="why-block-title">Why They're Looking</div>
+              <div class="why-block-text">Luxury residential development across UK and France means capital is moving across jurisdictions, entity structures need to reflect both regulatory environments, and distribution decisions have cross-border tax consequences. At $10M-$25M, most operations this size manage that reactively through year-end accounting rather than year-round financial modeling. The distribution timing and entity structure decisions at this level are where reactive finance has the highest cost.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal <span class="card-section-subtitle">2 Channels Ready</span></div>
+
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="conn-note-4">Noticed Caudwell's continued development across Mayfair and the Cote d'Azur - luxury residential development at that scale means cross-border financial decisions that are expensive when managed reactively. Would love to connect.<div class="char-count">221 characters · LinkedIn limit: 300</div></div>
+            <button class="copy-action-btn" onclick="copyElementText('conn-note-4', this)">Copy Connection Note</button>
+          </div>
+
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Email Draft · Ready to Send</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject Line</div>
+              <div class="email-subject-value" id="email-subj-4">Financial strategy at the Caudwell development stage</div>
+              <div class="email-body" id="email-body-4">John,
+
+Noticed Caudwell has been active across the Mayfair and Cote d'Azur markets - luxury residential development at your scale means the financial decisions span multiple jurisdictions, complex entity structures, and significant capital movement across two tax regimes.
+
+The distribution timing, entity structure, and cash flow modeling decisions at this level tend to get handled reactively at most operations this size. The cost of that approach compounds with each major transaction.
+
+I work with real estate business owners on this specific problem. Worth 15 minutes to see if any of this is live for you?
+
+David Ashby
+Quill Financial Services · quillfs.com</div>
+              <div class="email-meta">
+                <span class="email-word-count">108 words · safe for cold send</span>
+                <span class="email-safe-label">Ready to Send</span>
+              </div>
+            </div>
+            <button class="email-copy-btn" onclick="copyFullEmail('email-subj-4', 'email-body-4', this)">Copy Full Email</button>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="conv-engine-header">Touch 1 · Day 0 Connection Request</div>
+          <div class="touch-block">
+            <div class="touch-label">Day 0 · Connection Request</div>
+            <div class="touch-type-label">LinkedIn · 300 char max</div>
+            <div class="touch-message" id="touch-4-1">Noticed Caudwell's continued development across Mayfair and the Cote d'Azur - luxury residential development at that scale means cross-border financial decisions that are expensive when managed reactively. Would love to connect.</div>
+            <button class="copy-action-btn" onclick="copyElementText('touch-4-1', this)">Copy</button>
+          </div>
+          <div class="touch-collapsed-indicator">· · · 4 additional touches included in full delivery</div>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <a class="linkedin-btn" href="https://linkedin.com/in/ACoAAAlTZvkBaBc2F0tZdBJHJa0NWPdtGygEGpk" target="_blank" title="Profile may require LinkedIn login">View on LinkedIn &rarr;</a>
+      </div>
+    </div><!-- /card-4 -->
+
+    <!-- ============ CARD 5: CLARA LE CLEI ============ -->
+    <div class="lead-card" id="card-5">
+      <div class="card-header" onclick="toggleCard('card-5')">
+        <span class="signal-badge hot">HOT</span>
+        <div class="card-header-info">
+          <div class="lead-name">Clara Le Clei</div>
+          <div class="lead-company">Right Hand to COO · Nabla · New York, US</div>
+          <div class="why-now-line">Department expansion signal · approximately 22 days ago</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit: YES</span>
+        <span class="expand-icon">&#9662;</span>
+      </div>
+
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item"><a href="https://nabla.com" target="_blank">nabla.com</a></span>
+          <span class="identity-sep">·</span>
+          <span class="identity-item">New York, US</span>
+          <span class="identity-sep">·</span>
+          <span class="identity-item">51-200 employees</span>
+          <span class="identity-sep">·</span>
+          <span class="identity-item">$25M-$75M revenue</span>
+          <span class="identity-sep">·</span>
+          <span class="identity-item">Healthcare AI</span>
+        </div>
+
+        <div class="tag-row">
+          <span class="tag industry">Healthcare</span>
+          <span class="tag industry">Clinical AI</span>
+          <span class="tag signal">Dept Expansion · 22d</span>
+          <span class="tag signal">HOT Signal</span>
+          <span class="tag context">$25M-$75M Stage</span>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Active Market Signals</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Department Expansion</div>
+              <div class="signal-timing">Approximately 22 days ago (HOT)</div>
+              <div class="signal-desc">Nabla has been scaling aggressively across departments in the last 22 days - a healthcare AI company at $25M-$75M integrating with 130+ health systems is making payroll, distribution, and financial infrastructure decisions at a pace that year-end accounting cannot track. This is an active evaluation window for CFO-level support.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">Revenue Stage Transition</div>
+              <div class="signal-timing">Active · current growth phase</div>
+              <div class="signal-desc">At $25M-$75M revenue with rapid headcount expansion, Nabla is at the stage where entity structure, distribution decisions, and financial infrastructure complexity all compound simultaneously. Healthcare AI companies scaling through enterprise health system contracts face specific cash flow timing challenges that reactive finance handles poorly.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing <span class="card-section-subtitle">Configured for David's Practice</span></div>
+          <div class="intel-grid">
+            <div class="intel-cell">
+              <div class="intel-cell-label">Leadership Movement</div>
+              <div class="intel-cell-value">No leadership movement in last 90 days</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Capital Activity</div>
+              <div class="intel-cell-value">No public funding activity in last 90 days</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Hiring Signals</div>
+              <div class="intel-cell-value">Department expansion detected across multiple functions · approximately 22 days ago</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Expansion Signals</div>
+              <div class="intel-cell-value">Expanding integration base across 130+ health systems and provider groups</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Growth Trajectory</div>
+              <div class="intel-cell-value">$25M-$75M revenue · 51-200 employees · clinical AI · 35 languages · 130+ health system integrations</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Work Email</div>
+                <div class="contact-value unavailable">Direct contact not on record</div>
+              </div>
+            </div>
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Mobile</div>
+                <div class="contact-value unavailable">Direct contact not on record</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div class="why-block">
+              <div class="why-block-title">ICP Fit for David</div>
+              <div class="why-block-text">Nabla is a healthcare AI company at $25M-$75M serving 130+ health systems with rapid headcount expansion - above target revenue stage with an active HOT signal. Clara operates as a senior decision influencer in the COO function, which is the role that surfaces the financial infrastructure need fastest in companies scaling at this pace. Healthcare companies at this revenue and growth stage have the cash flow complexity, payroll decisions, and entity structure questions David's practice handles directly.</div>
+              <div class="fit-signal">
+                <div class="fit-signal-label">Strongest Fit Signal</div>
+                Healthcare company with a HOT department expansion signal 22 days ago at above-target revenue stage - financial infrastructure decisions are active right now.
+              </div>
+            </div>
+            <div class="why-block">
+              <div class="why-block-title">Why They're Looking</div>
+              <div class="why-block-text">Clinical AI companies integrating with 130+ health systems and scaling through $25M-$75M revenue are making payroll, hiring, and financial decisions at a pace that year-end accounting cannot track. The HOT expansion signal indicates the operations function is actively scaling. At this growth rate, the entity structure and distribution decisions that should have been modeled six months earlier become urgent. The COO function typically surfaces this need before the CEO does.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal <span class="card-section-subtitle">2 Channels Ready</span></div>
+
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="conn-note-5">Noticed Nabla has been scaling aggressively across the clinical AI space - health system integrations at your scale create financial complexity that moves faster than most operations can manage reactively. Would love to connect.<div class="char-count">219 characters · LinkedIn limit: 300</div></div>
+            <button class="copy-action-btn" onclick="copyElementText('conn-note-5', this)">Copy Connection Note</button>
+          </div>
+
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Email Draft · Ready to Send</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject Line</div>
+              <div class="email-subject-value" id="email-subj-5">Financial infrastructure at the Nabla growth stage</div>
+              <div class="email-body" id="email-body-5">Clara,
+
+Noticed Nabla has been scaling the team significantly over the past few weeks - clinical AI companies integrating with 130-plus health systems are at a stage where the financial decisions are growing in complexity faster than most operations can absorb reactively.
+
+The patterns that show up: cash flow modeling against enterprise contract timelines, payroll structure across rapid headcount growth, and entity decisions that should have been revisited earlier in the growth curve.
+
+I work with healthcare businesses at your growth stage on this specific problem. Worth 15 minutes to see if any of this is on your radar?
+
+David Ashby
+Quill Financial Services · quillfs.com</div>
+              <div class="email-meta">
+                <span class="email-word-count">113 words · safe for cold send</span>
+                <span class="email-safe-label">Ready to Send</span>
+              </div>
+            </div>
+            <button class="email-copy-btn" onclick="copyFullEmail('email-subj-5', 'email-body-5', this)">Copy Full Email</button>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="conv-engine-header">Touch 1 · Day 0 Connection Request</div>
+          <div class="touch-block">
+            <div class="touch-label">Day 0 · Connection Request</div>
+            <div class="touch-type-label">LinkedIn · 300 char max</div>
+            <div class="touch-message" id="touch-5-1">Noticed Nabla has been scaling aggressively across the clinical AI space - health system integrations at your scale create financial complexity that moves faster than most operations can manage reactively. Would love to connect.</div>
+            <button class="copy-action-btn" onclick="copyElementText('touch-5-1', this)">Copy</button>
+          </div>
+          <div class="touch-collapsed-indicator">· · · 4 additional touches included in full delivery</div>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <a class="linkedin-btn" href="https://linkedin.com/in/ACoAACyaX7cBKcLDx6xnU0GB89MGOkmck1I_STw" target="_blank" title="Profile may require LinkedIn login">View on LinkedIn &rarr;</a>
+      </div>
+    </div><!-- /card-5 -->
+
+    <!-- PIPELINE MATH -->
+    <div class="pipeline-math">
+      <div class="pipeline-math-text">
+        This is <strong>5 of 40 buyer profiles</strong> delivered every month.<br>
+        Each carries an active market signal. Each has direct contact details. Each has outreach ready to send.<br>
+        <strong>30 minutes of your time per week.</strong> The rest is done.
+      </div>
+    </div>
+
+    <!-- VISUAL GRAPHICS SECTION -->
+    <div class="visuals-section">
+      <div class="visuals-header">
+        <div class="visuals-copy">
+          <h3>Every post in your package has a visual built for it.</h3>
+          <p>LinkedIn content without visuals gets scrolled past. Carousels get saved. Infographics get shared. Post graphics stop the scroll. Each of those actions reaches buyers who have never followed you - organic reach you do not have to pay for.</p>
+          <p>The full system produces the visuals. You attach and schedule. Nothing to brief. Nothing to design.</p>
+          <ul class="visuals-list">
+            <li><span class="visuals-list-dot">+</span>2 carousels per month with finished slide visuals</li>
+            <li><span class="visuals-list-dot">+</span>2 standalone infographics per month</li>
+            <li><span class="visuals-list-dot">+</span>Post graphics for any text post that benefits from one</li>
+            <li><span class="visuals-list-dot">+</span>All delivered as finished PNG files in the Monday package</li>
+          </ul>
+        </div>
+        <div>
+          <div class="visuals-tiles">
+            <div class="visual-tile carousel">
+              <div class="visual-tile-inner">
+                <div class="tile-accent-bar"></div>
+                <div class="tile-lines">
+                  <div class="tile-line full"></div>
+                  <div class="tile-line medium"></div>
+                  <div class="tile-line short"></div>
+                </div>
+              </div>
+              <div class="tile-label">Carousel</div>
+            </div>
+            <div class="visual-tile post">
+              <div class="visual-tile-inner">
+                <div class="tile-accent-bar"></div>
+                <div class="tile-lines">
+                  <div class="tile-line medium"></div>
+                  <div class="tile-line full"></div>
+                  <div class="tile-line short"></div>
+                </div>
+              </div>
+              <div class="tile-label">Post Visual</div>
+            </div>
+            <div class="visual-tile infographic">
+              <div class="visual-tile-inner">
+                <div class="tile-accent-bar"></div>
+                <div class="tile-lines">
+                  <div class="tile-line full"></div>
+                  <div class="tile-line short"></div>
+                  <div class="tile-line medium"></div>
+                </div>
+              </div>
+              <div class="tile-label">Infographic</div>
+            </div>
+          </div>
+          <div class="visuals-note">
+            <strong>Visuals are finished and attached in the Monday package.</strong><br>
+            You schedule. Nothing to design. Nothing to brief.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA FOOTER -->
+    <div class="cta-footer">
+      <div class="cta-footer-headline">This is what one week of the full system looks like for David.</div>
+      <div class="cta-footer-subhead">Every Monday: 10 ICP-matched buyers with full signal intelligence, direct contact details, and outreach ready to send. Plus 3 posts and finished visuals in your voice. 30 minutes of your time per week.</div>
+      <a class="cta-footer-btn" href="https://calendly.com/saurabh_zentro/30-min" target="_blank">Book Your 20-Min Fit Call &rarr;</a>
+      <div class="cta-footer-note">No pitch. No deck. We talk through your specific situation and confirm whether this is the right fit.</div>
+    </div>
+
+  </div><!-- /view-pipeline -->
+
+  <!-- ============================== CONTENT ENGINE ============================== -->
+  <div class="view" id="view-content">
+
+    <div class="personalised-banner">
+      <div class="personalised-dot"></div>
+      Content Engine · Written in David's Voice
+    </div>
+
+    <!-- WELCOME BANNER -->
+    <div class="welcome-banner">
+      <div class="welcome-tag">Content Engine · 2 of 12 Monthly Posts</div>
+      <div class="welcome-text">
+        These posts are written <strong>in David's voice</strong> - extracted from how he actually writes and thinks. The pattern from his About section and posts: clinical, diagnostic, contrast-first, no fluff. Both posts are built for his ICP: business owners in real estate, construction, and healthcare who are making major financial decisions without a proactive strategy behind them.
+      </div>
+    </div>
+
+    <!-- POST CARDS -->
+    <div class="post-cards-grid">
+
+      <!-- TEACHING POST -->
+      <div class="post-card">
+        <div class="post-type-label">Teaching Post</div>
+        <div class="post-type-desc">Explains a pattern from David's methodology. Builds credibility with business owners who recognize the problem. Drives authority, not immediate leads.</div>
+        <div class="post-text">Most business owners get their tax number at the end of the year.
+
+For 15 years, I was the one delivering it.
+
+The number always felt like a surprise. But the decisions that determined it were made six, eight, ten months earlier.
+
+The distribution you took in Q3. The equipment you bought in September. The entity structure you never updated. The payroll timing that felt fine until it did not.
+
+By the time anyone called me, those decisions were done.
+
+Reactive finance looks like this:
+
+&#8594; Q3 distribution taken without modeling the tax hit
+&#8594; Equipment purchased in September without reviewing Section 179 timing
+&#8594; Year-end adjustment when the number is already locked
+
+Proactive finance is not complicated. It is earlier.
+
+A CFO in the room before the decision costs less than a CPA rebuilding the picture after it.
+
+Comment TAX and I will send you a three-question diagnostic that shows exactly where your timing decisions are creating unnecessary tax exposure.</div>
+        <div class="post-cta-line">CTA: Comment TAX &rarr; 3-question diagnostic</div>
+      </div>
+
+      <!-- HANDRAISER POST -->
+      <div class="post-card">
+        <div class="post-type-label">Handraiser Post</div>
+        <div class="post-type-desc">Designed to drive self-identification from qualified buyers. Buyers recognize their own situation and opt in. Designed to surface "Comment LEAD" responses from real estate, construction, and healthcare business owners.</div>
+        <div class="post-text">Three types of business owners call me.
+
+The first built a solid business, took a large distribution last year, and is now looking at a tax bill that undid six months of profit.
+
+The second is considering selling or bringing on a partner and has never modeled what their entity structure actually costs at exit.
+
+The third runs a construction company, a medical practice, or a real estate portfolio doing $2M to $10M and has never had a CFO. Only an accountant.
+
+All three have the same problem.
+
+The financial decisions are happening without a financial strategy behind them.
+
+Not a tax problem. A timing and structure problem.
+
+Most CFOs do not know the tax code. Most accountants do not think like CFOs.
+
+If any of these sound familiar, comment PROACTIVE. I will tell you which category you are in and what that typically costs over a three-year window.</div>
+        <div class="post-cta-line">CTA: Comment PROACTIVE &rarr; 3-year cost diagnosis</div>
+      </div>
+
+    </div><!-- /post-cards-grid -->
+
+    <!-- VISUAL GRAPHICS SECTION - CONTENT ENGINE VERSION -->
+    <div class="visuals-section">
+      <div class="visuals-header">
+        <div class="visuals-copy">
+          <h3>Content without visuals is half a system.</h3>
+          <p>Most consultants post text. The ones building consistent inbound post text with structure behind it. A carousel that breaks down a framework visually gets saved. A quote graphic gets shared. An infographic gets screenshotted. Saves, shares, and screenshots reach buyers who never followed you. That is organic reach you do not have to pay for.</p>
+          <p>The full system produces the visuals. You attach and schedule.</p>
+          <ul class="visuals-list">
+            <li><span class="visuals-list-dot">+</span>2 carousels per month with finished slide visuals</li>
+            <li><span class="visuals-list-dot">+</span>2 standalone infographics per month</li>
+            <li><span class="visuals-list-dot">+</span>Post graphics for any text post that benefits from one</li>
+            <li><span class="visuals-list-dot">+</span>All delivered as finished PNG files in the Monday package</li>
+          </ul>
+        </div>
+        <div>
+          <div class="visuals-tiles">
+            <div class="visual-tile carousel">
+              <div class="visual-tile-inner">
+                <div class="tile-accent-bar"></div>
+                <div class="tile-lines">
+                  <div class="tile-line full"></div>
+                  <div class="tile-line medium"></div>
+                  <div class="tile-line short"></div>
+                </div>
+              </div>
+              <div class="tile-label">Carousel</div>
+            </div>
+            <div class="visual-tile post">
+              <div class="visual-tile-inner">
+                <div class="tile-accent-bar"></div>
+                <div class="tile-lines">
+                  <div class="tile-line medium"></div>
+                  <div class="tile-line full"></div>
+                  <div class="tile-line short"></div>
+                </div>
+              </div>
+              <div class="tile-label">Post Visual</div>
+            </div>
+            <div class="visual-tile infographic">
+              <div class="visual-tile-inner">
+                <div class="tile-accent-bar"></div>
+                <div class="tile-lines">
+                  <div class="tile-line full"></div>
+                  <div class="tile-line short"></div>
+                  <div class="tile-line medium"></div>
+                </div>
+              </div>
+              <div class="tile-label">Infographic</div>
+            </div>
+          </div>
+          <div class="visuals-note">
+            <strong>18 content pieces per month. Finished. Attached. Ready to schedule.</strong><br>
+            You schedule from your own account. Zero design work on your end.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA FOOTER -->
+    <div class="cta-footer">
+      <div class="cta-footer-headline">This is what one week of the full system looks like for David.</div>
+      <div class="cta-footer-subhead">Every Monday: 10 ICP-matched buyers with full signal intelligence, direct contact details, and outreach ready to send. Plus 3 posts and finished visuals in your voice. 30 minutes of your time per week.</div>
+      <a class="cta-footer-btn" href="https://calendly.com/saurabh_zentro/30-min" target="_blank">Book Your 20-Min Fit Call &rarr;</a>
+      <div class="cta-footer-note">No pitch. No deck. We talk through your specific situation and confirm whether this is the right fit.</div>
+    </div>
+
+  </div><!-- /view-content -->
+
+</main>
+
+<script>
+function showView(name, triggerEl) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view-' + name).classList.add('active');
+
+  document.querySelectorAll('.nav-item, .tab-btn, .mobile-tab-pill').forEach(el => el.classList.remove('active'));
+
+  const navEl = document.getElementById('nav-' + name);
+  if (navEl) navEl.classList.add('active');
+
+  document.querySelectorAll('.tab-btn, .mobile-tab-pill').forEach(btn => {
+    if (btn.getAttribute('onclick') && btn.getAttribute('onclick').includes("'" + name + "'")) {
+      btn.classList.add('active');
+    }
+  });
+}
+
+function toggleCard(cardId) {
+  document.getElementById(cardId).classList.toggle('expanded');
+}
+
+function copyToClipboard(text, btn) {
+  navigator.clipboard.writeText(text).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = 'Copied.';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 2000);
+  }).catch(() => {
+    const el = document.createElement('textarea');
+    el.value = text;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+    btn.textContent = 'Copied.'; btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+function copyElementText(elementId, btn) {
+  const el = document.getElementById(elementId);
+  if (!el) return;
+  const charCountEl = el.querySelector('.char-count');
+  let text = el.textContent;
+  if (charCountEl) text = text.replace(charCountEl.textContent, '').trim();
+  copyToClipboard(text, btn);
+}
+
+function copyFullEmail(subjId, bodyId, btn) {
+  const subj = document.getElementById(subjId);
+  const body = document.getElementById(bodyId);
+  const text = 'Subject: ' + (subj ? subj.textContent.trim() : '') + '\n\n' + (body ? body.textContent.trim() : '');
+  copyToClipboard(text, btn);
+}
+</script>
+
+</body>
+</html>
