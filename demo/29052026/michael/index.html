@@ -1,0 +1,1547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Michael W. · Lead Demo · Pipelind</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0A0A12;
+  --bg2: #12121E;
+  --bg3: #0E0E19;
+  --primary: #6A66A3;
+  --primary-light: #9B98C4;
+  --accent: #FF9900;
+  --success: #019047;
+  --success-light: #5AC88A;
+  --text: rgba(255,255,255,0.90);
+  --text-dim: rgba(255,255,255,0.72);
+  --text-muted: rgba(255,255,255,0.55);
+  --border: rgba(106,102,163,0.25);
+  --border-hover: rgba(106,102,163,0.55);
+  --hot: #FF4444;
+  --warm: #FF9900;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif; min-height: 100vh; }
+
+/* Sidebar */
+.sidebar {
+  position: fixed; top: 0; left: 0; width: 240px; height: 100vh;
+  background: var(--bg2); border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; padding: 24px 20px; z-index: 100;
+}
+.sidebar-logo { font-family: 'Space Mono', monospace; font-size: 13px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--primary-light); margin-bottom: 28px; }
+.prospect-block { margin-bottom: 32px; }
+.prospect-label { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px; }
+.prospect-name { font-size: 17px; font-weight: 800; color: var(--text); line-height: 1.25; }
+.prospect-meta { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--text-muted);
+  letter-spacing: .06em; margin-top: 4px; }
+.nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 8px;
+  cursor: pointer; margin-bottom: 4px; font-size: 13px; font-weight: 600; color: var(--text-dim);
+  transition: all .15s; border: 1px solid transparent; }
+.nav-item:hover { background: rgba(106,102,163,0.10); color: var(--text); }
+.nav-item.active { background: rgba(106,102,163,0.15); color: var(--primary-light); border-color: var(--border); }
+.sidebar-footer { margin-top: auto; font-family: 'Space Mono', monospace; font-size: 10px;
+  color: var(--text-muted); letter-spacing: .04em; line-height: 1.8; }
+
+/* Mobile top bar */
+.mobile-topbar {
+  display: none; position: sticky; top: 0; z-index: 200;
+  background: var(--bg2); border-bottom: 1px solid var(--border);
+  padding: 14px 16px; align-items: center; justify-content: space-between;
+}
+.mobile-logo { font-family: 'Space Mono', monospace; font-size: 12px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--primary-light); }
+.mobile-prospect-name { font-size: 13px; font-weight: 700; color: var(--text); }
+
+/* Mobile tab pills */
+.mobile-tabs {
+  display: none; position: sticky; top: 53px; z-index: 199;
+  background: var(--bg); border-bottom: 1px solid var(--border);
+  padding: 10px 16px; gap: 8px;
+}
+.mobile-tab-pill { padding: 7px 16px; border-radius: 20px; font-size: 12px; font-weight: 700;
+  font-family: 'Space Mono', monospace; letter-spacing: .06em; text-transform: uppercase;
+  cursor: pointer; border: 1px solid var(--border); color: var(--text-muted); background: transparent;
+  transition: all .15s; }
+.mobile-tab-pill.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+/* Main */
+.main { margin-left: 240px; padding: 32px 36px; max-width: 1140px; }
+
+/* Desktop tab bar */
+.tab-bar {
+  position: sticky; top: 0; z-index: 50; background: var(--bg);
+  border-bottom: 1px solid var(--border); display: flex; margin: -32px -36px 32px; padding: 0 36px;
+}
+.tab-btn { padding: 14px 22px; font-family: 'Space Mono', monospace; font-size: 11px;
+  font-weight: 700; letter-spacing: .10em; text-transform: uppercase; color: var(--text-muted);
+  cursor: pointer; border: none; background: transparent; border-bottom: 2px solid transparent;
+  transition: all .15s; }
+.tab-btn.active { color: var(--primary-light); border-bottom-color: var(--primary); }
+
+/* Welcome banner */
+.welcome-banner { background: linear-gradient(135deg, rgba(106,102,163,0.10) 0%, rgba(255,153,0,0.05) 100%);
+  border: 1px solid var(--border); border-radius: 12px; padding: 24px 28px; margin-bottom: 28px; }
+.welcome-tag { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+.welcome-text { font-size: 14px; line-height: 1.75; color: var(--text-dim); }
+.welcome-text strong { color: var(--text); font-weight: 700; }
+
+/* Pulse panel */
+.pulse-panel {
+  border-left: 3px solid #FF9900;
+  background: rgba(255,153,0,0.06);
+  border-radius: 0 10px 10px 0;
+  padding: 18px 22px;
+  margin-bottom: 28px;
+}
+.pulse-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: #FF9900; margin-bottom: 10px;
+}
+.pulse-text {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 15px; color: rgba(255,255,255,0.90); line-height: 1.7;
+}
+
+/* ICP panel grid */
+.icp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 32px; }
+.icp-panel { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 22px 24px; }
+.panel-title { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 16px; }
+.icp-item { display: flex; justify-content: space-between; align-items: flex-start;
+  padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 13px; }
+.icp-item:last-child { border-bottom: none; }
+.icp-label { color: var(--text-muted); font-size: 12px; }
+.icp-value { color: var(--text); font-weight: 600; text-align: right; max-width: 60%; }
+.quality-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.quality-metric { background: rgba(106,102,163,0.08); border: 1px solid var(--border);
+  border-radius: 8px; padding: 14px 16px; text-align: center; }
+.quality-num { font-size: 24px; font-weight: 800; color: var(--primary-light); }
+.quality-label { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--text-muted);
+  letter-spacing: .06em; text-transform: uppercase; margin-top: 4px; }
+.quality-note { font-size: 12px; color: var(--text-muted); line-height: 1.6; margin-top: 14px;
+  padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.05); }
+
+/* Section header */
+.section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+.section-title { font-size: 13px; font-weight: 700; color: var(--text);
+  font-family: 'Space Mono', monospace; letter-spacing: .06em; text-transform: uppercase; }
+.section-count { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: .06em; }
+
+/* Lead card system */
+.lead-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px;
+  margin-bottom: 20px; overflow: hidden; transition: border-color .15s; }
+.lead-card:hover { border-color: var(--border-hover); }
+.card-header { padding: 18px 22px; cursor: pointer; display: flex; align-items: center; gap: 14px; }
+.signal-badge { font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; padding: 4px 10px; border-radius: 20px; white-space: nowrap; flex-shrink: 0; }
+.signal-badge.hot { background: rgba(255,68,68,0.15); color: var(--hot); border: 1px solid rgba(255,68,68,0.30); }
+.signal-badge.warm { background: rgba(255,153,0,0.12); color: var(--warm); border: 1px solid rgba(255,153,0,0.25); }
+.card-header-info { flex: 1; min-width: 0; }
+.lead-name { font-size: 17px; font-weight: 800; color: var(--text); line-height: 1.2; }
+.lead-company { font-size: 13px; color: var(--text-dim); margin-top: 2px; }
+.why-now-line { font-size: 12px; color: var(--accent); margin-top: 5px; font-weight: 600; }
+.expand-icon { color: var(--text-muted); font-size: 18px; flex-shrink: 0; transition: transform .2s; }
+.lead-card.expanded .expand-icon { transform: rotate(180deg); }
+.icp-fit-badge { font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: .10em; padding: 4px 10px; border-radius: 20px;
+  background: rgba(1,144,71,0.15); color: var(--success-light); border: 1px solid rgba(1,144,71,0.30); white-space: nowrap; flex-shrink: 0; }
+.card-body { display: none; border-top: 1px solid var(--border); }
+.lead-card.expanded .card-body { display: block; }
+
+/* Identity strip */
+.identity-strip { display: flex; flex-wrap: wrap; gap: 12px; padding: 14px 22px;
+  background: var(--bg3); border-bottom: 1px solid var(--border);
+  font-family: 'Space Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: .04em; }
+.identity-item a { color: var(--primary-light); text-decoration: none; }
+.identity-item a:hover { color: var(--text); }
+
+/* Tags */
+.tag-row { display: flex; flex-wrap: wrap; gap: 6px; padding: 12px 22px; border-bottom: 1px solid var(--border); }
+.tag { font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase; padding: 3px 9px; border-radius: 4px; }
+.tag.industry { background: rgba(106,102,163,0.15); color: var(--primary-light); }
+.tag.signal { background: rgba(255,153,0,0.12); color: var(--warm); }
+.tag.context { background: rgba(1,144,71,0.12); color: var(--success-light); }
+
+/* Card section */
+.card-section { padding: 20px 22px; border-bottom: 1px solid var(--border); }
+.card-section:last-child { border-bottom: none; }
+.card-section-title { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 14px; }
+.card-section-subtitle { font-family: 'Space Mono', monospace; font-size: 9px;
+  letter-spacing: .08em; color: rgba(255,255,255,0.35); text-transform: uppercase; margin-left: 8px; }
+
+/* Signal intelligence */
+.signal-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.signal-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+.signal-type { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .10em; text-transform: uppercase; color: var(--accent); margin-bottom: 5px; }
+.signal-timing { font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+.signal-desc { font-size: 12px; color: var(--text-dim); line-height: 1.6; }
+
+/* Intel grid */
+.intel-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+.intel-cell { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; }
+.intel-cell-label { font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: .10em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 7px; }
+.intel-cell-value { font-size: 12px; color: var(--text-dim); line-height: 1.5; }
+
+/* Contact details */
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.contact-item { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px;
+  padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.contact-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: .10em;
+  text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px; }
+.contact-value { font-size: 13px; font-weight: 600; color: var(--text); word-break: break-all; }
+.contact-value.unavailable { color: var(--text-muted); font-weight: 400; font-style: italic; }
+.copy-btn { font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase; padding: 5px 10px; border-radius: 5px;
+  border: 1px solid var(--border); background: transparent; color: var(--text-muted);
+  cursor: pointer; white-space: nowrap; flex-shrink: 0; transition: all .15s; }
+.copy-btn:hover { border-color: var(--primary); color: var(--primary-light); }
+.copy-btn.copied { color: var(--success-light); border-color: var(--success); }
+
+/* Why this lead */
+.why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.why-block-title { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .10em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; }
+.why-block-text { font-size: 13px; color: var(--text-dim); line-height: 1.75; }
+.fit-signal { background: rgba(1,144,71,0.10); border: 1px solid rgba(1,144,71,0.25);
+  border-radius: 6px; padding: 8px 12px; margin-top: 10px; font-size: 12px; color: var(--success-light); font-weight: 600; }
+.fit-signal-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: .10em;
+  text-transform: uppercase; color: var(--success); margin-bottom: 3px; }
+
+/* Outreach arsenal */
+.outreach-channel { margin-bottom: 18px; }
+.outreach-channel:last-child { margin-bottom: 0; }
+.outreach-channel-label { font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--primary-light); margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+.connection-note { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px;
+  padding: 14px 16px; font-size: 13px; color: var(--text-dim); line-height: 1.7; font-style: italic; }
+.char-count { font-family: 'Space Mono', monospace; font-size: 9px; color: var(--text-muted);
+  letter-spacing: .04em; margin-top: 8px; }
+.email-block { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 16px 18px; }
+.email-subject-label { font-family: 'Space Mono', monospace; font-size: 9px; color: var(--text-muted); letter-spacing: .06em; margin-bottom: 4px; }
+.email-subject-value { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 12px; }
+.email-body { font-size: 13px; color: var(--text-dim); line-height: 1.85; white-space: pre-line; }
+.email-meta { display: flex; justify-content: space-between; align-items: center;
+  margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.06); }
+.email-word-count { font-family: 'Space Mono', monospace; font-size: 9px; color: var(--text-muted); letter-spacing: .04em; }
+.email-safe-label { font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase; color: var(--success-light); }
+.copy-action-btn { display: inline-flex; align-items: center; gap: 6px; margin-top: 10px;
+  font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: .10em;
+  text-transform: uppercase; padding: 7px 14px; border-radius: 6px; border: 1px solid var(--border);
+  background: transparent; color: var(--text-muted); cursor: pointer; transition: all .15s; }
+.copy-action-btn:hover { border-color: var(--primary); color: var(--primary-light); }
+.copy-action-btn.copied { color: var(--success-light); border-color: var(--success); }
+
+/* Prospect intelligence callout */
+.intel-callout { background: rgba(255,153,0,0.07); border: 1px solid rgba(255,153,0,0.25);
+  border-radius: 8px; padding: 13px 16px; font-size: 12px; color: var(--text-dim); line-height: 1.65; }
+.intel-callout-label { font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin-bottom: 5px; }
+
+/* 5-Touch conversation engine */
+.touch-section-header {
+  font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase; color: #FF9900; margin-bottom: 14px;
+}
+.touch-block { padding: 14px 0; border-bottom: 1px solid rgba(106,102,163,0.20); }
+.touch-block:last-child { border-bottom: none; }
+.touch-day-label { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: 0.10em; text-transform: uppercase; color: #FF9900; margin-bottom: 3px; }
+.touch-type-label { font-size: 11px; color: rgba(255,255,255,0.55); margin-bottom: 8px; }
+.touch-message { font-size: 14px; color: rgba(255,255,255,0.90); line-height: 1.65; margin-bottom: 10px; }
+.touch-collapsed-indicator { font-size: 12px; color: rgba(255,255,255,0.45); font-style: italic; padding: 10px 0; }
+
+/* Card footer */
+.card-footer { padding: 12px 22px; background: var(--bg3); border-top: 1px solid var(--border); display: flex; justify-content: flex-end; }
+.linkedin-btn { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase; padding: 8px 16px; border-radius: 6px;
+  border: 1px solid var(--border); color: var(--primary-light); text-decoration: none; transition: all .15s; }
+.linkedin-btn:hover { border-color: var(--primary); background: rgba(106,102,163,0.10); }
+
+/* Pipeline math */
+.pipeline-math { background: rgba(106,102,163,0.06); border: 1px solid var(--border);
+  border-radius: 12px; padding: 22px 28px; margin: 28px 0; text-align: center; }
+.pipeline-math-text { font-size: 15px; color: var(--text-dim); line-height: 1.8; }
+.pipeline-math-text strong { color: var(--primary-light); font-weight: 700; }
+
+/* Visual graphics section */
+.visuals-section { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; padding: 28px 32px; margin: 28px 0; }
+.visuals-header { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-bottom: 24px; }
+.visuals-copy h3 { font-size: 18px; font-weight: 800; color: var(--text); line-height: 1.3; margin-bottom: 12px; }
+.visuals-copy p { font-size: 13px; color: var(--text-dim); line-height: 1.75; margin-bottom: 10px; }
+.visuals-list { list-style: none; margin-top: 14px; }
+.visuals-list li { font-size: 13px; color: var(--text-dim); padding: 6px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04); display: flex; gap: 10px; }
+.visuals-list li:last-child { border-bottom: none; }
+.visuals-list-dot { color: var(--success-light); font-weight: 700; flex-shrink: 0; }
+.visuals-tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.visual-tile { border-radius: 10px; overflow: hidden; }
+.visual-tile-inner { aspect-ratio: 4/3; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 16px; }
+.visual-tile.carousel { background: linear-gradient(135deg, #1B2A4A 0%, #243655 100%); border: 1px solid rgba(240,165,0,0.20); }
+.visual-tile.post { background: linear-gradient(135deg, #1B2A4A 0%, #1D2D47 100%); border: 1px solid rgba(240,165,0,0.15); }
+.visual-tile.infographic { background: linear-gradient(135deg, #162238 0%, #1B2A4A 100%); border: 1px solid rgba(240,165,0,0.10); }
+.tile-accent-bar { width: 36px; height: 3px; background: #F0A500; border-radius: 2px; margin-bottom: 12px; }
+.tile-lines { width: 100%; }
+.tile-line { height: 7px; background: rgba(245,240,232,0.15); border-radius: 3px; margin-bottom: 6px; }
+.tile-line.short { width: 60%; }
+.tile-line.medium { width: 80%; }
+.tile-line.full { width: 100%; }
+.tile-label { font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); text-align: center; margin-top: 10px; padding: 6px; background: var(--bg3); }
+.visuals-note { font-size: 13px; color: var(--text-dim); text-align: center; margin-top: 18px;
+  padding-top: 18px; border-top: 1px solid var(--border); line-height: 1.7; }
+.visuals-note strong { color: var(--text); }
+
+/* CTA footer */
+.cta-footer { margin-top: 36px; background: linear-gradient(135deg, rgba(255,153,0,0.08) 0%, rgba(106,102,163,0.06) 100%);
+  border: 1px solid rgba(255,153,0,0.30); border-radius: 12px; padding: 36px 40px; text-align: center; }
+.cta-footer-headline { font-size: 22px; font-weight: 800; color: var(--text); letter-spacing: -.01em; margin-bottom: 14px; line-height: 1.3; }
+.cta-footer-subhead { font-size: 14px; color: var(--text-dim); line-height: 1.8; max-width: 680px; margin: 0 auto 26px; }
+.cta-footer-btn { display: inline-block; background: var(--accent); color: var(--bg);
+  padding: 15px 34px; border-radius: 8px; font-family: 'Space Mono', monospace;
+  font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em;
+  text-decoration: none; transition: background .15s; margin-bottom: 14px; }
+.cta-footer-btn:hover { background: #ffb340; }
+.cta-footer-note { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: .04em; }
+
+/* Content engine post cards */
+.post-cards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 28px; }
+.post-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 24px 26px; }
+.post-type-label { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--primary-light); margin-bottom: 6px; }
+.post-type-desc { font-size: 11px; color: var(--text-muted); margin-bottom: 16px;
+  padding-bottom: 16px; border-bottom: 1px solid var(--border); line-height: 1.5; }
+.post-text { font-size: 13px; color: var(--text-dim); line-height: 1.85; white-space: pre-line; }
+.post-cta-line { margin-top: 14px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.06);
+  font-size: 12px; color: var(--accent); font-weight: 600; }
+
+/* Views */
+.view { display: none; }
+.view.active { display: block; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+  .mobile-topbar { display: flex; }
+  .mobile-tabs { display: flex; }
+  .main { margin-left: 0; padding: 16px; }
+  .tab-bar { display: none; }
+  .icp-grid { grid-template-columns: 1fr; }
+  .signal-cards { grid-template-columns: 1fr; }
+  .intel-grid { grid-template-columns: 1fr 1fr; }
+  .contact-grid { grid-template-columns: 1fr; }
+  .why-grid { grid-template-columns: 1fr; }
+  .post-cards-grid { grid-template-columns: 1fr; }
+  .visuals-header { grid-template-columns: 1fr; }
+  .card-header { flex-wrap: wrap; gap: 8px; }
+  .lead-name { font-size: 15px; }
+  .cta-footer { padding: 24px 20px; }
+  .cta-footer-btn { width: 100%; text-align: center; display: block; }
+  .email-meta { flex-direction: column; align-items: flex-start; gap: 8px; }
+}
+@media (max-width: 480px) {
+  .intel-grid { grid-template-columns: 1fr; }
+  .visuals-tiles { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- Mobile top bar -->
+<div class="mobile-topbar">
+  <div class="mobile-logo">Pipelind</div>
+  <div class="mobile-prospect-name">Michael's Report</div>
+</div>
+
+<!-- Mobile tab pills -->
+<div class="mobile-tabs">
+  <button class="mobile-tab-pill active" onclick="showView('pipeline', this)">Pipeline Engine</button>
+  <button class="mobile-tab-pill" onclick="showView('content', this)">Content Engine</button>
+</div>
+
+<!-- Desktop sidebar -->
+<nav class="sidebar">
+  <div class="sidebar-logo">Pipelind</div>
+  <div class="prospect-block">
+    <div class="prospect-label">Personalised For</div>
+    <div class="prospect-name">Michael W.</div>
+    <div class="prospect-meta">May 2026 · Lead Demo</div>
+  </div>
+  <div class="nav-item active" id="nav-pipeline" onclick="showView('pipeline', this)">Pipeline Engine</div>
+  <div class="nav-item" id="nav-content" onclick="showView('content', this)">Content Engine</div>
+  <div class="sidebar-footer">Personalised build<br>Real signal data<br>Sample of your full delivery</div>
+</nav>
+
+<!-- Main content -->
+<main class="main">
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="showView('pipeline', this)">Pipeline Engine</button>
+    <button class="tab-btn" onclick="showView('content', this)">Content Engine</button>
+  </div>
+
+  <!-- PIPELINE ENGINE VIEW -->
+  <div class="view active" id="view-pipeline">
+
+    <div class="welcome-banner">
+      <div class="welcome-tag">Pipeline Engine · Personalised for Michael W.</div>
+      <div class="welcome-text">
+        These are <strong>5 real buyer profiles</strong> pulled from your ICP this week. Each one carries an active market signal from the last 90 days. The full system delivers 10 profiles like these every Monday, each with signal intelligence, direct contact details, and outreach ready to send from your account.
+      </div>
+    </div>
+
+    <div class="pulse-panel">
+      <div class="pulse-label">Market Intelligence Pulse · Week of 29 May 2026</div>
+      <div class="pulse-text">This week's signal pool shows a concentration of ops headcount growth and sales hiring events across UK-based founder-led consumer and retail businesses in the £1m-£10m range. The hiring patterns indicate founders are scaling past the point where they can hold strategy, people, and operations simultaneously, which is the precise window where a fractional COO engagement converts. Content angle: the "three things that actually scale a business" framing maps directly to what these founders are experiencing right now.</div>
+    </div>
+
+    <div class="icp-grid">
+      <div class="icp-panel">
+        <div class="panel-title">Target Buyer Profile · Configured for Michael</div>
+        <div class="icp-item"><span class="icp-label">Buyer title</span><span class="icp-value">Founder, CEO, Co-CEO, MD</span></div>
+        <div class="icp-item"><span class="icp-label">Company stage</span><span class="icp-value">£1m-£10m revenue, scaling</span></div>
+        <div class="icp-item"><span class="icp-label">Company size</span><span class="icp-value">11-200 employees</span></div>
+        <div class="icp-item"><span class="icp-label">Geography</span><span class="icp-value">United Kingdom</span></div>
+        <div class="icp-item"><span class="icp-label">Active signals</span><span class="icp-value">Ops hiring, headcount growth, founder-led</span></div>
+        <div class="icp-item"><span class="icp-label">Sector focus</span><span class="icp-value">Consumer, retail, e-commerce, B2B services</span></div>
+      </div>
+      <div class="icp-panel">
+        <div class="panel-title">Sample Quality</div>
+        <div class="quality-grid">
+          <div class="quality-metric"><div class="quality-num">5</div><div class="quality-label">ICP Leads</div></div>
+          <div class="quality-metric"><div class="quality-num">90</div><div class="quality-label">Day Signal Window</div></div>
+          <div class="quality-metric"><div class="quality-num">5</div><div class="quality-label">Intel Fields</div></div>
+          <div class="quality-metric"><div class="quality-num">100%</div><div class="quality-label">UK-Based</div></div>
+        </div>
+        <div class="quality-note">All leads confirmed ICP Fit. Active signal required. No two leads from same parent company. Contact details included where on record.</div>
+      </div>
+    </div>
+
+    <div class="section-header">
+      <div class="section-title">ICP-Matched Buyers</div>
+      <div class="section-count">5 of 40 monthly leads</div>
+    </div>
+
+    <!-- CARD 1: Harvey Hayer · British Corner Shop -->
+    <div class="lead-card expanded" id="card-1">
+      <div class="card-header" onclick="toggleCard('card-1')">
+        <span class="signal-badge warm">WARM</span>
+        <div class="card-header-info">
+          <div class="lead-name">Harvey Hayer</div>
+          <div class="lead-company">Co-Chief Executive Officer · British Corner Shop</div>
+          <div class="why-now-line">Ops hiring surge active · 2-year leadership anniversary signals scaling pressure now</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit: YES</span>
+        <span class="expand-icon">&#9662;</span>
+      </div>
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item"><a href="https://britishcornershop.co.uk" target="_blank">britishcornershop.co.uk</a></span>
+          <span class="identity-item">Bristol, England, UK</span>
+          <span class="identity-item">51-200 employees</span>
+          <span class="identity-item">Private · E-commerce retail</span>
+          <span class="identity-item">£5M-£10M revenue</span>
+        </div>
+        <div class="tag-row">
+          <span class="tag industry">E-commerce</span>
+          <span class="tag industry">Retail</span>
+          <span class="tag signal">Ops hiring active</span>
+          <span class="tag signal">Headcount growth</span>
+          <span class="tag context">Founder-led · 2yr leadership mark</span>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Active Market Signals</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Operations Hiring Surge</div>
+              <div class="signal-timing">Approximately 45-60 days ago</div>
+              <div class="signal-desc">British Corner Shop is actively expanding its operations function, a direct indicator that the founder-led scaling model is hitting its ceiling. This is the window where a fractional COO engagement converts, before the wrong hire is made under pressure.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">Leadership Anniversary · 2 Years</div>
+              <div class="signal-timing">Approximately 49 days ago (10 April 2026)</div>
+              <div class="signal-desc">Harvey reached his 2-year mark as Co-CEO in April 2026. Year two in a dual-leadership structure at a scaling e-commerce business is the point where operational clarity and role definition become critical, and where external operational expertise lands with the most traction.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing <span class="card-section-subtitle">Configured for Michael's Practice</span></div>
+          <div class="intel-grid">
+            <div class="intel-cell">
+              <div class="intel-cell-label">Leadership Movement</div>
+              <div class="intel-cell-value">Co-CEO structure in place. Harvey Hayer 2 years in role as of April 2026.</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Capital Activity</div>
+              <div class="intel-cell-value">No public funding activity in last 90 days</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Hiring Signals</div>
+              <div class="intel-cell-value">Operations department hiring active within last 90 days</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Expansion Signals</div>
+              <div class="intel-cell-value">International delivery model active across 100+ countries. Operational complexity is high.</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Growth Trajectory</div>
+              <div class="intel-cell-value">51-200 employee band. Revenue £5M-£10M. Scaling through ops complexity threshold.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Work Email</div>
+                <div class="contact-value">harvey.hayer@britishcornershop.co.uk</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('harvey.hayer@britishcornershop.co.uk', this)">Copy</button>
+            </div>
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">LinkedIn</div>
+                <div class="contact-value" style="font-size:11px;">Profile available</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div class="why-block">
+              <div class="why-block-title">ICP Fit for Michael</div>
+              <div class="why-block-text">British Corner Shop is a founder-led consumer e-commerce business operating at precisely the revenue and headcount stage Michael's practice targets. The dual-CEO structure and active ops hiring signal indicate the business is scaling past founder bandwidth. Michael's Sprint and Engage models are built exactly for this moment: defined-scope problem-solving before a wrong hire compounds the issue.</div>
+              <div class="fit-signal">
+                <div class="fit-signal-label">Strongest Fit Signal</div>
+                Operations hiring active while business is still in the founder-led, pre-structure phase.
+              </div>
+            </div>
+            <div class="why-block">
+              <div class="why-block-title">Why They're Looking</div>
+              <div class="why-block-text">At two years in, Harvey and his co-CEO are likely running at full bandwidth. The ops hiring signal suggests they know something needs to change structurally, but haven't yet diagnosed whether the solution is a hire, a system, or a leadership intervention. That ambiguity is exactly the gap a fractional COO with a diagnostic lens fills first.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal <span class="card-section-subtitle">2 Channels Ready</span></div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="conn-note-1">Noticed British Corner Shop is scaling its ops function. Two years into a co-CEO structure at that growth stage is a real inflection point. Doing work at the intersection of operations and leadership in founder-led businesses. Would be good to connect.
+              <div class="char-count">279 characters · LinkedIn limit: 300</div>
+            </div>
+            <button class="copy-action-btn" onclick="copyElementText('conn-note-1', this)">Copy Connection Note</button>
+          </div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Email Draft · Ready to Send</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject Line</div>
+              <div class="email-subject-value" id="email-subj-1">British Corner Shop · ops scaling at year two</div>
+              <div class="email-body" id="email-body-1">Harvey,
+
+Noticed British Corner Shop has been building out its operations team over the last couple of months. Two years into the co-CEO structure at that headcount and revenue stage is typically when the real operational complexity starts to outpace what founders can hold alongside everything else.
+
+The work I do with founder-led businesses at this stage is about identifying the one constraint in the strategy, people, or ops layer that, once resolved, makes everything else easier. It isn't consulting in the traditional sense. It's closer to being embedded as the senior operations and leadership partner the business needs before it can make the right hire or the right structural call.
+
+Would a 30-minute conversation be useful? No deck, no pitch, just an honest look at where things are.
+
+Michael Wakeham
+Brynley Knight · brynleyknight.com</div>
+              <div class="email-meta">
+                <span class="email-word-count">138 words · safe for cold send</span>
+                <span class="email-safe-label">Ready to Send</span>
+              </div>
+            </div>
+            <button class="copy-action-btn" onclick="copyFullEmail('email-subj-1', 'email-body-1', this)">Copy Email Draft</button>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Prospect Intelligence</div>
+          <div class="intel-callout">
+            <div class="intel-callout-label">Leadership Anniversary Detected</div>
+            Harvey Hayer reached his 2-year mark as Co-CEO at British Corner Shop in April 2026. The first and second anniversaries in a founder-led scaling role are the highest-intent windows for operational leadership conversations. The business is past the initial setup, and the gaps in systems and structure are now visible enough to act on.
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Follow-Up Sequence <span class="card-section-subtitle">Built for This Lead's Signal</span></div>
+          <div class="touch-section-header">FULL DFY PIPELINE · 5-TOUCH CONVERSATION ENGINE</div>
+
+          <div class="touch-block">
+            <div class="touch-day-label">Day 0</div>
+            <div class="touch-type-label">Connection Request</div>
+            <div class="touch-message" id="touch1-1">Noticed British Corner Shop is scaling its ops function. Two years into a co-CEO structure at that growth stage is a real inflection point. Doing work at the intersection of operations and leadership in founder-led businesses. Would be good to connect.</div>
+            <button class="copy-action-btn" onclick="copyToClipboard(document.getElementById('touch1-1').textContent.trim(), this)">Copy</button>
+          </div>
+
+          <div class="touch-block">
+            <div class="touch-day-label">Day 3-5</div>
+            <div class="touch-type-label">Ice Break · After Connection Accepts</div>
+            <div class="touch-message" id="touch2-1">Thanks for connecting, Harvey. Noticed the ops team has been growing at British Corner Shop over the last few months. International e-commerce at that headcount tends to create a specific kind of operational complexity around fulfilment, team coordination, and decision-making velocity. What's been the biggest constraint on your side as you've scaled through this stage?</div>
+            <button class="copy-action-btn" onclick="copyToClipboard(document.getElementById('touch2-1').textContent.trim(), this)">Copy</button>
+          </div>
+
+          <div class="touch-block">
+            <div class="touch-day-label">Day 8-12</div>
+            <div class="touch-type-label">Value Drop</div>
+            <div class="touch-message" id="touch3-1">Something I see consistently in founder-led businesses at the £5m-£10m mark: the operations function gets built reactively, hire by hire, rather than as a coherent system. The result is a team that is growing but not yet organised around a clear operating model. The business works, but decisions that should be delegated are still landing on the CEO. Happy to share what has worked at this stage if it's useful.</div>
+            <button class="copy-action-btn" onclick="copyToClipboard(document.getElementById('touch3-1').textContent.trim(), this)">Copy</button>
+          </div>
+
+          <div class="touch-block">
+            <div class="touch-day-label">Day 15-20</div>
+            <div class="touch-type-label">Soft Ask</div>
+            <div class="touch-message" id="touch4-1">The work I've done with businesses at exactly British Corner Shop's stage is about creating enough operational clarity that the founding team can lead rather than manage. If a 15-minute conversation would be useful, I'm happy to make time.</div>
+            <button class="copy-action-btn" onclick="copyToClipboard(document.getElementById('touch4-1').textContent.trim(), this)">Copy</button>
+          </div>
+
+          <div class="touch-block">
+            <div class="touch-day-label">Day 25-30</div>
+            <div class="touch-type-label">Clean Exit</div>
+            <div class="touch-message" id="touch5-1">Timing isn't always right, and the ops scaling stage at British Corner Shop is clearly full-on right now. If the question of how to build the leadership layer around a growing team ever becomes relevant, I'm easy to find.</div>
+            <button class="copy-action-btn" onclick="copyToClipboard(document.getElementById('touch5-1').textContent.trim(), this)">Copy</button>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <a class="linkedin-btn" href="https://linkedin.com/in/ACoAAA-gKXMBzq74y84fvqTf578oUxVeFuuiudY" target="_blank" title="May require LinkedIn login">View on LinkedIn →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 2: Chris Reynolds · ThruDark -->
+    <div class="lead-card" id="card-2">
+      <div class="card-header" onclick="toggleCard('card-2')">
+        <span class="signal-badge warm">WARM</span>
+        <div class="card-header-info">
+          <div class="lead-name">Chris Reynolds</div>
+          <div class="lead-company">Chief Executive Officer · ThruDark</div>
+          <div class="why-now-line">Ops hiring active · premium consumer brand scaling at year 3 of CEO tenure</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit: YES</span>
+        <span class="expand-icon">&#9662;</span>
+      </div>
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item"><a href="https://thrudark.com" target="_blank">thrudark.com</a></span>
+          <span class="identity-item">Poole, England, UK</span>
+          <span class="identity-item">11-50 employees</span>
+          <span class="identity-item">Private · Performance apparel</span>
+          <span class="identity-item">£5M-£10M revenue</span>
+        </div>
+        <div class="tag-row">
+          <span class="tag industry">Consumer brand</span>
+          <span class="tag industry">Performance apparel</span>
+          <span class="tag signal">Ops hiring active</span>
+          <span class="tag context">Founder-CEO · 3yr tenure mark</span>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Active Market Signals</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Operations Hiring Surge</div>
+              <div class="signal-timing">Approximately 45-70 days ago</div>
+              <div class="signal-desc">ThruDark has been adding to its operations function, consistent with a brand at this revenue stage moving from scrappy-and-fast to needing repeatable systems. This is a critical window before operational debt compounds and the CEO becomes the bottleneck.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">CEO Tenure · 3-Year Mark</div>
+              <div class="signal-timing">Upcoming July 2026</div>
+              <div class="signal-desc">Chris Reynolds approaches his 3-year anniversary at ThruDark in July 2026. Year three in a founder-CEO role at a scaling consumer brand is the point where the operations layer either gets structured properly or begins creating drag on everything else in the business.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing <span class="card-section-subtitle">Configured for Michael's Practice</span></div>
+          <div class="intel-grid">
+            <div class="intel-cell">
+              <div class="intel-cell-label">Leadership Movement</div>
+              <div class="intel-cell-value">Chris Reynolds CEO since approximately July 2023. Operational and IT background before Brynley Knight era.</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Capital Activity</div>
+              <div class="intel-cell-value">No public funding activity in last 90 days</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Hiring Signals</div>
+              <div class="intel-cell-value">Operations department hiring active within last 90 days</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Expansion Signals</div>
+              <div class="intel-cell-value">No expansion signals in last 90 days</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Growth Trajectory</div>
+              <div class="intel-cell-value">11-50 to £5M-£10M range. Premium positioning. Scaling through production and ops complexity.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Work Email</div>
+                <div class="contact-value">chris@thrudark.com</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('chris@thrudark.com', this)">Copy</button>
+            </div>
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">LinkedIn</div>
+                <div class="contact-value" style="font-size:11px;">Profile available</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div class="why-block">
+              <div class="why-block-title">ICP Fit for Michael</div>
+              <div class="why-block-text">ThruDark is a founder-led performance brand scaling through exactly the revenue and headcount range where operational complexity outpaces what a CEO can hold alone. Chris has a systems and operations background, which means he will understand the diagnosis Michael brings. The three-year CEO mark and active ops hiring are the two clearest signals this conversation is timely.</div>
+              <div class="fit-signal">
+                <div class="fit-signal-label">Strongest Fit Signal</div>
+                CEO with ops background scaling a premium brand through the people-and-systems inflection point.
+              </div>
+            </div>
+            <div class="why-block">
+              <div class="why-block-title">Why They're Looking</div>
+              <div class="why-block-text">At £5m-£10m revenue with 11-50 people, ThruDark is at the stage where adding headcount without adding structure creates drag rather than pace. Chris's background means he likely already knows what the problem is. What he may not have is the senior partner to help him implement the right structural change without disrupting what is working. That is the gap Michael fills.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal <span class="card-section-subtitle">2 Channels Ready</span></div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="conn-note-2">Noticed ThruDark building out its operations function. Scaling a premium consumer brand through the 50-person mark is a very specific challenge. Work at the intersection of strategy, people, and operational leadership in founder-led businesses. Would be good to connect.
+              <div class="char-count">267 characters · LinkedIn limit: 300</div>
+            </div>
+            <button class="copy-action-btn" onclick="copyElementText('conn-note-2', this)">Copy Connection Note</button>
+          </div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Email Draft · Ready to Send</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject Line</div>
+              <div class="email-subject-value" id="email-subj-2">ThruDark · operations and leadership at the scaling stage</div>
+              <div class="email-body" id="email-body-2">Chris,
+
+Noticed ThruDark has been expanding its operations function over the last couple of months. Scaling a premium performance brand through the 11-50 person mark is a particular kind of challenge, where the operational model that got you here typically needs rebuilding before it can take you to the next stage.
+
+The work I do with founders at this stage is about identifying what in the strategy, people, or operational layer is creating the most drag, and resolving it with director-level experience rather than a consultant's report. The engagement models are either a defined-scope Sprint or an embedded monthly Engage, depending on what the business actually needs.
+
+Would a 30-minute discovery call be worth your time? No pitch, just an honest conversation.
+
+Michael Wakeham
+Brynley Knight · brynleyknight.com</div>
+              <div class="email-meta">
+                <span class="email-word-count">141 words · safe for cold send</span>
+                <span class="email-safe-label">Ready to Send</span>
+              </div>
+            </div>
+            <button class="copy-action-btn" onclick="copyFullEmail('email-subj-2', 'email-body-2', this)">Copy Email Draft</button>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Prospect Intelligence</div>
+          <div class="intel-callout">
+            <div class="intel-callout-label">CEO Anniversary · Upcoming July 2026</div>
+            Chris Reynolds approaches his 3-year anniversary as CEO at ThruDark in July 2026. Year three at a scaling consumer brand is statistically when operational drag becomes visible to the founder, and when external senior leadership support has the most impact on the business.
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Follow-Up Sequence <span class="card-section-subtitle">Built for This Lead's Signal</span></div>
+          <div class="touch-block">
+            <div class="touch-day-label">Day 0</div>
+            <div class="touch-type-label">Connection Request</div>
+            <div class="touch-message" id="touch1-2">Noticed ThruDark building out its operations function. Scaling a premium consumer brand through the 50-person mark is a very specific challenge. Work at the intersection of strategy, people, and operational leadership in founder-led businesses. Would be good to connect.</div>
+            <button class="copy-action-btn" onclick="copyToClipboard(document.getElementById('touch1-2').textContent.trim(), this)">Copy</button>
+          </div>
+          <div class="touch-collapsed-indicator">· · · 4 additional touches included in full delivery</div>
+        </div>
+
+        <div class="card-footer">
+          <a class="linkedin-btn" href="https://linkedin.com/in/ACoAAAKzVWoBjRT4zhcoaSdOfTJeD00vClT6wew" target="_blank" title="May require LinkedIn login">View on LinkedIn →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 3: Louise Doyle · needi -->
+    <div class="lead-card" id="card-3">
+      <div class="card-header" onclick="toggleCard('card-3')">
+        <span class="signal-badge warm">WARM</span>
+        <div class="card-header-info">
+          <div class="lead-name">Louise Doyle</div>
+          <div class="lead-company">Chief Executive Officer · needi</div>
+          <div class="why-now-line">Sales and ops hiring active · 5-year founder tenure signals strategic stagnation window</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit: YES</span>
+        <span class="expand-icon">&#9662;</span>
+      </div>
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item"><a href="https://needi.co.uk" target="_blank">needi.co.uk</a></span>
+          <span class="identity-item">Manchester, England, UK</span>
+          <span class="identity-item">11-50 employees</span>
+          <span class="identity-item">Private · B2B gifting platform</span>
+          <span class="identity-item">£5M-£10M revenue</span>
+        </div>
+        <div class="tag-row">
+          <span class="tag industry">B2B services</span>
+          <span class="tag industry">Corporate gifting</span>
+          <span class="tag signal">Sales hiring active</span>
+          <span class="tag signal">Ops growth signal</span>
+          <span class="tag context">Founder-CEO · 5yr tenure</span>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Active Market Signals</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Sales Department Hiring</div>
+              <div class="signal-timing">Approximately 30-60 days ago</div>
+              <div class="signal-desc">needi is growing its sales function, consistent with a B2B platform pushing through a revenue plateau. Sales headcount growth without the underlying people and operational infrastructure in place typically creates coordination drag. The strategic layer often needs attention before the sales investment fully converts.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">CEO Tenure · 5-Year Mark</div>
+              <div class="signal-timing">Upcoming June 2026</div>
+              <div class="signal-desc">Louise Doyle approaches her 5-year anniversary as CEO at needi in June 2026. Year five in a founder-led B2B services business is the most common inflection point for stagnation: the business works, but growth has slowed. A senior outside perspective on strategy, people, and structure is the typical unlock.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing <span class="card-section-subtitle">Configured for Michael's Practice</span></div>
+          <div class="intel-grid">
+            <div class="intel-cell">
+              <div class="intel-cell-label">Leadership Movement</div>
+              <div class="intel-cell-value">Louise Doyle CEO approximately 5 years. Prior background in sales management and expedition leadership roles.</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Capital Activity</div>
+              <div class="intel-cell-value">No public funding activity in last 90 days</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Hiring Signals</div>
+              <div class="intel-cell-value">Sales department hiring active. Broader headcount growth signal present.</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Expansion Signals</div>
+              <div class="intel-cell-value">FT100 client base growing. Concierge gifting model expanding to enterprise accounts.</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Growth Trajectory</div>
+              <div class="intel-cell-value">B2B platform at £5M-£10M. AI-enhanced gifting model. Positioned for institutional scale if people and ops layer catches up.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Work Email</div>
+                <div class="contact-value">louise@needi.co.uk</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('louise@needi.co.uk', this)">Copy</button>
+            </div>
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Mobile</div>
+                <div class="contact-value unavailable">Direct contact not on record</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div class="why-block">
+              <div class="why-block-title">ICP Fit for Michael</div>
+              <div class="why-block-text">needi is a founder-led B2B services platform at the revenue and headcount stage where Michael's practice is most effective. The 5-year founder tenure combined with active sales hiring is a textbook signal for the inflection point Michael diagnoses: the business has proven its model but hasn't yet built the leadership infrastructure to scale it. That gap is exactly where a Sprint or Engage engagement starts.</div>
+              <div class="fit-signal">
+                <div class="fit-signal-label">Strongest Fit Signal</div>
+                5-year founder-CEO tenure at a B2B platform actively hiring into sales without the underlying ops structure to support it.
+              </div>
+            </div>
+            <div class="why-block">
+              <div class="why-block-title">Why They're Looking</div>
+              <div class="why-block-text">At year five, Louise likely knows the business well enough to feel where it's stuck but may not have the external senior perspective to name the constraint precisely. The sales hiring investment is a signal of ambition, but without the strategy and people layer sorted, it risks creating a more complex version of the same bottleneck. A fractional COO with a diagnostic approach answers the question before the wrong hire is made.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal <span class="card-section-subtitle">2 Channels Ready</span></div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="conn-note-3">Noticed needi growing its sales team. Five years into building a B2B platform at that revenue stage is where the strategy and people layer often becomes the next constraint. Work with founders at exactly this inflection point. Would be good to connect.
+              <div class="char-count">249 characters · LinkedIn limit: 300</div>
+            </div>
+            <button class="copy-action-btn" onclick="copyElementText('conn-note-3', this)">Copy Connection Note</button>
+          </div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Email Draft · Ready to Send</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject Line</div>
+              <div class="email-subject-value" id="email-subj-3">needi · strategy and people at the five-year mark</div>
+              <div class="email-body" id="email-body-3">Louise,
+
+Noticed needi has been adding to its sales team over the last couple of months. Five years into building a B2B platform at the revenue and headcount stage you're operating at is typically where the sales investment starts to reveal whether the underlying strategy, people infrastructure, and operational model can support the next level of growth.
+
+The work I do with founder-led businesses at this stage starts with diagnosing which of the three layers is the actual constraint. Often it isn't where the founder suspects. The engagement is either a focused Sprint to resolve a specific problem or an ongoing Engage retainer embedded in the leadership team, depending on what the business needs.
+
+Would it be worth a 30-minute conversation to explore whether that's relevant to where needi is right now?
+
+Michael Wakeham
+Brynley Knight · brynleyknight.com</div>
+              <div class="email-meta">
+                <span class="email-word-count">144 words · safe for cold send</span>
+                <span class="email-safe-label">Ready to Send</span>
+              </div>
+            </div>
+            <button class="copy-action-btn" onclick="copyFullEmail('email-subj-3', 'email-body-3', this)">Copy Email Draft</button>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Prospect Intelligence</div>
+          <div class="intel-callout">
+            <div class="intel-callout-label">CEO Anniversary · Upcoming June 2026</div>
+            Louise Doyle approaches her 5-year anniversary as CEO at needi in June 2026. The 5-year mark in a founder-led B2B business is the single most common trigger for an honest strategic review. It is the point where early-stage hustle has either compounded into a sustainable model or revealed a structural ceiling. External senior perspective lands with the most traction here.
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Follow-Up Sequence <span class="card-section-subtitle">Built for This Lead's Signal</span></div>
+          <div class="touch-block">
+            <div class="touch-day-label">Day 0</div>
+            <div class="touch-type-label">Connection Request</div>
+            <div class="touch-message" id="touch1-3">Noticed needi growing its sales team. Five years into building a B2B platform at that revenue stage is where the strategy and people layer often becomes the next constraint. Work with founders at exactly this inflection point. Would be good to connect.</div>
+            <button class="copy-action-btn" onclick="copyToClipboard(document.getElementById('touch1-3').textContent.trim(), this)">Copy</button>
+          </div>
+          <div class="touch-collapsed-indicator">· · · 4 additional touches included in full delivery</div>
+        </div>
+
+        <div class="card-footer">
+          <a class="linkedin-btn" href="https://linkedin.com/in/ACoAAALhxfUBAcwjK5lqmCqSGXuMCRDxY_NBalI" target="_blank" title="May require LinkedIn login">View on LinkedIn →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 4: Nina Briance · Cult MIA -->
+    <div class="lead-card" id="card-4">
+      <div class="card-header" onclick="toggleCard('card-4')">
+        <span class="signal-badge warm">WARM</span>
+        <div class="card-header-info">
+          <div class="lead-name">Nina Briance</div>
+          <div class="lead-company">Founder & CEO · Cult MIA</div>
+          <div class="why-now-line">Headcount growth signal · 7-year founder tenure at scaling marketplace hitting structure ceiling</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit: YES</span>
+        <span class="expand-icon">&#9662;</span>
+      </div>
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item"><a href="https://cultmia.com" target="_blank">cultmia.com</a></span>
+          <span class="identity-item">London, England, UK</span>
+          <span class="identity-item">11-50 employees</span>
+          <span class="identity-item">Private · Fashion marketplace</span>
+          <span class="identity-item">£1M-£5M revenue</span>
+        </div>
+        <div class="tag-row">
+          <span class="tag industry">Fashion marketplace</span>
+          <span class="tag industry">E-commerce</span>
+          <span class="tag signal">Headcount growth</span>
+          <span class="tag context">Founder-CEO · 7yr tenure</span>
+          <span class="tag context">Award-winning independent</span>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Active Market Signals</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Headcount Growth Signal</div>
+              <div class="signal-timing">Approximately 45-80 days ago</div>
+              <div class="signal-desc">Cult MIA has been growing its team, consistent with a marketplace that has proven its model (500+ brands, 42 countries) and is now scaling toward institutional relevance. Headcount growth without a structured leadership layer underneath it is the most common source of operational drag at this stage.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">Founder Tenure · 7-Year Mark</div>
+              <div class="signal-timing">Upcoming October 2026</div>
+              <div class="signal-desc">Nina approaches her 7-year anniversary as Founder and CEO at Cult MIA in October 2026. Seven years in is where founder-led businesses either find the structure to grow past the founder's personal bandwidth, or plateau. The market has validated the model. The next constraint is almost always internal.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing <span class="card-section-subtitle">Configured for Michael's Practice</span></div>
+          <div class="intel-grid">
+            <div class="intel-cell">
+              <div class="intel-cell-label">Leadership Movement</div>
+              <div class="intel-cell-value">Nina Briance founder and CEO since 2019. Investment banking and global asset management background before Cult MIA.</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Capital Activity</div>
+              <div class="intel-cell-value">Investment banking background suggests familiarity with capital cycles. No new round flagged in last 90 days.</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Hiring Signals</div>
+              <div class="intel-cell-value">Headcount growth across departments active within last 90 days</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Expansion Signals</div>
+              <div class="intel-cell-value">500+ brands onboarded across 42 countries. Draper's Best Independent Retailer 2022. Scaling globally.</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Growth Trajectory</div>
+              <div class="intel-cell-value">£1M-£5M. Proven marketplace model. Next growth phase constrained by leadership and ops structure.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Work Email</div>
+                <div class="contact-value">nina@cultmia.com</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('nina@cultmia.com', this)">Copy</button>
+            </div>
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Mobile</div>
+                <div class="contact-value unavailable">Direct contact not on record</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div class="why-block">
+              <div class="why-block-title">ICP Fit for Michael</div>
+              <div class="why-block-text">Cult MIA is a founder-led marketplace with a proven international model that has not yet built the leadership infrastructure to scale past the founder. Nina's finance and investment background means she will evaluate any engagement through a rigorous commercial lens, which suits Michael's evidence-based diagnostic approach. The seven-year tenure and active headcount growth make this a high-intent conversation window.</div>
+              <div class="fit-signal">
+                <div class="fit-signal-label">Strongest Fit Signal</div>
+                7-year founder with proven marketplace model hitting the leadership-structure ceiling while actively growing headcount.
+              </div>
+            </div>
+            <div class="why-block">
+              <div class="why-block-title">Why They're Looking</div>
+              <div class="why-block-text">Nina's background is commercial and financial, not operational. At year seven with a globally distributed supplier base, the operational complexity of running the platform will be growing faster than her comfort zone. The headcount growth signal suggests she is trying to solve it through hiring, which is the right instinct but needs the right structure underneath it first. A senior operational partner who can diagnose before prescribing is the right fit here.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal <span class="card-section-subtitle">2 Channels Ready</span></div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="conn-note-4">Noticed Cult MIA growing its team while scaling a global marketplace model. Seven years into a founder-CEO role at that stage is where the people and operational layer becomes the next constraint on the commercial ambition. Work at this intersection with founder-led businesses. Would be good to connect.
+              <div class="char-count">288 characters · LinkedIn limit: 300</div>
+            </div>
+            <button class="copy-action-btn" onclick="copyElementText('conn-note-4', this)">Copy Connection Note</button>
+          </div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Email Draft · Ready to Send</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject Line</div>
+              <div class="email-subject-value" id="email-subj-4">Cult MIA · leadership and operations at scale</div>
+              <div class="email-body" id="email-body-4">Nina,
+
+Noticed Cult MIA has been growing its team over the last couple of months. Scaling a marketplace with 500+ brands across 42 countries while running the business as a founder-CEO is a specific kind of operational challenge. The commercial model is clearly proven. The constraint at this stage is almost always in the people and leadership infrastructure underneath it.
+
+The work I do with founder-led businesses is about bringing director-level operational and strategic experience to bear without the overhead of a full-time hire. A Sprint is a defined-scope engagement to resolve a specific problem. An Engage is an embedded monthly retainer, working alongside the founding team on the ongoing complexity of actually running and growing the business.
+
+Given where Cult MIA is, would a brief conversation be worth your time?
+
+Michael Wakeham
+Brynley Knight · brynleyknight.com</div>
+              <div class="email-meta">
+                <span class="email-word-count">146 words · safe for cold send</span>
+                <span class="email-safe-label">Ready to Send</span>
+              </div>
+            </div>
+            <button class="copy-action-btn" onclick="copyFullEmail('email-subj-4', 'email-body-4', this)">Copy Email Draft</button>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Prospect Intelligence</div>
+          <div class="intel-callout">
+            <div class="intel-callout-label">Founder Anniversary · Upcoming October 2026</div>
+            Nina Briance approaches her 7-year anniversary as Founder and CEO at Cult MIA in October 2026. Seven-year founder anniversaries are a statistically significant inflection point for honest strategic reflection. This is often when founders with a commercial background start looking seriously at what the operational layer needs to look like for the next phase.
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Follow-Up Sequence <span class="card-section-subtitle">Built for This Lead's Signal</span></div>
+          <div class="touch-block">
+            <div class="touch-day-label">Day 0</div>
+            <div class="touch-type-label">Connection Request</div>
+            <div class="touch-message" id="touch1-4">Noticed Cult MIA growing its team while scaling a global marketplace model. Seven years into a founder-CEO role at that stage is where the people and operational layer becomes the next constraint on the commercial ambition. Work at this intersection with founder-led businesses. Would be good to connect.</div>
+            <button class="copy-action-btn" onclick="copyToClipboard(document.getElementById('touch1-4').textContent.trim(), this)">Copy</button>
+          </div>
+          <div class="touch-collapsed-indicator">· · · 4 additional touches included in full delivery</div>
+        </div>
+
+        <div class="card-footer">
+          <a class="linkedin-btn" href="https://linkedin.com/in/ACoAAAbmWmUBWSCfkf7XjYPLLYcVwwI_RKsjXe0" target="_blank" title="May require LinkedIn login">View on LinkedIn →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 5: Sacha Rose · Drake's -->
+    <div class="lead-card" id="card-5">
+      <div class="card-header" onclick="toggleCard('card-5')">
+        <span class="signal-badge hot">HOT</span>
+        <div class="card-header-info">
+          <div class="lead-name">Sacha Rose</div>
+          <div class="lead-company">Chief Operating Officer · Drake's</div>
+          <div class="why-now-line">Company transition detected · moved from owner-operator to COO role approximately 5 months ago</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit: YES</span>
+        <span class="expand-icon">&#9662;</span>
+      </div>
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item"><a href="https://drakes.com" target="_blank">drakes.com</a></span>
+          <span class="identity-item">London, England, UK</span>
+          <span class="identity-item">51-200 employees</span>
+          <span class="identity-item">Private · Luxury menswear</span>
+          <span class="identity-item">£5M-£10M revenue</span>
+        </div>
+        <div class="tag-row">
+          <span class="tag industry">Luxury retail</span>
+          <span class="tag industry">Premium menswear</span>
+          <span class="tag signal">Company change · owner to COO</span>
+          <span class="tag signal">Ops hiring active</span>
+          <span class="tag context">HOT · leadership transition in progress</span>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Active Market Signals</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Company Change · Owner to COO</div>
+              <div class="signal-timing">Approximately 150 days ago (January 2026)</div>
+              <div class="signal-desc">Sacha Rose moved from being an owner-operator at Derek Rose to the COO role at Drake's in early 2026. A senior executive in a new COO seat at a premium brand within the first 90 days is the highest-intent window for strategic and operational support conversations. They are still defining the role and building the infrastructure.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">Operations Hiring Active</div>
+              <div class="signal-timing">Approximately 45-70 days ago</div>
+              <div class="signal-desc">Drake's has been expanding its operations function alongside Sacha's appointment. A new COO overseeing an active ops hiring wave is navigating simultaneous role definition and team-building, which is exactly when an experienced senior operations partner accelerates progress most.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing <span class="card-section-subtitle">Configured for Michael's Practice</span></div>
+          <div class="intel-grid">
+            <div class="intel-cell">
+              <div class="intel-cell-label">Leadership Movement</div>
+              <div class="intel-cell-value">Sacha Rose appointed COO at Drake's approximately January 2026. Previously owner at Derek Rose for 22+ years.</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Capital Activity</div>
+              <div class="intel-cell-value">No public funding activity in last 90 days</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Hiring Signals</div>
+              <div class="intel-cell-value">Operations department hiring active within last 90 days. New COO building team.</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Expansion Signals</div>
+              <div class="intel-cell-value">Drake's founded 1977. Heritage brand with Haberdasher Street flagship. Premium positioning, international sales.</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Growth Trajectory</div>
+              <div class="intel-cell-value">51-200 employees. £5M-£10M. Premium luxury brand with owner-led operations being professionalised under new COO.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Work Email</div>
+                <div class="contact-value">sacharose@drakes.com</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('sacharose@drakes.com', this)">Copy</button>
+            </div>
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Mobile</div>
+                <div class="contact-value unavailable">Direct contact not on record</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div class="why-block">
+              <div class="why-block-title">ICP Fit for Michael</div>
+              <div class="why-block-text">Sacha Rose is a new COO at a premium UK consumer brand, 5 months into the role, with an owner-operator background rather than a traditional operations career. She is building the operational infrastructure at Drake's from a position of commercial and legal expertise rather than operational systems experience. That gap is precisely where Michael's embedded, senior-partner model adds the most immediate value.</div>
+              <div class="fit-signal">
+                <div class="fit-signal-label">Strongest Fit Signal</div>
+                New COO appointment at a premium brand, 5 months in, actively hiring ops team while defining the role from scratch.
+              </div>
+            </div>
+            <div class="why-block">
+              <div class="why-block-title">Why They're Looking</div>
+              <div class="why-block-text">A new COO coming from an owner-operator background, tasked with professionalising the operations of a heritage consumer brand, faces a particular challenge: she has commercial and legal depth but may not have the operational systems fluency to build the function quickly. An experienced senior partner who can work alongside her, not above her, in the first critical year of a COO appointment is the exact value proposition that lands at this stage.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal <span class="card-section-subtitle">2 Channels Ready</span></div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="conn-note-5">Noticed your move from Derek Rose to Drake's earlier this year. Taking a COO role at a heritage consumer brand with an owner-operator background is a very specific kind of challenge. Do work at the intersection of operations, strategy, and leadership with businesses at exactly this stage. Would be good to connect.
+              <div class="char-count">298 characters · LinkedIn limit: 300</div>
+            </div>
+            <button class="copy-action-btn" onclick="copyElementText('conn-note-5', this)">Copy Connection Note</button>
+          </div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Email Draft · Ready to Send</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject Line</div>
+              <div class="email-subject-value" id="email-subj-5">Drake's · operational leadership in the first year of a COO appointment</div>
+              <div class="email-body" id="email-body-5">Sacha,
+
+Noticed you moved into the COO role at Drake's earlier this year, having come from an owner-operator background at Derek Rose. Taking on the operational leadership of a heritage consumer brand from that position is a real and specific challenge: the commercial and legal instincts are sharp, but the operational systems-building muscle is different from what running your own business requires.
+
+The work I do is about being the senior partner the business needs in exactly this kind of transition. Not a consultant who produces a report, but someone embedded alongside the leadership team with director-level experience across operations, people, and strategy. The first year of a COO appointment is when that kind of support has the most leverage.
+
+Would a 30-minute conversation be worth exploring?
+
+Michael Wakeham
+Brynley Knight · brynleyknight.com</div>
+              <div class="email-meta">
+                <span class="email-word-count">148 words · safe for cold send</span>
+                <span class="email-safe-label">Ready to Send</span>
+              </div>
+            </div>
+            <button class="copy-action-btn" onclick="copyFullEmail('email-subj-5', 'email-body-5', this)">Copy Email Draft</button>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Prospect Intelligence</div>
+          <div class="intel-callout">
+            <div class="intel-callout-label">Company Change Detected · January 2026</div>
+            Sacha Rose moved from owner-operator at Derek Rose to COO at Drake's in approximately January 2026. The first 90-180 days of a senior operations appointment is the highest-leverage window for external senior support. The role is still being defined, the team is still being built, and the incumbent is most open to the right kind of partnership.
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Follow-Up Sequence <span class="card-section-subtitle">Built for This Lead's Signal</span></div>
+          <div class="touch-block">
+            <div class="touch-day-label">Day 0</div>
+            <div class="touch-type-label">Connection Request</div>
+            <div class="touch-message" id="touch1-5">Noticed your move from Derek Rose to Drake's earlier this year. Taking a COO role at a heritage consumer brand with an owner-operator background is a very specific kind of challenge. Do work at the intersection of operations, strategy, and leadership with businesses at exactly this stage. Would be good to connect.</div>
+            <button class="copy-action-btn" onclick="copyToClipboard(document.getElementById('touch1-5').textContent.trim(), this)">Copy</button>
+          </div>
+          <div class="touch-collapsed-indicator">· · · 4 additional touches included in full delivery</div>
+        </div>
+
+        <div class="card-footer">
+          <a class="linkedin-btn" href="https://linkedin.com/in/ACoAAABJx1YBU5Ln8Mbj0U2kzzGTFL5hBijWcvE" target="_blank" title="May require LinkedIn login">View on LinkedIn →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="pipeline-math">
+      <div class="pipeline-math-text">
+        Five leads like these are delivered every week in the full system.
+        Over 12 weeks: <strong>120 ICP-matched buyers</strong> in Michael's network,
+        each carrying an active signal. The math from there is Michael's to run.
+      </div>
+    </div>
+
+    <div class="visuals-section">
+      <div class="visuals-header">
+        <div class="visuals-copy">
+          <h3>Every Monday, your content arrives finished.</h3>
+          <p>The leads are one side of the system. The content is the other. Decision-makers skim before they read. A post without a visual is half a post. Consultants who post with structured visuals consistently outperform those who post text alone, not because their thinking is sharper, but because the visual stops the scroll long enough for the thinking to land.</p>
+          <p>Every piece that benefits from a visual gets one. Finished. Attached. Ready to schedule.</p>
+          <ul class="visuals-list">
+            <li><span class="visuals-list-dot">→</span> 3 LinkedIn posts per week in your voice, formatted and ready</li>
+            <li><span class="visuals-list-dot">→</span> Carousel covers, quote graphics, and infographics — finished PNG files</li>
+            <li><span class="visuals-list-dot">→</span> 15-minute strategy Loom walking through the week's package</li>
+            <li><span class="visuals-list-dot">→</span> Zero design work on your end. Zero</li>
+          </ul>
+        </div>
+        <div>
+          <div class="visuals-tiles">
+            <div class="visual-tile carousel">
+              <div class="visual-tile-inner">
+                <div class="tile-accent-bar"></div>
+                <div class="tile-lines">
+                  <div class="tile-line full"></div>
+                  <div class="tile-line medium"></div>
+                  <div class="tile-line short"></div>
+                </div>
+              </div>
+              <div class="tile-label">Carousel Cover</div>
+            </div>
+            <div class="visual-tile post">
+              <div class="visual-tile-inner">
+                <div class="tile-accent-bar"></div>
+                <div class="tile-lines">
+                  <div class="tile-line medium"></div>
+                  <div class="tile-line full"></div>
+                  <div class="tile-line short"></div>
+                </div>
+              </div>
+              <div class="tile-label">Post Visual</div>
+            </div>
+            <div class="visual-tile infographic">
+              <div class="visual-tile-inner">
+                <div class="tile-accent-bar"></div>
+                <div class="tile-lines">
+                  <div class="tile-line full"></div>
+                  <div class="tile-line short"></div>
+                  <div class="tile-line medium"></div>
+                </div>
+              </div>
+              <div class="tile-label">Infographic</div>
+            </div>
+          </div>
+          <div class="visuals-note">
+            <strong>Visuals are finished and attached in the Monday package.</strong><br>
+            You schedule. Nothing to design. Nothing to brief.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cta-footer">
+      <div class="cta-footer-headline">This is what one week of the full system looks like for Michael.</div>
+      <div class="cta-footer-subhead">
+        Every Monday: 10 ICP-matched buyers with full signal intelligence, direct contact details, and outreach ready to send. Plus 3 posts and finished visuals in your voice. 30 minutes of your time per week.
+      </div>
+      <a class="cta-footer-btn" href="https://calendly.com/saurabh_zentro/30-min" target="_blank">Book Your 20-Min Fit Call →</a>
+      <div class="cta-footer-note">No pitch. No deck. We talk through your specific situation and confirm whether this is the right fit.</div>
+    </div>
+
+  </div><!-- end view-pipeline -->
+
+  <!-- CONTENT ENGINE VIEW -->
+  <div class="view" id="view-content">
+
+    <div class="welcome-banner">
+      <div class="welcome-tag">Content Engine · Personalised for Michael W.</div>
+      <div class="welcome-text">
+        Two sample posts written in <strong>Michael's voice</strong>, based on his LinkedIn profile and the frameworks he shares publicly. The full system delivers 3 posts per week in this voice, each reviewed and approved before scheduling. Content sits alongside the pipeline, not separate from it.
+      </div>
+    </div>
+
+    <div class="post-cards-grid">
+      <div class="post-card">
+        <div class="post-type-label">Teaching Post</div>
+        <div class="post-type-desc">Framework-forward. Written in Michael's voice. Targeted at founders running £1m-£3m businesses who are working harder than the results justify.</div>
+        <div class="post-text">Most founders at the £1m to £3m mark are not short of effort.
+
+They are short of the right diagnosis.
+
+The problem is almost never what it looks like from the inside. It presents as a people problem, a revenue problem, an operations problem. Strip it back and it is almost always one of three things sitting out of alignment: the strategy, the people, or the finances.
+
+Not all three. Usually one.
+
+When strategy is unclear, the right people still make expensive decisions. When the people layer is wrong, good strategy stays on slides. When financial control is missing, both of the above get harder to see and harder to fix.
+
+The compounding effect runs in both directions.
+
+The businesses that break through are not always the ones with the best ideas. They are the ones that identify, sometimes accidentally, the single layer that needs to change first.
+
+That tends to be the work.
+
+Comment CLARITY and I will send you the three questions I use to identify which layer is the constraint in any business at this stage.</div>
+        <div class="post-cta-line">Comment CLARITY for the diagnostic framework →</div>
+      </div>
+
+      <div class="post-card">
+        <div class="post-type-label">Handraiser Post</div>
+        <div class="post-type-desc">Designed to surface founders who are at the inflection point Michael describes. Drives "Comment LEAD" responses from qualified buyers.</div>
+        <div class="post-text">There is a specific feeling at the £1m to £3m stage that most founders describe the same way.
+
+Running faster just to stay in place.
+
+The business is growing. The team is growing. The decisions are multiplying. And the most important things, the strategy conversations, the structural questions, the people decisions that actually matter, keep getting pushed to next week.
+
+This is not a productivity problem.
+
+It is a structural one.
+
+The business has grown past the point where the founding team can hold strategy, people, and operations simultaneously. Something has to change in how the leadership layer works before the growth compounds the problem further.
+
+The businesses that resolve this cleanly do not do more things. They identify the one structural constraint and address it properly, usually with someone who has held director-level responsibility across all three areas and knows what the solution looks like before it is implemented.
+
+If that description matches where your business is right now, comment LEAD below.
+
+I will send you five real buyer profiles from your ICP as a sample of what this system delivers every week.</div>
+        <div class="post-cta-line">Comment LEAD to receive 5 ICP-matched buyer profiles →</div>
+      </div>
+    </div>
+
+    <div class="visuals-section">
+      <div class="visuals-header">
+        <div class="visuals-copy">
+          <h3>Content without visuals is half a system.</h3>
+          <p>Most consultants post text. The ones building consistent inbound post text with structure behind it. A carousel that breaks down a framework visually gets saved. A quote graphic gets shared. An infographic gets screenshotted. Saves, shares, and screenshots reach buyers who never followed you. That is organic reach you do not have to pay for.</p>
+          <p>The full system produces the visuals. You attach and schedule.</p>
+          <ul class="visuals-list">
+            <li><span class="visuals-list-dot">→</span> 2 carousels per month with finished slide visuals</li>
+            <li><span class="visuals-list-dot">→</span> 2 standalone infographics per month</li>
+            <li><span class="visuals-list-dot">→</span> Post graphics for any text post that benefits from one</li>
+            <li><span class="visuals-list-dot">→</span> All delivered as finished PNG files in the Monday package</li>
+          </ul>
+        </div>
+        <div>
+          <div class="visuals-tiles">
+            <div class="visual-tile carousel">
+              <div class="visual-tile-inner">
+                <div class="tile-accent-bar"></div>
+                <div class="tile-lines">
+                  <div class="tile-line full"></div>
+                  <div class="tile-line medium"></div>
+                  <div class="tile-line short"></div>
+                </div>
+              </div>
+              <div class="tile-label">Carousel Cover</div>
+            </div>
+            <div class="visual-tile post">
+              <div class="visual-tile-inner">
+                <div class="tile-accent-bar"></div>
+                <div class="tile-lines">
+                  <div class="tile-line medium"></div>
+                  <div class="tile-line full"></div>
+                  <div class="tile-line short"></div>
+                </div>
+              </div>
+              <div class="tile-label">Post Visual</div>
+            </div>
+            <div class="visual-tile infographic">
+              <div class="visual-tile-inner">
+                <div class="tile-accent-bar"></div>
+                <div class="tile-lines">
+                  <div class="tile-line full"></div>
+                  <div class="tile-line short"></div>
+                  <div class="tile-line medium"></div>
+                </div>
+              </div>
+              <div class="tile-label">Infographic</div>
+            </div>
+          </div>
+          <div class="visuals-note">
+            <strong>18 content pieces per month. Finished. Attached. Ready to schedule.</strong><br>
+            Your client schedules from their own account. Zero design work on your end.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cta-footer">
+      <div class="cta-footer-headline">This is what one week of the full system looks like for Michael.</div>
+      <div class="cta-footer-subhead">
+        Every Monday: 10 ICP-matched buyers with full signal intelligence, direct contact details, and outreach ready to send. Plus 3 posts and finished visuals in your voice. 30 minutes of your time per week.
+      </div>
+      <a class="cta-footer-btn" href="https://calendly.com/saurabh_zentro/30-min" target="_blank">Book Your 20-Min Fit Call →</a>
+      <div class="cta-footer-note">No pitch. No deck. We talk through your specific situation and confirm whether this is the right fit.</div>
+    </div>
+
+  </div><!-- end view-content -->
+
+</main>
+
+<script>
+function showView(name, triggerEl) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view-' + name).classList.add('active');
+  document.querySelectorAll('.nav-item, .tab-btn, .mobile-tab-pill').forEach(el => el.classList.remove('active'));
+  const navEl = document.getElementById('nav-' + name);
+  if (navEl) navEl.classList.add('active');
+  document.querySelectorAll('.tab-btn, .mobile-tab-pill').forEach(btn => {
+    if (btn.getAttribute('onclick') && btn.getAttribute('onclick').includes("'" + name + "'")) {
+      btn.classList.add('active');
+    }
+  });
+}
+
+function toggleCard(cardId) {
+  document.getElementById(cardId).classList.toggle('expanded');
+}
+
+function copyToClipboard(text, btn) {
+  navigator.clipboard.writeText(text).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = 'Copied.';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 2000);
+  }).catch(() => {
+    const el = document.createElement('textarea');
+    el.value = text;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+    btn.textContent = 'Copied.'; btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+function copyElementText(elementId, btn) {
+  const el = document.getElementById(elementId);
+  if (!el) return;
+  const charCountEl = el.querySelector('.char-count');
+  let text = el.textContent;
+  if (charCountEl) text = text.replace(charCountEl.textContent, '').trim();
+  copyToClipboard(text, btn);
+}
+
+function copyFullEmail(subjId, bodyId, btn) {
+  const subj = document.getElementById(subjId);
+  const body = document.getElementById(bodyId);
+  const text = 'Subject: ' + (subj ? subj.textContent.trim() : '') + '\n\n' + (body ? body.textContent.trim() : '');
+  copyToClipboard(text, btn);
+}
+</script>
+
+</body>
+</html>
