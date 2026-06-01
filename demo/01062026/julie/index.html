@@ -1,0 +1,1524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Julie C. · Lead Demo · Pipelind</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0A0A12;
+  --bg2: #12121E;
+  --bg3: #0E0E19;
+  --primary: #6A66A3;
+  --primary-light: #9B98C4;
+  --accent: #FF9900;
+  --success: #019047;
+  --success-light: #5AC88A;
+  --text: rgba(255,255,255,0.90);
+  --text-dim: rgba(255,255,255,0.72);
+  --text-muted: rgba(255,255,255,0.55);
+  --border: rgba(106,102,163,0.25);
+  --border-hover: rgba(106,102,163,0.55);
+  --hot: #FF4444;
+  --warm: #FF9900;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif; min-height: 100vh; }
+
+/* SIDEBAR */
+.sidebar {
+  position: fixed; top: 0; left: 0; width: 240px; height: 100vh;
+  background: var(--bg2); border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; padding: 24px 20px; z-index: 100;
+}
+.sidebar-logo { font-family: 'Space Mono', monospace; font-size: 13px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--primary-light); margin-bottom: 28px; }
+.prospect-block { margin-bottom: 32px; }
+.prospect-label { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px; }
+.prospect-name { font-size: 17px; font-weight: 800; color: var(--text); line-height: 1.25; }
+.prospect-meta { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--text-muted);
+  letter-spacing: .06em; margin-top: 4px; }
+.nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 8px;
+  cursor: pointer; margin-bottom: 4px; font-size: 13px; font-weight: 600; color: var(--text-dim);
+  transition: all .15s; border: 1px solid transparent; }
+.nav-item:hover { background: rgba(106,102,163,0.10); color: var(--text); }
+.nav-item.active { background: rgba(106,102,163,0.15); color: var(--primary-light); border-color: var(--border); }
+.sidebar-footer { margin-top: auto; font-family: 'Space Mono', monospace; font-size: 10px;
+  color: var(--text-muted); letter-spacing: .04em; line-height: 1.8; }
+
+/* MOBILE TOP BAR */
+.mobile-topbar {
+  display: none; position: sticky; top: 0; z-index: 200;
+  background: var(--bg2); border-bottom: 1px solid var(--border);
+  padding: 14px 16px; align-items: center; justify-content: space-between;
+}
+.mobile-logo { font-family: 'Space Mono', monospace; font-size: 12px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--primary-light); }
+.mobile-prospect-name { font-size: 13px; font-weight: 700; color: var(--text); }
+
+/* MOBILE TAB PILLS */
+.mobile-tabs {
+  display: none; position: sticky; top: 53px; z-index: 199;
+  background: var(--bg); border-bottom: 1px solid var(--border);
+  padding: 10px 16px; gap: 8px;
+}
+.mobile-tab-pill { padding: 7px 16px; border-radius: 20px; font-size: 12px; font-weight: 700;
+  font-family: 'Space Mono', monospace; letter-spacing: .06em; text-transform: uppercase;
+  cursor: pointer; border: 1px solid var(--border); color: var(--text-muted); background: transparent;
+  transition: all .15s; }
+.mobile-tab-pill.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+/* MAIN */
+.main { margin-left: 240px; padding: 32px 36px; max-width: 1140px; }
+
+/* TAB BAR */
+.tab-bar {
+  position: sticky; top: 0; z-index: 50; background: var(--bg);
+  border-bottom: 1px solid var(--border); display: flex; margin: -32px -36px 32px; padding: 0 36px;
+}
+.tab-btn { padding: 14px 22px; font-family: 'Space Mono', monospace; font-size: 11px;
+  font-weight: 700; letter-spacing: .10em; text-transform: uppercase; color: var(--text-muted);
+  cursor: pointer; border: none; background: transparent; border-bottom: 2px solid transparent;
+  transition: all .15s; }
+.tab-btn.active { color: var(--primary-light); border-bottom-color: var(--primary); }
+
+/* WELCOME BANNER */
+.welcome-banner { background: linear-gradient(135deg, rgba(106,102,163,0.10) 0%, rgba(255,153,0,0.05) 100%);
+  border: 1px solid var(--border); border-radius: 12px; padding: 24px 28px; margin-bottom: 28px; }
+.welcome-tag { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+.welcome-text { font-size: 14px; line-height: 1.75; color: var(--text-dim); }
+.welcome-text strong { color: var(--text); font-weight: 700; }
+
+/* PULSE PANEL */
+.pulse-panel { background: rgba(255,153,0,0.05); border: 1px solid rgba(255,153,0,0.25);
+  border-radius: 10px; padding: 18px 22px; margin-bottom: 24px; }
+.pulse-label { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+.pulse-text { font-size: 13px; line-height: 1.75; color: var(--text-dim); }
+
+/* ICP PANEL GRID */
+.icp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 28px; }
+.icp-panel { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 18px 20px; }
+.icp-panel-label { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--primary-light); margin-bottom: 12px; }
+.icp-item { font-size: 12px; color: var(--text-dim); padding: 5px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04); line-height: 1.5; }
+.icp-item:last-child { border-bottom: none; }
+.icp-item span { color: var(--text); font-weight: 600; }
+
+/* SECTION HEADER */
+.section-header { margin: 32px 0 16px; }
+.section-header-title { font-size: 18px; font-weight: 800; color: var(--text); margin-bottom: 4px; }
+.section-header-sub { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .10em;
+  text-transform: uppercase; color: var(--text-muted); }
+
+/* LEAD CARDS */
+.lead-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px;
+  margin-bottom: 16px; overflow: hidden; transition: border-color .15s; }
+.lead-card:hover { border-color: var(--border-hover); }
+.card-header { display: flex; align-items: center; gap: 14px; padding: 18px 22px;
+  cursor: pointer; user-select: none; }
+.signal-badge { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .10em; text-transform: uppercase; padding: 5px 10px; border-radius: 5px;
+  flex-shrink: 0; }
+.signal-badge.hot { background: rgba(255,68,68,0.15); color: var(--hot); border: 1px solid rgba(255,68,68,0.30); }
+.signal-badge.warm { background: rgba(255,153,0,0.12); color: var(--warm); border: 1px solid rgba(255,153,0,0.30); }
+.card-header-info { flex: 1; min-width: 0; }
+.lead-name { font-size: 16px; font-weight: 800; color: var(--text); margin-bottom: 2px; }
+.lead-company { font-size: 12px; color: var(--text-muted); margin-bottom: 4px; }
+.why-now-line { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--accent);
+  letter-spacing: .06em; }
+.icp-fit-badge { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase; background: rgba(1,144,71,0.15);
+  color: var(--success-light); border: 1px solid rgba(1,144,71,0.30); padding: 5px 10px;
+  border-radius: 5px; flex-shrink: 0; }
+.expand-icon { font-size: 12px; color: var(--text-muted); transition: transform .2s; flex-shrink: 0; }
+.lead-card.expanded .expand-icon { transform: rotate(180deg); }
+
+/* CARD BODY */
+.card-body { display: none; border-top: 1px solid var(--border); }
+.lead-card.expanded .card-body { display: block; }
+
+/* IDENTITY STRIP */
+.identity-strip { display: flex; flex-wrap: wrap; gap: 10px; padding: 14px 22px;
+  background: var(--bg3); border-bottom: 1px solid var(--border); }
+.identity-item { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--text-muted);
+  letter-spacing: .06em; }
+.identity-item a { color: var(--primary-light); text-decoration: none; }
+.identity-item a:hover { text-decoration: underline; }
+
+/* TAG ROW */
+.tag-row { display: flex; flex-wrap: wrap; gap: 8px; padding: 14px 22px; border-bottom: 1px solid var(--border); }
+.tag { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase; padding: 4px 10px; border-radius: 4px; }
+.tag.industry { background: rgba(106,102,163,0.12); color: var(--primary-light); border: 1px solid rgba(106,102,163,0.25); }
+.tag.signal { background: rgba(255,153,0,0.10); color: var(--accent); border: 1px solid rgba(255,153,0,0.25); }
+.tag.context { background: rgba(1,144,71,0.10); color: var(--success-light); border: 1px solid rgba(1,144,71,0.25); }
+
+/* CARD SECTION */
+.card-section { padding: 20px 22px; border-bottom: 1px solid var(--border); }
+.card-section:last-of-type { border-bottom: none; }
+.card-section-title { font-size: 13px; font-weight: 800; color: var(--text); margin-bottom: 12px; }
+.card-section-subtitle { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--text-muted);
+  font-weight: 400; letter-spacing: .06em; margin-left: 8px; }
+
+/* SIGNAL CARDS */
+.signal-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.signal-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+.signal-type { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .10em; text-transform: uppercase; color: var(--accent); margin-bottom: 4px; }
+.signal-timing { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--text-muted);
+  letter-spacing: .06em; margin-bottom: 8px; }
+.signal-desc { font-size: 12px; color: var(--text-dim); line-height: 1.65; }
+
+/* INTEL GRID */
+.intel-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.intel-cell { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; }
+.intel-cell-label { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase; color: var(--primary-light); margin-bottom: 6px; }
+.intel-cell-value { font-size: 12px; color: var(--text-dim); line-height: 1.55; }
+
+/* CONTACT GRID */
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.contact-item { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px;
+  padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; }
+.contact-label { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase; color: var(--primary-light); margin-bottom: 4px; }
+.contact-value { font-size: 13px; color: var(--text); font-weight: 600; }
+.contact-value.unavailable { color: var(--text-muted); font-weight: 400; font-style: italic; }
+.copy-btn { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .06em; text-transform: uppercase; background: transparent;
+  border: 1px solid var(--border); color: var(--primary-light); padding: 6px 12px; border-radius: 5px;
+  cursor: pointer; transition: all .15s; flex-shrink: 0; }
+.copy-btn:hover { border-color: var(--primary); background: rgba(106,102,163,0.10); }
+.copy-btn.copied { color: var(--success-light); border-color: var(--success); }
+
+/* WHY GRID */
+.why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.why-block { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 16px 18px; }
+.why-block-title { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .10em; text-transform: uppercase; color: var(--primary-light); margin-bottom: 10px; }
+.why-block-text { font-size: 13px; color: var(--text-dim); line-height: 1.70; margin-bottom: 12px; }
+.fit-signal { background: rgba(1,144,71,0.08); border: 1px solid rgba(1,144,71,0.20);
+  border-radius: 6px; padding: 10px 12px; margin-top: 10px; }
+.fit-signal-label { font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: .10em; text-transform: uppercase; color: var(--success-light); margin-bottom: 5px; }
+.fit-signal p, .fit-signal div { font-size: 12px; color: var(--text-dim); line-height: 1.55; }
+
+/* INTEL CALLOUT */
+.intel-callout { background: rgba(255,153,0,0.07); border: 1px solid rgba(255,153,0,0.25);
+  border-radius: 8px; padding: 14px 16px; }
+.intel-callout-label { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .10em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; }
+.intel-callout p, .intel-callout div { font-size: 13px; color: var(--text-dim); line-height: 1.65; }
+
+/* OUTREACH CHANNEL */
+.outreach-channel { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px;
+  padding: 16px 18px; margin-bottom: 14px; }
+.outreach-channel-label { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .10em; text-transform: uppercase; color: var(--primary-light); margin-bottom: 12px; }
+.connection-note { font-size: 13px; color: var(--text-dim); line-height: 1.70; margin-bottom: 10px; }
+.char-count { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--text-muted);
+  letter-spacing: .06em; margin-top: 8px; }
+.copy-action-btn { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase; background: rgba(106,102,163,0.12);
+  border: 1px solid var(--border); color: var(--primary-light); padding: 8px 16px; border-radius: 6px;
+  cursor: pointer; transition: all .15s; margin-top: 6px; }
+.copy-action-btn:hover { background: rgba(106,102,163,0.22); border-color: var(--primary); }
+.copy-action-btn.copied { color: var(--success-light); border-color: var(--success); }
+.email-block { font-size: 13px; color: var(--text-dim); line-height: 1.70; }
+.email-subject-label { font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: .10em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px; }
+.email-subject-value { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 14px;
+  padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+.email-body { font-size: 13px; color: var(--text-dim); line-height: 1.80; white-space: pre-line; margin-bottom: 12px; }
+.email-meta { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; }
+.email-word-count { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: .06em; }
+.email-safe-label { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--success-light); letter-spacing: .06em; }
+
+/* TOUCH BLOCKS */
+.touch-section-header { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--accent);
+  background: rgba(255,153,0,0.07); border: 1px solid rgba(255,153,0,0.20);
+  padding: 10px 14px; border-radius: 6px; margin-bottom: 14px; }
+.touch-block { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px;
+  padding: 14px 16px; margin-bottom: 10px; }
+.touch-day-label { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .10em; text-transform: uppercase; color: var(--accent); margin-bottom: 4px; }
+.touch-type-label { font-size: 11px; color: rgba(255,255,255,0.55); margin-bottom: 8px; }
+.touch-message { font-size: 14px; color: rgba(255,255,255,0.90); line-height: 1.65; margin-bottom: 10px; }
+.touch-collapsed-indicator { font-size: 12px; color: rgba(255,255,255,0.45); font-style: italic; padding: 10px 0; }
+
+/* CARD FOOTER */
+.card-footer { padding: 12px 22px; background: var(--bg3); border-top: 1px solid var(--border); display: flex; justify-content: flex-end; }
+.linkedin-btn { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase; padding: 8px 16px; border-radius: 6px;
+  border: 1px solid var(--border); color: var(--primary-light); text-decoration: none; transition: all .15s; }
+.linkedin-btn:hover { border-color: var(--primary); background: rgba(106,102,163,0.10); }
+
+/* PIPELINE MATH */
+.pipeline-math { background: rgba(106,102,163,0.06); border: 1px solid var(--border);
+  border-radius: 12px; padding: 22px 28px; margin: 28px 0; text-align: center; }
+.pipeline-math-text { font-size: 15px; color: var(--text-dim); line-height: 1.8; }
+.pipeline-math-text strong { color: var(--primary-light); font-weight: 700; }
+
+/* VISUAL SECTION */
+.visuals-section { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; padding: 28px 32px; margin: 28px 0; }
+.visuals-header { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-bottom: 24px; }
+.visuals-copy h3 { font-size: 18px; font-weight: 800; color: var(--text); line-height: 1.3; margin-bottom: 12px; }
+.visuals-copy p { font-size: 13px; color: var(--text-dim); line-height: 1.75; margin-bottom: 10px; }
+.visuals-list { list-style: none; margin-top: 14px; }
+.visuals-list li { font-size: 13px; color: var(--text-dim); padding: 6px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04); display: flex; gap: 10px; }
+.visuals-list li:last-child { border-bottom: none; }
+.visuals-list-dot { color: var(--success-light); font-weight: 700; flex-shrink: 0; }
+.visuals-tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.visual-tile { border-radius: 10px; overflow: hidden; }
+.visual-tile-inner { aspect-ratio: 4/3; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 16px; }
+.visual-tile.carousel { background: linear-gradient(135deg, #1B2A4A 0%, #243655 100%); border: 1px solid rgba(240,165,0,0.20); }
+.visual-tile.post { background: linear-gradient(135deg, #1B2A4A 0%, #1D2D47 100%); border: 1px solid rgba(240,165,0,0.15); }
+.visual-tile.infographic { background: linear-gradient(135deg, #162238 0%, #1B2A4A 100%); border: 1px solid rgba(240,165,0,0.10); }
+.tile-accent-bar { width: 36px; height: 3px; background: #F0A500; border-radius: 2px; margin-bottom: 12px; }
+.tile-lines { width: 100%; }
+.tile-line { height: 7px; background: rgba(245,240,232,0.15); border-radius: 3px; margin-bottom: 6px; }
+.tile-line.short { width: 60%; }
+.tile-line.medium { width: 80%; }
+.tile-line.full { width: 100%; }
+.tile-label { font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); text-align: center; margin-top: 10px; padding: 6px; background: var(--bg3); }
+.visuals-note { font-size: 13px; color: var(--text-dim); text-align: center; margin-top: 18px;
+  padding-top: 18px; border-top: 1px solid var(--border); line-height: 1.7; }
+.visuals-note strong { color: var(--text); }
+
+/* CTA FOOTER */
+.cta-footer { margin-top: 36px; background: linear-gradient(135deg, rgba(255,153,0,0.08) 0%, rgba(106,102,163,0.06) 100%);
+  border: 1px solid rgba(255,153,0,0.30); border-radius: 12px; padding: 36px 40px; text-align: center; }
+.cta-footer-headline { font-size: 22px; font-weight: 800; color: var(--text); letter-spacing: -.01em; margin-bottom: 14px; line-height: 1.3; }
+.cta-footer-subhead { font-size: 14px; color: var(--text-dim); line-height: 1.8; max-width: 680px; margin: 0 auto 26px; }
+.cta-footer-btn { display: inline-block; background: var(--accent); color: var(--bg);
+  padding: 15px 34px; border-radius: 8px; font-family: 'Space Mono', monospace;
+  font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em;
+  text-decoration: none; transition: background .15s; margin-bottom: 14px; }
+.cta-footer-btn:hover { background: #ffb340; }
+.cta-footer-note { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: .04em; }
+
+/* POSTS */
+.post-cards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 28px; }
+.post-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 24px 26px; }
+.post-type-label { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--primary-light); margin-bottom: 6px; }
+.post-type-desc { font-size: 11px; color: var(--text-muted); margin-bottom: 16px;
+  padding-bottom: 16px; border-bottom: 1px solid var(--border); line-height: 1.5; }
+.post-text { font-size: 13px; color: var(--text-dim); line-height: 1.85; white-space: pre-line; }
+.post-cta-line { margin-top: 14px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.06);
+  font-size: 12px; color: var(--accent); font-weight: 600; }
+
+/* VIEWS */
+.view { display: none; }
+.view.active { display: block; }
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+  .mobile-topbar { display: flex; }
+  .mobile-tabs { display: flex; }
+  .main { margin-left: 0; padding: 16px; }
+  .tab-bar { display: none; }
+  .icp-grid { grid-template-columns: 1fr; }
+  .signal-cards { grid-template-columns: 1fr; }
+  .intel-grid { grid-template-columns: 1fr 1fr; }
+  .contact-grid { grid-template-columns: 1fr; }
+  .why-grid { grid-template-columns: 1fr; }
+  .post-cards-grid { grid-template-columns: 1fr; }
+  .visuals-header { grid-template-columns: 1fr; }
+  .card-header { flex-wrap: wrap; gap: 8px; }
+  .lead-name { font-size: 15px; }
+  .cta-footer { padding: 24px 20px; }
+  .cta-footer-btn { width: 100%; text-align: center; display: block; }
+  .email-meta { flex-direction: column; align-items: flex-start; gap: 8px; }
+}
+@media (max-width: 480px) {
+  .intel-grid { grid-template-columns: 1fr; }
+  .visuals-tiles { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- MOBILE TOPBAR -->
+<div class="mobile-topbar">
+  <div class="mobile-logo">Pipelind</div>
+  <div class="mobile-prospect-name">Julie's Report</div>
+</div>
+
+<!-- MOBILE TABS -->
+<div class="mobile-tabs">
+  <button class="mobile-tab-pill active" onclick="showView('pipeline', this)">Pipeline Engine</button>
+  <button class="mobile-tab-pill" onclick="showView('content', this)">Content Engine</button>
+</div>
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="sidebar-logo">Pipelind</div>
+  <div class="prospect-block">
+    <div class="prospect-label">Personalized For</div>
+    <div class="prospect-name">Julie C.</div>
+    <div class="prospect-meta">June 2026 · Lead Demo</div>
+  </div>
+  <div class="nav-item active" id="nav-pipeline" onclick="showView('pipeline', this)">Pipeline Engine</div>
+  <div class="nav-item" id="nav-content" onclick="showView('content', this)">Content Engine</div>
+  <div class="sidebar-footer">Personalized build<br>Real signal data<br>Sample of your full delivery</div>
+</nav>
+
+<!-- MAIN -->
+<main class="main">
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="showView('pipeline', this)">Pipeline Engine</button>
+    <button class="tab-btn" onclick="showView('content', this)">Content Engine</button>
+  </div>
+
+  <!-- ======== PIPELINE ENGINE ======== -->
+  <div id="view-pipeline" class="view active">
+
+    <div class="welcome-banner">
+      <div class="welcome-tag">Pipeline Engine · Personalized for Julie</div>
+      <div class="welcome-text">
+        <strong>Five real buyers. Each carrying an active market signal.</strong><br>
+        These are Canadian-based founders and CEOs at growing companies that are expanding headcount, navigating new funding, or managing scaling complexity without the right financial infrastructure in place. Each profile includes direct contact details, active signal data, and outreach written in your voice — ready to copy and send.
+      </div>
+    </div>
+
+    <div class="pulse-panel">
+      <div class="pulse-label">Market Intelligence Pulse · Week of June 1, 2026</div>
+      <div class="pulse-text">This week's signal volume across your ICP: active hiring surges across professional services and consulting firms in the $5M-$25M revenue range, compressing cash-flow timelines as payroll scales ahead of revenue. The hiring-before-profitability pattern is elevated right now, which means founders at 11-200 employee companies are cash-flow vulnerable even when top-line growth looks clean. Content angle: your "Matrix Test" framework maps exactly to what these companies are experiencing this quarter.</div>
+    </div>
+
+    <div class="icp-grid">
+      <div class="icp-panel">
+        <div class="icp-panel-label">Target Buyer Profile</div>
+        <div class="icp-item">Title: <span>CEO, Founder, Co-founder, President</span></div>
+        <div class="icp-item">Company size: <span>11 to 200 employees</span></div>
+        <div class="icp-item">Revenue range: <span>$5M to $25M</span></div>
+        <div class="icp-item">Geography: <span>Canada</span></div>
+        <div class="icp-item">Stage: <span>Growing, post-startup, pre-institutional</span></div>
+        <div class="icp-item">Signal: <span>Hiring surge, funding activity, scaling pressure</span></div>
+      </div>
+      <div class="icp-panel">
+        <div class="icp-panel-label">Sample Quality</div>
+        <div class="icp-item">Leads in this sample: <span>5 of 40 monthly</span></div>
+        <div class="icp-item">Signal coverage: <span>Active signals, last 90 days</span></div>
+        <div class="icp-item">Contact data: <span>Verified email on record</span></div>
+        <div class="icp-item">Deduplication: <span>No repeats across full delivery</span></div>
+        <div class="icp-item">Connection notes: <span>Unique per card, 300-char max</span></div>
+        <div class="icp-item">Outreach emails: <span>Subject + body, ready to send</span></div>
+      </div>
+    </div>
+
+    <div class="section-header">
+      <div class="section-header-title">ICP-Matched Buyers</div>
+      <div class="section-header-sub">5 of 40 monthly leads · Active market signals only</div>
+    </div>
+
+    <!-- ======== CARD 1: Jeff Carrier · helloDarwin ======== -->
+    <div class="lead-card expanded" id="card-1">
+      <div class="card-header" onclick="toggleCard('card-1')">
+        <span class="signal-badge hot">HOT</span>
+        <div class="card-header-info">
+          <div class="lead-name">Jeff Carrier</div>
+          <div class="lead-company">Co-founder · helloDarwin · Montreal, QC</div>
+          <div class="why-now-line">Active hiring surge — team scaling across operations and sales</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit: YES</span>
+        <span class="expand-icon">&#9662;</span>
+      </div>
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item"><a href="https://hellodarwin.com" target="_blank">hellodarwin.com</a></span>
+          <span class="identity-item">Montreal, Quebec, Canada</span>
+          <span class="identity-item">51-200 employees</span>
+          <span class="identity-item">Revenue: $10M-25M</span>
+          <span class="identity-item">Business Consulting / B2B SaaS</span>
+        </div>
+        <div class="tag-row">
+          <span class="tag industry">Business Consulting</span>
+          <span class="tag industry">B2B Platform</span>
+          <span class="tag signal">Hiring Surge · Last 30 days</span>
+          <span class="tag context">Founder-led · Scaling phase</span>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Active Market Signals</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Hiring Surge · Operations</div>
+              <div class="signal-timing">Approximately 18 days ago</div>
+              <div class="signal-desc">helloDarwin is actively adding headcount across operations and client-facing roles. A growing payroll without a clean cash-flow model means the gap between receivables and obligations widens every month — exactly the situation where an independent CFO perspective creates immediate value.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">Revenue Scaling · Platform Growth</div>
+              <div class="signal-timing">Active quarter</div>
+              <div class="signal-desc">The company is expanding its grant-matching platform to serve more Canadian SMBs. Platform revenue growth at this stage typically outpaces working capital planning, creating cash-flow timing risk that founders underestimate until Q3 collections hit.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing <span class="card-section-subtitle">Configured for Julie's Practice</span></div>
+          <div class="intel-grid">
+            <div class="intel-cell">
+              <div class="intel-cell-label">Leadership Movement</div>
+              <div class="intel-cell-value">Co-founder Jeff Carrier active in growth and operations role — no recent C-suite departure detected</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Capital Activity</div>
+              <div class="intel-cell-value">No public funding round in last 90 days — bootstrapped growth model with active revenue generation</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Hiring Signals</div>
+              <div class="intel-cell-value">Active headcount expansion across operations and sales functions detected last 30 days</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Expansion Signals</div>
+              <div class="intel-cell-value">Platform expanding coverage to 2,000+ Canadian grant programs — market expansion into new client segments</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Growth Trajectory</div>
+              <div class="intel-cell-value">$10M-25M revenue range, 51-200 employees — early scaling phase with active market development</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Work Email</div>
+                <div class="contact-value">jeff@hellodarwin.com</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('jeff@hellodarwin.com', this)">Copy</button>
+            </div>
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Mobile</div>
+                <div class="contact-value unavailable">Direct contact not on record</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div class="why-block">
+              <div class="why-block-title">ICP Fit for Julie</div>
+              <div class="why-block-text">Jeff is running a $10M-25M Canadian business that is actively scaling headcount. This is the exact profile where cash-flow forecasting breaks down — payroll obligations compound faster than receivables normalize. Julie's "Napkin CFO" methodology directly addresses the founder who has built real revenue but has not built a financial system to match it.</div>
+              <div class="fit-signal">
+                <div class="fit-signal-label">Strongest Fit Signal</div>
+                <div>Active hiring surge at a bootstrapped platform company — payroll scaling without institutional financial oversight is the highest-probability pain point in Julie's practice.</div>
+              </div>
+            </div>
+            <div class="why-block">
+              <div class="why-block-title">Why They're Looking</div>
+              <div class="why-block-text">helloDarwin is adding people faster than its financial infrastructure has been built. Jeff is a co-founder managing operations and growth simultaneously, which means financial modeling is the function that falls through the cracks. When a hiring surge hits a company without a clean cash-flow runway model, the first sign of trouble usually arrives in a payroll week — not a board meeting.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal <span class="card-section-subtitle">2 Channels Ready</span></div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="conn-note-1">
+              Noticed helloDarwin is scaling headcount aggressively this quarter. Building the right cash-flow model before payroll obligations compound is something most founders address too late. Would love to connect.
+              <div class="char-count">196 characters · LinkedIn limit: 300</div>
+            </div>
+            <button class="copy-action-btn" onclick="copyElementText('conn-note-1', this)">Copy Connection Note</button>
+          </div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Email Draft · Ready to Send</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject Line</div>
+              <div class="email-subject-value" id="email-subj-1">helloDarwin's hiring pace — cash-flow question</div>
+              <div class="email-body" id="email-body-1">Jeff,
+
+Noticed helloDarwin has been actively adding people over the past few weeks. That kind of hiring momentum is usually a sign things are working — but it also compresses cash-flow timing in ways that most operators don't map until they're in the middle of it.
+
+The pattern I see consistently at this stage: revenue is growing, payroll is growing faster, and the gap between invoicing and collections starts to matter more than the top-line number. A clean "liquidity runway" model built before Q3 collections pressure arrives changes the conversation entirely.
+
+Happy to share a quick framework that has helped founders in similar positions. Worth 15 minutes if the timing is right?
+
+Julie Collin-Loughridge
+JCL Budgeting & CFO Services · jclbudgetingcfoservices.com</div>
+              <div class="email-meta">
+                <span class="email-word-count">130 words · safe for cold send</span>
+                <span class="email-safe-label">Ready to Send</span>
+              </div>
+            </div>
+            <button class="copy-action-btn" onclick="copyFullEmail('email-subj-1', 'email-body-1', this)">Copy Email Draft</button>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Follow-Up Sequence <span class="card-section-subtitle">Built for This Lead's Signal</span></div>
+          <div class="touch-section-header">FULL DFY PIPELINE · 5-TOUCH CONVERSATION ENGINE</div>
+
+          <div class="touch-block">
+            <div class="touch-day-label">Day 0</div>
+            <div class="touch-type-label">Connection Request</div>
+            <div class="touch-message" id="touch1-1">Noticed helloDarwin is scaling headcount aggressively this quarter. Building the right cash-flow model before payroll obligations compound is something most founders address too late. Would love to connect.</div>
+            <button class="copy-action-btn" onclick="copyToClipboard(document.getElementById('touch1-1').textContent.trim(), this)">Copy</button>
+          </div>
+
+          <div class="touch-block">
+            <div class="touch-day-label">Day 3-5</div>
+            <div class="touch-type-label">Ice Break · After Connection Accepts</div>
+            <div class="touch-message" id="touch2-1">Thanks for connecting, Jeff. The grant-matching platform you've built is genuinely interesting — coverage of 2,000+ Canadian programs is a meaningful moat. When you're adding headcount at this pace, how are you currently modeling the cash-flow gap between hiring costs and the revenue those hires are supposed to generate?</div>
+            <button class="copy-action-btn" onclick="copyToClipboard(document.getElementById('touch2-1').textContent.trim(), this)">Copy</button>
+          </div>
+
+          <div class="touch-block">
+            <div class="touch-day-label">Day 8-12</div>
+            <div class="touch-type-label">Value Drop</div>
+            <div class="touch-message" id="touch3-1">One pattern I see repeatedly at the $10M-25M stage when a hiring surge hits: founders are tracking revenue growth and headcount growth separately, but not modeling the intersection. The number that matters is how many weeks of operating cash remain if client collections slip by 20 days. Most operators find out what that number is at the worst possible moment. Happy to share what a straightforward liquidity runway model looks like for a platform business at your stage.</div>
+            <button class="copy-action-btn" onclick="copyToClipboard(document.getElementById('touch3-1').textContent.trim(), this)">Copy</button>
+          </div>
+
+          <div class="touch-block">
+            <div class="touch-day-label">Day 15-20</div>
+            <div class="touch-type-label">Soft Ask</div>
+            <div class="touch-message" id="touch4-1">I've worked with founders scaling through exactly this hiring phase — the ones who map their "breaking point" number before Q3 collections pressure arrives tend to have far more options than the ones who find it on a payroll Tuesday. Worth a 15-minute conversation if the timing is right for you.</div>
+            <button class="copy-action-btn" onclick="copyToClipboard(document.getElementById('touch4-1').textContent.trim(), this)">Copy</button>
+          </div>
+
+          <div class="touch-block">
+            <div class="touch-day-label">Day 25-30</div>
+            <div class="touch-type-label">Clean Exit</div>
+            <div class="touch-message" id="touch5-1">Timing may not be right with the hiring push underway — I understand that. If cash-flow planning becomes a priority as helloDarwin's headcount stabilizes, feel free to reconnect.</div>
+            <button class="copy-action-btn" onclick="copyToClipboard(document.getElementById('touch5-1').textContent.trim(), this)">Copy</button>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <a class="linkedin-btn" href="https://linkedin.com/in/ACoAAAiWbmcB68o5v84SAMJFO-7IKqn1F7NyIVY" target="_blank" title="May require LinkedIn login">View on LinkedIn →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======== CARD 2: Denis Lefebvre · Proaction International ======== -->
+    <div class="lead-card" id="card-2">
+      <div class="card-header" onclick="toggleCard('card-2')">
+        <span class="signal-badge hot">HOT</span>
+        <div class="card-header-info">
+          <div class="lead-name">Denis Lefebvre</div>
+          <div class="lead-company">President & CEO · Proaction International · Montreal, QC</div>
+          <div class="why-now-line">Team expansion and new market entry — operations scaling on three continents</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit: YES</span>
+        <span class="expand-icon">&#9662;</span>
+      </div>
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item"><a href="https://proactioninternational.com" target="_blank">proactioninternational.com</a></span>
+          <span class="identity-item">Montreal, Quebec, Canada</span>
+          <span class="identity-item">51-200 employees</span>
+          <span class="identity-item">Revenue: $10M-25M</span>
+          <span class="identity-item">Management Consulting</span>
+        </div>
+        <div class="tag-row">
+          <span class="tag industry">Management Consulting</span>
+          <span class="tag industry">Operations Advisory</span>
+          <span class="tag signal">Multi-continent Expansion · Active</span>
+          <span class="tag context">Founder-led · International scaling</span>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Active Market Signals</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Headcount Growth · Operations</div>
+              <div class="signal-timing">Approximately 22 days ago</div>
+              <div class="signal-desc">Proaction International is expanding its consulting teams across North America, Europe, and Africa. Multi-jurisdiction headcount growth at this scale introduces payroll complexity, currency exposure, and cash-flow timing mismatches that a single finance model cannot absorb cleanly.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">Market Expansion · New Regions</div>
+              <div class="signal-timing">Active quarter</div>
+              <div class="signal-desc">The firm recently moved from a standalone entity to a dss+ company structure. Integration into a larger group typically triggers a financial reporting realignment — a moment when external CFO-level clarity on cashflow and profitability becomes operationally critical.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing <span class="card-section-subtitle">Configured for Julie's Practice</span></div>
+          <div class="intel-grid">
+            <div class="intel-cell">
+              <div class="intel-cell-label">Leadership Movement</div>
+              <div class="intel-cell-value">Denis Lefebvre continues as President and CEO — stable leadership, no transition detected in last 90 days</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Capital Activity</div>
+              <div class="intel-cell-value">Merged into dss+ corporate group — implies parent-company capital structure but independent P&L management</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Hiring Signals</div>
+              <div class="intel-cell-value">Consulting team expansion across three continents — hiring in operations and professional services departments</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Expansion Signals</div>
+              <div class="intel-cell-value">Active deployment across North America, Europe, and Africa — new market entries in past 90 days</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Growth Trajectory</div>
+              <div class="intel-cell-value">$10M-25M revenue, 51-200 employees — active international scaling phase, post-acquisition integration</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Work Email (Verified)</div>
+                <div class="contact-value">dlefebvre@groupeproaction.com</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('dlefebvre@groupeproaction.com', this)">Copy</button>
+            </div>
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Mobile</div>
+                <div class="contact-value unavailable">Direct contact not on record</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div class="why-block">
+              <div class="why-block-title">ICP Fit for Julie</div>
+              <div class="why-block-text">Denis is running a multi-continent consulting operation that has recently integrated into a larger corporate group while maintaining its own P&L. This is a compound financial complexity scenario — international payroll, multi-currency cash flow, and parent-company reporting alignment simultaneously. Julie's independent, judgment-first advisory model is a direct fit for this profile.</div>
+              <div class="fit-signal">
+                <div class="fit-signal-label">Strongest Fit Signal</div>
+                <div>Post-acquisition integration into dss+ group — financial systems realignment is the highest-value intervention point for independent CFO advisory at this stage.</div>
+              </div>
+            </div>
+            <div class="why-block">
+              <div class="why-block-title">Why They're Looking</div>
+              <div class="why-block-text">Being absorbed into a larger group while maintaining independent leadership creates a dual accountability problem: Denis must satisfy parent-company financial reporting while managing the operational cash needs of a rapidly expanding consulting practice. The firms that navigate this well typically bring in external CFO-level support to translate operational reality into financial language the parent structure can absorb.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal <span class="card-section-subtitle">2 Channels Ready</span></div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="conn-note-2">
+              Noticed Proaction's expansion across three continents and the integration into the dss+ group. Managing independent P&L inside a parent structure while scaling internationally is a specific financial challenge. Would love to connect.
+              <div class="char-count">231 characters · LinkedIn limit: 300</div>
+            </div>
+            <button class="copy-action-btn" onclick="copyElementText('conn-note-2', this)">Copy Connection Note</button>
+          </div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Email Draft · Ready to Send</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject Line</div>
+              <div class="email-subject-value" id="email-subj-2">Proaction's multi-continent expansion — cash-flow question</div>
+              <div class="email-body" id="email-body-2">Denis,
+
+Noticed Proaction has been scaling actively across North America, Europe, and Africa, and has moved into the dss+ group structure. That combination — multi-region deployment and parent-company integration — creates a specific financial visibility challenge most operators underestimate.
+
+The part that typically breaks first: independent P&L management inside a parent structure while international payroll timing varies by jurisdiction. A clean cash-flow model that separates operational reality from group reporting requirements makes the difference between managing the parent relationship and being managed by it.
+
+Happy to share how founders in similar positions have structured that clarity. Worth 15 minutes if it's relevant to where Proaction is right now?
+
+Julie Collin-Loughridge
+JCL Budgeting & CFO Services · jclbudgetingcfoservices.com</div>
+              <div class="email-meta">
+                <span class="email-word-count">138 words · safe for cold send</span>
+                <span class="email-safe-label">Ready to Send</span>
+              </div>
+            </div>
+            <button class="copy-action-btn" onclick="copyFullEmail('email-subj-2', 'email-body-2', this)">Copy Email Draft</button>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Follow-Up Sequence <span class="card-section-subtitle">Built for This Lead's Signal</span></div>
+          <div class="touch-block">
+            <div class="touch-day-label">Day 0</div>
+            <div class="touch-type-label">Connection Request</div>
+            <div class="touch-message" id="touch1-2">Noticed Proaction's expansion across three continents and the integration into the dss+ group. Managing independent P&L inside a parent structure while scaling internationally is a specific financial challenge. Would love to connect.</div>
+            <button class="copy-action-btn" onclick="copyToClipboard(document.getElementById('touch1-2').textContent.trim(), this)">Copy</button>
+          </div>
+          <div class="touch-collapsed-indicator">· · · 4 additional touches included in full delivery</div>
+        </div>
+
+        <div class="card-footer">
+          <a class="linkedin-btn" href="https://linkedin.com/in/ACoAAAwVJTsBTANY4ez4p4C46pPeA21-RHxHDkg" target="_blank" title="May require LinkedIn login">View on LinkedIn →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======== CARD 3: Paul Pabla · ThoughtStorm ======== -->
+    <div class="lead-card" id="card-3">
+      <div class="card-header" onclick="toggleCard('card-3')">
+        <span class="signal-badge warm">WARM</span>
+        <div class="card-header-info">
+          <div class="lead-name">Paul Pabla</div>
+          <div class="lead-company">CEO · ThoughtStorm · Brampton, Ontario</div>
+          <div class="why-now-line">7-year mark in CEO seat — scaling consulting operation without institutional finance support</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit: YES</span>
+        <span class="expand-icon">&#9662;</span>
+      </div>
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item"><a href="https://thoughtstorminc.com" target="_blank">thoughtstorminc.com</a></span>
+          <span class="identity-item">Brampton, Ontario, Canada</span>
+          <span class="identity-item">51-200 employees</span>
+          <span class="identity-item">Revenue: $10M-25M</span>
+          <span class="identity-item">IT Management Consulting</span>
+        </div>
+        <div class="tag-row">
+          <span class="tag industry">IT Consulting</span>
+          <span class="tag industry">Technology Services</span>
+          <span class="tag signal">Headcount Expansion · Last 60 days</span>
+          <span class="tag context">Long-tenure CEO · Global operations</span>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Active Market Signals</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Hiring Surge · Consulting Teams</div>
+              <div class="signal-timing">Approximately 45 days ago</div>
+              <div class="signal-desc">ThoughtStorm is expanding its consulting delivery capacity globally. A consulting firm scaling headcount at the $10M-25M revenue stage without a project-level cash-flow model creates significant receivables timing risk — billable hours go up faster than collections normalize.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">Prospect Intelligence · 7-Year Anniversary</div>
+              <div class="signal-timing">March 2026</div>
+              <div class="signal-desc">Paul has held the CEO seat for seven years. Long-tenure founder-CEOs at this revenue stage often have strong operational instincts but underdeveloped financial infrastructure — they have scaled with the same informal systems they built in year one.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing <span class="card-section-subtitle">Configured for Julie's Practice</span></div>
+          <div class="intel-grid">
+            <div class="intel-cell">
+              <div class="intel-cell-label">Leadership Movement</div>
+              <div class="intel-cell-value">Paul Pabla has led ThoughtStorm as CEO for 7 years — stable, founder-run operation with no recent leadership transition</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Capital Activity</div>
+              <div class="intel-cell-value">No public funding round in last 90 days — privately funded, organically grown consulting business</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Hiring Signals</div>
+              <div class="intel-cell-value">Active headcount expansion in project and program delivery teams — global consulting capacity build</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Expansion Signals</div>
+              <div class="intel-cell-value">Global service delivery expansion — clients across multiple jurisdictions and industries based on LinkedIn description</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Growth Trajectory</div>
+              <div class="intel-cell-value">$10M-25M revenue, 51-200 employees — mature founder-led operation in active expansion mode</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Work Email (Verified)</div>
+                <div class="contact-value">paul.pabla@thoughtstorm.ca</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('paul.pabla@thoughtstorm.ca', this)">Copy</button>
+            </div>
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Mobile</div>
+                <div class="contact-value unavailable">Direct contact not on record</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Prospect Intelligence</div>
+          <div class="intel-callout">
+            <div class="intel-callout-label">7-Year CEO Anniversary · March 2026</div>
+            <div>Paul reached his seventh year as CEO at ThoughtStorm in March 2026. Long-tenure founder-CEOs at growing consulting firms are often operating with financial systems that were designed for a smaller version of their business — making this a natural inflection point for strategic financial advisory conversations.</div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div class="why-block">
+              <div class="why-block-title">ICP Fit for Julie</div>
+              <div class="why-block-text">Paul is a seven-year CEO of a $10M-25M consulting firm that is actively scaling its delivery capacity. The combination of long tenure, founder control, and active hiring without institutional financial oversight creates the exact environment where Julie's independent, no-hidden-agenda advisory model lands with maximum credibility.</div>
+              <div class="fit-signal">
+                <div class="fit-signal-label">Strongest Fit Signal</div>
+                <div>7 years in the CEO seat at a growing consulting firm — financial infrastructure almost certainly built for year-one scale, not the current operation.</div>
+              </div>
+            </div>
+            <div class="why-block">
+              <div class="why-block-title">Why They're Looking</div>
+              <div class="why-block-text">Consulting firms at this revenue level with founder-CEOs in place tend to have revenue growth that has outpaced their financial model. Paul is managing global client relationships and delivery capacity simultaneously — the financial operations function is typically the last to get a proper system at this stage. When headcount scales, that gap becomes expensive fast.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal <span class="card-section-subtitle">2 Channels Ready</span></div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="conn-note-3">
+              Noticed ThoughtStorm is expanding its delivery teams globally. Seven years of founder-led growth at $10M+ revenue usually means the financial infrastructure is still running on year-one systems. Would love to connect.
+              <div class="char-count">212 characters · LinkedIn limit: 300</div>
+            </div>
+            <button class="copy-action-btn" onclick="copyElementText('conn-note-3', this)">Copy Connection Note</button>
+          </div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Email Draft · Ready to Send</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject Line</div>
+              <div class="email-subject-value" id="email-subj-3">ThoughtStorm's scaling pace — financial infrastructure question</div>
+              <div class="email-body" id="email-body-3">Paul,
+
+Noticed ThoughtStorm has been building out its delivery capacity with global expansion. Seven years of founder-led consulting growth at $10M+ revenue is a meaningful milestone — and it's also the stage where I most often see the financial model running behind the operational reality.
+
+The specific gap that shows up at this point: project-level cash-flow modeling. Consulting firms that invoice on milestones or completion tend to have receivables timing that looks fine on paper and hurts on payroll week. A proper liquidity runway model changes how you manage that gap.
+
+Worth a 15-minute conversation if financial infrastructure is on your radar for this phase?
+
+Julie Collin-Loughridge
+JCL Budgeting & CFO Services · jclbudgetingcfoservices.com</div>
+              <div class="email-meta">
+                <span class="email-word-count">127 words · safe for cold send</span>
+                <span class="email-safe-label">Ready to Send</span>
+              </div>
+            </div>
+            <button class="copy-action-btn" onclick="copyFullEmail('email-subj-3', 'email-body-3', this)">Copy Email Draft</button>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Follow-Up Sequence <span class="card-section-subtitle">Built for This Lead's Signal</span></div>
+          <div class="touch-block">
+            <div class="touch-day-label">Day 0</div>
+            <div class="touch-type-label">Connection Request</div>
+            <div class="touch-message" id="touch1-3">Noticed ThoughtStorm is expanding its delivery teams globally. Seven years of founder-led growth at $10M+ revenue usually means the financial infrastructure is still running on year-one systems. Would love to connect.</div>
+            <button class="copy-action-btn" onclick="copyToClipboard(document.getElementById('touch1-3').textContent.trim(), this)">Copy</button>
+          </div>
+          <div class="touch-collapsed-indicator">· · · 4 additional touches included in full delivery</div>
+        </div>
+
+        <div class="card-footer">
+          <a class="linkedin-btn" href="https://linkedin.com/in/ACoAAAEZJw0BzausoYeTq4ugHgvVrzeiJldbHEE" target="_blank" title="May require LinkedIn login">View on LinkedIn →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======== CARD 4: Mark Kelley · Northern ======== -->
+    <div class="lead-card" id="card-4">
+      <div class="card-header" onclick="toggleCard('card-4')">
+        <span class="signal-badge warm">WARM</span>
+        <div class="card-header-info">
+          <div class="lead-name">Mark Kelley</div>
+          <div class="lead-company">CEO & Partner · Northern · London, Ontario (HQ)</div>
+          <div class="why-now-line">Digital solutions firm scaling retail and public sector client base — 2-year CEO mark</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit: YES</span>
+        <span class="expand-icon">&#9662;</span>
+      </div>
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item"><a href="https://northern.co" target="_blank">northern.co</a></span>
+          <span class="identity-item">London, Ontario, Canada</span>
+          <span class="identity-item">51-200 employees</span>
+          <span class="identity-item">Revenue: $10M-25M</span>
+          <span class="identity-item">Digital Solutions / Retail Technology</span>
+        </div>
+        <div class="tag-row">
+          <span class="tag industry">Digital Solutions</span>
+          <span class="tag industry">Retail Technology</span>
+          <span class="tag signal">Hiring Expansion · Last 60 days</span>
+          <span class="tag context">Partner-led · Dual-sector client base</span>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Active Market Signals</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Headcount Growth · Client Delivery</div>
+              <div class="signal-timing">Approximately 60 days ago</div>
+              <div class="signal-desc">Northern is expanding delivery capacity to serve retail and public sector clients. Two-sector delivery at the $10M-25M revenue range creates a cash-flow complexity that is non-obvious: public sector clients pay on 60-90 day government cycles while retail clients have seasonal payment patterns that rarely align.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">CEO Anniversary · 2-Year Mark</div>
+              <div class="signal-timing">November 2025</div>
+              <div class="signal-desc">Mark reached his two-year mark as CEO and Partner at Northern in November 2025. The second year of a CEO's tenure at a consulting-adjacent firm is typically when financial discipline questions surface — the business has grown enough to need institutional thinking, but hasn't yet built it.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing <span class="card-section-subtitle">Configured for Julie's Practice</span></div>
+          <div class="intel-grid">
+            <div class="intel-cell">
+              <div class="intel-cell-label">Leadership Movement</div>
+              <div class="intel-cell-value">Mark Kelley as CEO & Partner at 2-year mark — stable but early enough in tenure for CFO advisory conversations to land well</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Capital Activity</div>
+              <div class="intel-cell-value">No public funding round in last 90 days — partner-led private firm, organically financed</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Hiring Signals</div>
+              <div class="intel-cell-value">Client delivery team expansion in retail and public sector digital services — active headcount build</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Expansion Signals</div>
+              <div class="intel-cell-value">Dual-sector growth strategy across retail and public service industries — new client acquisitions confirmed</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Growth Trajectory</div>
+              <div class="intel-cell-value">$10M-25M revenue, 51-200 employees — active scaling with dual-sector delivery complexity</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Mobile</div>
+                <div class="contact-value">+1 (919) 616-3288</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('+19196163288', this)">Copy</button>
+            </div>
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Personal Email</div>
+                <div class="contact-value">markwilsonkelley@gmail.com</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('markwilsonkelley@gmail.com', this)">Copy</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div class="why-block">
+              <div class="why-block-title">ICP Fit for Julie</div>
+              <div class="why-block-text">Mark is two years into the CEO seat at a partner-led digital solutions firm serving retail and government clients. This is a dual-sector cash-flow complexity scenario — government payment cycles and retail payment patterns operate on completely different timelines. Julie's "Liquidity Runway" and "Matrix Test" frameworks map directly to what this business needs right now.</div>
+              <div class="fit-signal">
+                <div class="fit-signal-label">Strongest Fit Signal</div>
+                <div>Dual-sector delivery (retail + public sector) at $10M-25M revenue — government payment timing mismatches with retail cycle create predictable cash-flow pressure points.</div>
+              </div>
+            </div>
+            <div class="why-block">
+              <div class="why-block-title">Why They're Looking</div>
+              <div class="why-block-text">A firm delivering digital solutions to both retail and government clients simultaneously is managing two incompatible payment universes. Government clients run 60-90 day approval cycles. Retail clients operate on seasonality. Payroll runs on a fixed schedule that waits for neither. Without a cash-flow model that maps those timing mismatches explicitly, Mark is managing liquidity by intuition — which works until it doesn't.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal <span class="card-section-subtitle">2 Channels Ready</span></div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="conn-note-4">
+              Noticed Northern serves both retail and public sector clients simultaneously. Those two payment universes operate on completely different timelines — the cash-flow modeling that keeps them aligned is non-obvious. Would love to connect.
+              <div class="char-count">228 characters · LinkedIn limit: 300</div>
+            </div>
+            <button class="copy-action-btn" onclick="copyElementText('conn-note-4', this)">Copy Connection Note</button>
+          </div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Email Draft · Ready to Send</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject Line</div>
+              <div class="email-subject-value" id="email-subj-4">Northern's retail + public sector delivery — cash-flow timing question</div>
+              <div class="email-body" id="email-body-4">Mark,
+
+Noticed Northern is delivering digital solutions across both retail and public sector clients. That dual-sector model is commercially smart — but it creates a cash-flow timing problem that most firms in your position manage by intuition rather than model.
+
+The gap: government clients run 60-90 day payment approval cycles. Retail clients operate on seasonal payment patterns. Payroll runs on a fixed cadence. When the timing of those three things goes out of alignment in the same quarter, the stress hits fast and without obvious warning signals.
+
+I've helped business owners in exactly this position build a clear "liquidity runway" model that maps those timing mismatches before they become a cash crisis. Worth a 15-minute call to see if that's relevant for where Northern is heading?
+
+Julie Collin-Loughridge
+JCL Budgeting & CFO Services · jclbudgetingcfoservices.com</div>
+              <div class="email-meta">
+                <span class="email-word-count">145 words · safe for cold send</span>
+                <span class="email-safe-label">Ready to Send</span>
+              </div>
+            </div>
+            <button class="copy-action-btn" onclick="copyFullEmail('email-subj-4', 'email-body-4', this)">Copy Email Draft</button>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Follow-Up Sequence <span class="card-section-subtitle">Built for This Lead's Signal</span></div>
+          <div class="touch-block">
+            <div class="touch-day-label">Day 0</div>
+            <div class="touch-type-label">Connection Request</div>
+            <div class="touch-message" id="touch1-4">Noticed Northern serves both retail and public sector clients simultaneously. Those two payment universes operate on completely different timelines — the cash-flow modeling that keeps them aligned is non-obvious. Would love to connect.</div>
+            <button class="copy-action-btn" onclick="copyToClipboard(document.getElementById('touch1-4').textContent.trim(), this)">Copy</button>
+          </div>
+          <div class="touch-collapsed-indicator">· · · 4 additional touches included in full delivery</div>
+        </div>
+
+        <div class="card-footer">
+          <a class="linkedin-btn" href="https://linkedin.com/in/ACoAAAQCRF4BfXRXsFai_sczmQnqllbupPL9VAM" target="_blank" title="May require LinkedIn login">View on LinkedIn →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======== CARD 5: Patrice Genois · MECART ======== -->
+    <div class="lead-card" id="card-5">
+      <div class="card-header" onclick="toggleCard('card-5')">
+        <span class="signal-badge warm">WARM</span>
+        <div class="card-header-info">
+          <div class="lead-name">Patrice Genois</div>
+          <div class="lead-company">President · MECART Cleanrooms · Quebec, Canada</div>
+          <div class="why-now-line">Manufacturing operation at 6-year leadership mark — capital-intensive scaling without institutional CFO support</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit: YES</span>
+        <span class="expand-icon">&#9662;</span>
+      </div>
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item"><a href="https://mecart.com" target="_blank">mecart.com</a></span>
+          <span class="identity-item">Quebec, Canada</span>
+          <span class="identity-item">51-200 employees</span>
+          <span class="identity-item">Manufacturing</span>
+          <span class="industry">Cleanroom &amp; Noise Control Manufacturing</span>
+        </div>
+        <div class="tag-row">
+          <span class="tag industry">Manufacturing</span>
+          <span class="tag industry">Cleanroom Solutions</span>
+          <span class="tag signal">Active Headcount Expansion · 60 days</span>
+          <span class="tag context">Capital-intensive · Long-tenure President</span>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Active Market Signals</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Manufacturing Hiring Surge</div>
+              <div class="signal-timing">Approximately 55 days ago</div>
+              <div class="signal-desc">MECART is expanding its manufacturing workforce. Capital-intensive manufacturers at the 51-200 employee scale face a specific cash-flow structure: large upfront material procurement costs, extended project completion timelines, and invoice collection that trails delivery by 30-60 days — a receivables gap that compounds with every new project.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">President 6-Year Anniversary</div>
+              <div class="signal-timing">August 2026</div>
+              <div class="signal-desc">Patrice is approaching his 6-year anniversary as President. Long-tenure presidents at manufacturing firms in the $10M-25M range typically run financial operations with systems built in the early years — rarely updated to match current project scale, client mix, or working capital requirements.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing <span class="card-section-subtitle">Configured for Julie's Practice</span></div>
+          <div class="intel-grid">
+            <div class="intel-cell">
+              <div class="intel-cell-label">Leadership Movement</div>
+              <div class="intel-cell-value">Patrice Genois at 6-year mark as President — stable long-tenure leadership with no recent C-suite transition</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Capital Activity</div>
+              <div class="intel-cell-value">No public funding round in last 90 days — privately held manufacturer, capital deployment through operational cash</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Hiring Signals</div>
+              <div class="intel-cell-value">Manufacturing headcount expansion — skilled tradespeople and delivery personnel being added to production capacity</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Expansion Signals</div>
+              <div class="intel-cell-value">Project capacity expansion in cleanroom and noise control solutions — new client project pipeline building</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Growth Trajectory</div>
+              <div class="intel-cell-value">51-200 employees, manufacturing scale — capital-intensive project model with significant working capital requirements</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Work Email</div>
+                <div class="contact-value unavailable">Direct contact not on record</div>
+              </div>
+            </div>
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Mobile</div>
+                <div class="contact-value unavailable">Direct contact not on record</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div class="why-block">
+              <div class="why-block-title">ICP Fit for Julie</div>
+              <div class="why-block-text">Patrice runs a capital-intensive manufacturing business that is actively expanding production capacity. This profile generates the most acute cash-flow stress in Julie's ICP universe: material procurement costs hit immediately, labour costs run through the project, and client invoicing happens at completion — a timeline that can be 90 to 180 days of working capital exposure per project.</div>
+              <div class="fit-signal">
+                <div class="fit-signal-label">Strongest Fit Signal</div>
+                <div>Capital-intensive manufacturer adding headcount without external CFO oversight — working capital modeling is the highest-impact intervention for this profile.</div>
+              </div>
+            </div>
+            <div class="why-block">
+              <div class="why-block-title">Why They're Looking</div>
+              <div class="why-block-text">A cleanroom manufacturer taking on more projects simultaneously is multiplying the gap between cash out (materials, labour) and cash in (project completion invoicing). Every new project added to the pipeline before prior projects have invoiced increases the working capital requirement non-linearly. At 51-200 employees, this pattern is typically managed by the owner's instinct — which works until the pipeline grows faster than the bank account.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal <span class="card-section-subtitle">2 Channels Ready</span></div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="conn-note-5">
+              Noticed MECART is expanding its manufacturing capacity. Capital-intensive project businesses at your scale face a specific working capital timing problem — materials out long before invoicing in. Would love to connect.
+              <div class="char-count">208 characters · LinkedIn limit: 300</div>
+            </div>
+            <button class="copy-action-btn" onclick="copyElementText('conn-note-5', this)">Copy Connection Note</button>
+          </div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Email Draft · Ready to Send</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject Line</div>
+              <div class="email-subject-value" id="email-subj-5">MECART's project capacity expansion — working capital question</div>
+              <div class="email-body" id="email-body-5">Patrice,
+
+Noticed MECART has been adding manufacturing capacity — cleanroom and noise control projects at your scale are capital-intensive in a specific way that most business owners only map after a tight quarter forces the issue.
+
+The pattern: material procurement costs hit at project start, labour runs through delivery, and client invoicing happens at completion. When you're running multiple projects simultaneously, that gap compounds. The question that matters is not whether you're profitable — it's how many weeks of operating cash you have if two project completions slip by 30 days at the same time.
+
+Happy to share how I've helped manufacturing owners in similar positions model that working capital requirement before it becomes a constraint. Worth 15 minutes?
+
+Julie Collin-Loughridge
+JCL Budgeting & CFO Services · jclbudgetingcfoservices.com</div>
+              <div class="email-meta">
+                <span class="email-word-count">133 words · safe for cold send</span>
+                <span class="email-safe-label">Ready to Send</span>
+              </div>
+            </div>
+            <button class="copy-action-btn" onclick="copyFullEmail('email-subj-5', 'email-body-5', this)">Copy Email Draft</button>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Follow-Up Sequence <span class="card-section-subtitle">Built for This Lead's Signal</span></div>
+          <div class="touch-block">
+            <div class="touch-day-label">Day 0</div>
+            <div class="touch-type-label">Connection Request</div>
+            <div class="touch-message" id="touch1-5">Noticed MECART is expanding its manufacturing capacity. Capital-intensive project businesses at your scale face a specific working capital timing problem — materials out long before invoicing in. Would love to connect.</div>
+            <button class="copy-action-btn" onclick="copyToClipboard(document.getElementById('touch1-5').textContent.trim(), this)">Copy</button>
+          </div>
+          <div class="touch-collapsed-indicator">· · · 4 additional touches included in full delivery</div>
+        </div>
+
+        <div class="card-footer">
+          <a class="linkedin-btn" href="https://linkedin.com/in/ACoAAADmUFkBBvsDVGI-pOf6wA_Q-yzrSS-QX5k" target="_blank" title="May require LinkedIn login">View on LinkedIn →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- PIPELINE MATH -->
+    <div class="pipeline-math">
+      <div class="pipeline-math-text">
+        Five leads like these are delivered every week in the full system.
+        Over 12 weeks: <strong>120 ICP-matched buyers</strong> in Julie's network,
+        each carrying an active signal. The math from there is Julie's to run.
+      </div>
+    </div>
+
+    <!-- VISUAL GRAPHICS SECTION -->
+    <div class="visuals-section">
+      <div class="visuals-header">
+        <div class="visuals-copy">
+          <h3>Every Monday, your content arrives finished.</h3>
+          <p>The leads are one side of the system. The content is the other. Decision-makers skim before they read. A post without a visual is half a post. Consultants who post with structured visuals consistently outperform those who post text alone — not because their thinking is sharper, but because the visual stops the scroll long enough for the thinking to land.</p>
+          <p>Every piece that benefits from a visual gets one. Finished. Attached. Ready to schedule.</p>
+          <ul class="visuals-list">
+            <li><span class="visuals-list-dot">→</span> 3 LinkedIn posts per week in your voice, formatted and ready</li>
+            <li><span class="visuals-list-dot">→</span> Carousel covers, quote graphics, and infographics — finished PNG files</li>
+            <li><span class="visuals-list-dot">→</span> 15-minute strategy Loom walking through the week's package</li>
+            <li><span class="visuals-list-dot">→</span> Zero design work on your end. Zero.</li>
+          </ul>
+        </div>
+        <div>
+          <div class="visuals-tiles">
+            <div class="visual-tile carousel">
+              <div class="visual-tile-inner">
+                <div class="tile-accent-bar"></div>
+                <div class="tile-lines">
+                  <div class="tile-line full"></div>
+                  <div class="tile-line medium"></div>
+                  <div class="tile-line short"></div>
+                </div>
+              </div>
+              <div class="tile-label">Carousel Cover</div>
+            </div>
+            <div class="visual-tile post">
+              <div class="visual-tile-inner">
+                <div class="tile-accent-bar"></div>
+                <div class="tile-lines">
+                  <div class="tile-line medium"></div>
+                  <div class="tile-line full"></div>
+                  <div class="tile-line short"></div>
+                </div>
+              </div>
+              <div class="tile-label">Post Visual</div>
+            </div>
+            <div class="visual-tile infographic">
+              <div class="visual-tile-inner">
+                <div class="tile-accent-bar"></div>
+                <div class="tile-lines">
+                  <div class="tile-line full"></div>
+                  <div class="tile-line short"></div>
+                  <div class="tile-line medium"></div>
+                </div>
+              </div>
+              <div class="tile-label">Infographic</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="visuals-note">
+        <strong>Visuals are finished and attached in the Monday package.</strong><br>
+        You schedule. Nothing to design. Nothing to brief.
+      </div>
+    </div>
+
+    <!-- CTA FOOTER -->
+    <div class="cta-footer">
+      <div class="cta-footer-headline">This is what one week of the full system looks like for Julie.</div>
+      <div class="cta-footer-subhead">
+        Every Monday: 10 ICP-matched buyers with full signal intelligence, direct contact details,
+        and outreach ready to send. Plus 3 posts and finished visuals in your voice.
+        30 minutes of your time per week.
+      </div>
+      <a class="cta-footer-btn" href="https://calendly.com/saurabh_zentro/30-min" target="_blank">Book Your 20-Min Fit Call →</a>
+      <div class="cta-footer-note">No pitch. No deck. We talk through your specific situation and confirm whether this is the right fit.</div>
+    </div>
+  </div>
+
+  <!-- ======== CONTENT ENGINE ======== -->
+  <div id="view-content" class="view">
+
+    <div class="welcome-banner">
+      <div class="welcome-tag">Content Engine · Personalized for Julie</div>
+      <div class="welcome-text">
+        <strong>Two posts in your voice. Written from your methodology. Ready to schedule.</strong><br>
+        These are written in the direct, diagnostic, no-fluff style of your existing content — the "Napkin CFO" clarity framing, the confrontational truth-first openers, the flat declarative closers. No coaching tone. No cheerleading. The same voice your posts already use, at full volume.
+      </div>
+    </div>
+
+    <div class="post-cards-grid">
+
+      <!-- TEACHING POST -->
+      <div class="post-card">
+        <div class="post-type-label">Teaching Post</div>
+        <div class="post-type-desc">Pattern recognition from your methodology — written to demonstrate expertise and attract engaged readers from your ICP</div>
+        <div class="post-text">Most business owners don't run out of money.
+
+They run out of time to see it coming.
+
+The businesses that hit a cash wall in Q3 weren't unprofitable in Q2. They were profitable, growing, and completely blind to one number: the gap between when their obligations hit and when their receivables cleared.
+
+Revenue going up is not the same as cash being available.
+
+Two scenarios that look identical on a profit summary but are completely different on a cash calendar:
+
+Client A pays in 15 days. Client B pays in 75 days. Both are paying the same invoice amount. Your payroll runs in 30 days regardless.
+
+Which client is costing you cash you don't know you're spending?
+
+This is the Matrix Test. It is not a complicated model. It is a mapping exercise that takes two hours and tells you exactly how exposed your business is before the quarter ends.
+
+Most operators skip it because the business feels fine. They find out it wasn't when a payroll Tuesday arrives and collections are 11 days behind schedule.
+
+The clarity you need is not more revenue. It is a better map of when that revenue actually becomes cash.</div>
+        <div class="post-cta-line">Comment CASHFLOW and I will send you the Matrix Test template.</div>
+      </div>
+
+      <!-- HANDRAISER POST -->
+      <div class="post-card">
+        <div class="post-type-label">Handraiser Post</div>
+        <div class="post-type-desc">Designed to surface qualified buyers who self-identify with the pain — drives LEAD comments from your ICP</div>
+        <div class="post-text">The bank told you your finances looked healthy.
+
+Three months later you were scrambling to make payroll.
+
+Both things were true at the same time. That is not a contradiction. That is the gap between what a bank looks at and what actually drives your business survival.
+
+Banks look at historical statements. They see what you did. They do not see what your cash calendar says you will need to do in the next 47 days.
+
+Three questions most business owners in Northern Ontario cannot answer off the top of their head:
+
+If two of your top clients paid 20 days late this quarter, what is your exact liquidity runway?
+
+If your fuel and input costs spiked 30% tomorrow, where is your margin breaking point?
+
+If you lost your largest client in the next 30 days, how many weeks of operating cash do you have?
+
+These are not hypothetical questions. These are the exact scenarios running in the background of every growing business right now.
+
+Knowing your numbers is not the same as knowing your actual financial position.
+
+Comment NAPKIN and I will send you the three questions you need to be able to answer before your next business quarter begins.</div>
+        <div class="post-cta-line">Comment NAPKIN and I will send you the three questions you need before next quarter.</div>
+      </div>
+
+    </div>
+
+    <!-- VISUAL GRAPHICS (CONTENT ENGINE VERSION) -->
+    <div class="visuals-section">
+      <div class="visuals-header">
+        <div class="visuals-copy">
+          <h3>Content without visuals is half a system.</h3>
+          <p>Most consultants post text. The ones building consistent inbound post text with structure behind it. A carousel that breaks down a framework visually gets saved. A quote graphic gets shared. An infographic gets screenshotted. Saves, shares, and screenshots reach buyers who never followed you. That is organic reach you do not have to pay for.</p>
+          <p>The full system produces the visuals. You attach and schedule.</p>
+          <ul class="visuals-list">
+            <li><span class="visuals-list-dot">→</span> 2 carousels per month with finished slide visuals</li>
+            <li><span class="visuals-list-dot">→</span> 2 standalone infographics per month</li>
+            <li><span class="visuals-list-dot">→</span> Post graphics for any text post that benefits from one</li>
+            <li><span class="visuals-list-dot">→</span> All delivered as finished PNG files in the Monday package</li>
+          </ul>
+        </div>
+        <div>
+          <div class="visuals-tiles">
+            <div class="visual-tile carousel">
+              <div class="visual-tile-inner">
+                <div class="tile-accent-bar"></div>
+                <div class="tile-lines">
+                  <div class="tile-line full"></div>
+                  <div class="tile-line medium"></div>
+                  <div class="tile-line short"></div>
+                </div>
+              </div>
+              <div class="tile-label">Carousel Cover</div>
+            </div>
+            <div class="visual-tile post">
+              <div class="visual-tile-inner">
+                <div class="tile-accent-bar"></div>
+                <div class="tile-lines">
+                  <div class="tile-line medium"></div>
+                  <div class="tile-line full"></div>
+                  <div class="tile-line short"></div>
+                </div>
+              </div>
+              <div class="tile-label">Post Visual</div>
+            </div>
+            <div class="visual-tile infographic">
+              <div class="visual-tile-inner">
+                <div class="tile-accent-bar"></div>
+                <div class="tile-lines">
+                  <div class="tile-line full"></div>
+                  <div class="tile-line short"></div>
+                  <div class="tile-line medium"></div>
+                </div>
+              </div>
+              <div class="tile-label">Infographic</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="visuals-note">
+        <strong>18 content pieces per month. Finished. Attached. Ready to schedule.</strong><br>
+        You schedule from your own account. Zero design work on your end.
+      </div>
+    </div>
+
+    <!-- CTA FOOTER -->
+    <div class="cta-footer">
+      <div class="cta-footer-headline">This is what one week of the full system looks like for Julie.</div>
+      <div class="cta-footer-subhead">
+        Every Monday: 10 ICP-matched buyers with full signal intelligence, direct contact details,
+        and outreach ready to send. Plus 3 posts and finished visuals in your voice.
+        30 minutes of your time per week.
+      </div>
+      <a class="cta-footer-btn" href="https://calendly.com/saurabh_zentro/30-min" target="_blank">Book Your 20-Min Fit Call →</a>
+      <div class="cta-footer-note">No pitch. No deck. We talk through your specific situation and confirm whether this is the right fit.</div>
+    </div>
+
+  </div><!-- end content view -->
+</main>
+
+<script>
+function showView(name, triggerEl) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view-' + name).classList.add('active');
+  document.querySelectorAll('.nav-item, .tab-btn, .mobile-tab-pill').forEach(el => el.classList.remove('active'));
+  const navEl = document.getElementById('nav-' + name);
+  if (navEl) navEl.classList.add('active');
+  document.querySelectorAll('.tab-btn, .mobile-tab-pill').forEach(btn => {
+    if (btn.getAttribute('onclick') && btn.getAttribute('onclick').includes("'" + name + "'")) {
+      btn.classList.add('active');
+    }
+  });
+}
+
+function toggleCard(cardId) {
+  document.getElementById(cardId).classList.toggle('expanded');
+}
+
+function copyToClipboard(text, btn) {
+  navigator.clipboard.writeText(text).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = 'Copied.';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 2000);
+  }).catch(() => {
+    const el = document.createElement('textarea');
+    el.value = text;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+    btn.textContent = 'Copied.'; btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+function copyElementText(elementId, btn) {
+  const el = document.getElementById(elementId);
+  if (!el) return;
+  const charCountEl = el.querySelector('.char-count');
+  let text = el.textContent;
+  if (charCountEl) text = text.replace(charCountEl.textContent, '').trim();
+  copyToClipboard(text, btn);
+}
+
+function copyFullEmail(subjId, bodyId, btn) {
+  const subj = document.getElementById(subjId);
+  const body = document.getElementById(bodyId);
+  const text = 'Subject: ' + (subj ? subj.textContent.trim() : '') + '\n\n' + (body ? body.textContent.trim() : '');
+  copyToClipboard(text, btn);
+}
+</script>
+</body>
+</html>
