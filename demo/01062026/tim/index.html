@@ -1,0 +1,1504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tim Elms · Lead Demo · Pipelind</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0A0A12;
+  --bg2: #12121E;
+  --bg3: #0E0E19;
+  --primary: #6A66A3;
+  --primary-light: #9B98C4;
+  --accent: #FF9900;
+  --success: #019047;
+  --success-light: #5AC88A;
+  --text: rgba(255,255,255,0.90);
+  --text-dim: rgba(255,255,255,0.72);
+  --text-muted: rgba(255,255,255,0.55);
+  --border: rgba(106,102,163,0.25);
+  --border-hover: rgba(106,102,163,0.55);
+  --hot: #FF4444;
+  --warm: #FF9900;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif; min-height: 100vh; }
+
+/* SIDEBAR */
+.sidebar {
+  position: fixed; top: 0; left: 0; width: 240px; height: 100vh;
+  background: var(--bg2); border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; padding: 24px 20px; z-index: 100;
+}
+.sidebar-logo { font-family: 'Space Mono', monospace; font-size: 13px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--primary-light); margin-bottom: 28px; }
+.prospect-block { margin-bottom: 32px; }
+.prospect-label { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px; }
+.prospect-name { font-size: 17px; font-weight: 800; color: var(--text); line-height: 1.25; }
+.prospect-meta { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--text-muted);
+  letter-spacing: .06em; margin-top: 4px; }
+.nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 8px;
+  cursor: pointer; margin-bottom: 4px; font-size: 13px; font-weight: 600; color: var(--text-dim);
+  transition: all .15s; border: 1px solid transparent; }
+.nav-item:hover { background: rgba(106,102,163,0.10); color: var(--text); }
+.nav-item.active { background: rgba(106,102,163,0.15); color: var(--primary-light); border-color: var(--border); }
+.sidebar-footer { margin-top: auto; font-family: 'Space Mono', monospace; font-size: 10px;
+  color: var(--text-muted); letter-spacing: .04em; line-height: 1.8; }
+
+/* MOBILE TOP BAR */
+.mobile-topbar {
+  display: none; position: sticky; top: 0; z-index: 200;
+  background: var(--bg2); border-bottom: 1px solid var(--border);
+  padding: 14px 16px; align-items: center; justify-content: space-between;
+}
+.mobile-logo { font-family: 'Space Mono', monospace; font-size: 12px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--primary-light); }
+.mobile-prospect-name { font-size: 13px; font-weight: 700; color: var(--text); }
+
+/* MOBILE TABS */
+.mobile-tabs {
+  display: none; position: sticky; top: 53px; z-index: 199;
+  background: var(--bg); border-bottom: 1px solid var(--border);
+  padding: 10px 16px; gap: 8px;
+}
+.mobile-tab-pill { padding: 7px 16px; border-radius: 20px; font-size: 12px; font-weight: 700;
+  font-family: 'Space Mono', monospace; letter-spacing: .06em; text-transform: uppercase;
+  cursor: pointer; border: 1px solid var(--border); color: var(--text-muted); background: transparent;
+  transition: all .15s; }
+.mobile-tab-pill.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+/* MAIN */
+.main { margin-left: 240px; padding: 32px 36px; max-width: 1140px; }
+
+/* TAB BAR */
+.tab-bar {
+  position: sticky; top: 0; z-index: 50; background: var(--bg);
+  border-bottom: 1px solid var(--border); display: flex; margin: -32px -36px 32px; padding: 0 36px;
+}
+.tab-btn { padding: 14px 22px; font-family: 'Space Mono', monospace; font-size: 11px;
+  font-weight: 700; letter-spacing: .10em; text-transform: uppercase; color: var(--text-muted);
+  cursor: pointer; border: none; background: transparent; border-bottom: 2px solid transparent;
+  transition: all .15s; }
+.tab-btn.active { color: var(--primary-light); border-bottom-color: var(--primary); }
+
+/* WELCOME BANNER */
+.welcome-banner { background: linear-gradient(135deg, rgba(106,102,163,0.10) 0%, rgba(255,153,0,0.05) 100%);
+  border: 1px solid var(--border); border-radius: 12px; padding: 24px 28px; margin-bottom: 28px; }
+.welcome-tag { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+.welcome-text { font-size: 14px; line-height: 1.75; color: var(--text-dim); }
+.welcome-text strong { color: var(--text); font-weight: 700; }
+
+/* MARKET PULSE */
+.pulse-panel { background: rgba(1,144,71,0.06); border: 1px solid rgba(1,144,71,0.20);
+  border-radius: 12px; padding: 20px 24px; margin-bottom: 28px; }
+.pulse-label { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--success-light); margin-bottom: 10px; }
+.pulse-text { font-size: 13px; color: var(--text-dim); line-height: 1.8; }
+
+/* ICP GRID */
+.icp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 32px; }
+.icp-panel { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 20px 22px; }
+.icp-panel-label { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--primary-light); margin-bottom: 14px; }
+.icp-row { display: flex; justify-content: space-between; align-items: flex-start;
+  padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.04); gap: 12px; }
+.icp-row:last-child { border-bottom: none; }
+.icp-key { font-size: 12px; color: var(--text-muted); font-weight: 600; flex-shrink: 0; }
+.icp-val { font-size: 12px; color: var(--text); text-align: right; font-weight: 600; }
+
+/* SECTION HEADER */
+.section-header { margin-bottom: 20px; }
+.section-title { font-size: 20px; font-weight: 800; color: var(--text); margin-bottom: 4px; }
+.section-sub { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--text-muted);
+  letter-spacing: .06em; }
+
+/* LEAD CARDS */
+.lead-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px;
+  margin-bottom: 16px; overflow: hidden; transition: border-color .15s; }
+.lead-card:hover { border-color: var(--border-hover); }
+
+.card-header { display: flex; align-items: center; gap: 14px; padding: 18px 22px;
+  cursor: pointer; user-select: none; }
+.signal-badge { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .10em; text-transform: uppercase; padding: 5px 10px; border-radius: 6px;
+  flex-shrink: 0; }
+.signal-badge.hot { background: rgba(255,68,68,0.15); color: var(--hot); border: 1px solid rgba(255,68,68,0.30); }
+.signal-badge.warm { background: rgba(255,153,0,0.12); color: var(--warm); border: 1px solid rgba(255,153,0,0.25); }
+
+.card-header-info { flex: 1; }
+.lead-name { font-size: 16px; font-weight: 800; color: var(--text); line-height: 1.2; }
+.lead-company { font-size: 12px; color: var(--text-muted); margin-top: 3px; }
+.why-now-line { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--accent);
+  margin-top: 5px; letter-spacing: .04em; }
+
+.icp-fit-badge { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .08em; padding: 5px 10px; border-radius: 6px; flex-shrink: 0;
+  background: rgba(1,144,71,0.12); color: var(--success-light); border: 1px solid rgba(1,144,71,0.25); }
+
+.expand-icon { color: var(--text-muted); font-size: 16px; flex-shrink: 0; transition: transform .2s; }
+.lead-card.expanded .expand-icon { transform: rotate(180deg); }
+
+/* CARD BODY */
+.card-body { display: none; border-top: 1px solid var(--border); }
+.lead-card.expanded .card-body { display: block; }
+
+/* IDENTITY STRIP */
+.identity-strip { display: flex; flex-wrap: wrap; gap: 8px; padding: 14px 22px;
+  background: var(--bg3); border-bottom: 1px solid var(--border); }
+.identity-item { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--text-muted);
+  letter-spacing: .04em; }
+.identity-item a { color: var(--primary-light); text-decoration: none; }
+.identity-item a:hover { text-decoration: underline; }
+.identity-sep { color: rgba(255,255,255,0.15); }
+
+/* TAG ROW */
+.tag-row { display: flex; flex-wrap: wrap; gap: 8px; padding: 14px 22px 8px; }
+.tag { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase; padding: 4px 10px; border-radius: 20px; }
+.tag.industry { background: rgba(106,102,163,0.12); color: var(--primary-light); border: 1px solid rgba(106,102,163,0.20); }
+.tag.signal { background: rgba(255,153,0,0.10); color: var(--accent); border: 1px solid rgba(255,153,0,0.20); }
+.tag.context { background: rgba(1,144,71,0.08); color: var(--success-light); border: 1px solid rgba(1,144,71,0.15); }
+
+/* CARD SECTION */
+.card-section { padding: 18px 22px; border-bottom: 1px solid rgba(255,255,255,0.04); }
+.card-section:last-of-type { border-bottom: none; }
+.card-section-title { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 14px;
+  display: flex; align-items: center; gap: 8px; }
+.card-section-subtitle { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--text-muted);
+  letter-spacing: .06em; font-weight: 400; }
+
+/* SIGNAL CARDS */
+.signal-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.signal-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+.signal-type { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .10em; text-transform: uppercase; color: var(--accent); margin-bottom: 4px; }
+.signal-timing { font-size: 11px; color: var(--text-muted); margin-bottom: 8px; }
+.signal-desc { font-size: 12px; color: var(--text-dim); line-height: 1.65; }
+
+/* INTEL GRID */
+.intel-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.intel-cell { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; }
+.intel-cell-label { font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: .10em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px; }
+.intel-cell-value { font-size: 12px; color: var(--text); line-height: 1.5; }
+
+/* CONTACT */
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.contact-item { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px;
+  padding: 12px 14px; display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.contact-label { font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: .10em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px; }
+.contact-value { font-size: 13px; color: var(--text); font-weight: 600; }
+.contact-value.unavailable { color: var(--text-muted); font-style: italic; font-weight: 400; }
+.copy-btn { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .06em; text-transform: uppercase; padding: 6px 12px; border-radius: 6px;
+  border: 1px solid var(--border); color: var(--primary-light); background: transparent;
+  cursor: pointer; transition: all .15s; white-space: nowrap; }
+.copy-btn:hover { border-color: var(--primary); background: rgba(106,102,163,0.10); }
+.copy-btn.copied { color: var(--success-light); border-color: var(--success); }
+
+/* WHY THIS LEAD */
+.why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.why-block { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 16px 18px; }
+.why-block-title { font-size: 12px; font-weight: 700; color: var(--primary-light); margin-bottom: 10px; }
+.why-block-text { font-size: 13px; color: var(--text-dim); line-height: 1.7; }
+.fit-signal { margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.06); }
+.fit-signal-label { font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: .10em; text-transform: uppercase; color: var(--success-light); margin-bottom: 4px; }
+
+/* OUTREACH */
+.outreach-channel { background: var(--bg3); border: 1px solid var(--border); border-radius: 10px;
+  padding: 16px 18px; margin-bottom: 12px; }
+.outreach-channel-label { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .10em; text-transform: uppercase; color: var(--primary-light); margin-bottom: 12px; }
+.connection-note { font-size: 13px; color: var(--text-dim); line-height: 1.7; margin-bottom: 8px; }
+.char-count { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--text-muted);
+  margin-top: 6px; }
+.copy-action-btn { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase; padding: 8px 16px; border-radius: 6px;
+  border: 1px solid var(--border); color: var(--primary-light); background: transparent;
+  cursor: pointer; transition: all .15s; margin-top: 8px; }
+.copy-action-btn:hover { border-color: var(--primary); background: rgba(106,102,163,0.10); }
+.copy-action-btn.copied { color: var(--success-light); border-color: var(--success); }
+
+.email-subject-label { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px; }
+.email-subject-value { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 14px; }
+.email-body { font-size: 13px; color: var(--text-dim); line-height: 1.75; white-space: pre-line; }
+.email-meta { display: flex; align-items: center; justify-content: space-between; margin-top: 12px;
+  padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.06); }
+.email-meta-note { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--text-muted); }
+
+/* CONVERSATION ENGINE */
+.conversation-engine-header { font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin-bottom: 16px;
+  padding-bottom: 10px; border-bottom: 1px solid rgba(255,153,0,0.20); }
+.touch-block { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px;
+  padding: 14px 16px; margin-bottom: 10px; }
+.touch-day-label { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .10em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 3px; }
+.touch-type-label { font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700;
+  color: var(--primary-light); margin-bottom: 8px; }
+.touch-message { font-size: 13px; color: var(--text-dim); line-height: 1.65; margin-bottom: 8px; }
+.touch-collapsed-indicator { font-size: 12px; color: rgba(255,255,255,0.45); font-style: italic; padding: 10px 0; }
+
+/* CARD FOOTER */
+.card-footer { padding: 12px 22px; background: var(--bg3); border-top: 1px solid var(--border);
+  display: flex; justify-content: flex-end; }
+.linkedin-btn { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase; padding: 8px 16px; border-radius: 6px;
+  border: 1px solid var(--border); color: var(--primary-light); text-decoration: none; transition: all .15s; }
+.linkedin-btn:hover { border-color: var(--primary); background: rgba(106,102,163,0.10); }
+
+/* PIPELINE MATH */
+.pipeline-math { background: rgba(106,102,163,0.06); border: 1px solid var(--border);
+  border-radius: 12px; padding: 22px 28px; margin: 28px 0; text-align: center; }
+.pipeline-math-text { font-size: 15px; color: var(--text-dim); line-height: 1.8; }
+.pipeline-math-text strong { color: var(--primary-light); font-weight: 700; }
+
+/* VISUALS SECTION */
+.visuals-section { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; padding: 28px 32px; margin: 28px 0; }
+.visuals-header { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-bottom: 24px; }
+.visuals-copy h3 { font-size: 18px; font-weight: 800; color: var(--text); line-height: 1.3; margin-bottom: 12px; }
+.visuals-copy p { font-size: 13px; color: var(--text-dim); line-height: 1.75; margin-bottom: 10px; }
+.visuals-list { list-style: none; margin-top: 14px; }
+.visuals-list li { font-size: 13px; color: var(--text-dim); padding: 6px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04); display: flex; gap: 10px; }
+.visuals-list li:last-child { border-bottom: none; }
+.visuals-list-dot { color: var(--success-light); font-weight: 700; flex-shrink: 0; }
+.visuals-tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.visual-tile { border-radius: 10px; overflow: hidden; }
+.visual-tile-inner { aspect-ratio: 4/3; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 16px; }
+.visual-tile.carousel { background: linear-gradient(135deg, #1B2A4A 0%, #243655 100%); border: 1px solid rgba(240,165,0,0.20); }
+.visual-tile.post { background: linear-gradient(135deg, #1B2A4A 0%, #1D2D47 100%); border: 1px solid rgba(240,165,0,0.15); }
+.visual-tile.infographic { background: linear-gradient(135deg, #162238 0%, #1B2A4A 100%); border: 1px solid rgba(240,165,0,0.10); }
+.tile-accent-bar { width: 36px; height: 3px; background: #F0A500; border-radius: 2px; margin-bottom: 12px; }
+.tile-lines { width: 100%; }
+.tile-line { height: 7px; background: rgba(245,240,232,0.15); border-radius: 3px; margin-bottom: 6px; }
+.tile-line.short { width: 60%; }
+.tile-line.medium { width: 80%; }
+.tile-line.full { width: 100%; }
+.tile-label { font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); text-align: center; margin-top: 10px; padding: 6px; background: var(--bg3); }
+.visuals-note { font-size: 13px; color: var(--text-dim); text-align: center; margin-top: 18px;
+  padding-top: 18px; border-top: 1px solid var(--border); line-height: 1.7; }
+.visuals-note strong { color: var(--text); }
+
+/* CTA FOOTER */
+.cta-footer { margin-top: 36px; background: linear-gradient(135deg, rgba(255,153,0,0.08) 0%, rgba(106,102,163,0.06) 100%);
+  border: 1px solid rgba(255,153,0,0.30); border-radius: 12px; padding: 36px 40px; text-align: center; }
+.cta-footer-headline { font-size: 22px; font-weight: 800; color: var(--text); letter-spacing: -.01em; margin-bottom: 14px; line-height: 1.3; }
+.cta-footer-subhead { font-size: 14px; color: var(--text-dim); line-height: 1.8; max-width: 680px; margin: 0 auto 26px; }
+.cta-footer-btn { display: inline-block; background: var(--accent); color: var(--bg);
+  padding: 15px 34px; border-radius: 8px; font-family: 'Space Mono', monospace;
+  font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em;
+  text-decoration: none; transition: background .15s; margin-bottom: 14px; }
+.cta-footer-btn:hover { background: #ffb340; }
+.cta-footer-note { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: .04em; }
+
+/* POST CARDS */
+.post-cards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 28px; }
+.post-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 24px 26px; }
+.post-type-label { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--primary-light); margin-bottom: 6px; }
+.post-type-desc { font-size: 11px; color: var(--text-muted); margin-bottom: 16px;
+  padding-bottom: 16px; border-bottom: 1px solid var(--border); line-height: 1.5; }
+.post-text { font-size: 13px; color: var(--text-dim); line-height: 1.85; white-space: pre-line; }
+.post-cta-line { margin-top: 14px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.06);
+  font-size: 12px; color: var(--accent); font-weight: 600; }
+
+/* VIEWS */
+.view { display: none; }
+.view.active { display: block; }
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+  .mobile-topbar { display: flex; }
+  .mobile-tabs { display: flex; }
+  .main { margin-left: 0; padding: 16px; }
+  .tab-bar { display: none; }
+  .icp-grid { grid-template-columns: 1fr; }
+  .signal-cards { grid-template-columns: 1fr; }
+  .intel-grid { grid-template-columns: 1fr 1fr; }
+  .contact-grid { grid-template-columns: 1fr; }
+  .why-grid { grid-template-columns: 1fr; }
+  .post-cards-grid { grid-template-columns: 1fr; }
+  .visuals-header { grid-template-columns: 1fr; }
+  .card-header { flex-wrap: wrap; gap: 8px; }
+  .lead-name { font-size: 15px; }
+  .cta-footer { padding: 24px 20px; }
+  .cta-footer-btn { width: 100%; text-align: center; display: block; }
+  .email-meta { flex-direction: column; align-items: flex-start; gap: 8px; }
+}
+@media (max-width: 480px) {
+  .intel-grid { grid-template-columns: 1fr; }
+  .visuals-tiles { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- MOBILE TOP BAR -->
+<div class="mobile-topbar">
+  <div class="mobile-logo">Pipelind</div>
+  <div class="mobile-prospect-name">Tim's Report</div>
+</div>
+
+<!-- MOBILE TABS -->
+<div class="mobile-tabs">
+  <button class="mobile-tab-pill active" onclick="showView('pipeline', this)">Pipeline Engine</button>
+  <button class="mobile-tab-pill" onclick="showView('content', this)">Content Engine</button>
+</div>
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="sidebar-logo">Pipelind</div>
+  <div class="prospect-block">
+    <div class="prospect-label">Personalised For</div>
+    <div class="prospect-name">Tim E.</div>
+    <div class="prospect-meta">June 2026 · Lead Demo</div>
+  </div>
+  <div class="nav-item active" id="nav-pipeline" onclick="showView('pipeline', this)">Pipeline Engine</div>
+  <div class="nav-item" id="nav-content" onclick="showView('content', this)">Content Engine</div>
+  <div class="sidebar-footer">Personalised build<br>Real signal data<br>Sample of your full delivery</div>
+</nav>
+
+<!-- MAIN -->
+<main class="main">
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="showView('pipeline', this)">Pipeline Engine</button>
+    <button class="tab-btn" onclick="showView('content', this)">Content Engine</button>
+  </div>
+
+  <!-- PIPELINE ENGINE -->
+  <div class="view active" id="view-pipeline">
+
+    <div class="welcome-banner">
+      <div class="welcome-tag">Pipeline Engine · Sample Delivery</div>
+      <div class="welcome-text">
+        Tim, this is a sample of what lands in your inbox every Monday. Five PE-backed SaaS and tech founders and co-founders in the UK, each carrying an active market signal from the last 90 days. <strong>Every profile is built around one question: why would this company need a finance director with exit readiness and M&A integration experience right now?</strong> The signal answers that. The outreach is ready to send.
+      </div>
+    </div>
+
+    <!-- MARKET INTELLIGENCE PULSE -->
+    <div class="pulse-panel">
+      <div class="pulse-label">Market Intelligence Pulse · Week of 1 June 2026</div>
+      <div class="pulse-text">This week's signal volume across UK SaaS and tech: multiple funding rounds in the £5M-£25M revenue range, active finance department hiring across 11-200 employee companies in London and Southeast England, and several co-founder-led businesses showing team expansion signals. The hiring pattern in finance functions signals founders are at the stage where informal financial management is breaking down under growth pressure. Content angle: the exit readiness as infrastructure framing maps directly to every company showing a finance hiring signal right now.</div>
+    </div>
+
+    <!-- ICP PANEL GRID -->
+    <div class="icp-grid">
+      <div class="icp-panel">
+        <div class="icp-panel-label">Target Buyer Profile</div>
+        <div class="icp-row"><span class="icp-key">Title</span><span class="icp-val">CEO · Co-Founder · CTO</span></div>
+        <div class="icp-row"><span class="icp-key">Company Stage</span><span class="icp-val">Series A-B · PE-Backed</span></div>
+        <div class="icp-row"><span class="icp-key">Size</span><span class="icp-val">11-200 employees</span></div>
+        <div class="icp-row"><span class="icp-key">Sector</span><span class="icp-val">SaaS · Tech · Telecoms</span></div>
+        <div class="icp-row"><span class="icp-key">Geography</span><span class="icp-val">London · Southeast England · UK</span></div>
+      </div>
+      <div class="icp-panel">
+        <div class="icp-panel-label">Sample Quality</div>
+        <div class="icp-row"><span class="icp-key">ICP Fit</span><span class="icp-val">5 of 5 · Yes</span></div>
+        <div class="icp-row"><span class="icp-key">Active Signal</span><span class="icp-val">5 of 5 · Last 90 days</span></div>
+        <div class="icp-row"><span class="icp-key">Contact Details</span><span class="icp-val">Verified email on 4 of 5</span></div>
+        <div class="icp-row"><span class="icp-key">Signal Types</span><span class="icp-val">Funding · Finance Hiring</span></div>
+        <div class="icp-row"><span class="icp-key">Outreach Ready</span><span class="icp-val">LinkedIn note + email, all 5</span></div>
+      </div>
+    </div>
+
+    <!-- SECTION HEADER -->
+    <div class="section-header">
+      <div class="section-title">ICP-Matched Buyers</div>
+      <div class="section-sub">5 of 40 monthly leads · This is one week of the full system</div>
+    </div>
+
+    <!-- ===== CARD 1: Danny Toledano · Qogita ===== -->
+    <div class="lead-card expanded" id="card-1">
+      <div class="card-header" onclick="toggleCard('card-1')">
+        <span class="signal-badge hot">HOT</span>
+        <div class="card-header-info">
+          <div class="lead-name">Danny Toledano</div>
+          <div class="lead-company">Co-Founder · Qogita</div>
+          <div class="why-now-line">Raised £80m Series B · finance scaling pressure is acute</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit: YES</span>
+        <span class="expand-icon">&#9662;</span>
+      </div>
+
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item"><a href="https://qogita.com" target="_blank">qogita.com</a></span>
+          <span class="identity-sep">·</span>
+          <span class="identity-item">London, United Kingdom</span>
+          <span class="identity-sep">·</span>
+          <span class="identity-item">51-200 employees</span>
+          <span class="identity-sep">·</span>
+          <span class="identity-item">Series B</span>
+          <span class="identity-sep">·</span>
+          <span class="identity-item">B2B Wholesale Technology</span>
+        </div>
+
+        <div class="tag-row">
+          <span class="tag industry">B2B Platform</span>
+          <span class="tag industry">Wholesale Tech</span>
+          <span class="tag signal">£80m Series B · Active</span>
+          <span class="tag context">PE-Backed · Revenue £10M-£25M</span>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Active Market Signals</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Series B Funding Round</div>
+              <div class="signal-timing">Approximately 45 days ago</div>
+              <div class="signal-desc">Qogita closed £80m in Series B funding, with investors including top PE sponsors. At this capital level, the board expects investor-grade financial reporting from day one, not a retrofitted model built six months in.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">Finance Department Hiring</div>
+              <div class="signal-timing">Active · Last 90 days</div>
+              <div class="signal-desc">Active hiring signals in Qogita's finance function indicate the company is building out reporting infrastructure post-raise. This is the window where an experienced FD engagement prevents the six-month scramble later.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing <span class="card-section-subtitle">Configured for Tim's Practice</span></div>
+          <div class="intel-grid">
+            <div class="intel-cell">
+              <div class="intel-cell-label">Leadership Movement</div>
+              <div class="intel-cell-value">No senior finance leadership change detected in last 90 days</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Capital Activity</div>
+              <div class="intel-cell-value">£80m Series B closed · PE-backed · investors include leading growth sponsors</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Hiring Signals</div>
+              <div class="intel-cell-value">Active finance department hiring detected · last 90 days</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Expansion Signals</div>
+              <div class="intel-cell-value">Post-Series B market expansion typical · no specific office signal detected</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Growth Trajectory</div>
+              <div class="intel-cell-value">£10M-£25M revenue range · 51-200 employees · active hiring across departments</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Work Email</div>
+                <div class="contact-value">dannytoledano@qogita.com</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('dannytoledano@qogita.com', this)">Copy</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div class="why-block">
+              <div class="why-block-title">ICP Fit for Tim</div>
+              <div class="why-block-text">Qogita is a PE-backed B2B technology company that has just closed significant Series B capital. The co-founder profile means no incumbent FD hierarchy to navigate. At £10M-£25M revenue with 51-200 employees, the financial infrastructure gap between management accounts and investor-grade reporting is precisely where Tim's M&A integration and finance transformation work lands.</div>
+              <div class="fit-signal">
+                <div class="fit-signal-label">Strongest Fit Signal</div>
+                £80m Series B with active finance hiring signal, PE-backed, no finance director publicly confirmed.
+              </div>
+            </div>
+            <div class="why-block">
+              <div class="why-block-title">Why They're Looking</div>
+              <div class="why-block-text">After a major fundraise, the board's expectations on financial reporting change overnight. The ARR waterfall, cohort retention data, and revenue bridge the investors expect are not what the existing team was producing at pre-Series B. Danny is hiring into the finance function right now precisely because the current setup cannot carry the weight of what the investors will ask for in the first quarterly pack.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal <span class="card-section-subtitle">2 Channels Ready</span></div>
+
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="conn-note-1">
+              Noticed Qogita closed the Series B recently. I work with PE-backed SaaS businesses in this stage, specifically on the financial infrastructure gap that opens up post-raise. Thought it worth connecting.
+              <div class="char-count">194 characters · LinkedIn limit: 300</div>
+            </div>
+            <button class="copy-action-btn" onclick="copyElementText('conn-note-1', this)">Copy Connection Note</button>
+          </div>
+
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Email Draft · Ready to Send</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject Line</div>
+              <div class="email-subject-value" id="email-subj-1">Qogita · finance infrastructure post-Series B</div>
+              <div class="email-body" id="email-body-1">Danny,
+
+Noticed Qogita closed £80m in Series B recently. Congratulations on that. I also noticed active finance hiring, which usually means the reporting infrastructure is being rebuilt to meet what the board is now expecting.
+
+That transition is one I have done several times, most recently at a £14m PE-backed UK SaaS buy-and-build, where I built the ARR waterfall, cohort retention schedules, and revenue bridge from scratch in the first 90 days. The difference between a CFO who operates as a commercially minded partner versus a back-office function is where PE-backed businesses either win or lose credibility in the board room.
+
+Would you be open to a short conversation about where Qogita's finance function is currently, and whether there is a fit?
+
+Tim Elms
+Finance Director · timelms@gmail.com</div>
+              <div class="email-meta">
+                <span class="email-meta-note">141 words · no exclamation marks · no em dashes</span>
+                <button class="copy-action-btn" onclick="copyFullEmail('email-subj-1', 'email-body-1', this)">Copy Full Email</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- FULL 5-TOUCH ENGINE: CARD 1 ONLY -->
+        <div class="card-section">
+          <div class="conversation-engine-header">Full DFY Pipeline · 5-Touch Conversation Engine</div>
+
+          <div class="touch-block">
+            <div class="touch-day-label">Day 0</div>
+            <div class="touch-type-label">Connection Request</div>
+            <div class="touch-message" id="touch1-1">Noticed Qogita closed the Series B recently. I work with PE-backed SaaS businesses in this stage, specifically on the financial infrastructure gap that opens up post-raise. Thought it worth connecting.</div>
+            <button class="copy-action-btn" onclick="copyToClipboard(document.getElementById('touch1-1').textContent.trim(), this)">Copy</button>
+          </div>
+
+          <div class="touch-block">
+            <div class="touch-day-label">Day 3-5</div>
+            <div class="touch-type-label">Ice Break · After Connection Accepts</div>
+            <div class="touch-message" id="touch2-1">Thanks for connecting, Danny. Saw you are actively building out the finance function post-raise. Curious what the biggest reporting gap has been since the Series B closed. Is it the board pack cadence, the investor KPI schedules, or something further upstream in the data model?</div>
+            <button class="copy-action-btn" onclick="copyToClipboard(document.getElementById('touch2-1').textContent.trim(), this)">Copy</button>
+          </div>
+
+          <div class="touch-block">
+            <div class="touch-day-label">Day 8-12</div>
+            <div class="touch-type-label">Value Drop</div>
+            <div class="touch-message" id="touch3-1">One pattern I see consistently in PE-backed businesses at Qogita's stage: the finance hire solves the headcount problem, but not the infrastructure problem. The new team member inherits a data model that was built for management accounts, not investor reporting. The ARR waterfall and cohort schedules end up being rebuilt twice, which is six months of lost credibility with the board. Happy to share what has worked in avoiding that.</div>
+            <button class="copy-action-btn" onclick="copyToClipboard(document.getElementById('touch3-1').textContent.trim(), this)">Copy</button>
+          </div>
+
+          <div class="touch-block">
+            <div class="touch-day-label">Day 15-20</div>
+            <div class="touch-type-label">Soft Ask</div>
+            <div class="touch-message" id="touch4-1">I have worked with several PE-backed SaaS businesses at the Series B stage to build the financial reporting infrastructure the board expects, before the first quarterly pack is due. If that is a live challenge for Qogita right now, happy to have a 15-minute conversation about what that typically looks like.</div>
+            <button class="copy-action-btn" onclick="copyToClipboard(document.getElementById('touch4-1').textContent.trim(), this)">Copy</button>
+          </div>
+
+          <div class="touch-block">
+            <div class="touch-day-label">Day 25-30</div>
+            <div class="touch-type-label">Clean Exit</div>
+            <div class="touch-message" id="touch5-1">Timing may not be right. If the finance buildout is already underway post your Series B, that makes sense. Worth staying connected for when the next stage arrives.</div>
+            <button class="copy-action-btn" onclick="copyToClipboard(document.getElementById('touch5-1').textContent.trim(), this)">Copy</button>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <a class="linkedin-btn" href="https://linkedin.com/in/ACoAAAAX2PcB6P98IbC0S5F46mtItk6AeTjN8Rg" target="_blank" title="May require LinkedIn login">View on LinkedIn →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== CARD 2: Matthew De La Hey · inploi ===== -->
+    <div class="lead-card" id="card-2">
+      <div class="card-header" onclick="toggleCard('card-2')">
+        <span class="signal-badge warm">WARM</span>
+        <div class="card-header-info">
+          <div class="lead-name">Matthew De La Hey</div>
+          <div class="lead-company">Co-Founder & CEO · inploi</div>
+          <div class="why-now-line">Finance hiring signal + 11-yr founder anniversary · finance infrastructure build active</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit: YES</span>
+        <span class="expand-icon">&#9662;</span>
+      </div>
+
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item"><a href="https://inploi.com" target="_blank">inploi.com</a></span>
+          <span class="identity-sep">·</span>
+          <span class="identity-item">London, United Kingdom</span>
+          <span class="identity-sep">·</span>
+          <span class="identity-item">11-50 employees</span>
+          <span class="identity-sep">·</span>
+          <span class="identity-item">SaaS · HR Technology</span>
+        </div>
+
+        <div class="tag-row">
+          <span class="tag industry">HR Technology</span>
+          <span class="tag industry">SaaS</span>
+          <span class="tag signal">Finance Hiring · Active</span>
+          <span class="tag context">Founder-Led · 11yr</span>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Active Market Signals</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Finance Department Hiring</div>
+              <div class="signal-timing">Active · Last 90 days</div>
+              <div class="signal-desc">inploi is actively hiring into the finance function. At 11-50 employees, this signals a transition from founder-managed finances to structured financial oversight, typically the stage where a part-time or fractional FD engagement adds immediate value.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">Founder Anniversary Signal</div>
+              <div class="signal-timing">11 years at company · July 2026</div>
+              <div class="signal-desc">Matthew has been at inploi for over a decade. Long-tenure founders at the growth stage often recognise that the finance infrastructure they built in year two does not serve them in year eleven, particularly around investor reporting and exit readiness.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing <span class="card-section-subtitle">Configured for Tim's Practice</span></div>
+          <div class="intel-grid">
+            <div class="intel-cell">
+              <div class="intel-cell-label">Leadership Movement</div>
+              <div class="intel-cell-value">No senior leadership change in last 90 days</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Capital Activity</div>
+              <div class="intel-cell-value">No public funding activity in last 90 days</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Hiring Signals</div>
+              <div class="intel-cell-value">Active finance department hiring · last 90 days</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Expansion Signals</div>
+              <div class="intel-cell-value">No expansion signals in last 90 days</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Growth Trajectory</div>
+              <div class="intel-cell-value">£1M-£5M revenue range · 11-50 employees · scaling HR SaaS platform</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Work Email</div>
+                <div class="contact-value">matthew@inploi.com</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('matthew@inploi.com', this)">Copy</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div class="why-block">
+              <div class="why-block-title">ICP Fit for Tim</div>
+              <div class="why-block-text">inploi is a London-based SaaS business at the 11-50 employee stage where finance complexity is outpacing founder bandwidth. Matthew's background spans co-founder, CEO, and finance director experience, which means he understands the value of senior finance partnering but may not yet have the right structure in place. The active hiring signal confirms he is actively solving this problem.</div>
+              <div class="fit-signal">
+                <div class="fit-signal-label">Strongest Fit Signal</div>
+                Active finance hiring at founder-led SaaS company, 11-50 employees, London-based.
+              </div>
+            </div>
+            <div class="why-block">
+              <div class="why-block-title">Why They're Looking</div>
+              <div class="why-block-text">At 11 years into a business, the financial reporting model built in the early years is showing cracks. Revenue recognition, ARR schedules, and board reporting have become more complex than a founder-managed spreadsheet can handle. Matthew is in the hiring process for a reason, and the window between active finance hiring and a hire being onboarded is the highest-value entry point for a senior FD engagement.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal <span class="card-section-subtitle">2 Channels Ready</span></div>
+
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="conn-note-2">
+              Noticed inploi is actively building out the finance function. I work with founder-led SaaS businesses at exactly this stage, typically on bridging from informal financial management to investor-grade reporting. Would be good to connect.
+              <div class="char-count">237 characters · LinkedIn limit: 300</div>
+            </div>
+            <button class="copy-action-btn" onclick="copyElementText('conn-note-2', this)">Copy Connection Note</button>
+          </div>
+
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Email Draft · Ready to Send</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject Line</div>
+              <div class="email-subject-value" id="email-subj-2">inploi · finance infrastructure at the 11-50 stage</div>
+              <div class="email-body" id="email-body-2">Matthew,
+
+Noticed inploi is currently hiring into the finance function. At 11-50 employees, that usually means the financial reporting model that worked at 20 people is not carrying the weight anymore, and the business is between the informal and structured phases.
+
+That transition is one I have worked through several times with SaaS businesses in London. The common pattern: the hire fills the headcount gap, but the data model and board reporting infrastructure still need rebuilding. I recently helped a PE-backed UK SaaS firm present a defensible three-year strategic plan to M&A advisers, built from scratch in six months.
+
+Would a short conversation be useful, to talk through where inploi is in that transition?
+
+Tim Elms
+Finance Director · timelms@gmail.com</div>
+              <div class="email-meta">
+                <span class="email-meta-note">135 words · no exclamation marks · no em dashes</span>
+                <button class="copy-action-btn" onclick="copyFullEmail('email-subj-2', 'email-body-2', this)">Copy Full Email</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Follow-Up Sequence <span class="card-section-subtitle">Built for This Lead's Signal</span></div>
+          <div class="touch-block">
+            <div class="touch-day-label">Day 0</div>
+            <div class="touch-type-label">Connection Request</div>
+            <div class="touch-message" id="touch1-2">Noticed inploi is actively building out the finance function. I work with founder-led SaaS businesses at exactly this stage, typically on bridging from informal financial management to investor-grade reporting. Would be good to connect.</div>
+            <button class="copy-action-btn" onclick="copyToClipboard(document.getElementById('touch1-2').textContent.trim(), this)">Copy</button>
+          </div>
+          <div class="touch-collapsed-indicator">· · · 4 additional touches included in full delivery</div>
+        </div>
+
+        <div class="card-footer">
+          <a class="linkedin-btn" href="https://linkedin.com/in/ACoAAANMV_sBdCrcwYmgyXVCSU5uKhSdCCw2QSA" target="_blank" title="May require LinkedIn login">View on LinkedIn →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== CARD 3: Vp Singh · VerbaFlo ===== -->
+    <div class="lead-card" id="card-3">
+      <div class="card-header" onclick="toggleCard('card-3')">
+        <span class="signal-badge warm">WARM</span>
+        <div class="card-header-info">
+          <div class="lead-name">Vp Singh</div>
+          <div class="lead-company">Co-Founder & COO · VerbaFlo</div>
+          <div class="why-now-line">Finance hiring active · 1-year mark at fast-growing AI SaaS</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit: YES</span>
+        <span class="expand-icon">&#9662;</span>
+      </div>
+
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item"><a href="https://verbaflo.ai" target="_blank">verbaflo.ai</a></span>
+          <span class="identity-sep">·</span>
+          <span class="identity-item">London, United Kingdom</span>
+          <span class="identity-sep">·</span>
+          <span class="identity-item">11-50 employees</span>
+          <span class="identity-sep">·</span>
+          <span class="identity-item">AI SaaS · PropTech</span>
+        </div>
+
+        <div class="tag-row">
+          <span class="tag industry">AI SaaS</span>
+          <span class="tag industry">PropTech</span>
+          <span class="tag signal">Finance Hiring · Active</span>
+          <span class="tag context">Seed-Stage · High Growth</span>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Active Market Signals</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Finance Department Hiring</div>
+              <div class="signal-timing">Active · Last 90 days</div>
+              <div class="signal-desc">VerbaFlo is actively hiring into its finance function at the 11-50 employee stage. For an AI SaaS business targeting US and UK residential operators, the financial reporting complexity around multi-currency revenue recognition and investor KPIs scales quickly at this point.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">Founder Role Milestone</div>
+              <div class="signal-timing">1-year anniversary · January 2026</div>
+              <div class="signal-desc">Vp has reached the one-year mark as Co-founder and COO. At this stage, early-stage AI SaaS businesses typically face the first investor reporting cycle and the first real question of whether their financial model is defensible to external scrutiny.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing <span class="card-section-subtitle">Configured for Tim's Practice</span></div>
+          <div class="intel-grid">
+            <div class="intel-cell">
+              <div class="intel-cell-label">Leadership Movement</div>
+              <div class="intel-cell-value">No leadership movement detected in last 90 days</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Capital Activity</div>
+              <div class="intel-cell-value">No public funding activity in last 90 days</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Hiring Signals</div>
+              <div class="intel-cell-value">Active finance department hiring · last 90 days</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Expansion Signals</div>
+              <div class="intel-cell-value">No expansion signals in last 90 days</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Growth Trajectory</div>
+              <div class="intel-cell-value">£1M-£5M revenue · 11-50 employees · multi-market SaaS platform, US and UK</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Work Email</div>
+                <div class="contact-value">vp@verbaflo.ai</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('vp@verbaflo.ai', this)">Copy</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div class="why-block">
+              <div class="why-block-title">ICP Fit for Tim</div>
+              <div class="why-block-text">VerbaFlo is a London-based AI SaaS business operating across US and UK markets, targeting residential property operators. The co-founder profile, active finance hiring, and 11-50 headcount place this squarely in Tim's SaaS finance transformation zone. Multi-market revenue recognition and investor-grade reporting are both live problems at this stage.</div>
+              <div class="fit-signal">
+                <div class="fit-signal-label">Strongest Fit Signal</div>
+                Active finance hiring at AI SaaS company, multi-market operations, 11-50 employees, London HQ.
+              </div>
+            </div>
+            <div class="why-block">
+              <div class="why-block-title">Why They're Looking</div>
+              <div class="why-block-text">VerbaFlo is building out a US and UK platform and has crossed the complexity threshold where the co-founder's finance oversight is no longer sufficient. Multi-jurisdiction revenue recognition, SaaS metrics reporting, and investor-ready financial packs are all things that need a senior finance partner, not a bookkeeper. The finance hire signal confirms the problem is live and the conversation is time-sensitive.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal <span class="card-section-subtitle">2 Channels Ready</span></div>
+
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="conn-note-3">
+              Noticed VerbaFlo is building out the finance function. I work with AI SaaS businesses at this stage on multi-market financial infrastructure, specifically where US and UK revenue streams create reporting complexity. Would be good to connect.
+              <div class="char-count">240 characters · LinkedIn limit: 300</div>
+            </div>
+            <button class="copy-action-btn" onclick="copyElementText('conn-note-3', this)">Copy Connection Note</button>
+          </div>
+
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Email Draft · Ready to Send</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject Line</div>
+              <div class="email-subject-value" id="email-subj-3">VerbaFlo · finance infrastructure for multi-market SaaS</div>
+              <div class="email-body" id="email-body-3">Vp,
+
+Noticed VerbaFlo is actively hiring into the finance function. For a SaaS business operating across US and UK markets, that hire typically arrives at the same time as the first investor reporting cycle, which means the financial model needs to carry two different sets of expectations at once.
+
+Multi-currency revenue recognition and SaaS metrics reporting for investors are two areas I have built from scratch at comparable-stage businesses. Most recently at a PE-backed UK SaaS business where I implemented investor-grade ARR waterfall schedules and cohort retention data within the first six months.
+
+Would a short conversation be useful to talk through where VerbaFlo is currently on that transition?
+
+Tim Elms
+Finance Director · timelms@gmail.com</div>
+              <div class="email-meta">
+                <span class="email-meta-note">130 words · no exclamation marks · no em dashes</span>
+                <button class="copy-action-btn" onclick="copyFullEmail('email-subj-3', 'email-body-3', this)">Copy Full Email</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Follow-Up Sequence <span class="card-section-subtitle">Built for This Lead's Signal</span></div>
+          <div class="touch-block">
+            <div class="touch-day-label">Day 0</div>
+            <div class="touch-type-label">Connection Request</div>
+            <div class="touch-message" id="touch1-3">Noticed VerbaFlo is building out the finance function. I work with AI SaaS businesses at this stage on multi-market financial infrastructure, specifically where US and UK revenue streams create reporting complexity. Would be good to connect.</div>
+            <button class="copy-action-btn" onclick="copyToClipboard(document.getElementById('touch1-3').textContent.trim(), this)">Copy</button>
+          </div>
+          <div class="touch-collapsed-indicator">· · · 4 additional touches included in full delivery</div>
+        </div>
+
+        <div class="card-footer">
+          <a class="linkedin-btn" href="https://linkedin.com/in/ACoAAApIkD4BCHZfPO6HQtBmuBj-gehC77S8p2Q" target="_blank" title="May require LinkedIn login">View on LinkedIn →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== CARD 4: Sumanas Sarma · Captur ===== -->
+    <div class="lead-card" id="card-4">
+      <div class="card-header" onclick="toggleCard('card-4')">
+        <span class="signal-badge warm">WARM</span>
+        <div class="card-header-info">
+          <div class="lead-name">Sumanas Sarma</div>
+          <div class="lead-company">Chief Technology Officer · Captur</div>
+          <div class="why-now-line">Finance hiring signal · AI SaaS at £5M-£10M revenue · decision window open</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit: YES</span>
+        <span class="expand-icon">&#9662;</span>
+      </div>
+
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item"><a href="https://captur.ai" target="_blank">captur.ai</a></span>
+          <span class="identity-sep">·</span>
+          <span class="identity-item">London, United Kingdom</span>
+          <span class="identity-sep">·</span>
+          <span class="identity-item">11-50 employees</span>
+          <span class="identity-sep">·</span>
+          <span class="identity-item">AI SaaS · Logistics Tech</span>
+        </div>
+
+        <div class="tag-row">
+          <span class="tag industry">AI SaaS</span>
+          <span class="tag industry">Logistics Tech</span>
+          <span class="tag signal">Finance Hiring · Active</span>
+          <span class="tag context">£5M-£10M Revenue · Scaling</span>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Active Market Signals</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Finance Department Hiring</div>
+              <div class="signal-timing">Active · Last 90 days</div>
+              <div class="signal-desc">Captur is actively hiring into the finance function at £5M-£10M revenue. This is the inflection point where AI SaaS businesses move from founder-managed financial reporting to structured CFO-level oversight, particularly as enterprise sales cycles require more sophisticated financial modelling.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">Company Growth Milestone</div>
+              <div class="signal-timing">2-year CTO tenure · October 2026</div>
+              <div class="signal-desc">Sumanas has been building Captur's technical infrastructure for two years. At this stage, the CTO is typically the most commercially aware person outside the CEO, making them a strong influencer in senior finance hiring decisions when they understand the investor reporting implications.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing <span class="card-section-subtitle">Configured for Tim's Practice</span></div>
+          <div class="intel-grid">
+            <div class="intel-cell">
+              <div class="intel-cell-label">Leadership Movement</div>
+              <div class="intel-cell-value">No leadership movement detected in last 90 days</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Capital Activity</div>
+              <div class="intel-cell-value">No public funding activity in last 90 days</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Hiring Signals</div>
+              <div class="intel-cell-value">Active finance department hiring · last 90 days</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Expansion Signals</div>
+              <div class="intel-cell-value">No expansion signals in last 90 days</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Growth Trajectory</div>
+              <div class="intel-cell-value">£5M-£10M revenue · 11-50 employees · AI photo-capture platform, logistics and mobility</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Work Email</div>
+                <div class="contact-value">sumanas@captur.ai</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('sumanas@captur.ai', this)">Copy</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div class="why-block">
+              <div class="why-block-title">ICP Fit for Tim</div>
+              <div class="why-block-text">Captur is a London-based AI SaaS business at the £5M-£10M revenue stage with active finance hiring. The CTO profile is an entry point to a company where the CEO is likely the decision-maker on senior finance engagement. At this revenue stage in the logistics tech vertical, investor-grade financial modelling and SaaS metrics reporting are both pressing needs.</div>
+              <div class="fit-signal">
+                <div class="fit-signal-label">Strongest Fit Signal</div>
+                Active finance hiring at £5M-£10M AI SaaS, London-based, company showing clear scaling trajectory.
+              </div>
+            </div>
+            <div class="why-block">
+              <div class="why-block-title">Why They're Looking</div>
+              <div class="why-block-text">At £5M-£10M revenue, the informal financial model breaks down against enterprise customer demands for financial assurance and investor expectations for clean SaaS reporting. Captur is building its finance function now because the existing setup cannot support the next growth phase. The CTO is a warm referral pathway to the CEO conversation that typically leads to a senior finance engagement.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal <span class="card-section-subtitle">2 Channels Ready</span></div>
+
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="conn-note-4">
+              Noticed Captur is hiring into the finance function. I work with AI SaaS businesses at the £5M-£10M stage on building the financial infrastructure that investor and enterprise customer expectations require at this point. Thought it worth connecting.
+              <div class="char-count">248 characters · LinkedIn limit: 300</div>
+            </div>
+            <button class="copy-action-btn" onclick="copyElementText('conn-note-4', this)">Copy Connection Note</button>
+          </div>
+
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Email Draft · Ready to Send</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject Line</div>
+              <div class="email-subject-value" id="email-subj-4">Captur · finance infrastructure at the £5M-£10M stage</div>
+              <div class="email-body" id="email-body-4">Sumanas,
+
+Noticed Captur is actively hiring into the finance function. For an AI SaaS business at £5M-£10M revenue, that usually marks the point where the existing financial model, built for an earlier stage, starts showing gaps against what enterprise customers and investors actually want to see.
+
+The pattern is consistent across London-based SaaS businesses at this stage: the SaaS metrics, the revenue bridge, and the three-year strategic plan all need rebuilding in investor-grade format. I have done that buildout several times, most recently at a PE-backed SaaS business where the result was a three-year plan presented directly to M&A advisers.
+
+Would you be open to a short conversation about where Captur is on that transition, and whether there is a fit worth exploring?
+
+Tim Elms
+Finance Director · timelms@gmail.com</div>
+              <div class="email-meta">
+                <span class="email-meta-note">143 words · no exclamation marks · no em dashes</span>
+                <button class="copy-action-btn" onclick="copyFullEmail('email-subj-4', 'email-body-4', this)">Copy Full Email</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Follow-Up Sequence <span class="card-section-subtitle">Built for This Lead's Signal</span></div>
+          <div class="touch-block">
+            <div class="touch-day-label">Day 0</div>
+            <div class="touch-type-label">Connection Request</div>
+            <div class="touch-message" id="touch1-4">Noticed Captur is hiring into the finance function. I work with AI SaaS businesses at the £5M-£10M stage on building the financial infrastructure that investor and enterprise customer expectations require at this point. Thought it worth connecting.</div>
+            <button class="copy-action-btn" onclick="copyToClipboard(document.getElementById('touch1-4').textContent.trim(), this)">Copy</button>
+          </div>
+          <div class="touch-collapsed-indicator">· · · 4 additional touches included in full delivery</div>
+        </div>
+
+        <div class="card-footer">
+          <a class="linkedin-btn" href="https://linkedin.com/in/ACoAAAb_f_0BvTNm00AClMhNEnQcPToIQuk8_8w" target="_blank" title="May require LinkedIn login">View on LinkedIn →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== CARD 5: Phoebee Gahan · Nscale ===== -->
+    <div class="lead-card" id="card-5">
+      <div class="card-header" onclick="toggleCard('card-5')">
+        <span class="signal-badge hot">HOT</span>
+        <div class="card-header-info">
+          <div class="lead-name">Phoebee Gahan</div>
+          <div class="lead-company">Chief Legal Officer · Nscale</div>
+          <div class="why-now-line">Role change at AI hyperscaler · finance hiring active · London HQ</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit: YES</span>
+        <span class="expand-icon">&#9662;</span>
+      </div>
+
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item"><a href="https://nscale.com" target="_blank">nscale.com</a></span>
+          <span class="identity-sep">·</span>
+          <span class="identity-item">London, United Kingdom</span>
+          <span class="identity-sep">·</span>
+          <span class="identity-item">51-200 employees</span>
+          <span class="identity-sep">·</span>
+          <span class="identity-item">AI Infrastructure · Hyperscale</span>
+        </div>
+
+        <div class="tag-row">
+          <span class="tag industry">AI Infrastructure</span>
+          <span class="tag industry">Hyperscale</span>
+          <span class="tag signal">Finance Hiring + Role Change · Active</span>
+          <span class="tag context">£10M-£25M Revenue · High Growth</span>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Active Market Signals</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Leadership Role Change</div>
+              <div class="signal-timing">Approximately 183 days ago · December 2025</div>
+              <div class="signal-desc">Phoebee was elevated from General Counsel to Chief Legal Officer at Nscale approximately six months ago. CLO-level elevation at a high-growth AI company often signals a board-level restructuring that includes finance function changes, particularly around governance and investor reporting.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">Finance Department Hiring</div>
+              <div class="signal-timing">Active · Last 90 days</div>
+              <div class="signal-desc">Nscale is actively hiring into the finance function at 51-200 employees and £10M-£25M revenue. For an AI hyperscaler at this stage, the combination of CLO elevation and finance hiring suggests a company preparing for the next capital raise or a significant investor reporting upgrade.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing <span class="card-section-subtitle">Configured for Tim's Practice</span></div>
+          <div class="intel-grid">
+            <div class="intel-cell">
+              <div class="intel-cell-label">Leadership Movement</div>
+              <div class="intel-cell-value">CLO elevation from General Counsel approximately December 2025 · board-level restructuring signal</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Capital Activity</div>
+              <div class="intel-cell-value">No public funding activity in last 90 days · next raise preparation likely</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Hiring Signals</div>
+              <div class="intel-cell-value">Active finance department hiring · last 90 days</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Expansion Signals</div>
+              <div class="intel-cell-value">Hyperscale data centre operations · vertically integrated infrastructure expansion ongoing</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Growth Trajectory</div>
+              <div class="intel-cell-value">£10M-£25M revenue · 51-200 employees · AI hyperscaler vertically integrated from data centre to software stack</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Work Email</div>
+                <div class="contact-value">phoebee@nscale.com</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('phoebee@nscale.com', this)">Copy</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div class="why-block">
+              <div class="why-block-title">ICP Fit for Tim</div>
+              <div class="why-block-text">Nscale is a London-headquartered AI hyperscaler at £10M-£25M revenue with 51-200 employees. The combination of a CLO elevation, active finance hiring, and vertically integrated infrastructure expansion makes this a company preparing for significant financial reporting change. The CLO is a warm entry point: legal and finance functions operate closely in governance and investor reporting, making Phoebee a natural referral pathway to the CEO.</div>
+              <div class="fit-signal">
+                <div class="fit-signal-label">Strongest Fit Signal</div>
+                CLO elevation plus active finance hiring at AI infrastructure company, London HQ, £10M-£25M revenue.
+              </div>
+            </div>
+            <div class="why-block">
+              <div class="why-block-title">Why They're Looking</div>
+              <div class="why-block-text">Nscale is building serious infrastructure and the governance structure is being upgraded to match. The CLO elevation and finance hiring happening simultaneously suggest the board is preparing for either a next capital raise or a major partnership requiring investor-grade reporting. The company's vertical integration means the financial model is more complex than standard SaaS, making a senior FD with M&A and transformation experience directly relevant to what the CEO is trying to build.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal <span class="card-section-subtitle">2 Channels Ready</span></div>
+
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="conn-note-5">
+              Noticed Nscale is building out the finance function alongside your CLO appointment. I work with high-growth tech businesses at this stage on financial infrastructure for the next capital phase. The legal and finance functions tend to move together on this. Thought it worth connecting.
+              <div class="char-count">277 characters · LinkedIn limit: 300</div>
+            </div>
+            <button class="copy-action-btn" onclick="copyElementText('conn-note-5', this)">Copy Connection Note</button>
+          </div>
+
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Email Draft · Ready to Send</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject Line</div>
+              <div class="email-subject-value" id="email-subj-5">Nscale · finance infrastructure for the next capital phase</div>
+              <div class="email-body" id="email-body-5">Phoebee,
+
+Noticed Nscale is actively hiring into the finance function around the same time as your CLO appointment. In my experience, those two things moving together usually signal a board preparing for a capital raise or a significant governance upgrade, where legal and finance need to be aligned on what investor reporting looks like.
+
+I have worked through that transition with PE-backed and VC-backed technology businesses in the UK, specifically on building the financial infrastructure, ARR schedules, and investor-grade reporting that a next-stage raise requires. The technical complexity of a vertically integrated AI company means the financial model needs a senior hand, not a bookkeeper hire.
+
+Would a short conversation make sense to talk through where Nscale is on that transition?
+
+Tim Elms
+Finance Director · timelms@gmail.com</div>
+              <div class="email-meta">
+                <span class="email-meta-note">138 words · no exclamation marks · no em dashes</span>
+                <button class="copy-action-btn" onclick="copyFullEmail('email-subj-5', 'email-body-5', this)">Copy Full Email</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Follow-Up Sequence <span class="card-section-subtitle">Built for This Lead's Signal</span></div>
+          <div class="touch-block">
+            <div class="touch-day-label">Day 0</div>
+            <div class="touch-type-label">Connection Request</div>
+            <div class="touch-message" id="touch1-5">Noticed Nscale is building out the finance function alongside your CLO appointment. I work with high-growth tech businesses at this stage on financial infrastructure for the next capital phase. The legal and finance functions tend to move together on this. Thought it worth connecting.</div>
+            <button class="copy-action-btn" onclick="copyToClipboard(document.getElementById('touch1-5').textContent.trim(), this)">Copy</button>
+          </div>
+          <div class="touch-collapsed-indicator">· · · 4 additional touches included in full delivery</div>
+        </div>
+
+        <div class="card-footer">
+          <a class="linkedin-btn" href="https://linkedin.com/in/ACoAABXpVecBueo4ULt9CNgSrOJMdxaXpoxSsXw" target="_blank" title="May require LinkedIn login">View on LinkedIn →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- PIPELINE MATH -->
+    <div class="pipeline-math">
+      <div class="pipeline-math-text">
+        Five leads like these are delivered every week in the full system.
+        Over 12 weeks: <strong>120 ICP-matched buyers</strong> in Tim's network,
+        each carrying an active signal. The math from there is Tim's to run.
+      </div>
+    </div>
+
+    <!-- VISUALS SECTION - PIPELINE VERSION -->
+    <div class="visuals-section">
+      <div class="visuals-header">
+        <div class="visuals-copy">
+          <h3>Every Monday, your content arrives finished.</h3>
+          <p>The leads are one side of the system. The content is the other. Decision-makers skim before they read. A post without a visual is half a post. Finance directors and CFOs who post with structured visuals consistently outperform those who post text alone, not because their thinking is sharper, but because the visual stops the scroll long enough for the thinking to land.</p>
+          <p>Every piece that benefits from a visual gets one. Finished. Attached. Ready to schedule.</p>
+          <ul class="visuals-list">
+            <li><span class="visuals-list-dot">→</span> 3 LinkedIn posts per week in your voice, formatted and ready</li>
+            <li><span class="visuals-list-dot">→</span> Carousel covers, quote graphics, and infographics — finished PNG files</li>
+            <li><span class="visuals-list-dot">→</span> 15-minute strategy Loom walking through the week's package</li>
+            <li><span class="visuals-list-dot">→</span> Zero design work on your end. Zero</li>
+          </ul>
+        </div>
+        <div>
+          <div class="visuals-tiles">
+            <div class="visual-tile carousel">
+              <div class="visual-tile-inner">
+                <div class="tile-accent-bar"></div>
+                <div class="tile-lines">
+                  <div class="tile-line full"></div>
+                  <div class="tile-line medium"></div>
+                  <div class="tile-line short"></div>
+                </div>
+              </div>
+              <div class="tile-label">Carousel Cover</div>
+            </div>
+            <div class="visual-tile post">
+              <div class="visual-tile-inner">
+                <div class="tile-accent-bar"></div>
+                <div class="tile-lines">
+                  <div class="tile-line medium"></div>
+                  <div class="tile-line full"></div>
+                  <div class="tile-line short"></div>
+                </div>
+              </div>
+              <div class="tile-label">Post Visual</div>
+            </div>
+            <div class="visual-tile infographic">
+              <div class="visual-tile-inner">
+                <div class="tile-accent-bar"></div>
+                <div class="tile-lines">
+                  <div class="tile-line full"></div>
+                  <div class="tile-line short"></div>
+                  <div class="tile-line medium"></div>
+                </div>
+              </div>
+              <div class="tile-label">Infographic</div>
+            </div>
+          </div>
+          <div class="visuals-note">
+            <strong>Visuals are finished and attached in the Monday package.</strong><br>
+            You schedule. Nothing to design. Nothing to brief.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA FOOTER -->
+    <div class="cta-footer">
+      <div class="cta-footer-headline">This is what one week of the full system looks like for Tim.</div>
+      <div class="cta-footer-subhead">
+        Every Monday: 10 ICP-matched buyers with full signal intelligence, direct contact details,
+        and outreach ready to send. Plus 3 posts and finished visuals in your voice.
+        30 minutes of your time per week.
+      </div>
+      <a class="cta-footer-btn" href="https://calendly.com/saurabh_zentro/30-min" target="_blank">Book Your 20-Min Fit Call →</a>
+      <div class="cta-footer-note">No pitch. No deck. We talk through your specific situation and confirm whether this is the right fit.</div>
+    </div>
+
+  </div><!-- end pipeline view -->
+
+  <!-- CONTENT ENGINE -->
+  <div class="view" id="view-content">
+
+    <div class="welcome-banner">
+      <div class="welcome-tag">Content Engine · Sample Delivery</div>
+      <div class="welcome-text">
+        Tim, this is a sample of the content side of the system. Two posts written in your voice, drawn from your actual methodology and framing. <strong>One teaching post on exit readiness infrastructure. One handraiser post designed to pull comments from PE-backed founders and CFOs.</strong> This is what your Monday delivery includes, every week.
+      </div>
+    </div>
+
+    <div class="post-cards-grid">
+
+      <!-- TEACHING POST -->
+      <div class="post-card">
+        <div class="post-type-label">Teaching Post</div>
+        <div class="post-type-desc">Explains a pattern from your methodology. Builds authority with CEOs, CFOs, and PE-backed founders. Designed to attract peer engagement from the people you want in your network.</div>
+        <div class="post-text">Exit readiness is not a project.
+
+Most founders treat it like one.
+
+Hire a CFO six months before the sale. Clean the data. Tighten the forecasts. Rebuild the board pack. Rush.
+
+Today's PE buyers and their advisers are not fooled by the sprint.
+
+They want ARR waterfall schedules that reconcile to audited accounts. They want cohort retention data going back three years. They want a revenue bridge that explains every deviation from budget, not just the headline number.
+
+If you have not been building that infrastructure from the day you took investment, you are not behind on admin.
+
+You are behind on valuation.
+
+The businesses that command the highest multiples are not better businesses. They are better documented businesses. The financial story, past, present and future, holds up to scrutiny.
+
+That is a way of operating. Not a six-month sprint.
+
+Comment INTEL and I will send you a breakdown of the five financial reporting gaps that most PE-backed SaaS founders discover late.</div>
+        <div class="post-cta-line">CTA: Comment INTEL → receive breakdown of top 5 financial reporting gaps</div>
+      </div>
+
+      <!-- HANDRAISER POST -->
+      <div class="post-card">
+        <div class="post-type-label">Handraiser Post</div>
+        <div class="post-type-desc">Designed to surface qualified buyers who are actively feeling the problem. Pulls "LEAD" comments from PE-backed founders and CFOs who recognise the gap Tim describes.</div>
+        <div class="post-text">There is a version of this conversation I have had eight times.
+
+A PE-backed SaaS founder, post-Series A or B, facing the first proper quarterly board pack.
+
+The finance team is good at what they built for. Management accounts, cash flow, basic reporting. What the new investors want is different: ARR waterfall, cohort retention, revenue bridge with variance analysis, over-reliance risk across customers and team members.
+
+None of that existed before the raise. It is being built now, under time pressure, for people who already know what good looks like.
+
+That is not a financial reporting problem. That is an infrastructure problem that was left too late.
+
+If you are a founder or CFO at a PE-backed SaaS business and this pattern is familiar, comment LEAD and I will show you what the first 90 days of building the right infrastructure actually looks like.</div>
+        <div class="post-cta-line">CTA: Comment LEAD → receive 90-day financial infrastructure breakdown</div>
+      </div>
+
+    </div>
+
+    <!-- VISUALS SECTION - CONTENT VERSION -->
+    <div class="visuals-section">
+      <div class="visuals-header">
+        <div class="visuals-copy">
+          <h3>Content without visuals is half a system.</h3>
+          <p>Most finance directors and CFOs post text. The ones building consistent inbound post text with structure behind it. A carousel that breaks down a framework visually gets saved. A quote graphic gets shared. An infographic gets screenshotted. Saves, shares, and screenshots reach buyers who never followed you. That is organic reach you do not have to pay for.</p>
+          <p>The full system produces the visuals. You attach and schedule.</p>
+          <ul class="visuals-list">
+            <li><span class="visuals-list-dot">→</span> 2 carousels per month with finished slide visuals</li>
+            <li><span class="visuals-list-dot">→</span> 2 standalone infographics per month</li>
+            <li><span class="visuals-list-dot">→</span> Post graphics for any text post that benefits from one</li>
+            <li><span class="visuals-list-dot">→</span> All delivered as finished PNG files in the Monday package</li>
+          </ul>
+        </div>
+        <div>
+          <div class="visuals-tiles">
+            <div class="visual-tile carousel">
+              <div class="visual-tile-inner">
+                <div class="tile-accent-bar"></div>
+                <div class="tile-lines">
+                  <div class="tile-line full"></div>
+                  <div class="tile-line medium"></div>
+                  <div class="tile-line short"></div>
+                </div>
+              </div>
+              <div class="tile-label">Carousel Cover</div>
+            </div>
+            <div class="visual-tile post">
+              <div class="visual-tile-inner">
+                <div class="tile-accent-bar"></div>
+                <div class="tile-lines">
+                  <div class="tile-line medium"></div>
+                  <div class="tile-line full"></div>
+                  <div class="tile-line short"></div>
+                </div>
+              </div>
+              <div class="tile-label">Post Visual</div>
+            </div>
+            <div class="visual-tile infographic">
+              <div class="visual-tile-inner">
+                <div class="tile-accent-bar"></div>
+                <div class="tile-lines">
+                  <div class="tile-line full"></div>
+                  <div class="tile-line short"></div>
+                  <div class="tile-line medium"></div>
+                </div>
+              </div>
+              <div class="tile-label">Infographic</div>
+            </div>
+          </div>
+          <div class="visuals-note">
+            <strong>18 content pieces per month. Finished. Attached. Ready to schedule.</strong><br>
+            You schedule from your own account. Zero design work on your end.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA FOOTER -->
+    <div class="cta-footer">
+      <div class="cta-footer-headline">This is what one week of the full system looks like for Tim.</div>
+      <div class="cta-footer-subhead">
+        Every Monday: 10 ICP-matched buyers with full signal intelligence, direct contact details,
+        and outreach ready to send. Plus 3 posts and finished visuals in your voice.
+        30 minutes of your time per week.
+      </div>
+      <a class="cta-footer-btn" href="https://calendly.com/saurabh_zentro/30-min" target="_blank">Book Your 20-Min Fit Call →</a>
+      <div class="cta-footer-note">No pitch. No deck. We talk through your specific situation and confirm whether this is the right fit.</div>
+    </div>
+
+  </div><!-- end content view -->
+
+</main>
+
+<script>
+function showView(name, triggerEl) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view-' + name).classList.add('active');
+
+  document.querySelectorAll('.nav-item, .tab-btn, .mobile-tab-pill').forEach(el => el.classList.remove('active'));
+
+  const navEl = document.getElementById('nav-' + name);
+  if (navEl) navEl.classList.add('active');
+
+  document.querySelectorAll('.tab-btn, .mobile-tab-pill').forEach(btn => {
+    if (btn.getAttribute('onclick') && btn.getAttribute('onclick').includes("'" + name + "'")) {
+      btn.classList.add('active');
+    }
+  });
+}
+
+function toggleCard(cardId) {
+  document.getElementById(cardId).classList.toggle('expanded');
+}
+
+function copyToClipboard(text, btn) {
+  navigator.clipboard.writeText(text).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = 'Copied.';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 2000);
+  }).catch(() => {
+    const el = document.createElement('textarea');
+    el.value = text;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+    btn.textContent = 'Copied.'; btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+function copyElementText(elementId, btn) {
+  const el = document.getElementById(elementId);
+  if (!el) return;
+  const charCountEl = el.querySelector('.char-count');
+  let text = el.textContent;
+  if (charCountEl) text = text.replace(charCountEl.textContent, '').trim();
+  copyToClipboard(text, btn);
+}
+
+function copyFullEmail(subjId, bodyId, btn) {
+  const subj = document.getElementById(subjId);
+  const body = document.getElementById(bodyId);
+  const text = 'Subject: ' + (subj ? subj.textContent.trim() : '') + '\n\n' + (body ? body.textContent.trim() : '');
+  copyToClipboard(text, btn);
+}
+</script>
+
+</body>
+</html>
