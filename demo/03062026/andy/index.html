@@ -1,0 +1,1502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Andy G. · Lead Demo · Pipelind</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0A0A12;
+  --bg2: #12121E;
+  --bg3: #0E0E19;
+  --primary: #6A66A3;
+  --primary-light: #9B98C4;
+  --accent: #FF9900;
+  --success: #019047;
+  --success-light: #5AC88A;
+  --text: rgba(255,255,255,0.90);
+  --text-dim: rgba(255,255,255,0.72);
+  --text-muted: rgba(255,255,255,0.55);
+  --border: rgba(106,102,163,0.25);
+  --border-hover: rgba(106,102,163,0.55);
+  --hot: #FF4444;
+  --warm: #FF9900;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif; min-height: 100vh; }
+
+/* SIDEBAR */
+.sidebar {
+  position: fixed; top: 0; left: 0; width: 240px; height: 100vh;
+  background: var(--bg2); border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; padding: 24px 20px; z-index: 100;
+}
+.sidebar-logo { font-family: 'Space Mono', monospace; font-size: 13px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--primary-light); margin-bottom: 28px; }
+.prospect-block { margin-bottom: 32px; }
+.prospect-label { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px; }
+.prospect-name { font-size: 17px; font-weight: 800; color: var(--text); line-height: 1.25; }
+.prospect-meta { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--text-muted);
+  letter-spacing: .06em; margin-top: 4px; }
+.nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 8px;
+  cursor: pointer; margin-bottom: 4px; font-size: 13px; font-weight: 600; color: var(--text-dim);
+  transition: all .15s; border: 1px solid transparent; }
+.nav-item:hover { background: rgba(106,102,163,0.10); color: var(--text); }
+.nav-item.active { background: rgba(106,102,163,0.15); color: var(--primary-light); border-color: var(--border); }
+.sidebar-footer { margin-top: auto; font-family: 'Space Mono', monospace; font-size: 10px;
+  color: var(--text-muted); letter-spacing: .04em; line-height: 1.8; }
+
+/* MOBILE TOP BAR */
+.mobile-topbar {
+  display: none; position: sticky; top: 0; z-index: 200;
+  background: var(--bg2); border-bottom: 1px solid var(--border);
+  padding: 14px 16px; align-items: center; justify-content: space-between;
+}
+.mobile-logo { font-family: 'Space Mono', monospace; font-size: 12px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--primary-light); }
+.mobile-prospect-name { font-size: 13px; font-weight: 700; color: var(--text); }
+
+/* MOBILE TABS */
+.mobile-tabs {
+  display: none; position: sticky; top: 53px; z-index: 199;
+  background: var(--bg); border-bottom: 1px solid var(--border);
+  padding: 10px 16px; gap: 8px;
+}
+.mobile-tab-pill { padding: 7px 16px; border-radius: 20px; font-size: 12px; font-weight: 700;
+  font-family: 'Space Mono', monospace; letter-spacing: .06em; text-transform: uppercase;
+  cursor: pointer; border: 1px solid var(--border); color: var(--text-muted); background: transparent;
+  transition: all .15s; }
+.mobile-tab-pill.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+/* MAIN CONTENT */
+.main { margin-left: 240px; padding: 32px 36px; max-width: 1140px; }
+
+/* DESKTOP TAB BAR */
+.tab-bar {
+  position: sticky; top: 0; z-index: 50; background: var(--bg);
+  border-bottom: 1px solid var(--border); display: flex; margin: -32px -36px 32px; padding: 0 36px;
+}
+.tab-btn { padding: 14px 22px; font-family: 'Space Mono', monospace; font-size: 11px;
+  font-weight: 700; letter-spacing: .10em; text-transform: uppercase; color: var(--text-muted);
+  cursor: pointer; border: none; background: transparent; border-bottom: 2px solid transparent;
+  transition: all .15s; }
+.tab-btn.active { color: var(--primary-light); border-bottom-color: var(--primary); }
+
+/* WELCOME BANNER */
+.welcome-banner { background: linear-gradient(135deg, rgba(106,102,163,0.10) 0%, rgba(255,153,0,0.05) 100%);
+  border: 1px solid var(--border); border-radius: 14px; padding: 28px 32px; margin-bottom: 28px; }
+.welcome-tag { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+.welcome-headline { font-size: 22px; font-weight: 800; color: var(--text); line-height: 1.3; margin-bottom: 10px; }
+.welcome-sub { font-size: 14px; color: var(--text-dim); line-height: 1.75; max-width: 700px; }
+
+/* PULSE PANEL */
+.pulse-panel {
+  border-left: 3px solid #FF9900; background: rgba(255,153,0,0.06);
+  border-radius: 0 10px 10px 0; padding: 18px 22px; margin-bottom: 28px;
+}
+.pulse-label { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase; color: #FF9900; margin-bottom: 10px; }
+.pulse-text { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 15px; color: rgba(255,255,255,0.90); line-height: 1.7; }
+
+/* ICP GRID */
+.icp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 28px; }
+.icp-panel { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 22px 24px; }
+.icp-panel-label { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--primary-light); margin-bottom: 16px; }
+.icp-row { display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 13px; }
+.icp-row:last-child { border-bottom: none; }
+.icp-key { color: var(--text-muted); font-size: 12px; }
+.icp-val { color: var(--text); font-weight: 600; text-align: right; font-size: 12px; }
+.quality-stat { padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.quality-stat:last-child { border-bottom: none; }
+.quality-stat-label { font-size: 12px; color: var(--text-muted); margin-bottom: 4px; }
+.quality-stat-val { font-size: 15px; font-weight: 800; color: var(--success-light); }
+
+/* SECTION HEADER */
+.section-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 18px; }
+.section-title { font-size: 18px; font-weight: 800; color: var(--text); }
+.section-sub { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: .06em; }
+
+/* LEAD CARD */
+.lead-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px;
+  margin-bottom: 16px; overflow: hidden; transition: border-color .15s; }
+.lead-card:hover { border-color: var(--border-hover); }
+.card-header { display: flex; align-items: center; gap: 14px; padding: 18px 22px;
+  cursor: pointer; user-select: none; }
+.signal-badge { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .10em; text-transform: uppercase; padding: 5px 10px; border-radius: 6px; flex-shrink: 0; }
+.signal-badge.hot { background: rgba(255,68,68,0.15); color: var(--hot); border: 1px solid rgba(255,68,68,0.3); }
+.signal-badge.warm { background: rgba(255,153,0,0.12); color: var(--warm); border: 1px solid rgba(255,153,0,0.3); }
+.card-header-info { flex: 1; min-width: 0; }
+.lead-name { font-size: 16px; font-weight: 800; color: var(--text); }
+.lead-company { font-size: 13px; color: var(--text-dim); margin-top: 2px; }
+.why-now-line { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--accent);
+  letter-spacing: .04em; margin-top: 5px; }
+.icp-fit-badge { font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: .10em; text-transform: uppercase; padding: 4px 10px; border-radius: 20px;
+  background: rgba(1,144,71,0.12); color: var(--success-light); border: 1px solid rgba(1,144,71,0.3); flex-shrink: 0; }
+.expand-icon { color: var(--text-muted); font-size: 14px; flex-shrink: 0; transition: transform .2s; }
+.lead-card.expanded .expand-icon { transform: rotate(180deg); }
+
+/* CARD BODY */
+.card-body { display: none; border-top: 1px solid var(--border); }
+.lead-card.expanded .card-body { display: block; }
+
+/* IDENTITY STRIP */
+.identity-strip { display: flex; flex-wrap: wrap; gap: 6px; padding: 14px 22px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04); padding-bottom: 14px; }
+.identity-item { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--text-muted);
+  background: var(--bg3); padding: 4px 10px; border-radius: 4px; letter-spacing: .04em; }
+.identity-item a { color: var(--primary-light); text-decoration: none; }
+.identity-item a:hover { text-decoration: underline; }
+
+/* TAG ROW */
+.tag-row { display: flex; flex-wrap: wrap; gap: 8px; padding: 12px 22px; }
+.tag { font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; }
+.tag.industry { background: rgba(106,102,163,0.12); color: var(--primary-light); border: 1px solid rgba(106,102,163,0.2); }
+.tag.signal { background: rgba(255,153,0,0.10); color: var(--accent); border: 1px solid rgba(255,153,0,0.2); }
+.tag.context { background: rgba(255,255,255,0.05); color: var(--text-muted); border: 1px solid rgba(255,255,255,0.08); }
+
+/* CARD SECTION */
+.card-section { padding: 18px 22px; border-bottom: 1px solid rgba(255,255,255,0.04); }
+.card-section:last-child { border-bottom: none; }
+.card-section-title { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+.card-section-subtitle { font-family: 'Space Mono', monospace; font-size: 9px; color: var(--text-muted); letter-spacing: .06em; font-weight: 400; }
+
+/* SIGNAL CARDS */
+.signal-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.signal-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
+.signal-type { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .10em; text-transform: uppercase; color: var(--accent); margin-bottom: 4px; }
+.signal-timing { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--text-muted);
+  letter-spacing: .04em; margin-bottom: 8px; }
+.signal-desc { font-size: 13px; color: var(--text-dim); line-height: 1.65; }
+
+/* INTEL GRID */
+.intel-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.intel-cell { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; }
+.intel-cell-label { font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: .10em; text-transform: uppercase; color: var(--success-light); margin-bottom: 6px; }
+.intel-cell-value { font-size: 12px; color: var(--text-dim); line-height: 1.55; }
+
+/* CONTACT GRID */
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.contact-item { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px;
+  padding: 12px 14px; display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.contact-label { font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: .10em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px; }
+.contact-value { font-size: 13px; color: var(--text); font-weight: 600; }
+.contact-value.unavailable { color: var(--text-muted); font-weight: 400; font-style: italic; }
+.copy-btn { font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase; padding: 5px 10px; border-radius: 5px;
+  border: 1px solid var(--border); background: transparent; color: var(--text-muted); cursor: pointer;
+  transition: all .15s; flex-shrink: 0; }
+.copy-btn:hover { border-color: var(--primary); color: var(--primary-light); }
+.copy-btn.copied { color: var(--success-light); border-color: var(--success); }
+
+/* WHY GRID */
+.why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.why-block { background: var(--bg3); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; }
+.why-block-title { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .10em; text-transform: uppercase; color: var(--primary-light); margin-bottom: 10px; }
+.why-block-text { font-size: 13px; color: var(--text-dim); line-height: 1.7; }
+.fit-signal { margin-top: 12px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.06); }
+.fit-signal-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: .10em;
+  text-transform: uppercase; color: var(--success-light); margin-bottom: 3px; }
+
+/* OUTREACH ARSENAL */
+.outreach-channel { margin-bottom: 18px; }
+.outreach-channel:last-child { margin-bottom: 0; }
+.outreach-channel-label { font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--primary-light); margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+.connection-note { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px;
+  padding: 14px 16px; font-size: 13px; color: var(--text-dim); line-height: 1.7; font-style: italic; }
+.char-count { font-family: 'Space Mono', monospace; font-size: 9px; color: var(--text-muted);
+  letter-spacing: .04em; margin-top: 8px; }
+.email-block { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 16px 18px; }
+.email-subject-label { font-family: 'Space Mono', monospace; font-size: 9px; color: var(--text-muted); letter-spacing: .06em; margin-bottom: 4px; }
+.email-subject-value { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 12px; }
+.email-body { font-size: 13px; color: var(--text-dim); line-height: 1.85; white-space: pre-line; }
+.email-meta { display: flex; justify-content: space-between; align-items: center;
+  margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.06); }
+.email-word-count { font-family: 'Space Mono', monospace; font-size: 9px; color: var(--text-muted); letter-spacing: .04em; }
+.email-safe-label { font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase; color: var(--success-light); }
+.copy-action-btn { display: inline-flex; align-items: center; gap: 6px; margin-top: 10px;
+  font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: .10em;
+  text-transform: uppercase; padding: 7px 14px; border-radius: 6px; border: 1px solid var(--border);
+  background: transparent; color: var(--text-muted); cursor: pointer; transition: all .15s; }
+.copy-action-btn:hover { border-color: var(--primary); color: var(--primary-light); }
+.copy-action-btn.copied { color: var(--success-light); border-color: var(--success); }
+
+/* PROSPECT INTELLIGENCE CALLOUT */
+.intel-callout { background: rgba(255,153,0,0.07); border: 1px solid rgba(255,153,0,0.25);
+  border-radius: 8px; padding: 13px 16px; font-size: 12px; color: var(--text-dim); line-height: 1.65; }
+.intel-callout-label { font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin-bottom: 5px; }
+
+/* 5-TOUCH ENGINE */
+.touch-section-header { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase; color: #FF9900; margin-bottom: 14px; }
+.touch-block { padding: 14px 0; border-bottom: 1px solid rgba(106,102,163,0.20); }
+.touch-block:last-child { border-bottom: none; }
+.touch-day-label { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: 0.10em; text-transform: uppercase; color: #FF9900; margin-bottom: 3px; }
+.touch-type-label { font-size: 11px; color: rgba(255,255,255,0.55); margin-bottom: 8px; }
+.touch-message { font-size: 14px; color: rgba(255,255,255,0.90); line-height: 1.65; margin-bottom: 10px; }
+.touch-collapsed-indicator { font-size: 12px; color: rgba(255,255,255,0.45); font-style: italic; padding: 10px 0; }
+
+/* CARD FOOTER */
+.card-footer { padding: 12px 22px; background: var(--bg3); border-top: 1px solid var(--border); display: flex; justify-content: flex-end; }
+.linkedin-btn { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase; padding: 8px 16px; border-radius: 6px;
+  border: 1px solid var(--border); color: var(--primary-light); text-decoration: none; transition: all .15s; }
+.linkedin-btn:hover { border-color: var(--primary); background: rgba(106,102,163,0.10); }
+
+/* PIPELINE MATH */
+.pipeline-math { background: rgba(106,102,163,0.06); border: 1px solid var(--border);
+  border-radius: 12px; padding: 22px 28px; margin: 28px 0; text-align: center; }
+.pipeline-math-text { font-size: 15px; color: var(--text-dim); line-height: 1.8; }
+.pipeline-math-text strong { color: var(--primary-light); font-weight: 700; }
+
+/* VISUAL GRAPHICS SECTION */
+.visuals-section { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; padding: 28px 32px; margin: 28px 0; }
+.visuals-header { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-bottom: 24px; }
+.visuals-copy h3 { font-size: 18px; font-weight: 800; color: var(--text); line-height: 1.3; margin-bottom: 12px; }
+.visuals-copy p { font-size: 13px; color: var(--text-dim); line-height: 1.75; margin-bottom: 10px; }
+.visuals-list { list-style: none; margin-top: 14px; }
+.visuals-list li { font-size: 13px; color: var(--text-dim); padding: 6px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04); display: flex; gap: 10px; }
+.visuals-list li:last-child { border-bottom: none; }
+.visuals-list-dot { color: var(--success-light); font-weight: 700; flex-shrink: 0; }
+.visuals-tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.visual-tile { border-radius: 10px; overflow: hidden; }
+.visual-tile-inner { aspect-ratio: 4/3; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 16px; }
+.visual-tile.carousel { background: linear-gradient(135deg, #1B2A4A 0%, #243655 100%); border: 1px solid rgba(240,165,0,0.20); }
+.visual-tile.post { background: linear-gradient(135deg, #1B2A4A 0%, #1D2D47 100%); border: 1px solid rgba(240,165,0,0.15); }
+.visual-tile.infographic { background: linear-gradient(135deg, #162238 0%, #1B2A4A 100%); border: 1px solid rgba(240,165,0,0.10); }
+.tile-accent-bar { width: 36px; height: 3px; background: #F0A500; border-radius: 2px; margin-bottom: 12px; }
+.tile-lines { width: 100%; }
+.tile-line { height: 7px; background: rgba(245,240,232,0.15); border-radius: 3px; margin-bottom: 6px; }
+.tile-line.short { width: 60%; }
+.tile-line.medium { width: 80%; }
+.tile-line.full { width: 100%; }
+.tile-label { font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); text-align: center; margin-top: 10px; padding: 6px; background: var(--bg3); }
+.visuals-note { font-size: 13px; color: var(--text-dim); text-align: center; margin-top: 18px;
+  padding-top: 18px; border-top: 1px solid var(--border); line-height: 1.7; }
+.visuals-note strong { color: var(--text); }
+
+/* CTA FOOTER */
+.cta-footer { margin-top: 36px; background: linear-gradient(135deg, rgba(255,153,0,0.08) 0%, rgba(106,102,163,0.06) 100%);
+  border: 1px solid rgba(255,153,0,0.30); border-radius: 12px; padding: 36px 40px; text-align: center; }
+.cta-footer-headline { font-size: 22px; font-weight: 800; color: var(--text); letter-spacing: -.01em; margin-bottom: 14px; line-height: 1.3; }
+.cta-footer-subhead { font-size: 14px; color: var(--text-dim); line-height: 1.8; max-width: 680px; margin: 0 auto 26px; }
+.cta-footer-btn { display: inline-block; background: var(--accent); color: var(--bg);
+  padding: 15px 34px; border-radius: 8px; font-family: 'Space Mono', monospace;
+  font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em;
+  text-decoration: none; transition: background .15s; margin-bottom: 14px; }
+.cta-footer-btn:hover { background: #ffb340; }
+.cta-footer-note { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: .04em; }
+
+/* POST CARDS */
+.post-cards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 28px; }
+.post-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 24px 26px; }
+.post-type-label { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--primary-light); margin-bottom: 6px; }
+.post-type-desc { font-size: 11px; color: var(--text-muted); margin-bottom: 16px;
+  padding-bottom: 16px; border-bottom: 1px solid var(--border); line-height: 1.5; }
+.post-text { font-size: 13px; color: var(--text-dim); line-height: 1.85; white-space: pre-line; }
+.post-cta-line { margin-top: 14px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.06);
+  font-size: 12px; color: var(--accent); font-weight: 600; }
+
+/* VIEW CONTAINERS */
+.view { display: none; }
+.view.active { display: block; }
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+  .mobile-topbar { display: flex; }
+  .mobile-tabs { display: flex; }
+  .main { margin-left: 0; padding: 16px; }
+  .tab-bar { display: none; }
+  .icp-grid { grid-template-columns: 1fr; }
+  .signal-cards { grid-template-columns: 1fr; }
+  .intel-grid { grid-template-columns: 1fr 1fr; }
+  .contact-grid { grid-template-columns: 1fr; }
+  .why-grid { grid-template-columns: 1fr; }
+  .post-cards-grid { grid-template-columns: 1fr; }
+  .visuals-header { grid-template-columns: 1fr; }
+  .card-header { flex-wrap: wrap; gap: 8px; }
+  .lead-name { font-size: 15px; }
+  .cta-footer { padding: 24px 20px; }
+  .cta-footer-btn { width: 100%; text-align: center; display: block; }
+  .email-meta { flex-direction: column; align-items: flex-start; gap: 8px; }
+}
+@media (max-width: 480px) {
+  .intel-grid { grid-template-columns: 1fr; }
+  .visuals-tiles { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- MOBILE TOP BAR -->
+<div class="mobile-topbar">
+  <div class="mobile-logo">Pipelind</div>
+  <div class="mobile-prospect-name">Andy's Report</div>
+</div>
+
+<!-- MOBILE TABS -->
+<div class="mobile-tabs">
+  <button class="mobile-tab-pill active" onclick="showView('pipeline', this)">Pipeline Engine</button>
+  <button class="mobile-tab-pill" onclick="showView('content', this)">Content Engine</button>
+</div>
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="sidebar-logo">Pipelind</div>
+  <div class="prospect-block">
+    <div class="prospect-label">Personalised For</div>
+    <div class="prospect-name">Andy G.</div>
+    <div class="prospect-meta">June 2026 · Lead Demo</div>
+  </div>
+  <div class="nav-item active" onclick="showView('pipeline', this)">Pipeline Engine</div>
+  <div class="nav-item" onclick="showView('content', this)">Content Engine</div>
+  <div class="sidebar-footer">Personalised build<br>Real signal data<br>Sample of your full delivery</div>
+</nav>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="showView('pipeline', this)">Pipeline Engine</button>
+    <button class="tab-btn" onclick="showView('content', this)">Content Engine</button>
+  </div>
+
+  <!-- PIPELINE ENGINE VIEW -->
+  <div id="view-pipeline" class="view active">
+
+    <!-- Welcome Banner -->
+    <div class="welcome-banner">
+      <div class="welcome-tag">Pipeline Engine · Personalised Demo</div>
+      <div class="welcome-headline">Andy, here are 5 buyers your COO practice is built for.</div>
+      <div class="welcome-sub">Each profile below carries at least one active market signal from the last 90 days. Every company is in the $10M–$75M range, scaling fast, and running into the exact operational ceilings you diagnose and fix. Signal data, contact details, and ready-to-send outreach included on every card.</div>
+    </div>
+
+    <!-- Market Intelligence Pulse -->
+    <div class="pulse-panel">
+      <div class="pulse-label">MARKET INTELLIGENCE PULSE · WEEK OF JUNE 3, 2026</div>
+      <div class="pulse-text">This week's signal distribution: five software and tech companies in the $10M–$75M range showing operations hiring surges, headcount expansion across all departments, and post-funding scaling activity. The pattern indicates founders at post-Series-A and growth-stage companies are hitting the ops complexity ceiling faster than their current structures can absorb. Content angle: the founder-bandwidth diagnostic post maps directly to what each of these companies is navigating right now.</div>
+    </div>
+
+    <!-- ICP Panel Grid -->
+    <div class="icp-grid">
+      <div class="icp-panel">
+        <div class="icp-panel-label">Target Buyer Profile</div>
+        <div class="icp-row"><span class="icp-key">Buyer Title</span><span class="icp-val">CEO, Co-Founder, Founder</span></div>
+        <div class="icp-row"><span class="icp-key">Company Stage</span><span class="icp-val">Series A / Series B / Growth</span></div>
+        <div class="icp-row"><span class="icp-key">Revenue Range</span><span class="icp-val">$10M – $75M ARR</span></div>
+        <div class="icp-row"><span class="icp-key">Team Size</span><span class="icp-val">51–200 employees</span></div>
+        <div class="icp-row"><span class="icp-key">Sectors</span><span class="icp-val">Software · IT Services · SaaS</span></div>
+        <div class="icp-row"><span class="icp-key">Trigger Events</span><span class="icp-val">Ops hiring, dept expansion, funding</span></div>
+      </div>
+      <div class="icp-panel">
+        <div class="icp-panel-label">Sample Quality · This Batch</div>
+        <div class="quality-stat"><div class="quality-stat-label">Leads with active signals</div><div class="quality-stat-val">5 of 5</div></div>
+        <div class="quality-stat"><div class="quality-stat-label">Direct contact details available</div><div class="quality-stat-val">5 of 5</div></div>
+        <div class="quality-stat"><div class="quality-stat-label">Signals within 90 days</div><div class="quality-stat-val">5 of 5</div></div>
+        <div class="quality-stat"><div class="quality-stat-label">Unique companies</div><div class="quality-stat-val">5 of 5</div></div>
+      </div>
+    </div>
+
+    <!-- Section Header -->
+    <div class="section-header">
+      <span class="section-title">ICP-Matched Buyers</span>
+      <span class="section-sub">5 of 40 monthly leads</span>
+    </div>
+
+
+    <!-- CARD 1: Pratik Thakker · INSIDEA · EXPANDED -->
+    <div class="lead-card expanded" id="card-1">
+      <div class="card-header" onclick="toggleCard('card-1')">
+        <span class="signal-badge warm">WARM</span>
+        <div class="card-header-info">
+          <div class="lead-name">Pratik Thakker</div>
+          <div class="lead-company">Founder & CEO · INSIDEA</div>
+          <div class="why-now-line">Operations hiring surge + all-department expansion detected approximately 45 days ago</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit: YES</span>
+        <span class="expand-icon">&#9662;</span>
+      </div>
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item"><a href="https://insidea.com" target="_blank">insidea.com</a></span>
+          <span class="identity-item">Dover, DE · United States</span>
+          <span class="identity-item">51–200 employees</span>
+          <span class="identity-item">$25M–$75M revenue</span>
+          <span class="identity-item">Custom Programming Services</span>
+        </div>
+        <div class="tag-row">
+          <span class="tag industry">Software Services</span>
+          <span class="tag industry">AI-Powered Digital</span>
+          <span class="tag signal">Ops Hiring · ~45 days ago</span>
+          <span class="tag context">Founder-led · Scaling phase</span>
+        </div>
+
+        <!-- Active Market Signals -->
+        <div class="card-section">
+          <div class="card-section-title">Active Market Signals</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Operations Hiring Surge</div>
+              <div class="signal-timing">Approximately 45 days ago</div>
+              <div class="signal-desc">INSIDEA is actively building out its operations layer, indicating the company has outgrown founder-managed coordination. For a Fractional COO, this is the exact window before informal ops create structural debt.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">All-Department Headcount Expansion</div>
+              <div class="signal-timing">Approximately 45 days ago</div>
+              <div class="signal-desc">Broad headcount growth across functions signals a scaling inflection where systems, cadences, and accountability frameworks have not yet caught up with team size. Classic pre-engagement trigger.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Intelligence Briefing -->
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing <span class="card-section-subtitle">Configured for Andy's Practice</span></div>
+          <div class="intel-grid">
+            <div class="intel-cell">
+              <div class="intel-cell-label">Leadership Movement</div>
+              <div class="intel-cell-value">No leadership-level departures detected in last 90 days</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Capital Activity</div>
+              <div class="intel-cell-value">No new public funding round in last 90 days; $25M–$75M revenue range indicates self-funded scaling</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Hiring Signals</div>
+              <div class="intel-cell-value">Operations and cross-functional hiring active; consistent with rapid headcount scaling</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Expansion Signals</div>
+              <div class="intel-cell-value">All-department growth indicates market expansion push, not consolidation</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Growth Trajectory</div>
+              <div class="intel-cell-value">Revenue range and hiring pattern consistent with 2–3x growth phase; ops infrastructure likely lagging</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contact Details -->
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Work Email</div>
+                <div class="contact-value">pratik@insidea.com</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('pratik@insidea.com', this)">Copy</button>
+            </div>
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Mobile</div>
+                <div class="contact-value">+1 323 405 9120</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('+13234059120', this)">Copy</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Why This Lead -->
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div class="why-block">
+              <div class="why-block-title">ICP Fit for Andy</div>
+              <div class="why-block-text">INSIDEA operates in the custom software and AI-driven digital services space, the same technical operating environment Andy built and scaled at GTS. Pratik is running a fast-scaling founder-led firm that has crossed the threshold where informal coordination no longer works. The company's $25M+ revenue and 51–200 headcount puts it squarely in the zone where Andy's KPI, OKR, and high-velocity cadence frameworks produce measurable outcomes within a single quarter.</div>
+              <div class="fit-signal">
+                <div class="fit-signal-label">Strongest Fit Signal</div>
+                Operations hiring surge at a founder-led software firm with no dedicated COO layer.
+              </div>
+            </div>
+            <div class="why-block">
+              <div class="why-block-title">Why They're Looking</div>
+              <div class="why-block-text">Pratik is building out every function simultaneously. That level of parallel expansion is where ops become reactive: decisions slow down, accountability breaks, margins compress. He knows the company needs structure, but hiring a full-time COO at this stage is premature. A Fractional COO who can deploy proven frameworks without creating permanent overhead is the exact solution the situation calls for.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Outreach Arsenal -->
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal <span class="card-section-subtitle">2 Channels Ready</span></div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="conn-note-1">
+              Saw INSIDEA scaling across all departments simultaneously. That inflection point is where ops either builds the machine or becomes the bottleneck. Happy to connect — I've navigated that exact transition a few times.
+              <div class="char-count">198 characters · LinkedIn limit: 300</div>
+            </div>
+            <button class="copy-action-btn" onclick="copyElementText('conn-note-1', this)">Copy Connection Note</button>
+          </div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Email Draft · Ready to Send</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject Line</div>
+              <div class="email-subject-value" id="email-subj-1">Operations scaling at INSIDEA</div>
+              <div class="email-body" id="email-body-1">Pratik,
+
+Noticed INSIDEA has been expanding headcount across all departments over the last couple of months. That kind of broad simultaneous scaling is typically where founder-managed coordination starts creating structural drag — not immediately visible, but compounding.
+
+I embed as a Fractional COO for software and professional services companies at exactly this stage. The work is deploying operating cadences, KPI frameworks, and accountability structures that let the team scale without the founder becoming the bottleneck. At GTS I ran that playbook across a $30M P&L through active M&A; at Avtec I took a 90-person org through a major acquisition integration.
+
+Worth a 15-minute conversation to see if the timing fits?</div>
+              <div class="email-meta">
+                <span class="email-word-count">107 words · safe for cold send</span>
+                <span class="email-safe-label">Ready to Send</span>
+              </div>
+            </div>
+            <button class="copy-action-btn" onclick="copyFullEmail('email-subj-1', 'email-body-1', this)">Copy Email Draft</button>
+          </div>
+        </div>
+
+        <!-- 5-Touch Conversation Engine · CARD 1 FULL -->
+        <div class="card-section">
+          <div class="touch-section-header">FULL DFY PIPELINE · 5-TOUCH CONVERSATION ENGINE</div>
+          <div class="touch-block">
+            <div class="touch-day-label">Day 0 · Connection Request</div>
+            <div class="touch-type-label">LinkedIn connection note</div>
+            <div class="touch-message">Saw INSIDEA scaling across all departments simultaneously. That inflection point is where ops either builds the machine or becomes the bottleneck. Happy to connect — I've navigated that exact transition a few times.</div>
+            <button class="copy-action-btn" onclick="copyToClipboard('Saw INSIDEA scaling across all departments simultaneously. That inflection point is where ops either builds the machine or becomes the bottleneck. Happy to connect — I\'ve navigated that exact transition a few times.', this)">Copy</button>
+          </div>
+          <div class="touch-block">
+            <div class="touch-day-label">Day 3–5 · After Connection Accepts</div>
+            <div class="touch-type-label">Ice break — no pitch</div>
+            <div class="touch-message">Thanks for connecting, Pratik. The all-department expansion at INSIDEA caught my eye — curious how you're managing the coordination load as both headcount and functions scale in parallel. Is the team running on a formal operating cadence yet, or still mostly founder-driven at this stage?</div>
+            <button class="copy-action-btn" onclick="copyToClipboard('Thanks for connecting, Pratik. The all-department expansion at INSIDEA caught my eye — curious how you\'re managing the coordination load as both headcount and functions scale in parallel. Is the team running on a formal operating cadence yet, or still mostly founder-driven at this stage?', this)">Copy</button>
+          </div>
+          <div class="touch-block">
+            <div class="touch-day-label">Day 8–12 · Value Drop</div>
+            <div class="touch-type-label">Pattern observation — no ask required</div>
+            <div class="touch-message">One pattern I see consistently at the 51–150 employee stage in software services: the company has outgrown informal coordination, but the team hasn't yet built the systems to replace it. The result is decisions slowing down, margin leaking, and the founder spending increasing hours on operational firefighting instead of growth. The companies that compress that phase fastest are the ones that deploy structured operating cadences early — before the drag becomes visible in the P&L. Happy to share what's worked at this stage if that's useful.</div>
+            <button class="copy-action-btn" onclick="copyToClipboard('One pattern I see consistently at the 51–150 employee stage in software services: the company has outgrown informal coordination, but the team hasn\'t yet built the systems to replace it. The result is decisions slowing down, margin leaking, and the founder spending increasing hours on operational firefighting instead of growth. The companies that compress that phase fastest are the ones that deploy structured operating cadences early — before the drag becomes visible in the P&amp;L. Happy to share what\'s worked at this stage if that\'s useful.', this)">Copy</button>
+          </div>
+          <div class="touch-block">
+            <div class="touch-day-label">Day 15–20 · Soft Ask</div>
+            <div class="touch-type-label">Surface intent without pressure</div>
+            <div class="touch-message">I've built the operating infrastructure for software and professional services firms at INSIDEA's exact growth stage — KPI frameworks, operating cadences, and margin-protection systems that don't require a full-time hire to maintain. If the timing is right, I'm happy to spend 15 minutes walking through what that looks like for a company in your current phase.</div>
+            <button class="copy-action-btn" onclick="copyToClipboard('I\'ve built the operating infrastructure for software and professional services firms at INSIDEA\'s exact growth stage — KPI frameworks, operating cadences, and margin-protection systems that don\'t require a full-time hire to maintain. If the timing is right, I\'m happy to spend 15 minutes walking through what that looks like for a company in your current phase.', this)">Copy</button>
+          </div>
+          <div class="touch-block">
+            <div class="touch-day-label">Day 25–30 · Clean Exit</div>
+            <div class="touch-type-label">Leave the door open</div>
+            <div class="touch-message">Timing isn't always right. If the ops infrastructure conversation becomes relevant as INSIDEA continues scaling, feel free to reach back out — I'll be around.</div>
+            <button class="copy-action-btn" onclick="copyToClipboard('Timing isn\'t always right. If the ops infrastructure conversation becomes relevant as INSIDEA continues scaling, feel free to reach back out — I\'ll be around.', this)">Copy</button>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <a href="https://linkedin.com/in/ACoAABC5aVsBIwXPRS_G_t_ttl3ui2FFhZ1Yrps" target="_blank" class="linkedin-btn" title="May require LinkedIn login">View on LinkedIn</a>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- CARD 2: Harrison Chase · LangChain -->
+    <div class="lead-card" id="card-2">
+      <div class="card-header" onclick="toggleCard('card-2')">
+        <span class="signal-badge warm">WARM</span>
+        <div class="card-header-info">
+          <div class="lead-name">Harrison Chase</div>
+          <div class="lead-company">Co-Founder & CEO · LangChain</div>
+          <div class="why-now-line">Funding activity + engineering department expansion detected approximately 60 days ago</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit: YES</span>
+        <span class="expand-icon">&#9662;</span>
+      </div>
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item"><a href="https://langchain.com" target="_blank">langchain.com</a></span>
+          <span class="identity-item">San Francisco, CA · United States</span>
+          <span class="identity-item">51–200 employees</span>
+          <span class="identity-item">$10M–$25M revenue</span>
+          <span class="identity-item">AI Developer Platform</span>
+        </div>
+        <div class="tag-row">
+          <span class="tag industry">AI / LLM Infrastructure</span>
+          <span class="tag industry">Software Development</span>
+          <span class="tag signal">Funding + Eng Expansion · ~60 days ago</span>
+          <span class="tag context">Post-funding · Ops lag risk</span>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Active Market Signals</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Funding Activity</div>
+              <div class="signal-timing">Approximately 60 days ago</div>
+              <div class="signal-desc">Post-funding inflections at AI infrastructure companies routinely surface ops fragmentation as the speed of growth outpaces the maturity of internal systems. The 60–90 day post-raise window is when fractional operating support converts most effectively.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">Engineering Department Expansion</div>
+              <div class="signal-timing">Approximately 60 days ago</div>
+              <div class="signal-desc">Engineering hiring surges without corresponding ops infrastructure create delivery bottlenecks and margin compression. This is the environment where Andy's Quote-to-Cash and AI operations suite work produces the fastest measurable return.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing <span class="card-section-subtitle">Configured for Andy's Practice</span></div>
+          <div class="intel-grid">
+            <div class="intel-cell">
+              <div class="intel-cell-label">Leadership Movement</div>
+              <div class="intel-cell-value">No C-suite departures detected in last 90 days</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Capital Activity</div>
+              <div class="intel-cell-value">Funding activity detected approximately 60 days ago; company in active post-raise growth phase</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Hiring Signals</div>
+              <div class="intel-cell-value">Engineering department hiring surge; ops and delivery infrastructure likely lagging headcount growth</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Expansion Signals</div>
+              <div class="intel-cell-value">Post-funding product and team expansion consistent with 2–3x growth trajectory</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Growth Trajectory</div>
+              <div class="intel-cell-value">Revenue $10M–$25M; engineering-led company scaling into enterprise; ops formalization window is open</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Work Email</div>
+                <div class="contact-value">harrison@langchain.dev</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('harrison@langchain.dev', this)">Copy</button>
+            </div>
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Mobile</div>
+                <div class="contact-value">+1 707 364 1076</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('+17073641076', this)">Copy</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div class="why-block">
+              <div class="why-block-title">ICP Fit for Andy</div>
+              <div class="why-block-text">LangChain is an AI infrastructure company operating in the exact technical environment Andy built his AI operations expertise in. Harrison is running a post-funding software company at the stage where engineering excellence and operational discipline need to coexist. Andy's AI operations suite — RAG-based knowledge engines, automated contract workflows, executive reporting pipelines — maps directly to LangChain's internal complexity at this scale.</div>
+              <div class="fit-signal">
+                <div class="fit-signal-label">Strongest Fit Signal</div>
+                Post-funding AI platform scaling engineering headcount without a dedicated ops layer.
+              </div>
+            </div>
+            <div class="why-block">
+              <div class="why-block-title">Why They're Looking</div>
+              <div class="why-block-text">LangChain just raised and is deploying capital into product and engineering. The board now expects structured visibility: KPIs, OKRs, investor-ready reporting. Harrison is a technical founder running a company that has grown faster than its internal operating architecture. The gap between what the business needs to show investors and what the team can actually produce on a reliable cadence is where fractional COO engagement creates immediate value.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal <span class="card-section-subtitle">2 Channels Ready</span></div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="conn-note-2">
+              Noticed LangChain's recent raise and the engineering expansion that followed. Post-funding is typically when the gap between product velocity and operational infrastructure becomes most visible. I work in that gap. Happy to connect.
+              <div class="char-count">215 characters · LinkedIn limit: 300</div>
+            </div>
+            <button class="copy-action-btn" onclick="copyElementText('conn-note-2', this)">Copy Connection Note</button>
+          </div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Email Draft · Ready to Send</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject Line</div>
+              <div class="email-subject-value" id="email-subj-2">Post-raise ops infrastructure · LangChain</div>
+              <div class="email-body" id="email-body-2">Harrison,
+
+Saw LangChain's recent funding activity and the engineering team growth that followed. That post-raise phase is where the gap between product velocity and operating infrastructure tends to widen fastest — investor-ready reporting, structured accountability, and scalable delivery systems become priorities that compete with each other.
+
+I embed as a Fractional COO for AI and software companies at this stage. The focus is deploying operating cadences and AI-augmented ops systems — the kind that let your leadership team produce consistent visibility without adding permanent overhead. At GTS I engineered that exact architecture, including RAG-based reporting pipelines that compressed executive review cycles significantly.
+
+Worth 15 minutes to see if the timing makes sense?</div>
+              <div class="email-meta">
+                <span class="email-word-count">120 words · safe for cold send</span>
+                <span class="email-safe-label">Ready to Send</span>
+              </div>
+            </div>
+            <button class="copy-action-btn" onclick="copyFullEmail('email-subj-2', 'email-body-2', this)">Copy Email Draft</button>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="touch-day-label" style="margin-bottom:8px;">Day 0 · Connection Request</div>
+          <div class="touch-message">Noticed LangChain's recent raise and the engineering expansion that followed. Post-funding is typically when the gap between product velocity and operational infrastructure becomes most visible. I work in that gap. Happy to connect.</div>
+          <button class="copy-action-btn" onclick="copyToClipboard('Noticed LangChain\'s recent raise and the engineering expansion that followed. Post-funding is typically when the gap between product velocity and operational infrastructure becomes most visible. I work in that gap. Happy to connect.', this)">Copy Touch 1</button>
+          <div class="touch-collapsed-indicator">· · · 4 additional touches included in full delivery</div>
+        </div>
+
+        <div class="card-footer">
+          <a href="https://linkedin.com/in/ACoAAB06lJkB2-hiC0mqJ2yHgFtnAbf4UFXQ4Dg" target="_blank" class="linkedin-btn" title="May require LinkedIn login">View on LinkedIn</a>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- CARD 3: Clifton Harness · TestFit -->
+    <div class="lead-card" id="card-3">
+      <div class="card-header" onclick="toggleCard('card-3')">
+        <span class="signal-badge warm">WARM</span>
+        <div class="card-header-info">
+          <div class="lead-name">Clifton Harness</div>
+          <div class="lead-company">Co-Founder & CEO · TestFit</div>
+          <div class="why-now-line">Operations hiring surge + new office expansion detected approximately 55 days ago</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit: YES</span>
+        <span class="expand-icon">&#9662;</span>
+      </div>
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item"><a href="https://testfit.io" target="_blank">testfit.io</a></span>
+          <span class="identity-item">Dallas, TX · United States</span>
+          <span class="identity-item">51–200 employees</span>
+          <span class="identity-item">$10M–$25M revenue</span>
+          <span class="identity-item">Real Estate SaaS</span>
+        </div>
+        <div class="tag-row">
+          <span class="tag industry">Proptech / Real Estate SaaS</span>
+          <span class="tag industry">AI-Powered Platform</span>
+          <span class="tag signal">Ops Hiring + Office Expansion · ~55 days ago</span>
+          <span class="tag context">Founder-led · Multi-location scaling</span>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Active Market Signals</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Operations Hiring Surge</div>
+              <div class="signal-timing">Approximately 55 days ago</div>
+              <div class="signal-desc">TestFit is staffing up its operations function as the platform scales into enterprise real estate. Ops hiring at this stage indicates the company recognizes it needs structural support — but may not yet have the COO layer to deploy it effectively.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">New Office / Market Expansion</div>
+              <div class="signal-timing">Approximately 55 days ago</div>
+              <div class="signal-desc">Multi-location expansion multiplies coordination complexity. Delivery standards, financial controls, and team accountability frameworks that work in one office rarely transfer cleanly to a distributed footprint without deliberate architecture.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing <span class="card-section-subtitle">Configured for Andy's Practice</span></div>
+          <div class="intel-grid">
+            <div class="intel-cell">
+              <div class="intel-cell-label">Leadership Movement</div>
+              <div class="intel-cell-value">No leadership departures detected in last 90 days; founding team stable</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Capital Activity</div>
+              <div class="intel-cell-value">No new public funding round detected; company scaling from existing capital base</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Hiring Signals</div>
+              <div class="intel-cell-value">Operations department hiring active; consistent with multi-location expansion requirements</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Expansion Signals</div>
+              <div class="intel-cell-value">New office opening detected; geographic expansion underway requiring distributed ops infrastructure</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Growth Trajectory</div>
+              <div class="intel-cell-value">9-year-old company at $10M–$25M revenue; entering enterprise and multi-market phase</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Work Email</div>
+                <div class="contact-value">clifton@testfit.io</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('clifton@testfit.io', this)">Copy</button>
+            </div>
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Mobile</div>
+                <div class="contact-value">+1 210 913 7877</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('+12109137877', this)">Copy</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div class="why-block">
+              <div class="why-block-title">ICP Fit for Andy</div>
+              <div class="why-block-text">TestFit is a software company entering the multi-location scaling phase, the exact scenario where Andy's operational infrastructure and governance frameworks deliver their highest-leverage returns. Clifton is a technical founder building a company that now spans multiple offices and needs the systems, cadences, and delivery standards to match its geographic footprint. The ops hiring signal confirms leadership is aware of the gap.</div>
+              <div class="fit-signal">
+                <div class="fit-signal-label">Strongest Fit Signal</div>
+                Multi-location expansion at a founder-led SaaS firm without a dedicated COO layer.
+              </div>
+            </div>
+            <div class="why-block">
+              <div class="why-block-title">Why They're Looking</div>
+              <div class="why-block-text">TestFit has been building for nine years and is now at the scale where informal leadership structures create risk. Opening a new office without standardized ops architecture means two sets of team norms, two delivery speeds, and two versions of accountability — none of which serves a company trying to move toward institutional sales or an exit event. Clifton needs a Fractional COO who has navigated distributed ops at this scale without permanent overhead.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal <span class="card-section-subtitle">2 Channels Ready</span></div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="conn-note-3">
+              Saw TestFit opening a new location alongside ops hiring. Multi-office expansion is where informal operating structures tend to surface their limits. I've built the architecture for that transition a few times. Happy to connect.
+              <div class="char-count">219 characters · LinkedIn limit: 300</div>
+            </div>
+            <button class="copy-action-btn" onclick="copyElementText('conn-note-3', this)">Copy Connection Note</button>
+          </div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Email Draft · Ready to Send</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject Line</div>
+              <div class="email-subject-value" id="email-subj-3">Multi-location ops architecture · TestFit</div>
+              <div class="email-body" id="email-body-3">Clifton,
+
+Noticed TestFit is expanding locations alongside an active operations hiring push. That combination — new geography plus ops staffing — is typically where companies find out whether their existing operating model transfers cleanly or needs a structural rebuild.
+
+I embed as a Fractional COO for software companies at this stage. The focus is building the operating cadences, delivery standards, and financial visibility frameworks that let a distributed team run with the same discipline as a single-office operation. I've navigated that transition across multiple organizations, including through M&A where the stakes for getting it wrong were particularly high.
+
+If the multi-location ops challenge is on your radar, a 15-minute conversation would tell us quickly whether there's a fit.
+
+Andy</div>
+              <div class="email-meta">
+                <span class="email-word-count">119 words · safe for cold send</span>
+                <span class="email-safe-label">Ready to Send</span>
+              </div>
+            </div>
+            <button class="copy-action-btn" onclick="copyFullEmail('email-subj-3', 'email-body-3', this)">Copy Email Draft</button>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="touch-day-label" style="margin-bottom:8px;">Day 0 · Connection Request</div>
+          <div class="touch-message">Saw TestFit opening a new location alongside ops hiring. Multi-office expansion is where informal operating structures tend to surface their limits. I've built the architecture for that transition a few times. Happy to connect.</div>
+          <button class="copy-action-btn" onclick="copyToClipboard('Saw TestFit opening a new location alongside ops hiring. Multi-office expansion is where informal operating structures tend to surface their limits. I\'ve built the architecture for that transition a few times. Happy to connect.', this)">Copy Touch 1</button>
+          <div class="touch-collapsed-indicator">· · · 4 additional touches included in full delivery</div>
+        </div>
+
+        <div class="card-footer">
+          <a href="https://linkedin.com/in/ACoAAAqkU1wBX0ZUH3GDHdzAj177N66XWM-X0sw" target="_blank" class="linkedin-btn" title="May require LinkedIn login">View on LinkedIn</a>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- CARD 4: Siva Visakan Sooriyan · Arcana -->
+    <div class="lead-card" id="card-4">
+      <div class="card-header" onclick="toggleCard('card-4')">
+        <span class="signal-badge warm">WARM</span>
+        <div class="card-header-info">
+          <div class="lead-name">Siva Visakan Sooriyan</div>
+          <div class="lead-company">Co-Founder & CTO · Arcana</div>
+          <div class="why-now-line">Funding round + all-department expansion detected approximately 50 days ago</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit: YES</span>
+        <span class="expand-icon">&#9662;</span>
+      </div>
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item"><a href="https://arcana.io" target="_blank">arcana.io</a></span>
+          <span class="identity-item">New York, NY · United States</span>
+          <span class="identity-item">51–200 employees</span>
+          <span class="identity-item">$10M–$25M revenue</span>
+          <span class="identity-item">Fintech / Analytics SaaS</span>
+        </div>
+        <div class="tag-row">
+          <span class="tag industry">Fintech Analytics</span>
+          <span class="tag industry">Institutional Finance SaaS</span>
+          <span class="tag signal">Funding + Dept Expansion · ~50 days ago</span>
+          <span class="tag context">VC-backed · Institutional enterprise scaling</span>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Active Market Signals</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Funding Round Activity</div>
+              <div class="signal-timing">Approximately 50 days ago</div>
+              <div class="signal-desc">Arcana is backed by D1 Capital, Tiger Global, and Stan Druckenmiller — institutional investors with high expectations for operating discipline and reporting maturity. Post-raise, the pressure to demonstrate scalable ops is immediate.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">All-Department Expansion</div>
+              <div class="signal-timing">Approximately 50 days ago</div>
+              <div class="signal-desc">Broad headcount scaling alongside institutional investment is where the absence of a COO layer becomes most costly. Investor reporting, team accountability, and delivery predictability all require operating architecture that technical co-founders typically haven't built yet.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing <span class="card-section-subtitle">Configured for Andy's Practice</span></div>
+          <div class="intel-grid">
+            <div class="intel-cell">
+              <div class="intel-cell-label">Leadership Movement</div>
+              <div class="intel-cell-value">No C-suite departures detected; founding team intact post-raise</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Capital Activity</div>
+              <div class="intel-cell-value">Funding round detected approximately 50 days ago; institutional investors include D1 Capital, Tiger Global, Druckenmiller</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Hiring Signals</div>
+              <div class="intel-cell-value">All-department headcount expansion following capital raise; ops and delivery infrastructure likely under-built relative to team scale</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Expansion Signals</div>
+              <div class="intel-cell-value">Institutional backing signals enterprise market push; operational readiness for enterprise delivery is a near-term requirement</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Growth Trajectory</div>
+              <div class="intel-cell-value">High-pedigree investor roster signals strong growth expectations; ops formalization window is open and time-sensitive</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Work Email</div>
+                <div class="contact-value">siva@arcana.io</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('siva@arcana.io', this)">Copy</button>
+            </div>
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Mobile</div>
+                <div class="contact-value">+1 412 944 4959</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('+14129444959', this)">Copy</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div class="why-block">
+              <div class="why-block-title">ICP Fit for Andy</div>
+              <div class="why-block-text">Arcana is a VC-backed fintech analytics company with institutional investors who expect boardroom-quality operating discipline. Siva is a technical co-founder running a company that now needs investor-ready financial visibility, structured OKRs, and scalable delivery systems — exactly the operating architecture Andy deploys. The post-funding window is where this engagement converts fastest and produces the clearest ROI against institutional expectations.</div>
+              <div class="fit-signal">
+                <div class="fit-signal-label">Strongest Fit Signal</div>
+                Institutional funding at a technical-founder-led analytics company with no dedicated COO layer.
+              </div>
+            </div>
+            <div class="why-block">
+              <div class="why-block-title">Why They're Looking</div>
+              <div class="why-block-text">Siva's investors — D1, Tiger Global, Druckenmiller — are not patient capital. They expect predictable operating metrics, tight financial controls, and a management team that can demonstrate scalability. Siva is a strong CTO, but the company's ops infrastructure is running on founder instinct rather than systems. The gap between what the board expects to see and what the team can currently produce on a consistent cadence is the opening for a Fractional COO engagement.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal <span class="card-section-subtitle">2 Channels Ready</span></div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="conn-note-4">
+              Saw Arcana's recent raise and the team expansion that followed. Institutional investors at that level move fast on operating expectations. I've built the ops architecture for companies navigating that post-raise accountability transition. Happy to connect.
+              <div class="char-count">231 characters · LinkedIn limit: 300</div>
+            </div>
+            <button class="copy-action-btn" onclick="copyElementText('conn-note-4', this)">Copy Connection Note</button>
+          </div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Email Draft · Ready to Send</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject Line</div>
+              <div class="email-subject-value" id="email-subj-4">Post-raise operating infrastructure · Arcana</div>
+              <div class="email-body" id="email-body-4">Siva,
+
+Noticed Arcana's recent funding round and the headcount expansion across teams that followed. When the investor roster includes names like D1 Capital and Tiger Global, the timeline from close to operating accountability expectations tends to compress quickly.
+
+I embed as a Fractional COO for technical co-founder-led companies at this exact stage. The focus is deploying investor-ready financial visibility, OKR frameworks, and delivery architecture that lets leadership demonstrate scalability without waiting for a full-time COO hire. At GTS I built those systems from scratch across a $30M P&L, including through periods of active institutional scrutiny.
+
+If the operating readiness conversation is on the agenda at Arcana, happy to spend 15 minutes on whether there's a fit.
+
+Andy</div>
+              <div class="email-meta">
+                <span class="email-word-count">121 words · safe for cold send</span>
+                <span class="email-safe-label">Ready to Send</span>
+              </div>
+            </div>
+            <button class="copy-action-btn" onclick="copyFullEmail('email-subj-4', 'email-body-4', this)">Copy Email Draft</button>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="touch-day-label" style="margin-bottom:8px;">Day 0 · Connection Request</div>
+          <div class="touch-message">Saw Arcana's recent raise and the team expansion that followed. Institutional investors at that level move fast on operating expectations. I've built the ops architecture for companies navigating that post-raise accountability transition. Happy to connect.</div>
+          <button class="copy-action-btn" onclick="copyToClipboard('Saw Arcana\'s recent raise and the team expansion that followed. Institutional investors at that level move fast on operating expectations. I\'ve built the ops architecture for companies navigating that post-raise accountability transition. Happy to connect.', this)">Copy Touch 1</button>
+          <div class="touch-collapsed-indicator">· · · 4 additional touches included in full delivery</div>
+        </div>
+
+        <div class="card-footer">
+          <a href="https://linkedin.com/in/ACoAAAL38PYBoMrygfBatIrJ7tyLPQtTOHGX1cE" target="_blank" class="linkedin-btn" title="May require LinkedIn login">View on LinkedIn</a>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- CARD 5: Tim Glaser · PostHog -->
+    <div class="lead-card" id="card-5">
+      <div class="card-header" onclick="toggleCard('card-5')">
+        <span class="signal-badge warm">WARM</span>
+        <div class="card-header-info">
+          <div class="lead-name">Tim Glaser</div>
+          <div class="lead-company">Co-CEO · PostHog</div>
+          <div class="why-now-line">All-department expansion + operations hiring detected approximately 40 days ago</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit: YES</span>
+        <span class="expand-icon">&#9662;</span>
+      </div>
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item"><a href="https://posthog.com" target="_blank">posthog.com</a></span>
+          <span class="identity-item">Aberdeen, Scotland · United Kingdom</span>
+          <span class="identity-item">51–200 employees</span>
+          <span class="identity-item">$10M–$25M revenue</span>
+          <span class="identity-item">Product Analytics Platform</span>
+        </div>
+        <div class="tag-row">
+          <span class="tag industry">Developer Tools / Product Analytics</span>
+          <span class="tag industry">Open Source SaaS</span>
+          <span class="tag signal">Dept Expansion + Ops Hiring · ~40 days ago</span>
+          <span class="tag context">Fully remote · Distributed team scaling</span>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Active Market Signals</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Operations Department Hiring</div>
+              <div class="signal-timing">Approximately 40 days ago</div>
+              <div class="signal-desc">PostHog is staffing its ops function at the exact point where a 51–200 person fully remote company needs to formalize its internal operating model. Distributed teams at this scale require deliberate architecture to maintain delivery consistency across time zones.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">All-Department Headcount Growth</div>
+              <div class="signal-timing">Approximately 40 days ago</div>
+              <div class="signal-desc">Broad hiring across functions in a remote-first company is where informal operating norms break down first. The absence of shared physical space means accountability and coordination systems need to be more deliberate, not less.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing <span class="card-section-subtitle">Configured for Andy's Practice</span></div>
+          <div class="intel-grid">
+            <div class="intel-cell">
+              <div class="intel-cell-label">Leadership Movement</div>
+              <div class="intel-cell-value">No senior leadership departures detected; dual-CEO structure stable</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Capital Activity</div>
+              <div class="intel-cell-value">No new funding round detected in last 90 days; company scaling from existing capital base</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Hiring Signals</div>
+              <div class="intel-cell-value">Operations and all-department hiring active; consistent with remote-first team formalization at 51–200 scale</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Expansion Signals</div>
+              <div class="intel-cell-value">Global distributed expansion; team spans UK, US, and multiple time zones — requires deliberate ops architecture</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Growth Trajectory</div>
+              <div class="intel-cell-value">SOC2 certified, GDPR-ready; entering enterprise sales motion that requires formal operational discipline</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Work Email</div>
+                <div class="contact-value">tim@posthog.com</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('tim@posthog.com', this)">Copy</button>
+            </div>
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Mobile</div>
+                <div class="contact-value unavailable">Direct contact not on record</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div class="why-block">
+              <div class="why-block-title">ICP Fit for Andy</div>
+              <div class="why-block-text">PostHog is a fully remote, open-source-first software company scaling into enterprise. Tim is running a dual-CEO structure at a company that spans multiple time zones with 51–200 people, no dedicated COO layer, and a growing enterprise sales motion that demands formal operational maturity. Andy's experience building high-velocity operating machines in distributed environments maps directly to PostHog's current infrastructure gap.</div>
+              <div class="fit-signal">
+                <div class="fit-signal-label">Strongest Fit Signal</div>
+                Ops hiring at a fully remote software company entering enterprise scale without COO infrastructure.
+              </div>
+            </div>
+            <div class="why-block">
+              <div class="why-block-title">Why They're Looking</div>
+              <div class="why-block-text">PostHog is selling to enterprise customers who expect SOC2 compliance, structured SLAs, and predictable delivery — none of which can be managed informally at 51–200 people distributed across time zones. Tim is a technical co-founder in a dual-CEO arrangement that works until scale demands one person focused on operations. The ops hiring signal indicates the team has recognized the gap. A Fractional COO who has built distributed operating architecture is the next step before a permanent hire.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal <span class="card-section-subtitle">2 Channels Ready</span></div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="conn-note-5">
+              Saw PostHog's operations hiring alongside broad team expansion. Fully remote companies at 51–200 people hit a specific coordination threshold where informal structures stop working. I've built the architecture for that transition. Happy to connect.
+              <div class="char-count">229 characters · LinkedIn limit: 300</div>
+            </div>
+            <button class="copy-action-btn" onclick="copyElementText('conn-note-5', this)">Copy Connection Note</button>
+          </div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Email Draft · Ready to Send</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject Line</div>
+              <div class="email-subject-value" id="email-subj-5">Distributed ops architecture · PostHog</div>
+              <div class="email-body" id="email-body-5">Tim,
+
+Noticed PostHog's operations hiring push alongside broader team expansion. At 51–200 people in a fully remote, multi-timezone setup, the coordination infrastructure that worked at 30 people stops working — not all at once, but in ways that compound.
+
+I embed as a Fractional COO for software companies at this stage. The focus is building the operating cadences, accountability frameworks, and delivery systems that let a distributed leadership team run with the same discipline as a co-located one. I've built those systems in environments where informal structures were actively creating delivery risk — and where the COO layer needed to exist before the company could afford a permanent hire.
+
+If the distributed ops challenge is on your radar, 15 minutes would tell us quickly whether there's a fit.
+
+Andy</div>
+              <div class="email-meta">
+                <span class="email-word-count">126 words · safe for cold send</span>
+                <span class="email-safe-label">Ready to Send</span>
+              </div>
+            </div>
+            <button class="copy-action-btn" onclick="copyFullEmail('email-subj-5', 'email-body-5', this)">Copy Email Draft</button>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="touch-day-label" style="margin-bottom:8px;">Day 0 · Connection Request</div>
+          <div class="touch-message">Saw PostHog's operations hiring alongside broad team expansion. Fully remote companies at 51–200 people hit a specific coordination threshold where informal structures stop working. I've built the architecture for that transition. Happy to connect.</div>
+          <button class="copy-action-btn" onclick="copyToClipboard('Saw PostHog\'s operations hiring alongside broad team expansion. Fully remote companies at 51–200 people hit a specific coordination threshold where informal structures stop working. I\'ve built the architecture for that transition. Happy to connect.', this)">Copy Touch 1</button>
+          <div class="touch-collapsed-indicator">· · · 4 additional touches included in full delivery</div>
+        </div>
+
+        <div class="card-footer">
+          <a href="https://linkedin.com/in/ACoAAA0mricBkjb404Pu5cSlr3b55V7pWRFi3PU" target="_blank" class="linkedin-btn" title="May require LinkedIn login">View on LinkedIn</a>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- PIPELINE MATH -->
+    <div class="pipeline-math">
+      <div class="pipeline-math-text">
+        This is a sample of <strong>5 leads from your monthly 40</strong>. Full delivery includes <strong>10 ICP-matched buyer profiles per week</strong>, each with active signal intelligence, direct contact details, a personalized connection note, a ready-to-send email, and a complete 5-touch conversation engine. Deduplicated globally across your entire engagement.
+      </div>
+    </div>
+
+    <!-- VISUAL GRAPHICS SECTION -->
+    <div class="visuals-section">
+      <div class="visuals-header">
+        <div class="visuals-copy">
+          <h3>Content that earns attention from the buyers on your list.</h3>
+          <p>Every weekly delivery includes posts in your voice — written from your methodology, referencing the signal patterns your ICP is navigating right now. The kind of content that gets a CEO to think "this person understands exactly what I'm dealing with" before you've ever spoken.</p>
+          <ul class="visuals-list">
+            <li><span class="visuals-list-dot">+</span>Teaching posts that demonstrate your operating diagnosis</li>
+            <li><span class="visuals-list-dot">+</span>Opinion posts that cut against common founder assumptions</li>
+            <li><span class="visuals-list-dot">+</span>Handraiser posts designed to surface active buyers</li>
+            <li><span class="visuals-list-dot">+</span>Carousel and infographic visuals in your brand</li>
+          </ul>
+        </div>
+        <div>
+          <div class="visuals-tiles">
+            <div class="visual-tile carousel">
+              <div class="visual-tile-inner">
+                <div class="tile-accent-bar"></div>
+                <div class="tile-lines">
+                  <div class="tile-line full"></div>
+                  <div class="tile-line medium"></div>
+                  <div class="tile-line short"></div>
+                </div>
+              </div>
+              <div class="tile-label">Carousel</div>
+            </div>
+            <div class="visual-tile post">
+              <div class="visual-tile-inner">
+                <div class="tile-accent-bar"></div>
+                <div class="tile-lines">
+                  <div class="tile-line medium"></div>
+                  <div class="tile-line full"></div>
+                  <div class="tile-line short"></div>
+                </div>
+              </div>
+              <div class="tile-label">Post Visual</div>
+            </div>
+            <div class="visual-tile infographic">
+              <div class="visual-tile-inner">
+                <div class="tile-accent-bar"></div>
+                <div class="tile-lines">
+                  <div class="tile-line full"></div>
+                  <div class="tile-line short"></div>
+                  <div class="tile-line medium"></div>
+                </div>
+              </div>
+              <div class="tile-label">Infographic</div>
+            </div>
+          </div>
+          <div class="visuals-note">See the Content Engine tab for two full posts written in your voice.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA FOOTER -->
+    <div class="cta-footer">
+      <div class="cta-footer-headline">This is one week of your full Pipeline Engine.</div>
+      <div class="cta-footer-subhead">Full delivery: 10 ICP-matched buyer profiles per week, 40 per month. Each with signal intelligence, contact details, personalized connection note, email draft, and a complete 5-touch conversation engine. If the quality is what you're looking for, the next step is a 20-minute fit call.</div>
+      <a href="https://calendly.com/saurabh_zentro/30-min" target="_blank" class="cta-footer-btn">Book a Fit Call</a>
+      <div class="cta-footer-note">20 minutes · No pitch · Just a conversation to see if this fits your practice</div>
+    </div>
+
+  </div><!-- end view-pipeline -->
+
+
+  <!-- CONTENT ENGINE VIEW -->
+  <div id="view-content" class="view">
+
+    <!-- Welcome Banner -->
+    <div class="welcome-banner">
+      <div class="welcome-tag">Content Engine · Personalised Demo</div>
+      <div class="welcome-headline">Two posts written in your voice. Ready to schedule.</div>
+      <div class="welcome-sub">These posts are written from your operating methodology, your documented patterns, and the language you use to describe what you build. The goal is content that earns attention from founders at the exact companies on your pipeline list — not likes from other operators.</div>
+    </div>
+
+    <!-- Post Cards Grid -->
+    <div class="post-cards-grid">
+
+      <!-- Teaching Post -->
+      <div class="post-card">
+        <div class="post-type-label">Teaching Post</div>
+        <div class="post-type-desc">Demonstrates your operating diagnosis. Written for founders at scaling software companies who are starting to feel the ops ceiling.</div>
+        <div class="post-text">Most founders think their operations problem is a people problem.
+
+It isn't.
+
+When a 60-person software company starts missing delivery timelines, the instinct is to look at the individuals. The engineer who moved slow. The PM who dropped context. The manager who didn't follow up.
+
+The real problem is the operating architecture.
+
+No shared cadence for how decisions get made. No consistent accountability structure that survives a quarter of rapid hiring. No financial visibility that runs in real-time instead of three weeks behind close.
+
+That's not a people problem. That's a systems problem. And it looks like a people problem because the systems were never built.
+
+The companies I've worked with that moved fastest through this phase did one thing differently: they built the machine before they needed it. Operating cadences, KPI frameworks, and accountability structures deployed before the informal approach stopped working — not after.
+
+You can wait until the pain is obvious. Most founders do.
+
+The ones who don't are the ones who close a year later and still have 100% talent retention.</div>
+        <div class="post-cta-line">Comment MACHINE and I'll send you the five-step operating framework I use at the 50–150 employee inflection point.</div>
+      </div>
+
+      <!-- Handraiser Post -->
+      <div class="post-card">
+        <div class="post-type-label">Handraiser Post</div>
+        <div class="post-type-desc">Designed to surface active buyers. CTA drives self-identification from founders currently navigating the ops ceiling.</div>
+        <div class="post-text">The traditional software model assumes you need a full-time COO at 200 people.
+
+That assumption is wrong, and it's expensive.
+
+By the time most companies hire a full-time COO, they've spent 18 months running on founder instinct past the point where instinct still works. The P&L absorbs it. The team feels it. The board starts asking questions.
+
+Here's what I've learned building operating machines from inside fast-scaling software and services companies:
+
+The operating infrastructure you need at 50 people is not the same architecture you needed at 20 people.
+
+And the 90-day window after a funding round — or after you open a second location, or after you cross the 50-person threshold — is the highest-leverage moment to deploy it.
+
+Not because the problems are loudest then.
+
+Because they're still small enough to fix cleanly.
+
+If your company is in that window right now — post-raise, post-expansion, or just past the point where you can feel the coordination drag — I work in that window as a Fractional COO.
+
+Comment MACHINE and I'll share what the first 30 days of that engagement typically looks like.</div>
+        <div class="post-cta-line">Comment MACHINE for a look at the 30-day operating infrastructure deployment framework.</div>
+      </div>
+
+    </div>
+
+    <!-- Visual Graphics Section -->
+    <div class="visuals-section">
+      <div class="visuals-header">
+        <div class="visuals-copy">
+          <h3>Visuals that make your content stop the scroll.</h3>
+          <p>Full delivery includes carousel decks, standalone post graphics, and infographics — all built in your brand colors and finished for direct LinkedIn upload. Every visual brief is designed around the post it accompanies, not a template.</p>
+          <ul class="visuals-list">
+            <li><span class="visuals-list-dot">+</span>2 carousel decks per month (slide-by-slide, finished visuals)</li>
+            <li><span class="visuals-list-dot">+</span>2 standalone infographics per month</li>
+            <li><span class="visuals-list-dot">+</span>Post graphics for any teaching or handraiser post that benefits from visual</li>
+            <li><span class="visuals-list-dot">+</span>All files delivered ready for LinkedIn native scheduler</li>
+          </ul>
+        </div>
+        <div>
+          <div class="visuals-tiles">
+            <div class="visual-tile carousel">
+              <div class="visual-tile-inner">
+                <div class="tile-accent-bar"></div>
+                <div class="tile-lines">
+                  <div class="tile-line full"></div>
+                  <div class="tile-line medium"></div>
+                  <div class="tile-line short"></div>
+                </div>
+              </div>
+              <div class="tile-label">Carousel Deck</div>
+            </div>
+            <div class="visual-tile post">
+              <div class="visual-tile-inner">
+                <div class="tile-accent-bar"></div>
+                <div class="tile-lines">
+                  <div class="tile-line medium"></div>
+                  <div class="tile-line full"></div>
+                  <div class="tile-line short"></div>
+                </div>
+              </div>
+              <div class="tile-label">Post Graphic</div>
+            </div>
+            <div class="visual-tile infographic">
+              <div class="visual-tile-inner">
+                <div class="tile-accent-bar"></div>
+                <div class="tile-lines">
+                  <div class="tile-line full"></div>
+                  <div class="tile-line short"></div>
+                  <div class="tile-line medium"></div>
+                </div>
+              </div>
+              <div class="tile-label">Infographic</div>
+            </div>
+          </div>
+          <div class="visuals-note"><strong>12 posts + 2 articles + 2 carousels + 2 infographics</strong> per month. All in your voice. All delivered Monday 9 AM.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA Footer -->
+    <div class="cta-footer">
+      <div class="cta-footer-headline">Content that earns buyer conversations, not just peer likes.</div>
+      <div class="cta-footer-subhead">Full delivery is 12 posts, 2 articles, 2 carousels, and 2 infographics per month — all in your voice, all mapped to the buyer signals your pipeline is generating. 30 minutes of your time per week to review and schedule. The rest is handled.</div>
+      <a href="https://calendly.com/saurabh_zentro/30-min" target="_blank" class="cta-footer-btn">Book a Fit Call</a>
+      <div class="cta-footer-note">20 minutes · No pitch · Just a conversation to see if this fits your practice</div>
+    </div>
+
+  </div><!-- end view-content -->
+
+</main>
+
+<script>
+function showView(viewName, el) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view-' + viewName).classList.add('active');
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.mobile-tab-pill').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+  if (el) {
+    el.classList.add('active');
+    const isDesktopNav = el.classList.contains('nav-item');
+    const isMobilePill = el.classList.contains('mobile-tab-pill');
+    const isTabBtn = el.classList.contains('tab-btn');
+    if (isDesktopNav) {
+      document.querySelectorAll('.tab-btn').forEach((b, i) => {
+        if ((viewName === 'pipeline' && i === 0) || (viewName === 'content' && i === 1)) b.classList.add('active');
+      });
+      document.querySelectorAll('.mobile-tab-pill').forEach((b, i) => {
+        if ((viewName === 'pipeline' && i === 0) || (viewName === 'content' && i === 1)) b.classList.add('active');
+      });
+    } else if (isMobilePill) {
+      document.querySelectorAll('.tab-btn').forEach((b, i) => {
+        if ((viewName === 'pipeline' && i === 0) || (viewName === 'content' && i === 1)) b.classList.add('active');
+      });
+      document.querySelectorAll('.nav-item').forEach((b, i) => {
+        if ((viewName === 'pipeline' && i === 0) || (viewName === 'content' && i === 1)) b.classList.add('active');
+      });
+    } else if (isTabBtn) {
+      document.querySelectorAll('.mobile-tab-pill').forEach((b, i) => {
+        if ((viewName === 'pipeline' && i === 0) || (viewName === 'content' && i === 1)) b.classList.add('active');
+      });
+      document.querySelectorAll('.nav-item').forEach((b, i) => {
+        if ((viewName === 'pipeline' && i === 0) || (viewName === 'content' && i === 1)) b.classList.add('active');
+      });
+    }
+  }
+}
+
+function toggleCard(cardId) {
+  const card = document.getElementById(cardId);
+  card.classList.toggle('expanded');
+}
+
+function copyToClipboard(text, btn) {
+  navigator.clipboard.writeText(text).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = 'Copied';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+function copyElementText(elId, btn) {
+  const el = document.getElementById(elId);
+  const text = el ? el.innerText.replace(/\n\s*\d+\s*characters.*$/m, '').trim() : '';
+  navigator.clipboard.writeText(text).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = 'Copied';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+function copyFullEmail(subjId, bodyId, btn) {
+  const subj = document.getElementById(subjId);
+  const body = document.getElementById(bodyId);
+  const text = 'Subject: ' + (subj ? subj.textContent.trim() : '') + '\n\n' + (body ? body.textContent.trim() : '');
+  navigator.clipboard.writeText(text).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = 'Copied';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 2000);
+  });
+}
+</script>
+</body>
+</html>
