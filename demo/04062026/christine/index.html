@@ -1,0 +1,1525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Christine's Lead Demo · Pipelind</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0A0A12;
+  --bg2: #12121E;
+  --bg3: #0E0E19;
+  --primary: #6A66A3;
+  --primary-light: #9B98C4;
+  --accent: #FF9900;
+  --success: #019047;
+  --success-light: #5AC88A;
+  --text: rgba(255,255,255,0.90);
+  --text-dim: rgba(255,255,255,0.72);
+  --text-muted: rgba(255,255,255,0.55);
+  --border: rgba(106,102,163,0.25);
+  --border-hover: rgba(106,102,163,0.55);
+  --hot: #FF4444;
+  --warm: #FF9900;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif; min-height: 100vh; }
+
+/* Sidebar */
+.sidebar {
+  position: fixed; top: 0; left: 0; width: 240px; height: 100vh;
+  background: var(--bg2); border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; padding: 24px 20px; z-index: 100;
+}
+.sidebar-logo { font-family: 'Space Mono', monospace; font-size: 13px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--primary-light); margin-bottom: 28px; }
+.prospect-block { margin-bottom: 32px; }
+.prospect-label { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px; }
+.prospect-name { font-size: 17px; font-weight: 800; color: var(--text); line-height: 1.25; }
+.prospect-meta { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--text-muted);
+  letter-spacing: .06em; margin-top: 4px; }
+.nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 8px;
+  cursor: pointer; margin-bottom: 4px; font-size: 13px; font-weight: 600; color: var(--text-dim);
+  transition: all .15s; border: 1px solid transparent; }
+.nav-item:hover { background: rgba(106,102,163,0.10); color: var(--text); }
+.nav-item.active { background: rgba(106,102,163,0.15); color: var(--primary-light); border-color: var(--border); }
+.sidebar-footer { margin-top: auto; font-family: 'Space Mono', monospace; font-size: 10px;
+  color: var(--text-muted); letter-spacing: .04em; line-height: 1.8; }
+
+/* Mobile topbar */
+.mobile-topbar {
+  display: none; position: sticky; top: 0; z-index: 200;
+  background: var(--bg2); border-bottom: 1px solid var(--border);
+  padding: 14px 16px; align-items: center; justify-content: space-between;
+}
+.mobile-logo { font-family: 'Space Mono', monospace; font-size: 12px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--primary-light); }
+.mobile-prospect-name { font-size: 13px; font-weight: 700; color: var(--text); }
+
+/* Mobile tab pills */
+.mobile-tabs {
+  display: none; position: sticky; top: 53px; z-index: 199;
+  background: var(--bg); border-bottom: 1px solid var(--border);
+  padding: 10px 16px; gap: 8px;
+}
+.mobile-tab-pill { padding: 7px 16px; border-radius: 20px; font-size: 12px; font-weight: 700;
+  font-family: 'Space Mono', monospace; letter-spacing: .06em; text-transform: uppercase;
+  cursor: pointer; border: 1px solid var(--border); color: var(--text-muted); background: transparent;
+  transition: all .15s; }
+.mobile-tab-pill.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+/* Main */
+.main { margin-left: 240px; padding: 32px 36px; max-width: 1140px; }
+
+/* Desktop tab bar */
+.tab-bar {
+  position: sticky; top: 0; z-index: 50; background: var(--bg);
+  border-bottom: 1px solid var(--border); display: flex; margin: -32px -36px 32px; padding: 0 36px;
+}
+.tab-btn { padding: 14px 22px; font-family: 'Space Mono', monospace; font-size: 11px;
+  font-weight: 700; letter-spacing: .10em; text-transform: uppercase; color: var(--text-muted);
+  cursor: pointer; border: none; background: transparent; border-bottom: 2px solid transparent;
+  transition: all .15s; }
+.tab-btn.active { color: var(--primary-light); border-bottom-color: var(--primary); }
+
+/* Welcome banner */
+.welcome-banner { background: linear-gradient(135deg, rgba(106,102,163,0.10) 0%, rgba(255,153,0,0.05) 100%);
+  border: 1px solid var(--border); border-radius: 12px; padding: 24px 28px; margin-bottom: 28px; }
+.welcome-tag { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+.welcome-text { font-size: 14px; line-height: 1.75; color: var(--text-dim); }
+.welcome-text strong { color: var(--text); font-weight: 700; }
+
+/* Pulse panel */
+.pulse-panel { background: rgba(106,102,163,0.06); border: 1px solid rgba(106,102,163,0.30);
+  border-left: 3px solid var(--accent); border-radius: 10px; padding: 18px 22px; margin-bottom: 24px; }
+.pulse-label { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+.pulse-text { font-size: 13px; color: var(--text-dim); line-height: 1.75; }
+
+/* ICP grid */
+.icp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 28px; }
+.icp-panel { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 20px 22px; }
+.icp-panel-title { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--primary-light); margin-bottom: 14px; }
+.icp-row { display: flex; justify-content: space-between; align-items: flex-start;
+  padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 13px; gap: 12px; }
+.icp-row:last-child { border-bottom: none; }
+.icp-label { color: var(--text-muted); flex-shrink: 0; }
+.icp-value { color: var(--text); font-weight: 600; text-align: right; }
+
+/* Section header */
+.section-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 18px; }
+.section-title { font-size: 18px; font-weight: 800; color: var(--text); }
+.section-subtitle { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: .08em; }
+
+/* Lead cards */
+.lead-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; margin-bottom: 16px; overflow: hidden; transition: border-color .15s; }
+.lead-card:hover { border-color: var(--border-hover); }
+
+.card-header { display: flex; align-items: center; gap: 14px; padding: 18px 22px; cursor: pointer; }
+.signal-badge { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .10em; text-transform: uppercase; padding: 5px 10px; border-radius: 6px; flex-shrink: 0; }
+.signal-badge.hot { background: rgba(255,68,68,0.15); color: var(--hot); border: 1px solid rgba(255,68,68,0.30); }
+.signal-badge.warm { background: rgba(255,153,0,0.12); color: var(--warm); border: 1px solid rgba(255,153,0,0.25); }
+.card-header-info { flex: 1; }
+.lead-name { font-size: 16px; font-weight: 800; color: var(--text); }
+.lead-company { font-size: 13px; color: var(--text-dim); margin-top: 2px; }
+.why-now-line { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--accent); letter-spacing: .06em; margin-top: 5px; }
+.icp-fit-badge { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .08em; color: var(--success-light); border: 1px solid rgba(1,144,71,0.35);
+  padding: 4px 10px; border-radius: 6px; background: rgba(1,144,71,0.08); flex-shrink: 0; }
+.expand-icon { color: var(--text-muted); font-size: 14px; flex-shrink: 0; transition: transform .2s; }
+.lead-card.expanded .expand-icon { transform: rotate(180deg); }
+
+/* Card body */
+.card-body { display: none; border-top: 1px solid var(--border); }
+.lead-card.expanded .card-body { display: block; }
+
+/* Identity strip */
+.identity-strip { display: flex; flex-wrap: wrap; gap: 10px; padding: 16px 22px;
+  background: var(--bg3); border-bottom: 1px solid var(--border); }
+.identity-item { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--text-muted);
+  letter-spacing: .06em; }
+.identity-item a { color: var(--primary-light); text-decoration: none; }
+.identity-item a:hover { color: var(--text); }
+.identity-sep { color: rgba(255,255,255,0.15); }
+
+/* Tags */
+.tag-row { display: flex; flex-wrap: wrap; gap: 8px; padding: 14px 22px; border-bottom: 1px solid var(--border); }
+.tag { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase; padding: 4px 10px; border-radius: 20px; }
+.tag.industry { background: rgba(106,102,163,0.12); color: var(--primary-light); border: 1px solid rgba(106,102,163,0.25); }
+.tag.signal { background: rgba(255,153,0,0.10); color: var(--accent); border: 1px solid rgba(255,153,0,0.25); }
+.tag.context { background: rgba(1,144,71,0.08); color: var(--success-light); border: 1px solid rgba(1,144,71,0.20); }
+
+/* Card section */
+.card-section { padding: 20px 22px; border-bottom: 1px solid var(--border); }
+.card-section:last-child { border-bottom: none; }
+.card-section-title { font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700;
+  letter-spacing: .10em; text-transform: uppercase; color: var(--primary-light); margin-bottom: 14px; }
+.card-section-subtitle { font-size: 10px; color: var(--text-muted); font-weight: 400; letter-spacing: .04em; margin-left: 8px; }
+
+/* Signal cards */
+.signal-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.signal-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+.signal-type { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .10em; text-transform: uppercase; color: var(--accent); margin-bottom: 4px; }
+.signal-timing { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; font-style: italic; }
+.signal-desc { font-size: 13px; color: var(--text-dim); line-height: 1.65; }
+
+/* Intel grid */
+.intel-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+.intel-cell { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; }
+.intel-cell-label { font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: .10em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px; }
+.intel-cell-value { font-size: 12px; color: var(--text-dim); line-height: 1.5; }
+
+/* Contact grid */
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.contact-item { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px;
+  padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.contact-label { font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: .10em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px; }
+.contact-value { font-size: 13px; color: var(--text); font-weight: 600; word-break: break-all; }
+.contact-value.unavailable { color: var(--text-muted); font-style: italic; font-weight: 400; }
+
+/* Copy btn */
+.copy-btn { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase; padding: 6px 12px; border-radius: 6px;
+  border: 1px solid var(--border); color: var(--primary-light); background: transparent;
+  cursor: pointer; transition: all .15s; white-space: nowrap; flex-shrink: 0; }
+.copy-btn:hover { border-color: var(--primary); background: rgba(106,102,163,0.10); }
+.copy-btn.copied { color: var(--success-light); border-color: var(--success); }
+
+/* Why grid */
+.why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.why-block { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 16px 18px; }
+.why-block-title { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .10em; text-transform: uppercase; color: var(--primary-light); margin-bottom: 10px; }
+.why-block-text { font-size: 13px; color: var(--text-dim); line-height: 1.70; margin-bottom: 12px; }
+.fit-signal { background: rgba(1,144,71,0.08); border: 1px solid rgba(1,144,71,0.20);
+  border-radius: 6px; padding: 10px 12px; font-size: 12px; color: var(--success-light); line-height: 1.55; }
+.fit-signal-label { font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: .10em; text-transform: uppercase; color: var(--success); margin-bottom: 4px; }
+
+/* Outreach arsenal */
+.outreach-channel { background: var(--bg3); border: 1px solid var(--border); border-radius: 10px;
+  padding: 18px 20px; margin-bottom: 12px; }
+.outreach-channel:last-child { margin-bottom: 0; }
+.outreach-channel-label { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .10em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+.connection-note { font-size: 13px; color: var(--text-dim); line-height: 1.70; margin-bottom: 10px; }
+.char-count { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--text-muted); margin-top: 6px; }
+.copy-action-btn { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase; padding: 8px 16px; border-radius: 6px;
+  border: 1px solid var(--border); color: var(--primary-light); background: transparent;
+  cursor: pointer; transition: all .15s; }
+.copy-action-btn:hover { border-color: var(--primary); background: rgba(106,102,163,0.10); }
+.copy-action-btn.copied { color: var(--success-light); border-color: var(--success); }
+
+.email-block { background: rgba(106,102,163,0.04); border: 1px solid var(--border); border-radius: 8px;
+  padding: 16px 18px; margin-bottom: 12px; }
+.email-subject-label { font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: .10em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px; }
+.email-subject-value { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+.email-body { font-size: 13px; color: var(--text-dim); line-height: 1.80; white-space: pre-line; margin-bottom: 12px; }
+.email-meta { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.email-word-count { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--text-muted); }
+.email-safe-label { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--success-light); border: 1px solid rgba(1,144,71,0.30); padding: 3px 8px; border-radius: 4px; }
+.email-copy-btn { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase; padding: 6px 14px; border-radius: 6px;
+  border: 1px solid var(--border); color: var(--primary-light); background: transparent;
+  cursor: pointer; transition: all .15s; margin-left: auto; }
+.email-copy-btn:hover { border-color: var(--primary); background: rgba(106,102,163,0.10); }
+.email-copy-btn.copied { color: var(--success-light); border-color: var(--success); }
+
+/* Nurture sequence */
+.nurture-header { font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700;
+  letter-spacing: .10em; text-transform: uppercase; color: var(--accent); margin-bottom: 14px; padding: 10px 14px;
+  background: rgba(255,153,0,0.06); border: 1px solid rgba(255,153,0,0.20); border-radius: 8px; }
+.touch-block { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px;
+  padding: 14px 16px; margin-bottom: 10px; }
+.touch-block:last-child { margin-bottom: 0; }
+.touch-label { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .10em; text-transform: uppercase; color: var(--primary-light); margin-bottom: 4px; }
+.touch-type-label { font-size: 11px; color: var(--text-muted); margin-bottom: 8px; }
+.touch-message { font-size: 13px; color: var(--text); line-height: 1.65; margin-bottom: 10px; }
+.touch-collapsed-indicator { font-size: 12px; color: rgba(255,255,255,0.45); font-style: italic; padding: 10px 0; }
+
+/* Card footer */
+.card-footer { padding: 12px 22px; background: var(--bg3); border-top: 1px solid var(--border); display: flex; justify-content: flex-end; }
+.linkedin-btn { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase; padding: 8px 16px; border-radius: 6px;
+  border: 1px solid var(--border); color: var(--primary-light); text-decoration: none; transition: all .15s; }
+.linkedin-btn:hover { border-color: var(--primary); background: rgba(106,102,163,0.10); }
+
+/* Pipeline math */
+.pipeline-math { background: rgba(106,102,163,0.06); border: 1px solid var(--border);
+  border-radius: 12px; padding: 22px 28px; margin: 28px 0; text-align: center; }
+.pipeline-math-text { font-size: 15px; color: var(--text-dim); line-height: 1.8; }
+.pipeline-math-text strong { color: var(--primary-light); font-weight: 700; }
+
+/* Visuals section */
+.visuals-section { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; padding: 28px 32px; margin: 28px 0; }
+.visuals-header { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-bottom: 24px; }
+.visuals-copy h3 { font-size: 18px; font-weight: 800; color: var(--text); line-height: 1.3; margin-bottom: 12px; }
+.visuals-copy p { font-size: 13px; color: var(--text-dim); line-height: 1.75; margin-bottom: 10px; }
+.visuals-list { list-style: none; margin-top: 14px; }
+.visuals-list li { font-size: 13px; color: var(--text-dim); padding: 6px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04); display: flex; gap: 10px; }
+.visuals-list li:last-child { border-bottom: none; }
+.visuals-list-dot { color: var(--success-light); font-weight: 700; flex-shrink: 0; }
+.visuals-tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.visual-tile { border-radius: 10px; overflow: hidden; }
+.visual-tile-inner { aspect-ratio: 4/3; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 16px; }
+.visual-tile.carousel { background: linear-gradient(135deg, #1B2A4A 0%, #243655 100%); border: 1px solid rgba(240,165,0,0.20); }
+.visual-tile.post { background: linear-gradient(135deg, #1B2A4A 0%, #1D2D47 100%); border: 1px solid rgba(240,165,0,0.15); }
+.visual-tile.infographic { background: linear-gradient(135deg, #162238 0%, #1B2A4A 100%); border: 1px solid rgba(240,165,0,0.10); }
+.tile-accent-bar { width: 36px; height: 3px; background: #F0A500; border-radius: 2px; margin-bottom: 12px; }
+.tile-lines { width: 100%; }
+.tile-line { height: 7px; background: rgba(245,240,232,0.15); border-radius: 3px; margin-bottom: 6px; }
+.tile-line.short { width: 60%; }
+.tile-line.medium { width: 80%; }
+.tile-line.full { width: 100%; }
+.tile-label { font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); text-align: center; margin-top: 10px; padding: 6px; background: var(--bg3); }
+.visuals-note { font-size: 13px; color: var(--text-dim); text-align: center; margin-top: 18px;
+  padding-top: 18px; border-top: 1px solid var(--border); line-height: 1.7; }
+.visuals-note strong { color: var(--text); }
+
+/* CTA footer */
+.cta-footer { margin-top: 36px; background: linear-gradient(135deg, rgba(255,153,0,0.08) 0%, rgba(106,102,163,0.06) 100%);
+  border: 1px solid rgba(255,153,0,0.30); border-radius: 12px; padding: 36px 40px; text-align: center; }
+.cta-footer-headline { font-size: 22px; font-weight: 800; color: var(--text); letter-spacing: -.01em; margin-bottom: 14px; line-height: 1.3; }
+.cta-footer-subhead { font-size: 14px; color: var(--text-dim); line-height: 1.8; max-width: 680px; margin: 0 auto 26px; }
+.cta-footer-btn { display: inline-block; background: var(--accent); color: var(--bg);
+  padding: 15px 34px; border-radius: 8px; font-family: 'Space Mono', monospace;
+  font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em;
+  text-decoration: none; transition: background .15s; margin-bottom: 14px; }
+.cta-footer-btn:hover { background: #ffb340; }
+.cta-footer-note { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: .04em; }
+
+/* Post cards */
+.post-cards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 28px; }
+.post-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 24px 26px; }
+.post-type-label { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--primary-light); margin-bottom: 6px; }
+.post-type-desc { font-size: 11px; color: var(--text-muted); margin-bottom: 16px;
+  padding-bottom: 16px; border-bottom: 1px solid var(--border); line-height: 1.5; }
+.post-text { font-size: 13px; color: var(--text-dim); line-height: 1.85; white-space: pre-line; }
+.post-cta-line { margin-top: 14px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.06);
+  font-size: 12px; color: var(--accent); font-weight: 600; }
+
+.view { display: none; }
+.view.active { display: block; }
+
+/* Prospect intelligence callout */
+.prospect-intel-callout { background: rgba(255,153,0,0.06); border: 1px solid rgba(255,153,0,0.25);
+  border-radius: 8px; padding: 12px 16px; margin-top: 12px; }
+.pic-label { font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: .10em; text-transform: uppercase; color: var(--accent); margin-bottom: 4px; }
+.pic-text { font-size: 12px; color: var(--text-dim); line-height: 1.55; }
+
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+  .mobile-topbar { display: flex; }
+  .mobile-tabs { display: flex; }
+  .main { margin-left: 0; padding: 16px; }
+  .tab-bar { display: none; }
+  .icp-grid { grid-template-columns: 1fr; }
+  .signal-cards { grid-template-columns: 1fr; }
+  .intel-grid { grid-template-columns: 1fr 1fr; }
+  .contact-grid { grid-template-columns: 1fr; }
+  .why-grid { grid-template-columns: 1fr; }
+  .post-cards-grid { grid-template-columns: 1fr; }
+  .visuals-header { grid-template-columns: 1fr; }
+  .card-header { flex-wrap: wrap; gap: 8px; }
+  .lead-name { font-size: 15px; }
+  .cta-footer { padding: 24px 20px; }
+  .cta-footer-btn { width: 100%; text-align: center; display: block; }
+  .email-meta { flex-direction: column; align-items: flex-start; gap: 8px; }
+}
+@media (max-width: 480px) {
+  .intel-grid { grid-template-columns: 1fr; }
+  .visuals-tiles { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- Mobile topbar -->
+<div class="mobile-topbar">
+  <div class="mobile-logo">Pipelind</div>
+  <div class="mobile-prospect-name">Christine's Report</div>
+</div>
+
+<!-- Mobile tab pills -->
+<div class="mobile-tabs">
+  <button class="mobile-tab-pill active" onclick="showView('pipeline', this)">Pipeline Engine</button>
+  <button class="mobile-tab-pill" onclick="showView('content', this)">Content Engine</button>
+</div>
+
+<!-- Sidebar -->
+<nav class="sidebar">
+  <div class="sidebar-logo">Pipelind</div>
+  <div class="prospect-block">
+    <div class="prospect-label">Personalized For</div>
+    <div class="prospect-name">Christine D. W.</div>
+    <div class="prospect-meta">June 2026 · Lead Demo</div>
+  </div>
+  <div class="nav-item active" id="nav-pipeline" onclick="showView('pipeline', this)">Pipeline Engine</div>
+  <div class="nav-item" id="nav-content" onclick="showView('content', this)">Content Engine</div>
+  <div class="sidebar-footer">Personalized build<br>Real signal data<br>Sample of your full delivery</div>
+</nav>
+
+<!-- Main content -->
+<main class="main">
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="showView('pipeline', this)">Pipeline Engine</button>
+    <button class="tab-btn" onclick="showView('content', this)">Content Engine</button>
+  </div>
+
+  <!-- PIPELINE ENGINE VIEW -->
+  <div class="view active" id="view-pipeline">
+
+    <!-- Welcome banner -->
+    <div class="welcome-banner">
+      <div class="welcome-tag">Personalized For Christine D. Whitehead · CDW Advisors</div>
+      <div class="welcome-text">
+        <strong>Five founder-led companies in your ICP, each carrying an active ops signal from the last 90 days.</strong> Every card includes the signal context, a direct contact, a LinkedIn connection note, and a ready-to-send email. This is what a full week of pipeline delivery looks like for a practice like yours: no research, no guessing, no cold lists pulled from static databases.
+      </div>
+    </div>
+
+    <!-- Market Intelligence Pulse -->
+    <div class="pulse-panel">
+      <div class="pulse-label">Market Intelligence Pulse · Week of June 4, 2026</div>
+      <div class="pulse-text">This week: four consumer brand companies in the $10M-$25M range showing active ops and headcount expansion signals, with two additional companies scaling into new markets or product lines. The ops hiring pattern indicates founder-led businesses at the post-growth-phase are reaching the point where infrastructure can no longer scale on founder bandwidth alone. Content angle: the "hiring more people won't fix a broken process" framing maps directly to what these companies are experiencing right now.</div>
+    </div>
+
+    <!-- ICP panel grid -->
+    <div class="icp-grid">
+      <div class="icp-panel">
+        <div class="icp-panel-title">Target Buyer Profile</div>
+        <div class="icp-row"><span class="icp-label">Buyer Title</span><span class="icp-value">CEO, Founder, Co-Founder</span></div>
+        <div class="icp-row"><span class="icp-label">Company Size</span><span class="icp-value">11-200 employees</span></div>
+        <div class="icp-row"><span class="icp-label">Revenue Stage</span><span class="icp-value">$1M-$20M</span></div>
+        <div class="icp-row"><span class="icp-label">Sectors</span><span class="icp-value">Consumer Brands, Retail, E-commerce, Multi-channel</span></div>
+        <div class="icp-row"><span class="icp-label">Signal Triggers</span><span class="icp-value">Ops hiring, headcount expansion, new office, market entry</span></div>
+      </div>
+      <div class="icp-panel">
+        <div class="icp-panel-title">Sample Quality</div>
+        <div class="icp-row"><span class="icp-label">Leads Shown</span><span class="icp-value">5 of 40 monthly</span></div>
+        <div class="icp-row"><span class="icp-label">Signal Window</span><span class="icp-value">Last 90 days</span></div>
+        <div class="icp-row"><span class="icp-label">Contact Coverage</span><span class="icp-value">Email + mobile where available</span></div>
+        <div class="icp-row"><span class="icp-label">Geography</span><span class="icp-value">US, CA, AU, GB</span></div>
+        <div class="icp-row"><span class="icp-label">Deduplication</span><span class="icp-value">Global · no repeats across deliveries</span></div>
+      </div>
+    </div>
+
+    <!-- Section header -->
+    <div class="section-header">
+      <div class="section-title">ICP-Matched Buyers</div>
+      <div class="section-subtitle">5 of 40 monthly leads</div>
+    </div>
+
+
+    <!-- LEAD CARD 1: Brian Li · ModeSens · EXPANDED -->
+    <div class="lead-card expanded" id="card-1">
+      <div class="card-header" onclick="toggleCard('card-1')">
+        <span class="signal-badge hot">HOT</span>
+        <div class="card-header-info">
+          <div class="lead-name">Brian Li</div>
+          <div class="lead-company">Chief Executive Officer · ModeSens</div>
+          <div class="why-now-line">Ops department hiring surge active · headcount expanding now</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit: YES</span>
+        <span class="expand-icon">&#9662;</span>
+      </div>
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item"><a href="https://modesens.com" target="_blank">modesens.com</a></span>
+          <span class="identity-sep">·</span>
+          <span class="identity-item">Kirkland, WA · United States</span>
+          <span class="identity-sep">·</span>
+          <span class="identity-item">51-200 employees</span>
+          <span class="identity-sep">·</span>
+          <span class="identity-item">$10M-$25M revenue</span>
+          <span class="identity-sep">·</span>
+          <span class="identity-item">Retail / Fashion Tech</span>
+        </div>
+        <div class="tag-row">
+          <span class="tag industry">Fashion Tech</span>
+          <span class="tag industry">E-commerce</span>
+          <span class="tag signal">Ops Hiring Active</span>
+          <span class="tag context">Founder-Led · Growth Stage</span>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Active Market Signals</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Operations Hiring Surge</div>
+              <div class="signal-timing">Active · within last 30 days</div>
+              <div class="signal-desc">ModeSens is actively building out its operations layer, posting multiple roles across logistics, fulfillment, and process infrastructure. For a CEO running a $10M+ multi-sided platform, this volume of ops hiring without a dedicated ops leader is the pattern that leads to execution drag.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">Headcount Expansion</div>
+              <div class="signal-timing">Active · department-wide</div>
+              <div class="signal-desc">The company is scaling headcount across multiple functions simultaneously, which is the exact inflection point where cross-functional alignment breaks down. Founders at this stage typically discover the gaps six months after the hire wave, not before it.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing <span class="card-section-subtitle">Configured for Christine's Practice</span></div>
+          <div class="intel-grid">
+            <div class="intel-cell">
+              <div class="intel-cell-label">Leadership Movement</div>
+              <div class="intel-cell-value">No leadership movement detected in last 90 days</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Capital Activity</div>
+              <div class="intel-cell-value">No public funding activity in last 90 days</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Hiring Signals</div>
+              <div class="intel-cell-value">Active ops department hiring surge detected · multiple open roles</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Expansion Signals</div>
+              <div class="intel-cell-value">Headcount expansion across departments · growth trajectory active</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Growth Trajectory</div>
+              <div class="intel-cell-value">51-200 employees · $10M-$25M revenue range · scaling phase</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Work Email</div>
+                <div class="contact-value">brian@modesens.com</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('brian@modesens.com', this)">Copy</button>
+            </div>
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Mobile</div>
+                <div class="contact-value">+1 (607) 229-2188</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('+16072292188', this)">Copy</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div class="why-block">
+              <div class="why-block-title">ICP Fit for Christine</div>
+              <div class="why-block-text">Brian runs a founder-led consumer tech platform at exactly the revenue and headcount stage where operational complexity outpaces a single person's capacity to manage it. ModeSens serves 40,000 luxury brands across 800+ retailers, which means the backend coordination burden, vendor relationships, and fulfillment infrastructure are all scaling simultaneously. This is the profile Christine steps into when a company has outpaced its ops.</div>
+              <div class="fit-signal">
+                <div class="fit-signal-label">Strongest Fit Signal</div>
+                Active ops hiring at a platform company with no dedicated COO. The founder is absorbing what should be a fractional engagement.
+              </div>
+            </div>
+            <div class="why-block">
+              <div class="why-block-title">Why They're Looking</div>
+              <div class="why-block-text">A CEO running a multi-sided marketplace through an ops hiring wave is managing three problems at once: new hire onboarding, existing process gaps being exposed by higher volume, and cross-functional coordination across a team that didn't exist six months ago. Brian's engineering background means he understands systems, but operational execution at this stage requires a different set of judgment calls. The pain point is real; it just hasn't been named yet.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal <span class="card-section-subtitle">2 Channels Ready</span></div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="conn-note-1">
+              Noticed ModeSens is building out ops across multiple functions right now. I work with founder-led companies at this exact stage to get the execution layer ahead of the headcount. Thought it made sense to connect.
+              <div class="char-count">196 characters · LinkedIn limit: 300</div>
+            </div>
+            <button class="copy-action-btn" onclick="copyElementText('conn-note-1', this)">Copy Connection Note</button>
+          </div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Email Draft · Ready to Send</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject Line</div>
+              <div class="email-subject-value" id="email-subj-1">ModeSens ops hiring wave</div>
+              <div class="email-body" id="email-body-1">Brian,
+
+Noticed ModeSens has been actively building out its operations function over the last few weeks. Multiple roles, across departments, all at once.
+
+That specific pattern, growing headcount without an established ops infrastructure to absorb it, is where I work. I step in as a fractional COO for founder-led companies in the $10M-$25M range and build the systems that keep execution clean as the team scales. Most of the work shows up in vendor coordination, process gaps, and cross-functional accountability structures.
+
+Would a 20-minute call be useful to see if the timing makes sense for ModeSens?
+
+Christine Whitehead
+CDW Advisors · cdw-advisors.com</div>
+              <div class="email-meta">
+                <span class="email-word-count">130 words · safe for cold send</span>
+                <span class="email-safe-label">Ready to Send</span>
+                <button class="email-copy-btn" onclick="copyFullEmail('email-subj-1','email-body-1',this)">Copy Full Email</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="nurture-header">FULL DFY PIPELINE · 5-TOUCH CONVERSATION ENGINE</div>
+
+          <div class="touch-block">
+            <div class="touch-label">Day 0 · Connection Request</div>
+            <div class="touch-type-label">Send alongside LinkedIn connection request</div>
+            <div class="touch-message">Noticed ModeSens is building out ops across multiple functions right now. I work with founder-led companies at this exact stage to get the execution layer ahead of the headcount. Thought it made sense to connect.</div>
+            <button class="copy-action-btn" onclick="copyToClipboard('Noticed ModeSens is building out ops across multiple functions right now. I work with founder-led companies at this exact stage to get the execution layer ahead of the headcount. Thought it made sense to connect.', this)">Copy Touch 1</button>
+          </div>
+
+          <div class="touch-block">
+            <div class="touch-label">Day 3-5 · After Connection Accepts</div>
+            <div class="touch-type-label">Ice break. Reference the signal. No pitch.</div>
+            <div class="touch-message">Thanks for connecting, Brian. The ops hiring ramp at ModeSens caught my eye. Running multiple department expansions at once tends to surface process gaps that weren't visible at smaller scale. Is the coordination overhead landing mostly on you right now, or do you have someone managing it?</div>
+            <button class="copy-action-btn" onclick="copyToClipboard('Thanks for connecting, Brian. The ops hiring ramp at ModeSens caught my eye. Running multiple department expansions at once tends to surface process gaps that weren\'t visible at smaller scale. Is the coordination overhead landing mostly on you right now, or do you have someone managing it?', this)">Copy Touch 2</button>
+          </div>
+
+          <div class="touch-block">
+            <div class="touch-label">Day 8-12 · Value Drop</div>
+            <div class="touch-type-label">Demonstrate expertise. No ask required.</div>
+            <div class="touch-message">One pattern I see consistently with marketplace platforms in the $10M-$25M range: the ops function gets built reactively, one hire at a time, without a framework underneath it. By the time the gaps show up in metrics, the workarounds are already baked in. The companies that avoid it put the accountability structure in before the headcount, not after. Happy to share what that looks like for a platform model if it's useful.</div>
+            <button class="copy-action-btn" onclick="copyToClipboard('One pattern I see consistently with marketplace platforms in the $10M-$25M range: the ops function gets built reactively, one hire at a time, without a framework underneath it. By the time the gaps show up in metrics, the workarounds are already baked in. The companies that avoid it put the accountability structure in before the headcount, not after. Happy to share what that looks like for a platform model if it\'s useful.', this)">Copy Touch 3</button>
+          </div>
+
+          <div class="touch-block">
+            <div class="touch-label">Day 15-20 · Soft Ask</div>
+            <div class="touch-type-label">Surface intent without pressure.</div>
+            <div class="touch-message">I've worked with a few founder-run platforms at the stage ModeSens is at right now, specifically on building ops infrastructure that doesn't require the CEO to be the coordination layer. If a 15-minute conversation would be useful, I'm happy to make time for it.</div>
+            <button class="copy-action-btn" onclick="copyToClipboard('I\'ve worked with a few founder-run platforms at the stage ModeSens is at right now, specifically on building ops infrastructure that doesn\'t require the CEO to be the coordination layer. If a 15-minute conversation would be useful, I\'m happy to make time for it.', this)">Copy Touch 4</button>
+          </div>
+
+          <div class="touch-block">
+            <div class="touch-label">Day 25-30 · Clean Exit</div>
+            <div class="touch-type-label">Leave the door open. No pitch.</div>
+            <div class="touch-message">Timing isn't always right. When ModeSens gets through the current hiring wave and the coordination gaps start showing up more clearly, the door is open on my end.</div>
+            <button class="copy-action-btn" onclick="copyToClipboard('Timing isn\'t always right. When ModeSens gets through the current hiring wave and the coordination gaps start showing up more clearly, the door is open on my end.', this)">Copy Touch 5</button>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <a class="linkedin-btn" href="https://linkedin.com/in/ACoAAAoxwQgB6Tt2EaBxNtM8FPf2o91qnbZ6XeA" target="_blank" title="LinkedIn profile · may require login">View on LinkedIn</a>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- LEAD CARD 2: David Lui · KIT + ACE -->
+    <div class="lead-card" id="card-2">
+      <div class="card-header" onclick="toggleCard('card-2')">
+        <span class="signal-badge hot">HOT</span>
+        <div class="card-header-info">
+          <div class="lead-name">David Lui</div>
+          <div class="lead-company">Chief Executive Officer · KIT + ACE</div>
+          <div class="why-now-line">New office expansion signal active · market entry in progress</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit: YES</span>
+        <span class="expand-icon">&#9662;</span>
+      </div>
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item"><a href="https://kitandace.com" target="_blank">kitandace.com</a></span>
+          <span class="identity-sep">·</span>
+          <span class="identity-item">Calgary, AB · Canada</span>
+          <span class="identity-sep">·</span>
+          <span class="identity-item">51-200 employees</span>
+          <span class="identity-sep">·</span>
+          <span class="identity-item">$25M-$75M revenue</span>
+          <span class="identity-sep">·</span>
+          <span class="identity-item">Apparel Retail</span>
+        </div>
+        <div class="tag-row">
+          <span class="tag industry">Apparel</span>
+          <span class="tag industry">Multi-channel Retail</span>
+          <span class="tag signal">Office Expansion Active</span>
+          <span class="tag context">Multi-location Operations</span>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Active Market Signals</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Office / Location Expansion</div>
+              <div class="signal-timing">Active · within last 30 days</div>
+              <div class="signal-desc">KIT + ACE has opened or is actively expanding into new physical locations, which for a multi-channel apparel brand means layered ops complexity: new lease agreements, staffing ramps, inventory allocation, and supply chain coordination happening simultaneously at the store level.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">Ops Headcount Build</div>
+              <div class="signal-timing">Active · trailing 60 days</div>
+              <div class="signal-desc">A Canadian apparel brand at $25M-$75M expanding physical retail is managing the exact ops burden Christine steps into: multi-location coordination without centralized ops ownership. The CEO-as-operator pattern at this stage is a known risk factor ahead of any capital raise or exit preparation.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing <span class="card-section-subtitle">Configured for Christine's Practice</span></div>
+          <div class="intel-grid">
+            <div class="intel-cell">
+              <div class="intel-cell-label">Leadership Movement</div>
+              <div class="intel-cell-value">No leadership movement detected in last 90 days</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Capital Activity</div>
+              <div class="intel-cell-value">No public funding activity in last 90 days</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Hiring Signals</div>
+              <div class="intel-cell-value">Headcount growth consistent with retail expansion cycle</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Expansion Signals</div>
+              <div class="intel-cell-value">New office / location expansion signal active · multi-location growth phase</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Growth Trajectory</div>
+              <div class="intel-cell-value">$25M-$75M revenue · multi-channel brand scaling physical retail</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Work Email</div>
+                <div class="contact-value">david.lui@kitandace.com</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('david.lui@kitandace.com', this)">Copy</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div class="why-block">
+              <div class="why-block-title">ICP Fit for Christine</div>
+              <div class="why-block-text">David runs a multi-channel apparel brand actively expanding its physical footprint, which is exactly the operational moment Christine is built for. KIT + ACE sits at a revenue stage where multi-location coordination, vendor relationships, and P&L discipline across locations require dedicated ops leadership that the CEO cannot sustainably provide. Christine's track record with P&L restructuring and vendor consolidation maps directly to this profile.</div>
+              <div class="fit-signal">
+                <div class="fit-signal-label">Strongest Fit Signal</div>
+                Active location expansion with no named COO. Multi-channel retail at this stage without ops leadership creates systemic margin risk.
+              </div>
+            </div>
+            <div class="why-block">
+              <div class="why-block-title">Why They're Looking</div>
+              <div class="why-block-text">Opening new retail locations requires coordination across real estate, staffing, inventory, and supplier relationships, all running in parallel. A CEO managing this alongside brand strategy and commercial growth is making prioritization calls that someone with ops expertise would handle differently. The margin impact of decisions made at this stage shows up 12-18 months later, which means the window to intervene is now, not after the locations are fully ramped.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal <span class="card-section-subtitle">2 Channels Ready</span></div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="conn-note-2">
+              Saw KIT + ACE is expanding locations. Multi-channel retail at this stage usually surfaces ops complexity faster than the infrastructure can absorb it. Work with CEOs at this moment specifically. Would be good to connect.
+              <div class="char-count">222 characters · LinkedIn limit: 300</div>
+            </div>
+            <button class="copy-action-btn" onclick="copyElementText('conn-note-2', this)">Copy Connection Note</button>
+          </div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Email Draft · Ready to Send</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject Line</div>
+              <div class="email-subject-value" id="email-subj-2">KIT + ACE location expansion</div>
+              <div class="email-body" id="email-body-2">David,
+
+Noticed KIT + ACE is actively expanding into new locations. For a multi-channel brand at your revenue stage, that's the moment where ops coordination becomes the constraint, not just the cost.
+
+I work with CEOs of founder-led retail and consumer brands to build the operational infrastructure that keeps margin intact as location count scales. The work typically covers P&L discipline by location, vendor and supplier coordination, and the accountability structures that prevent execution drift across sites.
+
+Would a brief call make sense to see if the timing aligns?
+
+Christine Whitehead
+CDW Advisors · cdw-advisors.com</div>
+              <div class="email-meta">
+                <span class="email-word-count">118 words · safe for cold send</span>
+                <span class="email-safe-label">Ready to Send</span>
+                <button class="email-copy-btn" onclick="copyFullEmail('email-subj-2','email-body-2',this)">Copy Full Email</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="touch-block">
+            <div class="touch-label">Day 0 · Connection Request</div>
+            <div class="touch-message">Saw KIT + ACE is expanding locations. Multi-channel retail at this stage usually surfaces ops complexity faster than the infrastructure can absorb it. Work with CEOs at this moment specifically. Would be good to connect.</div>
+            <button class="copy-action-btn" onclick="copyToClipboard('Saw KIT + ACE is expanding locations. Multi-channel retail at this stage usually surfaces ops complexity faster than the infrastructure can absorb it. Work with CEOs at this moment specifically. Would be good to connect.', this)">Copy Touch 1</button>
+          </div>
+          <div class="touch-collapsed-indicator">· · · 4 additional touches included in full delivery</div>
+        </div>
+
+        <div class="card-footer">
+          <a class="linkedin-btn" href="https://linkedin.com/in/ACoAAADrC6wBYu7dauPf9oDw64U6po48zp9edo0" target="_blank" title="LinkedIn profile · may require login">View on LinkedIn</a>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- LEAD CARD 3: Jack Delosa · The Entourage · WARM (anniversary April 20 = ~45 days) -->
+    <div class="lead-card" id="card-3">
+      <div class="card-header" onclick="toggleCard('card-3')">
+        <span class="signal-badge warm">WARM</span>
+        <div class="card-header-info">
+          <div class="lead-name">Jack Delosa</div>
+          <div class="lead-company">Founder & CEO · The Entourage</div>
+          <div class="why-now-line">Ops hiring surge active · 16-year founder milestone 45 days ago</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit: YES</span>
+        <span class="expand-icon">&#9662;</span>
+      </div>
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item"><a href="https://the-entourage.com" target="_blank">the-entourage.com</a></span>
+          <span class="identity-sep">·</span>
+          <span class="identity-item">Sydney · Australia</span>
+          <span class="identity-sep">·</span>
+          <span class="identity-item">51-200 employees</span>
+          <span class="identity-sep">·</span>
+          <span class="identity-item">$10M-$25M revenue</span>
+          <span class="identity-sep">·</span>
+          <span class="identity-item">Business Services / Education</span>
+        </div>
+        <div class="tag-row">
+          <span class="tag industry">Entrepreneur Education</span>
+          <span class="tag industry">Business Services</span>
+          <span class="tag signal">Ops Hiring Active</span>
+          <span class="tag context">Founder-Led · 16 Years</span>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Active Market Signals</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Operations Department Hiring</div>
+              <div class="signal-timing">Active · within last 60 days</div>
+              <div class="signal-desc">The Entourage is building out its operations function at a stage where the business has scaled past what founder-level bandwidth can manage directly. A 16-year-old business with 470,000+ community members and 3,500+ business clients requires ops infrastructure that matches the delivery complexity.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">Founder Milestone Signal</div>
+              <div class="signal-timing">Job start anniversary · approximately 45 days ago</div>
+              <div class="signal-desc">Jack reached a 16-year milestone with The Entourage in April 2026. Founder anniversary milestones at this tenure length are often moments of strategic reassessment, particularly around what the next operational phase looks like and what infrastructure is needed to sustain it without the founder as the ops layer.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing <span class="card-section-subtitle">Configured for Christine's Practice</span></div>
+          <div class="intel-grid">
+            <div class="intel-cell">
+              <div class="intel-cell-label">Leadership Movement</div>
+              <div class="intel-cell-value">No leadership movement detected in last 90 days</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Capital Activity</div>
+              <div class="intel-cell-value">No public funding activity in last 90 days</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Hiring Signals</div>
+              <div class="intel-cell-value">Ops department hiring active · building execution layer</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Expansion Signals</div>
+              <div class="intel-cell-value">Community and client base at scale · online and events delivery model</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Growth Trajectory</div>
+              <div class="intel-cell-value">$10M-$25M revenue · 3,500+ business clients · $2B+ generated for clients</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Work Email</div>
+                <div class="contact-value">jdelosa@the-entourage.com</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('jdelosa@the-entourage.com', this)">Copy</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div class="why-block">
+              <div class="why-block-title">ICP Fit for Christine</div>
+              <div class="why-block-text">Jack is a 16-year founder with a scaled business that serves 3,500+ companies and runs events for 40,000 attendees. A business at that operational surface area, delivered across online and in-person formats simultaneously, requires a COO-level function whether the title exists or not. Christine's pattern recognition on ops debt in scaled founder-led businesses is directly applicable here.</div>
+              <div class="fit-signal">
+                <div class="fit-signal-label">Strongest Fit Signal</div>
+                Active ops hiring at a 16-year-old founder-led business at scale. The business has grown past founder bandwidth; the infrastructure hasn't caught up yet.
+              </div>
+            </div>
+            <div class="why-block">
+              <div class="why-block-title">Why They're Looking</div>
+              <div class="why-block-text">A founder at year 16 who is actively building out the ops function is, by definition, acknowledging that the current structure isn't sustainable. The decision to hire into ops rather than bring in fractional leadership is usually a default, not a deliberate choice. Jack has the business judgment to see what a properly structured ops engagement would produce for The Entourage, particularly if the conversation starts with the execution gaps, not a service pitch.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal <span class="card-section-subtitle">2 Channels Ready</span></div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="conn-note-3">
+              Noticed The Entourage is building out its ops layer. A business at 3,500+ clients and 40,000 event attendees has execution complexity that most founder-led org structures aren't built to absorb. I work at exactly that stage. Good to connect.
+              <div class="char-count">242 characters · LinkedIn limit: 300</div>
+            </div>
+            <button class="copy-action-btn" onclick="copyElementText('conn-note-3', this)">Copy Connection Note</button>
+          </div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Email Draft · Ready to Send</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject Line</div>
+              <div class="email-subject-value" id="email-subj-3">The Entourage ops build</div>
+              <div class="email-body" id="email-body-3">Jack,
+
+Noticed The Entourage is actively hiring into its operations function. A business at your scale, serving 3,500+ companies and running 40,000-person events, has delivery complexity that outpaces most founder-built org structures.
+
+I work with founder-led businesses at this stage as a fractional COO, specifically to build the execution infrastructure that holds delivery quality as the business scales without the founder sitting in the middle of every coordination decision.
+
+Would a 20-minute call be useful to compare notes on where the friction points typically are at this stage?
+
+Christine Whitehead
+CDW Advisors · cdw-advisors.com</div>
+              <div class="email-meta">
+                <span class="email-word-count">119 words · safe for cold send</span>
+                <span class="email-safe-label">Ready to Send</span>
+                <button class="email-copy-btn" onclick="copyFullEmail('email-subj-3','email-body-3',this)">Copy Full Email</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="touch-block">
+            <div class="touch-label">Day 0 · Connection Request</div>
+            <div class="touch-message">Noticed The Entourage is building out its ops layer. A business at 3,500+ clients and 40,000 event attendees has execution complexity that most founder-led org structures aren't built to absorb. I work at exactly that stage. Good to connect.</div>
+            <button class="copy-action-btn" onclick="copyToClipboard('Noticed The Entourage is building out its ops layer. A business at 3,500+ clients and 40,000 event attendees has execution complexity that most founder-led org structures aren\'t built to absorb. I work at exactly that stage. Good to connect.', this)">Copy Touch 1</button>
+          </div>
+          <div class="touch-collapsed-indicator">· · · 4 additional touches included in full delivery</div>
+        </div>
+
+        <div class="card-footer">
+          <a class="linkedin-btn" href="https://linkedin.com/in/ACoAAAIBkeoByOOeyizmrBIGQHNieGLaTBes0dA" target="_blank" title="LinkedIn profile · may require login">View on LinkedIn</a>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- LEAD CARD 4: Cullen Wiginton · Huckberry -->
+    <div class="lead-card" id="card-4">
+      <div class="card-header" onclick="toggleCard('card-4')">
+        <span class="signal-badge hot">HOT</span>
+        <div class="card-header-info">
+          <div class="lead-name">Cullen Wiginton</div>
+          <div class="lead-company">Chief Financial Officer · Huckberry</div>
+          <div class="why-now-line">Ops expansion signal active · headcount scaling across departments</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit: YES</span>
+        <span class="expand-icon">&#9662;</span>
+      </div>
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item"><a href="https://huckberry.com" target="_blank">huckberry.com</a></span>
+          <span class="identity-sep">·</span>
+          <span class="identity-item">Austin, TX · United States</span>
+          <span class="identity-sep">·</span>
+          <span class="identity-item">51-200 employees</span>
+          <span class="identity-sep">·</span>
+          <span class="identity-item">$10M-$25M revenue</span>
+          <span class="identity-sep">·</span>
+          <span class="identity-item">Lifestyle Retail / Media</span>
+        </div>
+        <div class="tag-row">
+          <span class="tag industry">Lifestyle Retail</span>
+          <span class="tag industry">Media + Commerce</span>
+          <span class="tag signal">Ops Expansion Active</span>
+          <span class="tag context">PE-Relevant Stage</span>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Active Market Signals</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">All-Department Expansion</div>
+              <div class="signal-timing">Active · within last 30 days</div>
+              <div class="signal-desc">Huckberry is scaling across all departments simultaneously, a pattern that Christine's P&L diagnostic work is specifically calibrated for. When a lifestyle brand at $10M-$25M revenue grows headcount without systematic cost discipline, vendor overhead and margin erosion are the predictable outcomes.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">Finance-Ops Coordination Gap</div>
+              <div class="signal-timing">Structural · current stage</div>
+              <div class="signal-desc">A CFO managing financial controls at a company without dedicated COO-level ops oversight means P&L discipline is being applied after the fact, not upstream. Cullen's background in operational finance makes him the right person to have a COO conversation with, specifically because he understands the cost of ops gaps before they show up in the numbers.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing <span class="card-section-subtitle">Configured for Christine's Practice</span></div>
+          <div class="intel-grid">
+            <div class="intel-cell">
+              <div class="intel-cell-label">Leadership Movement</div>
+              <div class="intel-cell-value">No leadership movement detected in last 90 days</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Capital Activity</div>
+              <div class="intel-cell-value">No public funding activity in last 90 days</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Hiring Signals</div>
+              <div class="intel-cell-value">All-department headcount growth active · broad expansion signal</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Expansion Signals</div>
+              <div class="intel-cell-value">New office signal within last 30 days · geographic or capacity expansion</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Growth Trajectory</div>
+              <div class="intel-cell-value">Lifestyle retail + media hybrid · $10M-$25M · scaling headcount across functions</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Work Email</div>
+                <div class="contact-value">cullen@huckberry.com</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('cullen@huckberry.com', this)">Copy</button>
+            </div>
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Mobile</div>
+                <div class="contact-value">+1 (415) 845-5454</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('+14158455454', this)">Copy</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div class="why-block">
+              <div class="why-block-title">ICP Fit for Christine</div>
+              <div class="why-block-text">Cullen is a CFO at a founder-led lifestyle brand in the midst of all-department expansion. A CFO managing financial controls without a COO counterpart is absorbing operational oversight that isn't their primary function. Christine's experience identifying vendor overhead, margin leakage, and ops accountability gaps translates directly to what Cullen is managing. He is the right internal champion for a COO engagement conversation.</div>
+              <div class="fit-signal">
+                <div class="fit-signal-label">Strongest Fit Signal</div>
+                All-department headcount scaling at a founder-led retail brand with no COO-level ops ownership. The CFO is currently the accountability backstop.
+              </div>
+            </div>
+            <div class="why-block">
+              <div class="why-block-title">Why They're Looking</div>
+              <div class="why-block-text">A CFO with M&A and operational finance experience understands the risk model for what happens when ops infrastructure doesn't scale with headcount. Cullen has seen this pattern from the financial side. The conversation with Christine doesn't need to start with "here's what I do" — it can start with what the P&L tells him is happening right now. That's the entry point where this conversation gets substantive quickly.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal <span class="card-section-subtitle">2 Channels Ready</span></div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="conn-note-4">
+              Saw Huckberry is scaling across all departments right now. A lifestyle brand at your stage with broad headcount growth and no COO layer is a pattern I know well from the inside. Would be good to connect and compare notes.
+              <div class="char-count">233 characters · LinkedIn limit: 300</div>
+            </div>
+            <button class="copy-action-btn" onclick="copyElementText('conn-note-4', this)">Copy Connection Note</button>
+          </div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Email Draft · Ready to Send</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject Line</div>
+              <div class="email-subject-value" id="email-subj-4">Huckberry's current scaling phase</div>
+              <div class="email-body" id="email-body-4">Cullen,
+
+Noticed Huckberry is in an all-department growth phase right now. At $10M-$25M with a media-retail hybrid model, that kind of broad headcount expansion usually surfaces vendor overhead and process gaps faster than the P&L can absorb them quietly.
+
+Your background in operational finance means you already see where those gaps tend to show up. I come in at exactly this stage for founder-led consumer brands to build the ops infrastructure that keeps margin intact through a scaling cycle.
+
+Would a brief call be worth 15 minutes to compare what you're seeing internally?
+
+Christine Whitehead
+CDW Advisors · cdw-advisors.com</div>
+              <div class="email-meta">
+                <span class="email-word-count">124 words · safe for cold send</span>
+                <span class="email-safe-label">Ready to Send</span>
+                <button class="email-copy-btn" onclick="copyFullEmail('email-subj-4','email-body-4',this)">Copy Full Email</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="touch-block">
+            <div class="touch-label">Day 0 · Connection Request</div>
+            <div class="touch-message">Saw Huckberry is scaling across all departments right now. A lifestyle brand at your stage with broad headcount growth and no COO layer is a pattern I know well from the inside. Would be good to connect and compare notes.</div>
+            <button class="copy-action-btn" onclick="copyToClipboard('Saw Huckberry is scaling across all departments right now. A lifestyle brand at your stage with broad headcount growth and no COO layer is a pattern I know well from the inside. Would be good to connect and compare notes.', this)">Copy Touch 1</button>
+          </div>
+          <div class="touch-collapsed-indicator">· · · 4 additional touches included in full delivery</div>
+        </div>
+
+        <div class="card-footer">
+          <a class="linkedin-btn" href="https://linkedin.com/in/ACoAAAAHStMBdQlH9JG47EZKv9AiI84JEWq-96U" target="_blank" title="LinkedIn profile · may require login">View on LinkedIn</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- LEAD CARD 5: Bharath Patil · Cradlewise -->
+    <div class="lead-card" id="card-5">
+      <div class="card-header" onclick="toggleCard('card-5')">
+        <span class="signal-badge hot">HOT</span>
+        <div class="card-header-info">
+          <div class="lead-name">Bharath Patil</div>
+          <div class="lead-company">Chief Technology Officer · Cradlewise</div>
+          <div class="why-now-line">Ops hiring surge active · consumer tech company scaling delivery</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit: YES</span>
+        <span class="expand-icon">&#9662;</span>
+      </div>
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item"><a href="https://cradlewise.com" target="_blank">cradlewise.com</a></span>
+          <span class="identity-sep">·</span>
+          <span class="identity-item">San Jose, CA · United States</span>
+          <span class="identity-sep">·</span>
+          <span class="identity-item">51-200 employees</span>
+          <span class="identity-sep">·</span>
+          <span class="identity-item">$10M-$25M revenue</span>
+          <span class="identity-sep">·</span>
+          <span class="identity-item">Consumer Tech / Smart Home</span>
+        </div>
+        <div class="tag-row">
+          <span class="tag industry">Consumer Tech</span>
+          <span class="tag industry">Hardware + Software</span>
+          <span class="tag signal">Ops Hiring Active</span>
+          <span class="tag context">PE-Relevant · Pre-Scale</span>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Active Market Signals</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Operations Department Hiring</div>
+              <div class="signal-timing">Active · within last 30 days</div>
+              <div class="signal-desc">Cradlewise is actively building its ops function as it scales a hardware-software consumer product. For a company shipping physical products with AI-driven firmware, supply chain coordination, manufacturing relationships, and customer fulfillment are all ops-heavy functions that require dedicated leadership, not engineering bandwidth.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">Cross-Functional Scaling Pressure</div>
+              <div class="signal-timing">Structural · current stage</div>
+              <div class="signal-desc">A CTO managing both technical execution and operational coordination at a hardware company in the $10M-$25M range is absorbing two full-time leadership functions simultaneously. Christine's pattern recognition on where cross-functional accountability breaks down in scaling companies applies directly here.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing <span class="card-section-subtitle">Configured for Christine's Practice</span></div>
+          <div class="intel-grid">
+            <div class="intel-cell">
+              <div class="intel-cell-label">Leadership Movement</div>
+              <div class="intel-cell-value">No leadership movement detected in last 90 days</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Capital Activity</div>
+              <div class="intel-cell-value">No public funding activity in last 90 days</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Hiring Signals</div>
+              <div class="intel-cell-value">Active ops department hiring · supply chain and delivery function build</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Expansion Signals</div>
+              <div class="intel-cell-value">Product scaling into new markets · consumer hardware delivery complexity</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Growth Trajectory</div>
+              <div class="intel-cell-value">$10M-$25M revenue · AI consumer hardware · scaling ops and supply chain</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Work Email</div>
+                <div class="contact-value">bharath@cradlewise.com</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('bharath@cradlewise.com', this)">Copy</button>
+            </div>
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Mobile</div>
+                <div class="contact-value">+1 (888) 717-2735</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('+18887172735', this)">Copy</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div class="why-block">
+              <div class="why-block-title">ICP Fit for Christine</div>
+              <div class="why-block-text">Bharath is a CTO at a consumer hardware company actively building its ops layer during a critical delivery scaling phase. Cradlewise ships AI-driven physical products, which means supply chain, vendor management, fulfillment, and customer experience all converge in the ops function. This is exactly the profile Christine's diagnostic and P&L work is built for: a company growing fast enough to need dedicated ops leadership, without one in place yet.</div>
+              <div class="fit-signal">
+                <div class="fit-signal-label">Strongest Fit Signal</div>
+                Active ops hiring at a consumer hardware company with no named COO. The CTO is currently absorbing what should be a separate function.
+              </div>
+            </div>
+            <div class="why-block">
+              <div class="why-block-title">Why They're Looking</div>
+              <div class="why-block-text">A CTO at a hardware-software company scaling delivery is managing firmware, supply chain, manufacturing partners, and customer fulfillment simultaneously. The operational debt that accumulates when a technical leader absorbs ops shows up in vendor relationships, inventory control, and fulfillment friction, all of which Christine identified and resolved at PeriSciences in the first five months. Bharath is smart enough to know what that gap costs; the question is whether he's named it yet.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal <span class="card-section-subtitle">2 Channels Ready</span></div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="conn-note-5">
+              Noticed Cradlewise is building out ops as you scale the hardware delivery model. A CTO managing both technical and operational execution at this stage is a pattern I know well. Work with companies at this inflection point specifically. Good to connect.
+              <div class="char-count">257 characters · LinkedIn limit: 300</div>
+            </div>
+            <button class="copy-action-btn" onclick="copyElementText('conn-note-5', this)">Copy Connection Note</button>
+          </div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Email Draft · Ready to Send</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject Line</div>
+              <div class="email-subject-value" id="email-subj-5">Cradlewise ops build</div>
+              <div class="email-body" id="email-body-5">Bharath,
+
+Noticed Cradlewise is actively building out its operations function as you scale the hardware delivery model. A consumer hardware company at $10M-$25M with supply chain, manufacturing relationships, and fulfillment all scaling simultaneously is carrying a significant ops coordination burden without a dedicated owner.
+
+I work with founder-led and CTO-led companies at this exact stage as a fractional COO, specifically to build the ops infrastructure that holds delivery quality and margin discipline as the product scales. The work I did at a similar stage for another consumer brand identified over $200K in vendor and operational savings in the first five months.
+
+Would a 20-minute call be worth exploring?
+
+Christine Whitehead
+CDW Advisors · cdw-advisors.com</div>
+              <div class="email-meta">
+                <span class="email-word-count">139 words · safe for cold send</span>
+                <span class="email-safe-label">Ready to Send</span>
+                <button class="email-copy-btn" onclick="copyFullEmail('email-subj-5','email-body-5',this)">Copy Full Email</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="touch-block">
+            <div class="touch-label">Day 0 · Connection Request</div>
+            <div class="touch-message">Noticed Cradlewise is building out ops as you scale the hardware delivery model. A CTO managing both technical and operational execution at this stage is a pattern I know well. Work with companies at this inflection point specifically. Good to connect.</div>
+            <button class="copy-action-btn" onclick="copyToClipboard('Noticed Cradlewise is building out ops as you scale the hardware delivery model. A CTO managing both technical and operational execution at this stage is a pattern I know well. Work with companies at this inflection point specifically. Good to connect.', this)">Copy Touch 1</button>
+          </div>
+          <div class="touch-collapsed-indicator">· · · 4 additional touches included in full delivery</div>
+        </div>
+
+        <div class="card-footer">
+          <a class="linkedin-btn" href="https://linkedin.com/in/ACoAAAHBjWUBglTUEQW5mpBRO7NhYXLKeU3wm4c" target="_blank" title="LinkedIn profile · may require login">View on LinkedIn</a>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Pipeline math -->
+    <div class="pipeline-math">
+      <div class="pipeline-math-text">
+        <strong>5 leads</strong> is one week of the full system. The full system delivers <strong>40 ICP-matched buyers per month</strong>, each carrying an active ops signal, direct contact details, and ready-to-send outreach. Deduplicated globally across every delivery.
+      </div>
+    </div>
+
+    <!-- Visuals section -->
+    <div class="visuals-section">
+      <div class="visuals-header">
+        <div class="visuals-copy">
+          <h3>Content that reaches buyers you haven't connected with yet.</h3>
+          <p>Most fractional COOs post content that their peers engage with. Peer engagement doesn't produce buyer conversations. The posts in the Content Engine tab are written in your voice, mapped to the pain points your buyers are experiencing right now, and designed to produce LEAD comments from the founders and CEOs who need what you do.</p>
+          <p>Every Monday package includes 3 posts ready to schedule. Over a month:</p>
+          <ul class="visuals-list">
+            <li><span class="visuals-list-dot">+</span> 12 LinkedIn posts in your voice</li>
+            <li><span class="visuals-list-dot">+</span> 2 long-form articles</li>
+            <li><span class="visuals-list-dot">+</span> 2 carousels with finished slide visuals</li>
+            <li><span class="visuals-list-dot">+</span> 2 standalone infographics</li>
+          </ul>
+        </div>
+        <div class="visuals-tiles">
+          <div class="visual-tile carousel">
+            <div class="visual-tile-inner">
+              <div class="tile-accent-bar"></div>
+              <div class="tile-lines">
+                <div class="tile-line full"></div>
+                <div class="tile-line medium"></div>
+                <div class="tile-line short"></div>
+              </div>
+            </div>
+            <div class="tile-label">Carousel</div>
+          </div>
+          <div class="visual-tile post">
+            <div class="visual-tile-inner">
+              <div class="tile-accent-bar"></div>
+              <div class="tile-lines">
+                <div class="tile-line medium"></div>
+                <div class="tile-line full"></div>
+                <div class="tile-line short"></div>
+              </div>
+            </div>
+            <div class="tile-label">Post Visual</div>
+          </div>
+          <div class="visual-tile infographic">
+            <div class="visual-tile-inner">
+              <div class="tile-accent-bar"></div>
+              <div class="tile-lines">
+                <div class="tile-line full"></div>
+                <div class="tile-line short"></div>
+                <div class="tile-line medium"></div>
+              </div>
+            </div>
+            <div class="tile-label">Infographic</div>
+          </div>
+        </div>
+      </div>
+      <div class="visuals-note">
+        <strong>Visuals are finished and attached in the Monday package.</strong><br>
+        You schedule from your own account. Nothing to design. Nothing to brief.
+      </div>
+    </div>
+
+    <!-- CTA footer -->
+    <div class="cta-footer">
+      <div class="cta-footer-headline">This is what one week of the full system looks like for Christine.</div>
+      <div class="cta-footer-subhead">
+        Every Monday: 10 ICP-matched buyers with full signal intelligence, direct contact details, and outreach ready to send. Plus 3 posts and finished visuals in your voice. 30 minutes of your time per week.
+      </div>
+      <a class="cta-footer-btn" href="https://calendly.com/saurabh_zentro/30-min" target="_blank">Book Your 20-Min Fit Call →</a>
+      <div class="cta-footer-note">No pitch. No deck. We talk through your specific situation and confirm whether this is the right fit.</div>
+    </div>
+
+  </div><!-- end pipeline view -->
+
+
+  <!-- CONTENT ENGINE VIEW -->
+  <div class="view" id="view-content">
+
+    <!-- Welcome banner -->
+    <div class="welcome-banner">
+      <div class="welcome-tag">Content Engine · Sample Posts in Christine's Voice</div>
+      <div class="welcome-text">
+        Two sample posts written in your register, for your ICP, designed to produce <strong>buyer conversations, not peer engagement</strong>. The teaching post demonstrates your diagnostic methodology. The handraiser post is designed to drive LEAD comments from founders and CEOs who are experiencing the problem you solve.
+      </div>
+    </div>
+
+    <!-- Post cards grid -->
+    <div class="post-cards-grid">
+      <div class="post-card">
+        <div class="post-type-label">Teaching Post</div>
+        <div class="post-type-desc">Demonstrates Christine's diagnostic methodology. Peer-level, declarative, no closing question. Written for the founder audience, not the consultant community.</div>
+        <div class="post-text">Hiring more people won't fix a broken process.
+
+It will execute that process faster, at higher volume, and with more confidence than any human team would.
+
+Most founders know this. They still do it.
+
+The logic isn't irrational. More hands means more output. More output means more revenue. The math seems right until the coordination cost shows up three months later.
+
+Here is what actually happens.
+
+A team member in a role that didn't have a clear accountability structure before they arrived invents one. It works for them. It doesn't work for the person next to them. Nobody is wrong. The process just isn't designed.
+
+Add another hire. The invented structure scales. Now you have two people doing the same thing differently and a manager spending their time translating between them.
+
+The process problem didn't get solved. It got staffed.
+
+Before the next hire, ask three questions.
+
+Is the process sound?
+Is the accountability structure clear?
+Is the role equipped to handle what it actually requires?
+
+If any answer is no, you are not solving the problem. You are funding it.
+
+Comment LEAD and I will send you five buyer profiles from your ICP, each with an active ops signal from the last 90 days.</div>
+        <div class="post-cta-line">CTA: Comment LEAD → 5 ICP-matched buyer profiles</div>
+      </div>
+
+      <div class="post-card">
+        <div class="post-type-label">Handraiser Post</div>
+        <div class="post-type-desc">Designed to drive LEAD comments from founders and CEOs who recognize the pattern. No pitch. No mention of fractional services. The problem statement does the qualifying.</div>
+        <div class="post-text">A founder handed me the P&L on day one and said: take a look.
+
+Not a summary. Not a presentation. The actual P&L.
+
+What I found in the first few weeks: three vendors billing for the same function, none aware of each other. An accounting firm charging three times market rate. A team member running personal expenses through the company card, small amounts, daily, for over a year. A supplier relationship nobody wanted to challenge while out-of-stocks mounted and reviews declined.
+
+The CEO was not hiding any of it.
+
+He had stopped reading behind the line items.
+
+That is the real problem. Not the vendors. Not the expenses. Not the supplier. The problem is that a busy P&L stops telling you what is actually happening unless someone is specifically looking for it.
+
+The next five months: over $200K in vendor savings and a $20K inventory correction.
+
+Two years later, that same P&L went through full acquisition diligence. Clean.
+
+PE firms do not find the problems. They confirm what was already there.
+
+The question is whether you found it first.
+
+If you are preparing for a raise or exit and you are not sure what is sitting in your P&L right now, comment LEAD. I will show you what five companies in your situation look like from the outside.</div>
+        <div class="post-cta-line">CTA: Comment LEAD → personalized buyer signal report</div>
+      </div>
+    </div>
+
+    <!-- Visuals section - Content Engine version -->
+    <div class="visuals-section">
+      <div class="visuals-header">
+        <div class="visuals-copy">
+          <h3>Content without visuals is half a system.</h3>
+          <p>Most consultants post text. The ones building consistent inbound post text with structure behind it. A carousel that breaks down a framework visually gets saved. A quote graphic gets shared. An infographic gets screenshotted. Saves, shares, and screenshots reach buyers who never followed you. That is organic reach you do not have to pay for.</p>
+          <p>The full system produces the visuals. You attach and schedule.</p>
+          <ul class="visuals-list">
+            <li><span class="visuals-list-dot">+</span> 2 carousels per month with finished slide visuals</li>
+            <li><span class="visuals-list-dot">+</span> 2 standalone infographics per month</li>
+            <li><span class="visuals-list-dot">+</span> Post graphics for any text post that benefits from one</li>
+            <li><span class="visuals-list-dot">+</span> All delivered as finished PNG files in the Monday package</li>
+          </ul>
+        </div>
+        <div class="visuals-tiles">
+          <div class="visual-tile carousel">
+            <div class="visual-tile-inner">
+              <div class="tile-accent-bar"></div>
+              <div class="tile-lines">
+                <div class="tile-line full"></div>
+                <div class="tile-line medium"></div>
+                <div class="tile-line short"></div>
+              </div>
+            </div>
+            <div class="tile-label">Carousel</div>
+          </div>
+          <div class="visual-tile post">
+            <div class="visual-tile-inner">
+              <div class="tile-accent-bar"></div>
+              <div class="tile-lines">
+                <div class="tile-line medium"></div>
+                <div class="tile-line full"></div>
+                <div class="tile-line short"></div>
+              </div>
+            </div>
+            <div class="tile-label">Post Visual</div>
+          </div>
+          <div class="visual-tile infographic">
+            <div class="visual-tile-inner">
+              <div class="tile-accent-bar"></div>
+              <div class="tile-lines">
+                <div class="tile-line full"></div>
+                <div class="tile-line short"></div>
+                <div class="tile-line medium"></div>
+              </div>
+            </div>
+            <div class="tile-label">Infographic</div>
+          </div>
+        </div>
+      </div>
+      <div class="visuals-note">
+        <strong>18 content pieces per month. Finished. Attached. Ready to schedule.</strong><br>
+        You schedule from your own account. Zero design work on your end.
+      </div>
+    </div>
+
+    <!-- CTA footer -->
+    <div class="cta-footer">
+      <div class="cta-footer-headline">This is what one week of the full system looks like for Christine.</div>
+      <div class="cta-footer-subhead">
+        Every Monday: 10 ICP-matched buyers with full signal intelligence, direct contact details, and outreach ready to send. Plus 3 posts and finished visuals in your voice. 30 minutes of your time per week.
+      </div>
+      <a class="cta-footer-btn" href="https://calendly.com/saurabh_zentro/30-min" target="_blank">Book Your 20-Min Fit Call →</a>
+      <div class="cta-footer-note">No pitch. No deck. We talk through your specific situation and confirm whether this is the right fit.</div>
+    </div>
+
+  </div><!-- end content view -->
+
+</main>
+
+<script>
+function showView(name, triggerEl) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view-' + name).classList.add('active');
+
+  document.querySelectorAll('.nav-item, .tab-btn, .mobile-tab-pill').forEach(el => el.classList.remove('active'));
+
+  const navEl = document.getElementById('nav-' + name);
+  if (navEl) navEl.classList.add('active');
+
+  document.querySelectorAll('.tab-btn, .mobile-tab-pill').forEach(btn => {
+    if (btn.getAttribute('onclick') && btn.getAttribute('onclick').includes("'" + name + "'")) {
+      btn.classList.add('active');
+    }
+  });
+}
+
+function toggleCard(cardId) {
+  document.getElementById(cardId).classList.toggle('expanded');
+}
+
+function copyToClipboard(text, btn) {
+  navigator.clipboard.writeText(text).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = 'Copied.';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 2000);
+  }).catch(() => {
+    const el = document.createElement('textarea');
+    el.value = text;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+    btn.textContent = 'Copied.'; btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+function copyElementText(elementId, btn) {
+  const el = document.getElementById(elementId);
+  if (!el) return;
+  const charCountEl = el.querySelector('.char-count');
+  let text = el.textContent;
+  if (charCountEl) text = text.replace(charCountEl.textContent, '').trim();
+  copyToClipboard(text, btn);
+}
+
+function copyFullEmail(subjId, bodyId, btn) {
+  const subj = document.getElementById(subjId);
+  const body = document.getElementById(bodyId);
+  const text = 'Subject: ' + (subj ? subj.textContent.trim() : '') + '\n\n' + (body ? body.textContent.trim() : '');
+  copyToClipboard(text, btn);
+}
+</script>
+
+</body>
+</html>
