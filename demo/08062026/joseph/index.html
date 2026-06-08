@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Joseph S. · Lead Demo · Pipelind</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{background:#0A0A12;color:rgba(255,255,255,0.90);font-family:'Plus Jakarta Sans',sans-serif;min-height:100vh;}
+:root{
+  --bg:#0A0A12;--bg2:#12121E;--bg3:#0E0E19;
+  --primary:#6A66A3;--primary-light:#9B98C4;
+  --accent:#FF9900;--success:#019047;--success-light:#5AC88A;
+  --text:rgba(255,255,255,0.90);--text-dim:rgba(255,255,255,0.72);--text-muted:rgba(255,255,255,0.55);
+  --border:rgba(106,102,163,0.25);--border-hover:rgba(106,102,163,0.55);
+  --hot:#FF4444;--warm:#FF9900;
+}
+.sidebar{position:fixed;top:0;left:0;width:240px;height:100vh;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:24px 20px;z-index:100;}
+.sidebar-logo{font-family:'Space Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--primary-light);margin-bottom:28px;}
+.prospect-block{margin-bottom:32px;}
+.prospect-label{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px;}
+.prospect-name{font-size:17px;font-weight:800;color:var(--text);line-height:1.25;}
+.prospect-meta{font-family:'Space Mono',monospace;font-size:10px;color:var(--text-muted);letter-spacing:.06em;margin-top:4px;}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;cursor:pointer;margin-bottom:4px;font-size:13px;font-weight:600;color:var(--text-dim);transition:all .15s;border:1px solid transparent;}
+.nav-item:hover{background:rgba(106,102,163,0.10);color:var(--text);}
+.nav-item.active{background:rgba(106,102,163,0.15);color:var(--primary-light);border-color:var(--border);}
+.sidebar-footer{margin-top:auto;font-family:'Space Mono',monospace;font-size:10px;color:var(--text-muted);letter-spacing:.04em;line-height:1.8;}
+.mobile-topbar{display:none;position:sticky;top:0;z-index:200;background:var(--bg2);border-bottom:1px solid var(--border);padding:14px 16px;align-items:center;justify-content:space-between;}
+.mobile-logo{font-family:'Space Mono',monospace;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--primary-light);}
+.mobile-prospect-name{font-size:13px;font-weight:700;color:var(--text);}
+.mobile-tabs{display:none;position:sticky;top:53px;z-index:199;background:var(--bg);border-bottom:1px solid var(--border);padding:10px 16px;gap:8px;}
+.mobile-tab-pill{padding:7px 16px;border-radius:20px;font-size:12px;font-weight:700;font-family:'Space Mono',monospace;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;border:1px solid var(--border);color:var(--text-muted);background:transparent;transition:all .15s;}
+.mobile-tab-pill.active{background:var(--primary);color:#fff;border-color:var(--primary);}
+.main{margin-left:240px;padding:32px 36px;max-width:1140px;}
+.tab-bar{position:sticky;top:0;z-index:50;background:var(--bg);border-bottom:1px solid var(--border);display:flex;margin:-32px -36px 32px;padding:0 36px;}
+.tab-btn{padding:14px 22px;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--text-muted);cursor:pointer;border:none;background:transparent;border-bottom:2px solid transparent;transition:all .15s;}
+.tab-btn.active{color:var(--primary-light);border-bottom-color:var(--primary);}
+.welcome-banner{background:linear-gradient(135deg,rgba(106,102,163,0.10) 0%,rgba(255,153,0,0.05) 100%);border:1px solid var(--border);border-radius:12px;padding:24px 28px;margin-bottom:28px;}
+.welcome-tag{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;}
+.welcome-text{font-size:14px;line-height:1.75;color:var(--text-dim);}
+.welcome-text strong{color:var(--text);font-weight:700;}
+.pulse-panel{border-left:3px solid #FF9900;background:rgba(255,153,0,0.06);border-radius:0 10px 10px 0;padding:18px 22px;margin-bottom:28px;}
+.pulse-label{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#FF9900;margin-bottom:10px;}
+.pulse-text{font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;color:rgba(255,255,255,0.90);line-height:1.7;}
+.icp-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:32px;}
+.icp-panel{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:22px 24px;}
+.panel-title{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:16px;}
+.icp-item{display:flex;justify-content:space-between;align-items:flex-start;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05);font-size:13px;}
+.icp-item:last-child{border-bottom:none;}
+.icp-label{color:var(--text-muted);font-size:12px;}
+.icp-value{color:var(--text);font-weight:600;text-align:right;max-width:60%;}
+.quality-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.quality-metric{background:rgba(106,102,163,0.08);border:1px solid var(--border);border-radius:8px;padding:14px 16px;text-align:center;}
+.quality-num{font-size:24px;font-weight:800;color:var(--primary-light);}
+.quality-label{font-family:'Space Mono',monospace;font-size:10px;color:var(--text-muted);letter-spacing:.06em;text-transform:uppercase;margin-top:4px;}
+.quality-note{font-size:12px;color:var(--text-muted);line-height:1.6;margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.05);}
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.section-title{font-size:13px;font-weight:700;color:var(--text);font-family:'Space Mono',monospace;letter-spacing:.06em;text-transform:uppercase;}
+.section-count{font-family:'Space Mono',monospace;font-size:11px;color:var(--text-muted);letter-spacing:.06em;}
+.lead-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;margin-bottom:20px;overflow:hidden;transition:border-color .15s;}
+.lead-card:hover{border-color:var(--border-hover);}
+.card-header{padding:18px 22px;cursor:pointer;display:flex;align-items:center;gap:14px;}
+.signal-badge{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:4px 10px;border-radius:20px;white-space:nowrap;flex-shrink:0;}
+.signal-badge.hot{background:rgba(255,68,68,0.15);color:var(--hot);border:1px solid rgba(255,68,68,0.30);}
+.signal-badge.warm{background:rgba(255,153,0,0.12);color:var(--warm);border:1px solid rgba(255,153,0,0.25);}
+.card-header-info{flex:1;min-width:0;}
+.lead-name{font-size:17px;font-weight:800;color:var(--text);line-height:1.2;}
+.lead-company{font-size:13px;color:var(--text-dim);margin-top:2px;}
+.why-now-line{font-size:12px;color:var(--accent);margin-top:5px;font-weight:600;}
+.expand-icon{color:var(--text-muted);font-size:18px;flex-shrink:0;transition:transform .2s;}
+.lead-card.expanded .expand-icon{transform:rotate(180deg);}
+.icp-fit-badge{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.10em;padding:4px 10px;border-radius:20px;background:rgba(1,144,71,0.15);color:var(--success-light);border:1px solid rgba(1,144,71,0.30);white-space:nowrap;flex-shrink:0;}
+.card-body{display:none;border-top:1px solid var(--border);}
+.lead-card.expanded .card-body{display:block;}
+.identity-strip{display:flex;flex-wrap:wrap;gap:12px;padding:14px 22px;background:var(--bg3);border-bottom:1px solid var(--border);font-family:'Space Mono',monospace;font-size:11px;color:var(--text-muted);letter-spacing:.04em;}
+.identity-item a{color:var(--primary-light);text-decoration:none;}
+.identity-item a:hover{color:var(--text);}
+.tag-row{display:flex;flex-wrap:wrap;gap:6px;padding:12px 22px;border-bottom:1px solid var(--border);}
+.tag{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:4px;}
+.tag.industry{background:rgba(106,102,163,0.15);color:var(--primary-light);}
+.tag.signal{background:rgba(255,153,0,0.12);color:var(--warm);}
+.tag.context{background:rgba(1,144,71,0.12);color:var(--success-light);}
+.card-section{padding:20px 22px;border-bottom:1px solid var(--border);}
+.card-section:last-child{border-bottom:none;}
+.card-section-title{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:14px;}
+.card-section-subtitle{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.08em;color:rgba(255,255,255,0.35);text-transform:uppercase;margin-left:8px;}
+.signal-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.signal-card{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:14px 16px;}
+.signal-type{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--accent);margin-bottom:5px;}
+.signal-timing{font-size:12px;font-weight:700;color:var(--text);margin-bottom:6px;}
+.signal-desc{font-size:12px;color:var(--text-dim);line-height:1.6;}
+.intel-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;}
+.intel-cell{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px 14px;}
+.intel-cell-label{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--text-muted);margin-bottom:7px;}
+.intel-cell-value{font-size:12px;color:var(--text-dim);line-height:1.5;}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.contact-item{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.contact-label{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--text-muted);margin-bottom:4px;}
+.contact-value{font-size:13px;font-weight:600;color:var(--text);word-break:break-all;}
+.contact-value.unavailable{color:var(--text-muted);font-weight:400;font-style:italic;}
+.copy-btn{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:5px 10px;border-radius:5px;border:1px solid var(--border);background:transparent;color:var(--text-muted);cursor:pointer;white-space:nowrap;flex-shrink:0;transition:all .15s;}
+.copy-btn:hover{border-color:var(--primary);color:var(--primary-light);}
+.copy-btn.copied{color:var(--success-light);border-color:var(--success);}
+.why-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.why-block-title{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px;}
+.why-block-text{font-size:13px;color:var(--text-dim);line-height:1.75;}
+.fit-signal{background:rgba(1,144,71,0.10);border:1px solid rgba(1,144,71,0.25);border-radius:6px;padding:8px 12px;margin-top:10px;font-size:12px;color:var(--success-light);font-weight:600;}
+.fit-signal-label{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--success);margin-bottom:3px;}
+.outreach-channel{margin-bottom:18px;}
+.outreach-channel:last-child{margin-bottom:0;}
+.outreach-channel-label{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--primary-light);margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+.connection-note{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:14px 16px;font-size:13px;color:var(--text-dim);line-height:1.7;font-style:italic;}
+.char-count{font-family:'Space Mono',monospace;font-size:9px;color:var(--text-muted);letter-spacing:.04em;margin-top:8px;}
+.email-block{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:16px 18px;}
+.email-subject-label{font-family:'Space Mono',monospace;font-size:9px;color:var(--text-muted);letter-spacing:.06em;margin-bottom:4px;}
+.email-subject-value{font-size:13px;font-weight:700;color:var(--text);margin-bottom:12px;}
+.email-body{font-size:13px;color:var(--text-dim);line-height:1.85;white-space:pre-line;}
+.email-meta{display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.06);}
+.email-word-count{font-family:'Space Mono',monospace;font-size:9px;color:var(--text-muted);letter-spacing:.04em;}
+.email-safe-label{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--success-light);}
+.copy-action-btn{display:inline-flex;align-items:center;gap:6px;margin-top:10px;font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;padding:7px 14px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--text-muted);cursor:pointer;transition:all .15s;}
+.copy-action-btn:hover{border-color:var(--primary);color:var(--primary-light);}
+.copy-action-btn.copied{color:var(--success-light);border-color:var(--success);}
+.intel-callout{background:rgba(255,153,0,0.07);border:1px solid rgba(255,153,0,0.25);border-radius:8px;padding:13px 16px;font-size:12px;color:var(--text-dim);line-height:1.65;}
+.intel-callout-label{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:5px;}
+.touch-section-header{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#FF9900;margin-bottom:14px;}
+.touch-block{padding:14px 0;border-bottom:1px solid rgba(106,102,163,0.20);}
+.touch-block:last-child{border-bottom:none;}
+.touch-day-label{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0.10em;text-transform:uppercase;color:#FF9900;margin-bottom:3px;}
+.touch-type-label{font-size:11px;color:rgba(255,255,255,0.55);margin-bottom:8px;}
+.touch-message{font-size:14px;color:rgba(255,255,255,0.90);line-height:1.65;margin-bottom:10px;}
+.touch-collapsed-indicator{font-size:12px;color:rgba(255,255,255,0.45);font-style:italic;padding:10px 0;}
+.card-footer{padding:12px 22px;background:var(--bg3);border-top:1px solid var(--border);display:flex;justify-content:flex-end;}
+.linkedin-btn{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:8px 16px;border-radius:6px;border:1px solid var(--border);color:var(--primary-light);text-decoration:none;transition:all .15s;}
+.linkedin-btn:hover{border-color:var(--primary);background:rgba(106,102,163,0.10);}
+.pipeline-math{background:rgba(106,102,163,0.06);border:1px solid var(--border);border-radius:12px;padding:22px 28px;margin:28px 0;text-align:center;}
+.pipeline-math-text{font-size:15px;color:var(--text-dim);line-height:1.8;}
+.pipeline-math-text strong{color:var(--primary-light);font-weight:700;}
+.visuals-section{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:28px 32px;margin:28px 0;}
+.visuals-header{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-bottom:24px;}
+.visuals-copy h3{font-size:18px;font-weight:800;color:var(--text);line-height:1.3;margin-bottom:12px;}
+.visuals-copy p{font-size:13px;color:var(--text-dim);line-height:1.75;margin-bottom:10px;}
+.visuals-list{list-style:none;margin-top:14px;}
+.visuals-list li{font-size:13px;color:var(--text-dim);padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.04);display:flex;gap:10px;}
+.visuals-list li:last-child{border-bottom:none;}
+.visuals-list-dot{color:var(--success-light);font-weight:700;flex-shrink:0;}
+.visuals-tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.visual-tile{border-radius:10px;overflow:hidden;}
+.visual-tile-inner{aspect-ratio:4/3;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px;}
+.visual-tile.carousel{background:linear-gradient(135deg,#1B2A4A 0%,#243655 100%);border:1px solid rgba(240,165,0,0.20);}
+.visual-tile.post{background:linear-gradient(135deg,#1B2A4A 0%,#1D2D47 100%);border:1px solid rgba(240,165,0,0.15);}
+.visual-tile.infographic{background:linear-gradient(135deg,#162238 0%,#1B2A4A 100%);border:1px solid rgba(240,165,0,0.10);}
+.tile-accent-bar{width:36px;height:3px;background:#F0A500;border-radius:2px;margin-bottom:12px;}
+.tile-lines{width:100%;}
+.tile-line{height:7px;background:rgba(245,240,232,0.15);border-radius:3px;margin-bottom:6px;}
+.tile-line.short{width:60%;}
+.tile-line.medium{width:80%;}
+.tile-line.full{width:100%;}
+.tile-label{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);text-align:center;margin-top:10px;padding:6px;background:var(--bg3);}
+.visuals-note{font-size:13px;color:var(--text-dim);text-align:center;margin-top:18px;padding-top:18px;border-top:1px solid var(--border);line-height:1.7;}
+.visuals-note strong{color:var(--text);}
+.cta-footer{margin-top:36px;background:linear-gradient(135deg,rgba(255,153,0,0.08) 0%,rgba(106,102,163,0.06) 100%);border:1px solid rgba(255,153,0,0.30);border-radius:12px;padding:36px 40px;text-align:center;}
+.cta-footer-headline{font-size:22px;font-weight:800;color:var(--text);letter-spacing:-.01em;margin-bottom:14px;line-height:1.3;}
+.cta-footer-subhead{font-size:14px;color:var(--text-dim);line-height:1.8;max-width:680px;margin:0 auto 26px;}
+.cta-footer-btn{display:inline-block;background:var(--accent);color:var(--bg);padding:15px 34px;border-radius:8px;font-family:'Space Mono',monospace;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;text-decoration:none;transition:background .15s;margin-bottom:14px;}
+.cta-footer-btn:hover{background:#ffb340;}
+.cta-footer-note{font-family:'Space Mono',monospace;font-size:11px;color:var(--text-muted);letter-spacing:.04em;}
+.post-cards-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:28px;}
+.post-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:24px 26px;}
+.post-type-label{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--primary-light);margin-bottom:6px;}
+.post-type-desc{font-size:11px;color:var(--text-muted);margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--border);line-height:1.5;}
+.post-text{font-size:13px;color:var(--text-dim);line-height:1.85;white-space:pre-line;}
+.post-cta-line{margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.06);font-size:12px;color:var(--accent);font-weight:600;}
+.view{display:none;}
+.view.active{display:block;}
+@media(max-width:768px){
+  .sidebar{display:none;}
+  .mobile-topbar{display:flex;}
+  .mobile-tabs{display:flex;}
+  .main{margin-left:0;padding:16px;}
+  .tab-bar{display:none;}
+  .icp-grid{grid-template-columns:1fr;}
+  .signal-cards{grid-template-columns:1fr;}
+  .intel-grid{grid-template-columns:1fr 1fr;}
+  .contact-grid{grid-template-columns:1fr;}
+  .why-grid{grid-template-columns:1fr;}
+  .post-cards-grid{grid-template-columns:1fr;}
+  .visuals-header{grid-template-columns:1fr;}
+  .card-header{flex-wrap:wrap;gap:8px;}
+  .lead-name{font-size:15px;}
+  .cta-footer{padding:24px 20px;}
+  .cta-footer-btn{width:100%;text-align:center;display:block;}
+  .email-meta{flex-direction:column;align-items:flex-start;gap:8px;}
+}
+@media(max-width:480px){
+  .intel-grid{grid-template-columns:1fr;}
+  .visuals-tiles{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<div class="mobile-topbar">
+  <div class="mobile-logo">Pipelind</div>
+  <div class="mobile-prospect-name">Joseph's Report</div>
+</div>
+<div class="mobile-tabs">
+  <button class="mobile-tab-pill active" onclick="showView('pipeline',this)">Pipeline Engine</button>
+  <button class="mobile-tab-pill" onclick="showView('content',this)">Content Engine</button>
+</div>
+
+<nav class="sidebar">
+  <div class="sidebar-logo">Pipelind</div>
+  <div class="prospect-block">
+    <div class="prospect-label">Personalized For</div>
+    <div class="prospect-name">Joseph S.</div>
+    <div class="prospect-meta">June 2026 · Lead Demo</div>
+  </div>
+  <div class="nav-item active" id="nav-pipeline" onclick="showView('pipeline',this)">Pipeline Engine</div>
+  <div class="nav-item" id="nav-content" onclick="showView('content',this)">Content Engine</div>
+  <div class="sidebar-footer">Personalized build<br>Real signal data<br>Sample of full delivery</div>
+</nav>
+
+<main class="main">
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="showView('pipeline',this)">Pipeline Engine</button>
+    <button class="tab-btn" onclick="showView('content',this)">Content Engine</button>
+  </div>
+
+  <!-- PIPELINE ENGINE VIEW -->
+  <div class="view active" id="view-pipeline">
+
+    <div class="welcome-banner">
+      <div class="welcome-tag">Personalised for Joseph</div>
+      <div class="welcome-text">
+        <strong>Five investment firm leaders, each carrying an active signal from the last 90 days.</strong> These are founders, CFOs, and C-suite operators at private investment management companies, fintech platforms, and financial firms. Every card carries direct contact details, a ready-to-send connection note, a full email draft, and a 5-touch conversation sequence. This is one week of the full system.
+      </div>
+    </div>
+
+    <div class="pulse-panel">
+      <div class="pulse-label">MARKET INTELLIGENCE PULSE · WEEK OF JUNE 8, 2026</div>
+      <div class="pulse-text">This week's signal pool across investment management and fintech: finance department hiring surges at multiple private firms, merger and acquisition activity at wealth management platforms, and cost restructuring signals at firms in the $25M-$75M revenue range. The hiring pattern at finance-adjacent firms indicates leadership bandwidth gaps opening at the operator level, creating a direct window for senior financial advisory conversations. The governance and cost control framing lands directly on what these firms are navigating right now.</div>
+    </div>
+
+    <div class="icp-grid">
+      <div class="icp-panel">
+        <div class="panel-title">Target Buyer Profile</div>
+        <div class="icp-item"><span class="icp-label">Buyer Title</span><span class="icp-value">Founder, CEO, Co-Founder, President</span></div>
+        <div class="icp-item"><span class="icp-label">Firm Type</span><span class="icp-value">Private Investment Firms, Family Offices, Fintech Platforms</span></div>
+        <div class="icp-item"><span class="icp-label">Company Size</span><span class="icp-value">10-200 employees</span></div>
+        <div class="icp-item"><span class="icp-label">Geography</span><span class="icp-value">US, UK, Canada, Australia</span></div>
+        <div class="icp-item"><span class="icp-label">Revenue Range</span><span class="icp-value">$10M - $75M</span></div>
+        <div class="icp-item"><span class="icp-label">Active Signals</span><span class="icp-value">Finance hiring, M&A, cost restructuring</span></div>
+      </div>
+      <div class="icp-panel">
+        <div class="panel-title">Sample Quality</div>
+        <div class="quality-grid">
+          <div class="quality-metric"><div class="quality-num">5</div><div class="quality-label">ICP-Matched Leads</div></div>
+          <div class="quality-metric"><div class="quality-num">5</div><div class="quality-label">Active Signals</div></div>
+          <div class="quality-metric"><div class="quality-num">4</div><div class="quality-label">Direct Emails</div></div>
+          <div class="quality-metric"><div class="quality-num">3</div><div class="quality-label">Mobile Numbers</div></div>
+        </div>
+        <div class="quality-note">All leads flagged by active market signals in the last 90 days. Direct contact details included where available. Five leads like these delivered every week in the full system.</div>
+      </div>
+    </div>
+
+    <div class="section-header">
+      <span class="section-title">ICP-Matched Buyers</span>
+      <span class="section-count">5 of 40 monthly leads</span>
+    </div>
+
+    <!-- CARD 1: Graham Ward - Polen Capital -->
+    <div class="lead-card expanded" id="card-1">
+      <div class="card-header" onclick="toggleCard('card-1')">
+        <span class="signal-badge warm">WARM</span>
+        <div class="card-header-info">
+          <div class="lead-name">Graham Ward</div>
+          <div class="lead-company">Chief Financial Officer · Polen Capital</div>
+          <div class="why-now-line">10-year tenure anniversary at Polen Capital · January 2026 · active finance team hiring signal</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit: YES</span>
+        <span class="expand-icon">&#9662;</span>
+      </div>
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item"><a href="https://polencapital.com" target="_blank">polencapital.com</a></span>
+          <span class="identity-item">Boca Raton, FL</span>
+          <span class="identity-item">51-200 employees</span>
+          <span class="identity-item">Private Investment Manager</span>
+          <span class="identity-item">$25M-$75M revenue</span>
+        </div>
+        <div class="tag-row">
+          <span class="tag industry">Investment Management</span>
+          <span class="tag industry">Quality Growth Investing</span>
+          <span class="tag signal">Finance Hiring Signal</span>
+          <span class="tag context">30-Year Established Firm</span>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Active Market Signals</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Finance Department Hiring</div>
+              <div class="signal-timing">Active within last 90 days</div>
+              <div class="signal-desc">Polen Capital is actively expanding its finance team, indicating internal financial infrastructure investment. For firms managing concentrated, high-conviction portfolios at this scale, finance team expansion typically signals either AUM growth or internal reporting modernization.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">Senior Tenure Milestone</div>
+              <div class="signal-timing">January 2026 · 10-year mark</div>
+              <div class="signal-desc">Graham crossed a 10-year tenure milestone at Polen Capital in January, making this a natural moment for strategic conversations about financial architecture evolution. Long-tenured CFOs at established investment managers are often evaluating infrastructure gaps that accumulated over years of growth.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing <span class="card-section-subtitle">Configured for Joseph's Practice</span></div>
+          <div class="intel-grid">
+            <div class="intel-cell"><div class="intel-cell-label">Leadership Movement</div><div class="intel-cell-value">No CFO-level leadership change in last 90 days. Graham is the incumbent CFO, 10+ years.</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Capital Activity</div><div class="intel-cell-value">No public funding event. Privately held investment manager, AUM-driven revenue model.</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Hiring Signals</div><div class="intel-cell-value">Active finance department hiring in last 90 days. Team expansion underway.</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Expansion Signals</div><div class="intel-cell-value">No office expansion signals detected. Single primary Florida headquarters.</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Growth Trajectory</div><div class="intel-cell-value">30+ year track record. Quality growth and high yield focus. Concentrated active portfolios. $25M-$75M revenue range.</div></div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div><div class="contact-label">Work Email</div><div class="contact-value" id="email-val-1">gward@polencapital.com</div></div>
+              <button class="copy-btn" onclick="copyToClipboard('gward@polencapital.com',this)">Copy</button>
+            </div>
+            <div class="contact-item">
+              <div><div class="contact-label">Mobile</div><div class="contact-value" id="phone-val-1">+1 917 538 8933</div></div>
+              <button class="copy-btn" onclick="copyToClipboard('+19175388933',this)">Copy</button>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div class="why-block">
+              <div class="why-block-title">ICP Fit for Joseph</div>
+              <div class="why-block-text">Graham is the CFO of a $25M-$75M private investment manager with a 30-year track record. Polen Capital's finance hiring signal indicates the firm is building out its internal financial infrastructure, which aligns directly with Joseph's expertise in financial structuring, tax, compliance, and team building at multi-billion hedge funds and family offices. The scale and sophistication of the firm maps to the environments Joseph has operated in throughout his career.</div>
+              <div class="fit-signal">
+                <div class="fit-signal-label">Strongest Fit Signal</div>
+                Finance department expansion at a long-established investment manager with no recent CFO transition.
+              </div>
+            </div>
+            <div class="why-block">
+              <div class="why-block-title">Why They're Looking</div>
+              <div class="why-block-text">Polen Capital's active finance hiring suggests the current team is at capacity. At a firm managing concentrated portfolios with a 30-year track record, the complexity of reporting, compliance, and investor relations tends to compound faster than the internal team can absorb. Graham, as a 10-year incumbent CFO, is likely evaluating whether to build capacity internally or bring in experienced senior advisory support to accelerate specific workstreams without adding permanent headcount.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal <span class="card-section-subtitle">2 Channels Ready</span></div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="conn-note-1">Graham, noticed Polen Capital is building out the finance team. With 25+ years across hedge funds and family offices including Kensico and GMF, I've worked alongside teams navigating exactly this kind of infrastructure build. Worth connecting.
+              <div class="char-count">265 characters · LinkedIn limit: 300</div>
+            </div>
+            <button class="copy-action-btn" onclick="copyElementText('conn-note-1',this)">Copy Connection Note</button>
+          </div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Email Draft · Ready to Send</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject Line</div>
+              <div class="email-subject-value" id="email-subj-1">Polen Capital · Finance team expansion</div>
+              <div class="email-body" id="email-body-1">Hi Graham,
+
+Noticed Polen is actively building out the finance function. At a firm with a 30-year concentrated portfolio track record, that kind of team expansion usually signals either AUM growth or a deliberate push to modernize internal reporting architecture.
+
+I spent 25+ years across environments like Kensico Capital and GMF Management, specifically in financial structuring, compliance infrastructure, and tax planning at the family office and hedge fund level. The build-vs-advise question at firms your size is one I've worked through multiple times.
+
+If any of that infrastructure work lands on your radar in the next few months, worth a 15-minute conversation. No agenda beyond the right conversation at the right time.</div>
+              <div class="email-meta">
+                <span class="email-word-count">115 words · safe for cold send</span>
+                <span class="email-safe-label">Ready to Send</span>
+              </div>
+            </div>
+            <button class="copy-action-btn" onclick="copyFullEmail('email-subj-1','email-body-1',this)">Copy Email Draft</button>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Prospect Intelligence</div>
+          <div class="intel-callout">
+            <div class="intel-callout-label">Tenure Milestone Detected</div>
+            Graham reached his 10-year milestone at Polen Capital in January 2026. Long-tenure milestones at senior finance leaders often coincide with strategic reassessment periods, making this a natural opening for a peer-level conversation about where the firm is heading operationally.
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Follow-Up Sequence <span class="card-section-subtitle">Built for This Lead's Signal</span></div>
+          <div class="touch-section-header">FULL DFY PIPELINE · 5-TOUCH CONVERSATION ENGINE</div>
+          <div class="touch-block">
+            <div class="touch-day-label">Day 0</div>
+            <div class="touch-type-label">Connection Request</div>
+            <div class="touch-message" id="touch1-1">Graham, noticed Polen Capital is building out the finance team. With 25+ years across hedge funds and family offices including Kensico and GMF, I've worked alongside teams navigating exactly this kind of infrastructure build. Worth connecting.</div>
+            <button class="copy-action-btn" onclick="copyToClipboard(document.getElementById('touch1-1').textContent.trim(),this)">Copy</button>
+          </div>
+          <div class="touch-block">
+            <div class="touch-day-label">Day 3-5</div>
+            <div class="touch-type-label">Ice Break · After Connection Accepts</div>
+            <div class="touch-message" id="touch2-1">Thanks for connecting, Graham. The finance team expansion at Polen caught my attention. At a firm managing concentrated portfolios with a 30-year track record, that kind of build usually comes at an interesting inflection point. Is the expansion primarily around reporting infrastructure, or is it broader than that?</div>
+            <button class="copy-action-btn" onclick="copyToClipboard(document.getElementById('touch2-1').textContent.trim(),this)">Copy</button>
+          </div>
+          <div class="touch-block">
+            <div class="touch-day-label">Day 8-12</div>
+            <div class="touch-type-label">Value Drop</div>
+            <div class="touch-message" id="touch3-1">One pattern I've seen at established investment managers building out finance: the compliance and tax architecture tends to be the slowest piece to modernize, because it's the highest-risk area to move quickly. Firms that do it well usually bring in senior advisory support for the architecture decisions while the internal team handles execution. The split keeps permanent headcount lean while the infrastructure gets built to the right standard. Happy to share what has worked in practice.</div>
+            <button class="copy-action-btn" onclick="copyToClipboard(document.getElementById('touch3-1').textContent.trim(),this)">Copy</button>
+          </div>
+          <div class="touch-block">
+            <div class="touch-day-label">Day 15-20</div>
+            <div class="touch-type-label">Soft Ask</div>
+            <div class="touch-message" id="touch4-1">I've helped investment managers at Polen's stage work through finance infrastructure builds specifically around tax structuring, compliance architecture, and ERP configuration. If any of that surfaces as a near-term priority, a 15-minute conversation would give you a clear sense of whether there's a fit worth exploring.</div>
+            <button class="copy-action-btn" onclick="copyToClipboard(document.getElementById('touch4-1').textContent.trim(),this)">Copy</button>
+          </div>
+          <div class="touch-block">
+            <div class="touch-day-label">Day 25-30</div>
+            <div class="touch-type-label">Clean Exit</div>
+            <div class="touch-message" id="touch5-1">Timing may not be right, Graham. If the finance infrastructure build at Polen picks up in the next quarter, feel free to reach back out. The offer stands.</div>
+            <button class="copy-action-btn" onclick="copyToClipboard(document.getElementById('touch5-1').textContent.trim(),this)">Copy</button>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a class="linkedin-btn" href="https://linkedin.com/in/ACoAAABzEBgBEptqsbo8wmv6GwO2r1sATEfxAu0" target="_blank" title="May require LinkedIn login">View on LinkedIn →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 2: Brian Dally - Groundfloor Finance -->
+    <div class="lead-card" id="card-2">
+      <div class="card-header" onclick="toggleCard('card-2')">
+        <span class="signal-badge warm">WARM</span>
+        <div class="card-header-info">
+          <div class="lead-name">Brian Dally</div>
+          <div class="lead-company">Co-Founder & CEO · Groundfloor Finance</div>
+          <div class="why-now-line">Active merger and acquisition signal · real estate debt fintech · $25M-$75M revenue</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit: YES</span>
+        <span class="expand-icon">&#9662;</span>
+      </div>
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item"><a href="https://groundfloor.com" target="_blank">groundfloor.com</a></span>
+          <span class="identity-item">Atlanta, GA</span>
+          <span class="identity-item">51-200 employees</span>
+          <span class="identity-item">Real Estate Fintech</span>
+          <span class="identity-item">$25M-$75M revenue</span>
+        </div>
+        <div class="tag-row">
+          <span class="tag industry">Real Estate Investment</span>
+          <span class="tag industry">Fintech Platform</span>
+          <span class="tag signal">M&A Signal</span>
+          <span class="tag context">SEC-Qualified · Non-Accredited Access</span>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Active Market Signals</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Merger &amp; Acquisition Activity</div>
+              <div class="signal-timing">Active within last 90 days</div>
+              <div class="signal-desc">Groundfloor Finance has active M&A signals, indicating the firm is either acquiring, being evaluated, or restructuring its capital base. For a fintech platform operating in real estate debt with a non-accredited investor base, M&A events surface significant financial structuring complexity around entity consolidation and regulatory compliance.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">Finance Department Hiring</div>
+              <div class="signal-timing">Active within last 90 days</div>
+              <div class="signal-desc">Groundfloor is actively hiring in the finance department, which alongside M&A signals suggests they are building capacity for a more complex financial structure. This combination, M&A plus finance hiring, is a clear indicator of a firm entering a period that typically requires senior-level financial advisory input.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing <span class="card-section-subtitle">Configured for Joseph's Practice</span></div>
+          <div class="intel-grid">
+            <div class="intel-cell"><div class="intel-cell-label">Leadership Movement</div><div class="intel-cell-value">Brian Dally is the founding CEO, 13+ years. No executive-level departure signals.</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Capital Activity</div><div class="intel-cell-value">M&A activity signal active. First SEC-qualified company to offer direct real estate debt to non-accredited investors.</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Hiring Signals</div><div class="intel-cell-value">Active finance department hiring in last 90 days. Team capacity expansion underway.</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Expansion Signals</div><div class="intel-cell-value">No office expansion signals. Platform-native business model. Atlanta HQ.</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Growth Trajectory</div><div class="intel-cell-value">$25M-$75M revenue. 51-200 employees. Award-winning fintech. Asset-backed real estate debt platform.</div></div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div><div class="contact-label">Work Email</div><div class="contact-value">brian@groundfloor.us</div></div>
+              <button class="copy-btn" onclick="copyToClipboard('brian@groundfloor.us',this)">Copy</button>
+            </div>
+            <div class="contact-item">
+              <div><div class="contact-label">Mobile</div><div class="contact-value">+1 919 480 7890</div></div>
+              <button class="copy-btn" onclick="copyToClipboard('+19194807890',this)">Copy</button>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div class="why-block">
+              <div class="why-block-title">ICP Fit for Joseph</div>
+              <div class="why-block-text">Brian is the founding CEO of a fintech firm operating in real estate debt and investment access, a space that intersects directly with Joseph's background in financial structuring, regulatory compliance, and multi-asset portfolio management. The M&A signal combined with active finance hiring at Groundfloor creates a specific window for senior financial advisory input on transaction structuring and compliance architecture.</div>
+              <div class="fit-signal">
+                <div class="fit-signal-label">Strongest Fit Signal</div>
+                M&A activity at a SEC-regulated real estate fintech with simultaneous finance hiring surge.
+              </div>
+            </div>
+            <div class="why-block">
+              <div class="why-block-title">Why They're Looking</div>
+              <div class="why-block-text">An M&A event at a fintech platform creates immediate financial complexity: entity consolidation, tax structuring decisions, regulatory reporting changes, and investor communication shifts all arrive simultaneously. Brian, as founder-CEO, is managing deal dynamics while also running day-to-day operations. The finance hiring signal suggests the internal team is already at capacity before the M&A complexity lands. That gap is where senior advisory input has the clearest immediate value.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal <span class="card-section-subtitle">2 Channels Ready</span></div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="conn-note-2">Brian, saw the M&A activity at Groundfloor alongside the finance team expansion. That combination at a SEC-regulated fintech is a specific kind of complexity. My background is in financial structuring across hedge funds and family offices. Worth connecting.
+              <div class="char-count">274 characters · LinkedIn limit: 300</div>
+            </div>
+            <button class="copy-action-btn" onclick="copyElementText('conn-note-2',this)">Copy Connection Note</button>
+          </div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Email Draft · Ready to Send</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject Line</div>
+              <div class="email-subject-value" id="email-subj-2">Groundfloor · M&A complexity and finance build</div>
+              <div class="email-body" id="email-body-2">Hi Brian,
+
+Noticed Groundfloor has active M&A signals alongside a finance team expansion happening simultaneously. That combination at a SEC-regulated platform managing real estate debt for non-accredited investors is a specific kind of structural complexity.
+
+My background is in financial structuring, tax planning, and compliance architecture across environments like Kensico Capital Management and GMF, where M&A events created exactly the kind of rapid infrastructure questions that internal teams rarely have the bandwidth to absorb while still running day-to-day operations.
+
+If the M&A work is creating financial structuring decisions that need senior input in the next few months, worth a short conversation to see if there's a fit.</div>
+              <div class="email-meta">
+                <span class="email-word-count">124 words · safe for cold send</span>
+                <span class="email-safe-label">Ready to Send</span>
+              </div>
+            </div>
+            <button class="copy-action-btn" onclick="copyFullEmail('email-subj-2','email-body-2',this)">Copy Email Draft</button>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Follow-Up Sequence <span class="card-section-subtitle">Built for This Lead's Signal</span></div>
+          <div class="touch-block">
+            <div class="touch-day-label">Day 0</div>
+            <div class="touch-type-label">Connection Request</div>
+            <div class="touch-message" id="touch1-2">Brian, saw the M&A activity at Groundfloor alongside the finance team expansion. That combination at a SEC-regulated fintech is a specific kind of complexity. My background is in financial structuring across hedge funds and family offices. Worth connecting.</div>
+            <button class="copy-action-btn" onclick="copyToClipboard(document.getElementById('touch1-2').textContent.trim(),this)">Copy</button>
+          </div>
+          <div class="touch-collapsed-indicator">· · · 4 additional touches included in full delivery</div>
+        </div>
+        <div class="card-footer">
+          <a class="linkedin-btn" href="https://linkedin.com/in/ACoAAAAFVEIBLVBDR9X5bWIXuapG47QlG9AH8M4" target="_blank" title="May require LinkedIn login">View on LinkedIn →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 3: Anish Karyat - Moment -->
+    <div class="lead-card" id="card-3">
+      <div class="card-header" onclick="toggleCard('card-3')">
+        <span class="signal-badge hot">HOT</span>
+        <div class="card-header-info">
+          <div class="lead-name">Anish Karyat</div>
+          <div class="lead-company">Chief Markets Officer · Moment</div>
+          <div class="why-now-line">Job anniversary June 2026 at wealth management OS platform · $50M+ funded · active finance hiring</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit: YES</span>
+        <span class="expand-icon">&#9662;</span>
+      </div>
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item"><a href="https://moment.com" target="_blank">moment.com</a></span>
+          <span class="identity-item">Manhattan, NY</span>
+          <span class="identity-item">51-200 employees</span>
+          <span class="identity-item">Wealth Management Technology</span>
+          <span class="identity-item">$25M-$75M revenue</span>
+        </div>
+        <div class="tag-row">
+          <span class="tag industry">Wealth Management</span>
+          <span class="tag industry">Investment OS Platform</span>
+          <span class="tag signal">Finance Hiring + Funding</span>
+          <span class="tag context">$50M+ Funded · Citadel/Jane Street Alumni</span>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Active Market Signals</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Finance Department Hiring</div>
+              <div class="signal-timing">Active within last 90 days</div>
+              <div class="signal-desc">Moment is actively hiring in the finance function. At a $50M+ funded wealth management OS platform serving RIAs and private banks, finance team expansion signals infrastructure scaling ahead of the next growth phase. This is a common pre-audit or pre-Series trigger for senior advisory conversations.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">Institutional Backing Signal</div>
+              <div class="signal-timing">$50M+ raised from leading investors</div>
+              <div class="signal-desc">Moment has raised over $50M from institutional investors, including backing from the world's leading financial firms. At this funding level, the complexity of financial reporting, investor relations, and compliance architecture typically outpaces what a growth-stage finance team can manage without senior advisory input.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing <span class="card-section-subtitle">Configured for Joseph's Practice</span></div>
+          <div class="intel-grid">
+            <div class="intel-cell"><div class="intel-cell-label">Leadership Movement</div><div class="intel-cell-value">Anish joined from Citadel fixed income / Jane Street background. Chief Markets Officer role. 2-year anniversary June 2026.</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Capital Activity</div><div class="intel-cell-value">$50M+ raised from world-leading investors. No new round detected in last 90 days, but investor relations complexity is high.</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Hiring Signals</div><div class="intel-cell-value">Active finance department hiring. Team building in progress.</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Expansion Signals</div><div class="intel-cell-value">No office expansion signals. Platform serving RIAs, broker dealers, private banks.</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Growth Trajectory</div><div class="intel-cell-value">Operating system for wealth management. 350,000+ portfolio connections. $25M-$75M revenue. Strong institutional backing.</div></div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div><div class="contact-label">Personal Email</div><div class="contact-value">wikidx@aol.com</div></div>
+              <button class="copy-btn" onclick="copyToClipboard('wikidx@aol.com',this)">Copy</button>
+            </div>
+            <div class="contact-item">
+              <div><div class="contact-label">Mobile</div><div class="contact-value">+1 845 235 7380</div></div>
+              <button class="copy-btn" onclick="copyToClipboard('+18452357380',this)">Copy</button>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div class="why-block">
+              <div class="why-block-title">ICP Fit for Joseph</div>
+              <div class="why-block-text">Anish operates at the intersection of fixed income markets and wealth management technology, with a background at Citadel and Jane Street. Moment serves the same institutional layer, RIAs, broker dealers, private banks, that Joseph has spent decades working within and around. The finance hiring signal at a $50M+ funded platform at this stage is a direct indicator of financial infrastructure needs that match Joseph's structuring and compliance expertise.</div>
+              <div class="fit-signal">
+                <div class="fit-signal-label">Strongest Fit Signal</div>
+                Finance hiring at a well-funded wealth management OS serving institutional RIA and private bank clients.
+              </div>
+            </div>
+            <div class="why-block">
+              <div class="why-block-title">Why They're Looking</div>
+              <div class="why-block-text">At $50M+ in institutional backing and serving 350,000+ portfolio connections, Moment is operating at a scale where the compliance and financial reporting architecture needs to keep pace with the platform growth. Anish, coming from a quant trading background, understands complex financial infrastructure but the operational finance advisory layer, tax structuring, regulatory compliance, investor reporting, is a distinct specialization that typically requires external senior support at this stage.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal <span class="card-section-subtitle">2 Channels Ready</span></div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="conn-note-3">Anish, Moment's scale serving RIAs and private banks at $50M+ in backing is the kind of platform where financial infrastructure complexity compounds quickly. My background spans Kensico and GMF in exactly that institutional layer. Wanted to connect.
+              <div class="char-count">258 characters · LinkedIn limit: 300</div>
+            </div>
+            <button class="copy-action-btn" onclick="copyElementText('conn-note-3',this)">Copy Connection Note</button>
+          </div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Email Draft · Ready to Send</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject Line</div>
+              <div class="email-subject-value" id="email-subj-3">Moment · Financial infrastructure at this scale</div>
+              <div class="email-body" id="email-body-3">Hi Anish,
+
+Moment's position, serving the largest RIAs, broker dealers, and private banks at $50M+ in institutional backing, is a specific scale of financial complexity. The compliance, investor relations, and reporting architecture at that level doesn't scale linearly with the platform.
+
+My background is in financial structuring and compliance at Kensico Capital Management and GMF Management, environments where the gap between what institutional clients expect and what internal finance teams can deliver is exactly the problem I was brought in to close.
+
+If Moment's finance infrastructure is on the near-term roadmap, worth a short conversation.</div>
+              <div class="email-meta">
+                <span class="email-word-count">108 words · safe for cold send</span>
+                <span class="email-safe-label">Ready to Send</span>
+              </div>
+            </div>
+            <button class="copy-action-btn" onclick="copyFullEmail('email-subj-3','email-body-3',this)">Copy Email Draft</button>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Prospect Intelligence</div>
+          <div class="intel-callout">
+            <div class="intel-callout-label">Role Anniversary Detected</div>
+            Anish reached his 2-year anniversary as Chief Markets Officer at Moment in June 2026. Two-year marks at C-suite level are a natural strategic reflection point, and combined with the finance hiring signal, this makes the timing for an outreach conversation notably favorable.
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Follow-Up Sequence <span class="card-section-subtitle">Built for This Lead's Signal</span></div>
+          <div class="touch-block">
+            <div class="touch-day-label">Day 0</div>
+            <div class="touch-type-label">Connection Request</div>
+            <div class="touch-message" id="touch1-3">Anish, Moment's scale serving RIAs and private banks at $50M+ in backing is the kind of platform where financial infrastructure complexity compounds quickly. My background spans Kensico and GMF in exactly that institutional layer. Wanted to connect.</div>
+            <button class="copy-action-btn" onclick="copyToClipboard(document.getElementById('touch1-3').textContent.trim(),this)">Copy</button>
+          </div>
+          <div class="touch-collapsed-indicator">· · · 4 additional touches included in full delivery</div>
+        </div>
+        <div class="card-footer">
+          <a class="linkedin-btn" href="https://linkedin.com/in/ACoAADQl3qABMIDp8xubpm2j8SQkoYUSNixWutc" target="_blank" title="May require LinkedIn login">View on LinkedIn →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 4: Emily Yuan - Corgi -->
+    <div class="lead-card" id="card-4">
+      <div class="card-header" onclick="toggleCard('card-4')">
+        <span class="signal-badge warm">WARM</span>
+        <div class="card-header-info">
+          <div class="lead-name">Emily Yuan</div>
+          <div class="lead-company">Co-Founder & COO · Corgi</div>
+          <div class="why-now-line">AI financial infrastructure platform · 2-year anniversary April 2026 · active finance hiring signal</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit: YES</span>
+        <span class="expand-icon">&#9662;</span>
+      </div>
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item"><a href="https://corgi.insure" target="_blank">corgi.insure</a></span>
+          <span class="identity-item">San Francisco, CA</span>
+          <span class="identity-item">51-200 employees</span>
+          <span class="identity-item">AI Financial Infrastructure</span>
+          <span class="identity-item">$25M-$75M revenue</span>
+        </div>
+        <div class="tag-row">
+          <span class="tag industry">Fintech</span>
+          <span class="tag industry">AI Financial Infrastructure</span>
+          <span class="tag signal">Finance Hiring + Cost Restructuring</span>
+          <span class="tag context">ETF Platform · Founder-Led</span>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Active Market Signals</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Finance Department Hiring</div>
+              <div class="signal-timing">Active within last 90 days</div>
+              <div class="signal-desc">Corgi is actively building its finance function. As an AI financial infrastructure company with an ETF division, the regulatory and financial reporting requirements at this stage are significant. Finance team expansion at a $25M-$75M fintech signals they are scaling the infrastructure ahead of a compliance milestone or investor event.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">Cost Restructuring Signal</div>
+              <div class="signal-timing">Active within last 90 days</div>
+              <div class="signal-desc">Corgi carries a cost restructuring signal, which in combination with finance hiring typically indicates the firm is rationalizing its cost base while simultaneously building financial reporting capacity. For a founder-led fintech at this stage, that combination often surfaces the need for senior financial advisory support to make the right structural decisions quickly.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing <span class="card-section-subtitle">Configured for Joseph's Practice</span></div>
+          <div class="intel-grid">
+            <div class="intel-cell"><div class="intel-cell-label">Leadership Movement</div><div class="intel-cell-value">Emily Yuan is co-founder and COO. 2-year anniversary April 2026. No executive departure signals.</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Capital Activity</div><div class="intel-cell-value">$25M-$75M revenue. ETF platform active. No new funding round detected in last 90 days.</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Hiring Signals</div><div class="intel-cell-value">Active finance department hiring. Simultaneous cost restructuring signal.</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Expansion Signals</div><div class="intel-cell-value">No office expansion signals. Distributed team. ETF arm active at corgifunds.com.</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Growth Trajectory</div><div class="intel-cell-value">AI financial infrastructure + ETF platform. 51-200 employees. $25M-$75M revenue range. Founder-operated.</div></div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div><div class="contact-label">Work Email</div><div class="contact-value">emily@corgi.insure</div></div>
+              <button class="copy-btn" onclick="copyToClipboard('emily@corgi.insure',this)">Copy</button>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div class="why-block">
+              <div class="why-block-title">ICP Fit for Joseph</div>
+              <div class="why-block-text">Emily is co-founder and COO of an AI financial infrastructure company with an active ETF platform. The intersection of fintech regulation, ETF compliance, and cost restructuring at a $25M-$75M firm is exactly the kind of environment where Joseph's background in compliance architecture, tax planning, and financial structuring at hedge funds and family offices provides direct value. Founder-led firms at this stage typically need senior financial advisory input precisely because the founders are not finance specialists.</div>
+              <div class="fit-signal">
+                <div class="fit-signal-label">Strongest Fit Signal</div>
+                Cost restructuring plus finance hiring at a founder-led AI fintech with an active ETF platform.
+              </div>
+            </div>
+            <div class="why-block">
+              <div class="why-block-title">Why They're Looking</div>
+              <div class="why-block-text">A founder-led fintech simultaneously restructuring costs and building finance capacity is navigating two competing pressures: reduce spend while increasing financial infrastructure complexity. That combination without senior financial leadership typically produces compliance gaps or structural decisions made under time pressure. Emily, as COO, is likely the one holding both problems at once, which creates a clear opening for a peer-level conversation about financial architecture.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal <span class="card-section-subtitle">2 Channels Ready</span></div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="conn-note-4">Emily, building AI financial infrastructure with an ETF platform while managing a cost restructuring is a specific kind of pressure at the COO level. My background is in financial structuring and compliance at the hedge fund and family office level. Wanted to connect.
+              <div class="char-count">267 characters · LinkedIn limit: 300</div>
+            </div>
+            <button class="copy-action-btn" onclick="copyElementText('conn-note-4',this)">Copy Connection Note</button>
+          </div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Email Draft · Ready to Send</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject Line</div>
+              <div class="email-subject-value" id="email-subj-4">Corgi · Financial architecture at the fintech-ETF intersection</div>
+              <div class="email-body" id="email-body-4">Hi Emily,
+
+Noticed Corgi is building out finance capacity while carrying a cost restructuring signal at the same time. That combination at a fintech operating an ETF platform is a specific kind of financial architecture challenge.
+
+My background is in financial structuring, tax planning, and compliance at the hedge fund and family office level, including environments like Kensico Capital and GMF where regulatory complexity and cost discipline had to coexist. ETF-adjacent compliance and entity structuring at the fintech level is ground I have covered.
+
+If the financial infrastructure questions at Corgi surface as a near-term priority, worth a short conversation.</div>
+              <div class="email-meta">
+                <span class="email-word-count">113 words · safe for cold send</span>
+                <span class="email-safe-label">Ready to Send</span>
+              </div>
+            </div>
+            <button class="copy-action-btn" onclick="copyFullEmail('email-subj-4','email-body-4',this)">Copy Email Draft</button>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Follow-Up Sequence <span class="card-section-subtitle">Built for This Lead's Signal</span></div>
+          <div class="touch-block">
+            <div class="touch-day-label">Day 0</div>
+            <div class="touch-type-label">Connection Request</div>
+            <div class="touch-message" id="touch1-4">Emily, building AI financial infrastructure with an ETF platform while managing a cost restructuring is a specific kind of pressure at the COO level. My background is in financial structuring and compliance at the hedge fund and family office level. Wanted to connect.</div>
+            <button class="copy-action-btn" onclick="copyToClipboard(document.getElementById('touch1-4').textContent.trim(),this)">Copy</button>
+          </div>
+          <div class="touch-collapsed-indicator">· · · 4 additional touches included in full delivery</div>
+        </div>
+        <div class="card-footer">
+          <a class="linkedin-btn" href="https://linkedin.com/in/ACoAACKuwHwBplqR8YdnvGdXcpChIvjxqfrBgkU" target="_blank" title="May require LinkedIn login">View on LinkedIn →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 5: Shawn Rea - CellPoint Digital -->
+    <div class="lead-card" id="card-5">
+      <div class="card-header" onclick="toggleCard('card-5')">
+        <span class="signal-badge warm">WARM</span>
+        <div class="card-header-info">
+          <div class="lead-name">Shawn Rea</div>
+          <div class="lead-company">Chief Financial Officer · CellPoint Digital</div>
+          <div class="why-now-line">Changed company February 2026 · new CFO role at payments fintech · UK-based · $10M-$25M</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit: YES</span>
+        <span class="expand-icon">&#9662;</span>
+      </div>
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item"><a href="https://cellpointdigital.com" target="_blank">cellpointdigital.com</a></span>
+          <span class="identity-item">London, UK</span>
+          <span class="identity-item">51-200 employees</span>
+          <span class="identity-item">Payments Fintech</span>
+          <span class="identity-item">$10M-$25M revenue</span>
+        </div>
+        <div class="tag-row">
+          <span class="tag industry">Payments Technology</span>
+          <span class="tag industry">Travel &amp; Hospitality Fintech</span>
+          <span class="tag signal">New CFO Appointment</span>
+          <span class="tag context">Payment Orchestration Platform</span>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Active Market Signals</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">CFO Company Change</div>
+              <div class="signal-timing">Approximately 4 months ago · February 2026</div>
+              <div class="signal-desc">Shawn joined CellPoint Digital as CFO in February 2026, coming from Apply Gateway. A new CFO in the first 90-180 days is typically evaluating the financial infrastructure they inherited and identifying gaps. This is the highest-intent window for a peer advisory conversation about what needs to be built or restructured.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">Finance Department Hiring</div>
+              <div class="signal-timing">Active within last 90 days</div>
+              <div class="signal-desc">CellPoint Digital is actively hiring in finance, which alongside a new CFO hire signals the firm is rebuilding financial infrastructure under new leadership. For a payments platform serving the travel and hospitality sector, the revenue recognition, compliance, and multi-jurisdiction reporting complexity is significant.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing <span class="card-section-subtitle">Configured for Joseph's Practice</span></div>
+          <div class="intel-grid">
+            <div class="intel-cell"><div class="intel-cell-label">Leadership Movement</div><div class="intel-cell-value">Shawn Rea joined as CFO February 2026. Company change from Apply Gateway. New seat, first 4 months.</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Capital Activity</div><div class="intel-cell-value">No new funding round detected. $10M-$25M revenue range. Payment orchestration SaaS model.</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Hiring Signals</div><div class="intel-cell-value">Active finance department hiring. New CFO building out team infrastructure.</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Expansion Signals</div><div class="intel-cell-value">No office expansion signals. Serving air, travel, hospitality sectors globally from London HQ.</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Growth Trajectory</div><div class="intel-cell-value">Payment orchestration platform. Air, travel, hospitality sector focus. International client base. $10M-$25M revenue.</div></div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div><div class="contact-label">Email</div><div class="contact-value unavailable">Direct contact not on record</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div class="why-block">
+              <div class="why-block-title">ICP Fit for Joseph</div>
+              <div class="why-block-text">Shawn is a new CFO at a payments fintech serving the air and travel sector, entering a role with 25+ years of multi-sector CFO experience including Euronext pre-listing and GP/LP structures. The first 90-180 days in a new CFO seat at a payments platform creates a specific gap: the inherited infrastructure rarely matches the incoming CFO's standard, and the fastest way to close that gap is through senior advisory support on the architecture decisions. Joseph's fintech and international finance background is a direct match.</div>
+              <div class="fit-signal">
+                <div class="fit-signal-label">Strongest Fit Signal</div>
+                New CFO appointment 4 months in at a payments fintech with simultaneous finance hiring, first-90-day infrastructure review window open.
+              </div>
+            </div>
+            <div class="why-block">
+              <div class="why-block-title">Why They're Looking</div>
+              <div class="why-block-text">A new CFO at a $10M-$25M payments platform in their first four months is auditing what they walked into. The international transaction complexity, multi-jurisdiction regulatory exposure, and travel sector revenue recognition patterns at CellPoint create a specific set of infrastructure questions. Shawn, with a deep multi-sector CFO background, will have a clear view of the gaps but may need peer advisory input on how to prioritize the build without destabilizing operations during the transition.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal <span class="card-section-subtitle">2 Channels Ready</span></div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="conn-note-5">Shawn, congratulations on the CFO role at CellPoint. Payments fintech serving the travel and hospitality sector is a specific kind of financial complexity, especially in the first few months of a new seat. My background is across hedge funds and family offices in the same international finance layer. Worth connecting.
+              <div class="char-count">298 characters · LinkedIn limit: 300</div>
+            </div>
+            <button class="copy-action-btn" onclick="copyElementText('conn-note-5',this)">Copy Connection Note</button>
+          </div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Email Draft · Ready to Send</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject Line</div>
+              <div class="email-subject-value" id="email-subj-5">CellPoint Digital · CFO infrastructure in the first 90 days</div>
+              <div class="email-body" id="email-body-5">Hi Shawn,
+
+Saw you joined CellPoint as CFO in February. A payments platform serving air and travel with international transaction complexity is a specific kind of infrastructure audit in the first 90-180 days.
+
+My background covers financial structuring, tax, compliance, and ERP implementation across Kensico Capital, GMF Management, and Pequot Capital, environments where the inherited financial architecture rarely matched what the incoming CFO expected. The first 4 months in a new seat at a fintech is usually when the gap between what exists and what's needed becomes clearest.
+
+If any of that infrastructure work surfaces as a near-term priority, worth a 15-minute peer conversation.</div>
+              <div class="email-meta">
+                <span class="email-word-count">119 words · safe for cold send</span>
+                <span class="email-safe-label">Ready to Send</span>
+              </div>
+            </div>
+            <button class="copy-action-btn" onclick="copyFullEmail('email-subj-5','email-body-5',this)">Copy Email Draft</button>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Prospect Intelligence</div>
+          <div class="intel-callout">
+            <div class="intel-callout-label">Company Change Detected</div>
+            Shawn changed companies in February 2026, joining CellPoint Digital as CFO from Apply Gateway. The first 90-180 days in a new CFO seat is the highest-intent window for peer advisory conversations, as incoming executives are actively auditing inherited infrastructure and making build-vs-advisory decisions.
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Follow-Up Sequence <span class="card-section-subtitle">Built for This Lead's Signal</span></div>
+          <div class="touch-block">
+            <div class="touch-day-label">Day 0</div>
+            <div class="touch-type-label">Connection Request</div>
+            <div class="touch-message" id="touch1-5">Shawn, congratulations on the CFO role at CellPoint. Payments fintech serving the travel and hospitality sector is a specific kind of financial complexity, especially in the first few months of a new seat. My background is across hedge funds and family offices in the same international finance layer. Worth connecting.</div>
+            <button class="copy-action-btn" onclick="copyToClipboard(document.getElementById('touch1-5').textContent.trim(),this)">Copy</button>
+          </div>
+          <div class="touch-collapsed-indicator">· · · 4 additional touches included in full delivery</div>
+        </div>
+        <div class="card-footer">
+          <a class="linkedin-btn" href="https://linkedin.com/in/ACoAAAG9_KEByuBxSuF9foLrCvD52ULV1W_xydk" target="_blank" title="May require LinkedIn login">View on LinkedIn →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="pipeline-math">
+      <div class="pipeline-math-text">
+        Five leads like these are delivered every week in the full system. Over 12 weeks: <strong>120 ICP-matched buyers</strong> in Joseph's network, each carrying an active signal. The math from there is Joseph's to run.
+      </div>
+    </div>
+
+    <div class="visuals-section">
+      <div class="visuals-header">
+        <div class="visuals-copy">
+          <h3>Every Monday, your content arrives finished.</h3>
+          <p>The leads are one side of the system. The content is the other. Decision-makers in investment management skim before they read. A post without a visual is half a post. Consultants and advisors who post with structured visuals consistently outperform those who post text alone.</p>
+          <ul class="visuals-list">
+            <li><span class="visuals-list-dot">+</span> 3 posts per week in your voice</li>
+            <li><span class="visuals-list-dot">+</span> Carousel visuals for framework posts</li>
+            <li><span class="visuals-list-dot">+</span> Infographics for data-driven content</li>
+            <li><span class="visuals-list-dot">+</span> Post graphics for authority-building content</li>
+          </ul>
+        </div>
+        <div class="visuals-tiles">
+          <div class="visual-tile carousel">
+            <div class="visual-tile-inner">
+              <div class="tile-accent-bar"></div>
+              <div class="tile-lines">
+                <div class="tile-line full"></div>
+                <div class="tile-line medium"></div>
+                <div class="tile-line short"></div>
+                <div class="tile-line medium"></div>
+              </div>
+            </div>
+            <div class="tile-label">Carousel Visual</div>
+          </div>
+          <div class="visual-tile post">
+            <div class="visual-tile-inner">
+              <div class="tile-accent-bar"></div>
+              <div class="tile-lines">
+                <div class="tile-line full"></div>
+                <div class="tile-line medium"></div>
+                <div class="tile-line short"></div>
+              </div>
+            </div>
+            <div class="tile-label">Post Graphic</div>
+          </div>
+          <div class="visual-tile infographic">
+            <div class="visual-tile-inner">
+              <div class="tile-accent-bar"></div>
+              <div class="tile-lines">
+                <div class="tile-line medium"></div>
+                <div class="tile-line full"></div>
+                <div class="tile-line short"></div>
+                <div class="tile-line medium"></div>
+              </div>
+            </div>
+            <div class="tile-label">Infographic</div>
+          </div>
+        </div>
+      </div>
+      <div class="visuals-note"><strong>Every visual delivered finished.</strong> No brief, no back-and-forth, no design software. Formatted for LinkedIn, ready to post alongside the written content every Monday.</div>
+    </div>
+
+    <div class="cta-footer">
+      <div class="cta-footer-headline">This is one week of the full system.</div>
+      <div class="cta-footer-subhead">40 ICP-matched buyer profiles per month. 3 posts per week in your voice. Finished visuals included. Monday delivery, every week. 30 minutes of your time.</div>
+      <a class="cta-footer-btn" href="https://calendly.com/saurabh_zentro/30-min" target="_blank">Book a 30-Min Walkthrough</a>
+      <div class="cta-footer-note">No pitch. Walk through what the full system looks like for your practice.</div>
+    </div>
+  </div>
+
+  <!-- CONTENT ENGINE VIEW -->
+  <div class="view" id="view-content">
+    <div class="welcome-banner">
+      <div class="welcome-tag">Content Engine · Joseph's Voice</div>
+      <div class="welcome-text">
+        <strong>Two sample LinkedIn posts written in your voice.</strong> Extracted from your profile language, your posts on family office governance and cost restructuring, and the analytical, peer-level tone you use when writing about industry dynamics. These are what your content looks like inside the full system.
+      </div>
+    </div>
+
+    <div class="post-cards-grid">
+      <div class="post-card">
+        <div class="post-type-label">Teaching Post</div>
+        <div class="post-type-desc">Analytical framework post targeted at family office operators and investment firm founders. Establishes peer-level authority on governance and cost architecture.</div>
+        <div class="post-text">Family offices below $750M in net worth are paying 2% or more in annual operating costs.
+
+Most of that cost is staff.
+
+Three patterns I see repeatedly in offices at this scale:
+
+The team was built for a different era of the family's wealth. What worked at $200M in AUM does not scale cleanly to $500M. The roles, the reporting structure, the compliance architecture, none of it was designed for where the office is today.
+
+Governance is informal. No investment policy statement. No documented conflict of interest framework. No succession plan for the family office executive layer. When things go wrong, they go wrong fast.
+
+The CFO role is either underpowered or absent. Someone with a controller background is doing CFO work. Someone with a bookkeeping background is doing controller work. The gap compounds over years.
+
+Hybridisation is not a cost-cutting trend. It is a structural correction.
+
+A leaner family office with a senior advisory layer covering CFO, compliance, and tax functions outperforms a bloated internal structure on every metric that matters: cost, decision quality, and regulatory exposure.
+
+The Spears data on 18-person offices reducing to 3 while cutting costs by 60% is not an edge case. It is the direction of the industry.</div>
+        <div class="post-cta-line">Comment GOVERNANCE and I will send you the five-point family office audit framework.</div>
+      </div>
+      <div class="post-card">
+        <div class="post-type-label">Handraiser Post</div>
+        <div class="post-type-desc">Signal-driven post designed to generate LEAD comments from family office leaders and investment firm operators who are evaluating their financial architecture. CTA drives self-identification.</div>
+        <div class="post-text">Bill Ackman's TABLE situation is not a cautionary tale about wrongful termination litigation.
+
+It is a case study in what unchecked governance failure looks like at the family office level.
+
+Fifteen years. No documented accountability structure for the CFO function. No defined scope for the family member role. A compliance officer flags concerns. She is terminated. The internal problem becomes a public lawsuit three weeks before a $10B IPO.
+
+Every family office operator I speak with has a version of this risk sitting somewhere in their structure.
+
+Not the litigation. The underlying condition: the gap between what the governance framework says and what the governance framework actually does.
+
+Most offices at the $250M-$2B AUM range have this gap. The investment side is sophisticated. The operational and compliance architecture is informal.
+
+That informality is not a people problem. It is a structural problem.
+
+The fix is not a new hire. It is a senior advisory layer that has operated inside structures of this complexity and knows where the gaps typically live.
+
+If your family office governance has not been reviewed in the last 18 months, that review is overdue.
+
+Comment AUDIT below and I will send you the five areas I check first in any family office governance review.</div>
+        <div class="post-cta-line">Comment AUDIT and I will send you the five-area governance review framework.</div>
+      </div>
+    </div>
+
+    <div class="visuals-section">
+      <div class="visuals-header">
+        <div class="visuals-copy">
+          <h3>Finished visuals. Every week.</h3>
+          <p>The posts above arrive with finished graphics already formatted for LinkedIn. Carousel covers for framework content. Infographic panels for data-driven posts. Post graphics for authority-building content. No design software. No briefs. No back-and-forth.</p>
+          <p>Decision-makers in investment management stop scrolling for the visual. The post does the rest.</p>
+          <ul class="visuals-list">
+            <li><span class="visuals-list-dot">+</span> Carousel slides for multi-point frameworks</li>
+            <li><span class="visuals-list-dot">+</span> Infographic panels for cost and governance data</li>
+            <li><span class="visuals-list-dot">+</span> Post graphics for authority-building content</li>
+            <li><span class="visuals-list-dot">+</span> All formatted for LinkedIn, ready to schedule</li>
+          </ul>
+        </div>
+        <div class="visuals-tiles">
+          <div class="visual-tile carousel">
+            <div class="visual-tile-inner">
+              <div class="tile-accent-bar"></div>
+              <div class="tile-lines">
+                <div class="tile-line full"></div>
+                <div class="tile-line medium"></div>
+                <div class="tile-line short"></div>
+                <div class="tile-line medium"></div>
+              </div>
+            </div>
+            <div class="tile-label">Framework Carousel</div>
+          </div>
+          <div class="visual-tile infographic">
+            <div class="visual-tile-inner">
+              <div class="tile-accent-bar"></div>
+              <div class="tile-lines">
+                <div class="tile-line full"></div>
+                <div class="tile-line short"></div>
+                <div class="tile-line medium"></div>
+                <div class="tile-line full"></div>
+              </div>
+            </div>
+            <div class="tile-label">Cost Data Infographic</div>
+          </div>
+          <div class="visual-tile post">
+            <div class="visual-tile-inner">
+              <div class="tile-accent-bar"></div>
+              <div class="tile-lines">
+                <div class="tile-line medium"></div>
+                <div class="tile-line full"></div>
+                <div class="tile-line short"></div>
+              </div>
+            </div>
+            <div class="tile-label">Authority Post Graphic</div>
+          </div>
+        </div>
+      </div>
+      <div class="visuals-note"><strong>Content and pipeline. Both. Every Monday.</strong> The posts establish authority with the right audience. The leads give that audience a name, a signal, and a ready-to-send outreach sequence.</div>
+    </div>
+
+    <div class="cta-footer">
+      <div class="cta-footer-headline">Content that works while you work.</div>
+      <div class="cta-footer-subhead">3 posts per week in your voice. Finished visuals. 40 ICP-matched buyer profiles. All delivered by Monday 9 AM. 30 minutes of your time per week.</div>
+      <a class="cta-footer-btn" href="https://calendly.com/saurabh_zentro/30-min" target="_blank">Book a 30-Min Walkthrough</a>
+      <div class="cta-footer-note">No pitch. Walk through what the full system looks like for your practice.</div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+function showView(viewName, clickedEl) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view-' + viewName).classList.add('active');
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.mobile-tab-pill').forEach(b => b.classList.remove('active'));
+  if (clickedEl) clickedEl.classList.add('active');
+  const navPipeline = document.getElementById('nav-pipeline');
+  const navContent = document.getElementById('nav-content');
+  if (navPipeline && navContent) {
+    navPipeline.classList.remove('active');
+    navContent.classList.remove('active');
+    if (viewName === 'pipeline') navPipeline.classList.add('active');
+    else navContent.classList.add('active');
+  }
+}
+function toggleCard(cardId) {
+  const card = document.getElementById(cardId);
+  card.classList.toggle('expanded');
+}
+function copyToClipboard(text, btn) {
+  navigator.clipboard.writeText(text).then(() => {
+    if (btn) { btn.textContent = 'Copied'; btn.classList.add('copied'); setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000); }
+  }).catch(() => {
+    const ta = document.createElement('textarea');
+    ta.value = text; document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); document.body.removeChild(ta);
+    if (btn) { btn.textContent = 'Copied'; btn.classList.add('copied'); setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000); }
+  });
+}
+function copyElementText(elId, btn) {
+  const el = document.getElementById(elId);
+  const charCountEl = el.querySelector('.char-count');
+  let text = el.innerText;
+  if (charCountEl) text = text.replace(charCountEl.innerText, '').trim();
+  copyToClipboard(text, btn);
+  if (btn) { btn.textContent = 'Copied'; btn.classList.add('copied'); setTimeout(() => { btn.textContent = 'Copy Connection Note'; btn.classList.remove('copied'); }, 2000); }
+}
+function copyFullEmail(subjId, bodyId, btn) {
+  const subj = document.getElementById(subjId).textContent.trim();
+  const body = document.getElementById(bodyId).textContent.trim();
+  const full = 'Subject: ' + subj + '\n\n' + body;
+  copyToClipboard(full, btn);
+  if (btn) { btn.textContent = 'Copied'; btn.classList.add('copied'); setTimeout(() => { btn.textContent = 'Copy Email Draft'; btn.classList.remove('copied'); }, 2000); }
+}
+</script>
+</body>
+</html>
