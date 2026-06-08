@@ -1,0 +1,1321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pipelind · Mahen G. · Lead Demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0A0A12;
+  --bg2: #12121E;
+  --bg3: #0E0E19;
+  --primary: #6A66A3;
+  --primary-light: #9B98C4;
+  --accent: #FF9900;
+  --success: #019047;
+  --success-light: #5AC88A;
+  --text: rgba(255,255,255,0.90);
+  --text-dim: rgba(255,255,255,0.72);
+  --text-muted: rgba(255,255,255,0.55);
+  --border: rgba(106,102,163,0.25);
+  --border-hover: rgba(106,102,163,0.55);
+  --hot: #FF4444;
+  --warm: #FF9900;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif; min-height: 100vh; }
+
+.sidebar {
+  position: fixed; top: 0; left: 0; width: 240px; height: 100vh;
+  background: var(--bg2); border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; padding: 24px 20px; z-index: 100;
+}
+.sidebar-logo { font-family: 'Space Mono', monospace; font-size: 13px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--primary-light); margin-bottom: 28px; }
+.prospect-block { margin-bottom: 32px; }
+.prospect-label { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px; }
+.prospect-name { font-size: 17px; font-weight: 800; color: var(--text); line-height: 1.25; }
+.prospect-meta { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--text-muted);
+  letter-spacing: .06em; margin-top: 4px; }
+.nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 8px;
+  cursor: pointer; margin-bottom: 4px; font-size: 13px; font-weight: 600; color: var(--text-dim);
+  transition: all .15s; border: 1px solid transparent; }
+.nav-item:hover { background: rgba(106,102,163,0.10); color: var(--text); }
+.nav-item.active { background: rgba(106,102,163,0.15); color: var(--primary-light); border-color: var(--border); }
+.sidebar-footer { margin-top: auto; font-family: 'Space Mono', monospace; font-size: 10px;
+  color: var(--text-muted); letter-spacing: .04em; line-height: 1.8; }
+
+.mobile-topbar {
+  display: none; position: sticky; top: 0; z-index: 200;
+  background: var(--bg2); border-bottom: 1px solid var(--border);
+  padding: 14px 16px; align-items: center; justify-content: space-between;
+}
+.mobile-logo { font-family: 'Space Mono', monospace; font-size: 12px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--primary-light); }
+.mobile-prospect-name { font-size: 13px; font-weight: 700; color: var(--text); }
+
+.mobile-tabs {
+  display: none; position: sticky; top: 53px; z-index: 199;
+  background: var(--bg); border-bottom: 1px solid var(--border);
+  padding: 10px 16px; gap: 8px;
+}
+.mobile-tab-pill { padding: 7px 16px; border-radius: 20px; font-size: 12px; font-weight: 700;
+  font-family: 'Space Mono', monospace; letter-spacing: .06em; text-transform: uppercase;
+  cursor: pointer; border: 1px solid var(--border); color: var(--text-muted); background: transparent;
+  transition: all .15s; }
+.mobile-tab-pill.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+.main { margin-left: 240px; padding: 32px 36px; max-width: 1140px; }
+
+.tab-bar {
+  position: sticky; top: 0; z-index: 50; background: var(--bg);
+  border-bottom: 1px solid var(--border); display: flex; margin: -32px -36px 32px; padding: 0 36px;
+}
+.tab-btn { padding: 14px 22px; font-family: 'Space Mono', monospace; font-size: 11px;
+  font-weight: 700; letter-spacing: .10em; text-transform: uppercase; color: var(--text-muted);
+  cursor: pointer; border: none; background: transparent; border-bottom: 2px solid transparent;
+  transition: all .15s; }
+.tab-btn.active { color: var(--primary-light); border-bottom-color: var(--primary); }
+
+.welcome-banner { background: linear-gradient(135deg, rgba(106,102,163,0.10) 0%, rgba(255,153,0,0.05) 100%);
+  border: 1px solid var(--border); border-radius: 12px; padding: 24px 28px; margin-bottom: 28px; }
+.welcome-tag { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+.welcome-text { font-size: 14px; line-height: 1.75; color: var(--text-dim); }
+.welcome-text strong { color: var(--text); font-weight: 700; }
+
+.icp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 32px; }
+.icp-panel { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 22px 24px; }
+.panel-title { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 16px; }
+.icp-item { display: flex; justify-content: space-between; align-items: flex-start;
+  padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 13px; }
+.icp-item:last-child { border-bottom: none; }
+.icp-label { color: var(--text-muted); font-size: 12px; }
+.icp-value { color: var(--text); font-weight: 600; text-align: right; max-width: 60%; }
+.quality-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.quality-metric { background: rgba(106,102,163,0.08); border: 1px solid var(--border);
+  border-radius: 8px; padding: 14px 16px; text-align: center; }
+.quality-num { font-size: 24px; font-weight: 800; color: var(--primary-light); }
+.quality-label { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--text-muted);
+  letter-spacing: .06em; text-transform: uppercase; margin-top: 4px; }
+.quality-note { font-size: 12px; color: var(--text-muted); line-height: 1.6; margin-top: 14px;
+  padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.05); }
+
+.section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+.section-title { font-size: 13px; font-weight: 700; color: var(--text);
+  font-family: 'Space Mono', monospace; letter-spacing: .06em; text-transform: uppercase; }
+.section-count { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: .06em; }
+
+.lead-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px;
+  margin-bottom: 20px; overflow: hidden; transition: border-color .15s; }
+.lead-card:hover { border-color: var(--border-hover); }
+.card-header { padding: 18px 22px; cursor: pointer; display: flex; align-items: center; gap: 14px; }
+.signal-badge { font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; padding: 4px 10px; border-radius: 20px; white-space: nowrap; flex-shrink: 0; }
+.signal-badge.hot { background: rgba(255,68,68,0.15); color: var(--hot); border: 1px solid rgba(255,68,68,0.30); }
+.signal-badge.warm { background: rgba(255,153,0,0.12); color: var(--warm); border: 1px solid rgba(255,153,0,0.25); }
+.card-header-info { flex: 1; min-width: 0; }
+.lead-name { font-size: 17px; font-weight: 800; color: var(--text); line-height: 1.2; }
+.lead-company { font-size: 13px; color: var(--text-dim); margin-top: 2px; }
+.why-now-line { font-size: 12px; color: var(--accent); margin-top: 5px; font-weight: 600; }
+.expand-icon { color: var(--text-muted); font-size: 18px; flex-shrink: 0; transition: transform .2s; }
+.lead-card.expanded .expand-icon { transform: rotate(180deg); }
+.icp-fit-badge { font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: .10em; padding: 4px 10px; border-radius: 20px;
+  background: rgba(1,144,71,0.15); color: var(--success-light); border: 1px solid rgba(1,144,71,0.30); white-space: nowrap; flex-shrink: 0; }
+
+.card-body { display: none; border-top: 1px solid var(--border); }
+.lead-card.expanded .card-body { display: block; }
+
+.identity-strip { display: flex; flex-wrap: wrap; gap: 12px; padding: 14px 22px;
+  background: var(--bg3); border-bottom: 1px solid var(--border);
+  font-family: 'Space Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: .04em; }
+.identity-item a { color: var(--primary-light); text-decoration: none; }
+.identity-item a:hover { color: var(--text); }
+
+.tag-row { display: flex; flex-wrap: wrap; gap: 6px; padding: 12px 22px; border-bottom: 1px solid var(--border); }
+.tag { font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase; padding: 3px 9px; border-radius: 4px; }
+.tag.industry { background: rgba(106,102,163,0.15); color: var(--primary-light); }
+.tag.signal { background: rgba(255,153,0,0.12); color: var(--warm); }
+.tag.context { background: rgba(1,144,71,0.12); color: var(--success-light); }
+
+.card-section { padding: 20px 22px; border-bottom: 1px solid var(--border); }
+.card-section:last-child { border-bottom: none; }
+.card-section-title { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 14px; }
+.card-section-subtitle { font-family: 'Space Mono', monospace; font-size: 9px;
+  letter-spacing: .08em; color: rgba(255,255,255,0.35); text-transform: uppercase; margin-left: 8px; }
+
+.signal-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.signal-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+.signal-type { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .10em; text-transform: uppercase; color: var(--accent); margin-bottom: 5px; }
+.signal-timing { font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+.signal-desc { font-size: 12px; color: var(--text-dim); line-height: 1.6; }
+
+.intel-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+.intel-cell { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; }
+.intel-cell-label { font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: .10em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 7px; }
+.intel-cell-value { font-size: 12px; color: var(--text-dim); line-height: 1.5; }
+
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.contact-item { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px;
+  padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.contact-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: .10em;
+  text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px; }
+.contact-value { font-size: 13px; font-weight: 600; color: var(--text); word-break: break-all; }
+.contact-value.unavailable { color: var(--text-muted); font-weight: 400; font-style: italic; }
+.copy-btn { font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase; padding: 5px 10px; border-radius: 5px;
+  border: 1px solid var(--border); background: transparent; color: var(--text-muted);
+  cursor: pointer; white-space: nowrap; flex-shrink: 0; transition: all .15s; }
+.copy-btn:hover { border-color: var(--primary); color: var(--primary-light); }
+.copy-btn.copied { color: var(--success-light); border-color: var(--success); }
+
+.why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.why-block-title { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .10em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; }
+.why-block-text { font-size: 13px; color: var(--text-dim); line-height: 1.75; }
+.fit-signal { background: rgba(1,144,71,0.10); border: 1px solid rgba(1,144,71,0.25);
+  border-radius: 6px; padding: 8px 12px; margin-top: 10px; font-size: 12px; color: var(--success-light); font-weight: 600; }
+.fit-signal-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: .10em;
+  text-transform: uppercase; color: var(--success); margin-bottom: 3px; }
+
+.outreach-channel { margin-bottom: 18px; }
+.outreach-channel:last-child { margin-bottom: 0; }
+.outreach-channel-label { font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--primary-light); margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+.connection-note { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px;
+  padding: 14px 16px; font-size: 13px; color: var(--text-dim); line-height: 1.7; font-style: italic; }
+.char-count { font-family: 'Space Mono', monospace; font-size: 9px; color: var(--text-muted);
+  letter-spacing: .04em; margin-top: 8px; font-style: normal; }
+.email-block { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 16px 18px; }
+.email-subject-label { font-family: 'Space Mono', monospace; font-size: 9px; color: var(--text-muted); letter-spacing: .06em; margin-bottom: 4px; }
+.email-subject-value { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 12px; }
+.email-body { font-size: 13px; color: var(--text-dim); line-height: 1.85; white-space: pre-line; }
+.email-meta { display: flex; justify-content: space-between; align-items: center;
+  margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.06); }
+.email-word-count { font-family: 'Space Mono', monospace; font-size: 9px; color: var(--text-muted); letter-spacing: .04em; }
+.email-safe-label { font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase; color: var(--success-light); }
+.copy-action-btn { display: inline-flex; align-items: center; gap: 6px; margin-top: 10px;
+  font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: .10em;
+  text-transform: uppercase; padding: 7px 14px; border-radius: 6px; border: 1px solid var(--border);
+  background: transparent; color: var(--text-muted); cursor: pointer; transition: all .15s; }
+.copy-action-btn:hover { border-color: var(--primary); color: var(--primary-light); }
+.copy-action-btn.copied { color: var(--success-light); border-color: var(--success); }
+
+.intel-callout { background: rgba(255,153,0,0.07); border: 1px solid rgba(255,153,0,0.25);
+  border-radius: 8px; padding: 13px 16px; font-size: 12px; color: var(--text-dim); line-height: 1.65; }
+.intel-callout-label { font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin-bottom: 5px; }
+
+.touch-section-header {
+  font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase; color: #FF9900; margin-bottom: 14px;
+}
+.touch-block { padding: 14px 0; border-bottom: 1px solid rgba(106,102,163,0.20); }
+.touch-block:last-child { border-bottom: none; }
+.touch-day-label { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: 0.10em; text-transform: uppercase; color: #FF9900; margin-bottom: 3px; }
+.touch-type-label { font-size: 11px; color: rgba(255,255,255,0.55); margin-bottom: 8px; }
+.touch-message { font-size: 14px; color: rgba(255,255,255,0.90); line-height: 1.65; margin-bottom: 10px; }
+.touch-collapsed-indicator { font-size: 12px; color: rgba(255,255,255,0.45); font-style: italic; padding: 10px 0; }
+
+.card-footer { padding: 12px 22px; background: var(--bg3); border-top: 1px solid var(--border); display: flex; justify-content: flex-end; }
+.linkedin-btn { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase; padding: 8px 16px; border-radius: 6px;
+  border: 1px solid var(--border); color: var(--primary-light); text-decoration: none; transition: all .15s; }
+.linkedin-btn:hover { border-color: var(--primary); background: rgba(106,102,163,0.10); }
+
+.pipeline-math { background: rgba(106,102,163,0.06); border: 1px solid var(--border);
+  border-radius: 12px; padding: 22px 28px; margin: 28px 0; text-align: center; }
+.pipeline-math-text { font-size: 15px; color: var(--text-dim); line-height: 1.8; }
+.pipeline-math-text strong { color: var(--primary-light); font-weight: 700; }
+
+.visuals-section { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; padding: 28px 32px; margin: 28px 0; }
+.visuals-header { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-bottom: 24px; }
+.visuals-copy h3 { font-size: 18px; font-weight: 800; color: var(--text); line-height: 1.3; margin-bottom: 12px; }
+.visuals-copy p { font-size: 13px; color: var(--text-dim); line-height: 1.75; margin-bottom: 10px; }
+.visuals-list { list-style: none; margin-top: 14px; }
+.visuals-list li { font-size: 13px; color: var(--text-dim); padding: 6px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04); display: flex; gap: 10px; }
+.visuals-list li:last-child { border-bottom: none; }
+.visuals-list-dot { color: var(--success-light); font-weight: 700; flex-shrink: 0; }
+.visuals-tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.visual-tile { border-radius: 10px; overflow: hidden; }
+.visual-tile-inner { aspect-ratio: 4/3; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 16px; }
+.visual-tile.carousel { background: linear-gradient(135deg, #1B2A4A 0%, #243655 100%); border: 1px solid rgba(240,165,0,0.20); }
+.visual-tile.post { background: linear-gradient(135deg, #1B2A4A 0%, #1D2D47 100%); border: 1px solid rgba(240,165,0,0.15); }
+.visual-tile.infographic { background: linear-gradient(135deg, #162238 0%, #1B2A4A 100%); border: 1px solid rgba(240,165,0,0.10); }
+.tile-accent-bar { width: 36px; height: 3px; background: #F0A500; border-radius: 2px; margin-bottom: 12px; }
+.tile-lines { width: 100%; }
+.tile-line { height: 7px; background: rgba(245,240,232,0.15); border-radius: 3px; margin-bottom: 6px; }
+.tile-line.short { width: 60%; }
+.tile-line.medium { width: 80%; }
+.tile-line.full { width: 100%; }
+.tile-label { font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); text-align: center; margin-top: 10px; padding: 6px; background: var(--bg3); }
+.visuals-note { font-size: 13px; color: var(--text-dim); text-align: center; margin-top: 18px;
+  padding-top: 18px; border-top: 1px solid var(--border); line-height: 1.7; }
+.visuals-note strong { color: var(--text); }
+
+.cta-footer { margin-top: 36px; background: linear-gradient(135deg, rgba(255,153,0,0.08) 0%, rgba(106,102,163,0.06) 100%);
+  border: 1px solid rgba(255,153,0,0.30); border-radius: 12px; padding: 36px 40px; text-align: center; }
+.cta-footer-headline { font-size: 22px; font-weight: 800; color: var(--text); letter-spacing: -.01em; margin-bottom: 14px; line-height: 1.3; }
+.cta-footer-subhead { font-size: 14px; color: var(--text-dim); line-height: 1.8; max-width: 680px; margin: 0 auto 26px; }
+.cta-footer-btn { display: inline-block; background: var(--accent); color: var(--bg);
+  padding: 15px 34px; border-radius: 8px; font-family: 'Space Mono', monospace;
+  font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em;
+  text-decoration: none; transition: background .15s; margin-bottom: 14px; }
+.cta-footer-btn:hover { background: #ffb340; }
+.cta-footer-note { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: .04em; }
+
+.post-cards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 28px; }
+.post-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 24px 26px; }
+.post-type-label { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--primary-light); margin-bottom: 6px; }
+.post-type-desc { font-size: 11px; color: var(--text-muted); margin-bottom: 16px;
+  padding-bottom: 16px; border-bottom: 1px solid var(--border); line-height: 1.5; }
+.post-text { font-size: 13px; color: var(--text-dim); line-height: 1.85; white-space: pre-line; }
+.post-cta-line { margin-top: 14px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.06);
+  font-size: 12px; color: var(--accent); font-weight: 600; }
+
+.pulse-panel {
+  border-left: 3px solid #FF9900; background: rgba(255,153,0,0.06);
+  border-radius: 0 10px 10px 0; padding: 18px 22px; margin-bottom: 28px;
+}
+.pulse-label { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase; color: #FF9900; margin-bottom: 10px; }
+.pulse-text { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 15px; color: rgba(255,255,255,0.90); line-height: 1.7; }
+
+.view { display: none; }
+.view.active { display: block; }
+
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+  .mobile-topbar { display: flex; }
+  .mobile-tabs { display: flex; }
+  .main { margin-left: 0; padding: 16px; }
+  .tab-bar { display: none; }
+  .icp-grid { grid-template-columns: 1fr; }
+  .signal-cards { grid-template-columns: 1fr; }
+  .intel-grid { grid-template-columns: 1fr 1fr; }
+  .contact-grid { grid-template-columns: 1fr; }
+  .why-grid { grid-template-columns: 1fr; }
+  .post-cards-grid { grid-template-columns: 1fr; }
+  .visuals-header { grid-template-columns: 1fr; }
+  .card-header { flex-wrap: wrap; gap: 8px; }
+  .lead-name { font-size: 15px; }
+  .cta-footer { padding: 24px 20px; }
+  .cta-footer-btn { width: 100%; text-align: center; display: block; }
+  .email-meta { flex-direction: column; align-items: flex-start; gap: 8px; }
+}
+@media (max-width: 480px) {
+  .intel-grid { grid-template-columns: 1fr; }
+  .visuals-tiles { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- Mobile top bar -->
+<div class="mobile-topbar">
+  <div class="mobile-logo">Pipelind</div>
+  <div class="mobile-prospect-name">Mahen's Report</div>
+</div>
+
+<!-- Mobile tab pills -->
+<div class="mobile-tabs">
+  <button class="mobile-tab-pill active" onclick="showView('pipeline', this)">Pipeline Engine</button>
+  <button class="mobile-tab-pill" onclick="showView('content', this)">Content Engine</button>
+</div>
+
+<!-- Desktop sidebar -->
+<nav class="sidebar">
+  <div class="sidebar-logo">Pipelind</div>
+  <div class="prospect-block">
+    <div class="prospect-label">Personalized For</div>
+    <div class="prospect-name">Mahen G.</div>
+    <div class="prospect-meta">June 2026 · Lead Demo</div>
+  </div>
+  <div class="nav-item active" id="nav-pipeline" onclick="showView('pipeline', this)">Pipeline Engine</div>
+  <div class="nav-item" id="nav-content" onclick="showView('content', this)">Content Engine</div>
+  <div class="sidebar-footer">Personalized build<br>Real signal data<br>Sample of your full delivery</div>
+</nav>
+
+<!-- Main content -->
+<main class="main">
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="showView('pipeline', this)">Pipeline Engine</button>
+    <button class="tab-btn" onclick="showView('content', this)">Content Engine</button>
+  </div>
+
+  <!-- PIPELINE ENGINE VIEW -->
+  <div class="view active" id="view-pipeline">
+
+    <div class="welcome-banner">
+      <div class="welcome-tag">Pipeline Engine · Personalized for Mahen G.</div>
+      <div class="welcome-text">
+        Five buyers from your ICP, each carrying an active market signal from the last 90 days.
+        Every card includes <strong>direct contact details</strong>, a <strong>LinkedIn connection note</strong>,
+        a <strong>ready-to-send email draft</strong>, and a <strong>5-touch conversation sequence</strong>
+        built for that specific lead's signal. These are the companies that need finance transformation
+        support right now. The signal told us before they posted a job ad.
+      </div>
+    </div>
+
+    <!-- Market Intelligence Pulse -->
+    <div class="pulse-panel">
+      <div class="pulse-label">MARKET INTELLIGENCE PULSE · WEEK OF JUNE 8, 2026</div>
+      <div class="pulse-text">This week's active signal pool shows funding rounds and finance department hiring across healthcare and retail verticals in the $10M-$75M revenue range, with healthcare companies representing the dominant pattern. Companies at this revenue stage are moving from founder-managed finance to structured reporting, which is precisely the window where finance transformation and FP&A advisory has the highest conversion rate. Content angle: the finance function maturity curve at Series A and B lands directly on this signal.</div>
+    </div>
+
+    <!-- ICP Panel Grid -->
+    <div class="icp-grid">
+      <div class="icp-panel">
+        <div class="panel-title">Target Buyer Profile · Mahen's ICP</div>
+        <div class="icp-item"><span class="icp-label">Buyer Title</span><span class="icp-value">CEO, Founder, Co-Founder, President</span></div>
+        <div class="icp-item"><span class="icp-label">Company Stage</span><span class="icp-value">Series A-B, PE-backed, bootstrap scaling</span></div>
+        <div class="icp-item"><span class="icp-label">Company Size</span><span class="icp-value">11-200 employees</span></div>
+        <div class="icp-item"><span class="icp-label">Industries</span><span class="icp-value">Healthcare, Manufacturing, Retail, CPG</span></div>
+        <div class="icp-item"><span class="icp-label">Geography</span><span class="icp-value">US, CA, GB, AU</span></div>
+        <div class="icp-item"><span class="icp-label">Revenue Range</span><span class="icp-value">$10M-$75M</span></div>
+      </div>
+      <div class="icp-panel">
+        <div class="panel-title">Sample Quality · This Delivery</div>
+        <div class="quality-grid">
+          <div class="quality-metric"><div class="quality-num">5</div><div class="quality-label">ICP-Matched Leads</div></div>
+          <div class="quality-metric"><div class="quality-num">90</div><div class="quality-label">Signal Window (days)</div></div>
+          <div class="quality-metric"><div class="quality-num">5</div><div class="quality-label">Contacts Enriched</div></div>
+          <div class="quality-metric"><div class="quality-num">2</div><div class="quality-label">Signal Types Active</div></div>
+        </div>
+        <div class="quality-note">Every lead carries at least one active market signal from the last 90 days. Signal types: new funding round, finance department hiring. All contacts individually enriched with direct email and mobile where available.</div>
+      </div>
+    </div>
+
+    <!-- Section Header -->
+    <div class="section-header">
+      <div class="section-title">ICP-Matched Buyers</div>
+      <div class="section-count">5 of 40 monthly leads · Sample delivery</div>
+    </div>
+
+    <!-- ==================== CARD 1: Joseph Kitonga ==================== -->
+    <div class="lead-card expanded" id="card-1">
+      <div class="card-header" onclick="toggleCard('card-1')">
+        <span class="signal-badge warm">WARM</span>
+        <div class="card-header-info">
+          <div class="lead-name">Joseph Kitonga</div>
+          <div class="lead-company">Founder & CEO · Vitable Health</div>
+          <div class="why-now-line">Active finance hiring signal at healthcare benefits platform in growth phase</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit: YES</span>
+        <span class="expand-icon">&#9662;</span>
+      </div>
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item"><a href="https://vitablehealth.com" target="_blank">vitablehealth.com</a></span>
+          <span class="identity-item">Philadelphia, PA · US</span>
+          <span class="identity-item">51-200 employees</span>
+          <span class="identity-item">Healthcare Benefits Platform</span>
+          <span class="identity-item">$25M-$75M revenue</span>
+        </div>
+        <div class="tag-row">
+          <span class="tag industry">Healthcare</span>
+          <span class="tag industry">Benefits Platform</span>
+          <span class="tag signal">Finance Hiring · Active</span>
+          <span class="tag context">Founder-Led · Scaling</span>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Active Market Signals</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Finance Department Hiring</div>
+              <div class="signal-timing">Active signal · last 90 days</div>
+              <div class="signal-desc">Vitable Health is actively building out its finance function, a reliable indicator that the company has outgrown founder-managed reporting. This is the exact window where interim controllers and finance transformation advisors add the most compressive value before a full-time CFO hire is justified.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">Growth Stage Expansion</div>
+              <div class="signal-timing">Ongoing · 51-200 employee band</div>
+              <div class="signal-desc">At $25M-$75M revenue with 51-200 employees, Vitable is at the inflection point where financial modeling, COGS tracking, and multi-entity reporting complexity typically exceeds the capacity of a generalist finance team. Pricing model work and cash flow forecasting become high-priority needs here.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing <span class="card-section-subtitle">Configured for Mahen's Practice</span></div>
+          <div class="intel-grid">
+            <div class="intel-cell">
+              <div class="intel-cell-label">Leadership Movement</div>
+              <div class="intel-cell-value">No leadership movement in last 90 days</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Capital Activity</div>
+              <div class="intel-cell-value">No public funding activity in last 90 days</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Hiring Signals</div>
+              <div class="intel-cell-value">Finance department hiring activity detected in last 90 days</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Expansion Signals</div>
+              <div class="intel-cell-value">No expansion signals in last 90 days</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Growth Trajectory</div>
+              <div class="intel-cell-value">Scaling healthcare benefits platform, $25M-$75M revenue band</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Work Email</div>
+                <div class="contact-value">joseph.kitonga@vitablehealth.com</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('joseph.kitonga@vitablehealth.com', this)">Copy</button>
+            </div>
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Mobile</div>
+                <div class="contact-value">+1 (973) 786-6524</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('+19737866524', this)">Copy</button>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div class="why-block">
+              <div class="why-block-title">ICP Fit for Mahen</div>
+              <div class="why-block-text">Joseph is a founder-led CEO running a healthcare benefits platform at the exact revenue stage where finance function complexity outpaces early-stage infrastructure. Vitable's model spans employer-side benefits and healthcare delivery, creating natural complexity in revenue recognition, COGS, and multi-contract reporting that maps directly to Mahen's FP&A and finance transformation work. The company's active finance hiring signal confirms the internal gap exists and is now being addressed.</div>
+              <div class="fit-signal">
+                <div class="fit-signal-label">Strongest Fit Signal</div>
+                Active finance department hiring at a founder-led healthcare company in the $25M-$75M band
+              </div>
+            </div>
+            <div class="why-block">
+              <div class="why-block-title">Why They're Looking</div>
+              <div class="why-block-text">Founders at Joseph's stage are typically managing finance through a small accounting team and a mix of outsourced functions. The decision to hire in finance is rarely about bookkeeping — it signals that forecasting, pricing model rigor, and management reporting have become critical to investor conversations and operational decisions. Joseph is likely evaluating whether a finance transformation advisor could accelerate the infrastructure build faster than a permanent hire alone can deliver.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal <span class="card-section-subtitle">2 Channels Ready</span></div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="conn-note-1">
+              Noticed Vitable Health is building out its finance team. I work with healthcare founders at the $25M-$75M stage on finance transformation and FP&A infrastructure. Would be glad to connect.
+              <div class="char-count">196 characters · LinkedIn limit: 300</div>
+            </div>
+            <button class="copy-action-btn" onclick="copyElementText('conn-note-1', this)">Copy Connection Note</button>
+          </div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Email Draft · Ready to Send</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject Line</div>
+              <div class="email-subject-value" id="email-subj-1">Finance function build at Vitable</div>
+              <div class="email-body" id="email-body-1">Joseph,
+
+Noticed Vitable Health is actively hiring in finance. At the $25M-$75M revenue stage with a platform model that spans employer contracts and care delivery, that usually means the reporting and forecasting infrastructure needs to scale faster than a single hire can deliver alone.
+
+I work with healthcare founders on finance transformation — building the FP&A layer, tightening pricing model logic, and getting management reporting to a state where it supports board-level conversations. Most engagements run alongside a permanent hire rather than replacing one.
+
+Worth a 15-minute conversation to see if the timing aligns?
+
+Mahen Gosar
+Twenty Consulting · twentyconsulting.com</div>
+              <div class="email-meta">
+                <span class="email-word-count">~130 words · safe for cold send</span>
+                <span class="email-safe-label">Ready to Send</span>
+              </div>
+            </div>
+            <button class="copy-action-btn" onclick="copyFullEmail('email-subj-1', 'email-body-1', this)">Copy Email Draft</button>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Follow-Up Sequence <span class="card-section-subtitle">Built for This Lead's Signal</span></div>
+          <div class="touch-section-header">FULL DFY PIPELINE · 5-TOUCH CONVERSATION ENGINE</div>
+          <div class="touch-block">
+            <div class="touch-day-label">Day 0</div>
+            <div class="touch-type-label">Connection Request</div>
+            <div class="touch-message" id="touch1-1">Noticed Vitable Health is building out its finance team. I work with healthcare founders at the $25M-$75M stage on finance transformation and FP&A infrastructure. Would be glad to connect.</div>
+            <button class="copy-action-btn" onclick="copyToClipboard(document.getElementById('touch1-1').textContent.trim(), this)">Copy</button>
+          </div>
+          <div class="touch-block">
+            <div class="touch-day-label">Day 3-5</div>
+            <div class="touch-type-label">Ice Break · After Connection Accepts</div>
+            <div class="touch-message" id="touch2-1">Thanks for connecting, Joseph. The Vitable model is interesting — employer-side benefits paired with care delivery creates a reporting structure that most standard FP&A tools don't handle cleanly out of the box. How is your finance team currently managing the contract and revenue side of the reporting stack?</div>
+            <button class="copy-action-btn" onclick="copyToClipboard(document.getElementById('touch2-1').textContent.trim(), this)">Copy</button>
+          </div>
+          <div class="touch-block">
+            <div class="touch-day-label">Day 8-12</div>
+            <div class="touch-type-label">Value Drop</div>
+            <div class="touch-message" id="touch3-1">One pattern I see consistently with healthcare platforms at your stage: the finance hire solves the capacity gap but doesn't always solve the architecture gap. The forecasting model, the COGS allocation logic, and the way you frame unit economics for board decks — those typically need a deliberate build, not just more headcount. Happy to share what has worked at comparable companies if that is useful.</div>
+            <button class="copy-action-btn" onclick="copyToClipboard(document.getElementById('touch3-1').textContent.trim(), this)">Copy</button>
+          </div>
+          <div class="touch-block">
+            <div class="touch-day-label">Day 15-20</div>
+            <div class="touch-type-label">Soft Ask</div>
+            <div class="touch-message" id="touch4-1">I have worked with founders at healthcare platforms in the $25M-$75M range on building out the FP&A layer and management reporting before a full-time CFO hire is in place. If a 15-minute conversation to compare notes on the finance infrastructure build would be useful, I am available this week.</div>
+            <button class="copy-action-btn" onclick="copyToClipboard(document.getElementById('touch4-1').textContent.trim(), this)">Copy</button>
+          </div>
+          <div class="touch-block">
+            <div class="touch-day-label">Day 25-30</div>
+            <div class="touch-type-label">Clean Exit</div>
+            <div class="touch-message" id="touch5-1">Timing may not be right on your end — understood. The finance infrastructure build at Vitable's stage tends to be a six-to-twelve month window so if it becomes relevant later, happy to pick this up then.</div>
+            <button class="copy-action-btn" onclick="copyToClipboard(document.getElementById('touch5-1').textContent.trim(), this)">Copy</button>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a class="linkedin-btn" href="https://linkedin.com/in/ACoAAB25y9MBT58J1-XqmmooXYwKuS6Tq_zlT9o" target="_blank" title="May require LinkedIn login">View on LinkedIn →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== CARD 2: Alan Smith ==================== -->
+    <div class="lead-card" id="card-2">
+      <div class="card-header" onclick="toggleCard('card-2')">
+        <span class="signal-badge warm">WARM</span>
+        <div class="card-header-info">
+          <div class="lead-name">Alan Smith</div>
+          <div class="lead-company">Chief Marketing Officer · Ernesta Inc.</div>
+          <div class="why-now-line">Finance hiring signal at scaling retail brand, $10M-$25M revenue band</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit: YES</span>
+        <span class="expand-icon">&#9662;</span>
+      </div>
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item"><a href="https://ernesta.com" target="_blank">ernesta.com</a></span>
+          <span class="identity-item">New York, NY · US</span>
+          <span class="identity-item">51-200 employees</span>
+          <span class="identity-item">Retail · Custom Rugs</span>
+          <span class="identity-item">$10M-$25M revenue</span>
+        </div>
+        <div class="tag-row">
+          <span class="tag industry">Retail</span>
+          <span class="tag industry">E-commerce</span>
+          <span class="tag signal">Finance Hiring · Active</span>
+          <span class="tag context">Scaling DTC Brand</span>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Active Market Signals</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Finance Department Hiring</div>
+              <div class="signal-timing">Active signal · last 90 days</div>
+              <div class="signal-desc">Ernesta is actively adding finance headcount, a consistent signal that a DTC retail brand is crossing the revenue threshold where informal finance processes create operational risk. At $10M-$25M, inventory accounting, gross margin visibility, and cash flow modeling become business-critical rather than nice-to-have.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">Revenue Stage Transition</div>
+              <div class="signal-timing">$10M-$25M revenue band</div>
+              <div class="signal-desc">Custom and made-to-measure retail at this stage typically carries complex inventory and COGS structures that most early-stage accounting setups do not handle cleanly. The transition from transactional accounting to strategic financial management is where finance transformation advisors like Mahen add concentrated value.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing <span class="card-section-subtitle">Configured for Mahen's Practice</span></div>
+          <div class="intel-grid">
+            <div class="intel-cell"><div class="intel-cell-label">Leadership Movement</div><div class="intel-cell-value">No leadership movement in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Capital Activity</div><div class="intel-cell-value">No public funding activity in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Hiring Signals</div><div class="intel-cell-value">Finance department hiring activity detected in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Expansion Signals</div><div class="intel-cell-value">No expansion signals in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Growth Trajectory</div><div class="intel-cell-value">Scaling DTC retail brand, $10M-$25M revenue band, 51-200 employees</div></div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Work Email</div>
+                <div class="contact-value">alan@ernesta.com</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('alan@ernesta.com', this)">Copy</button>
+            </div>
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Mobile</div>
+                <div class="contact-value">+1 (914) 260-6096</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('+19142606096', this)">Copy</button>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div class="why-block">
+              <div class="why-block-title">ICP Fit for Mahen</div>
+              <div class="why-block-text">Ernesta operates a custom-sized rug business with a digitally native retail model — complex inventory, made-to-measure SKUs, and direct-to-consumer margins that demand tight COGS and pricing model discipline. The company's finance hiring signal at the $10M-$25M stage indicates the founder team is recognizing the need for structured financial management. Alan, as a senior executive stakeholder, is a productive entry point into the finance conversation.</div>
+              <div class="fit-signal">
+                <div class="fit-signal-label">Strongest Fit Signal</div>
+                Finance department hiring at a scaling DTC retail brand with inventory complexity
+              </div>
+            </div>
+            <div class="why-block">
+              <div class="why-block-title">Why They're Looking</div>
+              <div class="why-block-text">At Ernesta's revenue stage, gross margin visibility and inventory cost allocation typically become the first finance pain points that surface. A CMO with P&amp;L sensitivity will be aware of whether the finance function is providing the data needed to run effective marketing attribution and budget allocation. This is a natural conversation point that does not require a cold finance pitch.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal <span class="card-section-subtitle">2 Channels Ready</span></div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="conn-note-2">
+              Saw that Ernesta is adding finance headcount. I work with retail and DTC brands in the $10M-$25M range on finance transformation and pricing model work. Would be glad to connect.
+              <div class="char-count">182 characters · LinkedIn limit: 300</div>
+            </div>
+            <button class="copy-action-btn" onclick="copyElementText('conn-note-2', this)">Copy Connection Note</button>
+          </div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Email Draft · Ready to Send</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject Line</div>
+              <div class="email-subject-value" id="email-subj-2">Finance infrastructure at Ernesta</div>
+              <div class="email-body" id="email-body-2">Alan,
+
+Noticed Ernesta is actively building out its finance team. DTC retail at your revenue stage tends to hit a specific inflection point where inventory cost accounting, gross margin visibility, and pricing model logic all need to move from spreadsheet-driven to structured. That is usually when the finance hire gets made — and also when an outside perspective on the infrastructure design adds the most value.
+
+I work with retail and consumer brands on finance transformation — FP&A build, COGS architecture, pricing model development. Most engagements run in parallel with a permanent hire rather than replacing one.
+
+Would a 15-minute conversation make sense to compare notes on where Ernesta's finance function is headed?
+
+Mahen Gosar
+Twenty Consulting · twentyconsulting.com</div>
+              <div class="email-meta">
+                <span class="email-word-count">~140 words · safe for cold send</span>
+                <span class="email-safe-label">Ready to Send</span>
+              </div>
+            </div>
+            <button class="copy-action-btn" onclick="copyFullEmail('email-subj-2', 'email-body-2', this)">Copy Email Draft</button>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Follow-Up Sequence <span class="card-section-subtitle">Built for This Lead's Signal</span></div>
+          <div class="touch-block">
+            <div class="touch-day-label">Day 0</div>
+            <div class="touch-type-label">Connection Request</div>
+            <div class="touch-message" id="touch1-2">Saw that Ernesta is adding finance headcount. I work with retail and DTC brands in the $10M-$25M range on finance transformation and pricing model work. Would be glad to connect.</div>
+            <button class="copy-action-btn" onclick="copyToClipboard(document.getElementById('touch1-2').textContent.trim(), this)">Copy</button>
+          </div>
+          <div class="touch-collapsed-indicator">· · · 4 additional touches included in full delivery</div>
+        </div>
+        <div class="card-footer">
+          <a class="linkedin-btn" href="https://linkedin.com/in/ACoAAAB875oBhoTIWAO3wjfAT5Lc5PSpvg4DtLY" target="_blank" title="May require LinkedIn login">View on LinkedIn →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== CARD 3: Yahya Aqel ==================== -->
+    <div class="lead-card" id="card-3">
+      <div class="card-header" onclick="toggleCard('card-3')">
+        <span class="signal-badge warm">WARM</span>
+        <div class="card-header-info">
+          <div class="lead-name">Yahya Aqel</div>
+          <div class="lead-company">Co-Founder & CEO · Aumet Inc.</div>
+          <div class="why-now-line">Funding and finance signals at B2B healthcare data company, US-registered entity</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit: YES</span>
+        <span class="expand-icon">&#9662;</span>
+      </div>
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item"><a href="https://aumet.com" target="_blank">aumet.com</a></span>
+          <span class="identity-item">Mountain View, CA · US-registered</span>
+          <span class="identity-item">51-200 employees</span>
+          <span class="identity-item">B2B Healthcare Data</span>
+          <span class="identity-item">$25M-$75M revenue</span>
+        </div>
+        <div class="tag-row">
+          <span class="tag industry">Healthcare</span>
+          <span class="tag industry">B2B Data Platform</span>
+          <span class="tag signal">Finance Hiring · Active</span>
+          <span class="tag context">Co-Founder Led · Multi-Market</span>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Active Market Signals</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Finance Department Hiring</div>
+              <div class="signal-timing">Active signal · last 90 days</div>
+              <div class="signal-desc">Aumet is adding finance headcount at the $25M-$75M stage, which for a multi-jurisdiction B2B healthcare data company points directly at consolidated reporting, multi-entity finance architecture, and management reporting infrastructure needs. These are high-complexity problems that benefit from experienced finance transformation advisory.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">Multi-Market Operations</div>
+              <div class="signal-timing">Established · US, Saudi Arabia, Jordan, Egypt, Oman</div>
+              <div class="signal-desc">Operating across five markets introduces multi-currency reporting, transfer pricing considerations, and intercompany reconciliation complexity that a standard finance function often cannot handle without specific infrastructure design. This creates a structured entry point for finance operations and process improvement conversations.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing <span class="card-section-subtitle">Configured for Mahen's Practice</span></div>
+          <div class="intel-grid">
+            <div class="intel-cell"><div class="intel-cell-label">Leadership Movement</div><div class="intel-cell-value">No leadership movement in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Capital Activity</div><div class="intel-cell-value">No public funding activity in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Hiring Signals</div><div class="intel-cell-value">Finance department hiring activity detected in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Expansion Signals</div><div class="intel-cell-value">Multi-market operating footprint across Middle East and North Africa</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Growth Trajectory</div><div class="intel-cell-value">B2B healthcare data platform scaling across 5 markets, $25M-$75M revenue</div></div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Work Email</div>
+                <div class="contact-value">y.aqel@aumet.me</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('y.aqel@aumet.me', this)">Copy</button>
+            </div>
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Mobile</div>
+                <div class="contact-value unavailable">Direct contact not on record</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div class="why-block">
+              <div class="why-block-title">ICP Fit for Mahen</div>
+              <div class="why-block-text">Yahya runs a US-registered B2B healthcare data company with multi-market operations — precisely the scenario where finance operations complexity and cross-border reporting become intractable without deliberate architecture. Mahen's background in healthcare, financial systems integration, and process improvement maps directly to the problems a company like Aumet faces as it scales across jurisdictions. The active finance hiring signal confirms the gap is being actively addressed.</div>
+              <div class="fit-signal">
+                <div class="fit-signal-label">Strongest Fit Signal</div>
+                Finance hiring at a multi-market healthcare data company with cross-border reporting complexity
+              </div>
+            </div>
+            <div class="why-block">
+              <div class="why-block-title">Why They're Looking</div>
+              <div class="why-block-text">Co-founders running multi-market operations at this revenue stage are typically dealing with a finance function that was built for a single-market startup and has not scaled with the business. Intercompany reconciliation, multi-currency management reporting, and consolidated financial statements become acute pain points before the right hire is in place. The decision to add finance headcount often precedes a broader infrastructure conversation.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal <span class="card-section-subtitle">2 Channels Ready</span></div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="conn-note-3">
+              Noticed Aumet is building out its finance team across a multi-market operation. I work with healthcare companies on finance transformation and cross-border financial systems. Would be glad to connect.
+              <div class="char-count">198 characters · LinkedIn limit: 300</div>
+            </div>
+            <button class="copy-action-btn" onclick="copyElementText('conn-note-3', this)">Copy Connection Note</button>
+          </div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Email Draft · Ready to Send</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject Line</div>
+              <div class="email-subject-value" id="email-subj-3">Finance infrastructure across Aumet's markets</div>
+              <div class="email-body" id="email-body-3">Yahya,
+
+Noticed Aumet is adding finance headcount. Running a B2B healthcare platform across Saudi Arabia, Jordan, Egypt, and Oman from a US-registered entity creates a specific class of finance operations problems — multi-entity reporting, intercompany reconciliation, and consolidated management reporting that standard accounting tools handle poorly at this scale.
+
+I work with healthcare founders on finance transformation and financial systems design. The multi-market finance architecture problem is one I have dealt with directly across companies in your revenue range.
+
+Would a 15-minute conversation on how other companies at this stage have structured the finance function be worth your time?
+
+Mahen Gosar
+Twenty Consulting · twentyconsulting.com</div>
+              <div class="email-meta">
+                <span class="email-word-count">~125 words · safe for cold send</span>
+                <span class="email-safe-label">Ready to Send</span>
+              </div>
+            </div>
+            <button class="copy-action-btn" onclick="copyFullEmail('email-subj-3', 'email-body-3', this)">Copy Email Draft</button>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Prospect Intelligence</div>
+          <div class="intel-callout">
+            <div class="intel-callout-label">Job Start Anniversary Detected</div>
+            Yahya reached his 5-year anniversary at Aumet approximately 3 months ago. Multi-year founder tenure paired with active finance hiring is a reliable signal that the company has reached the infrastructure maturity phase where outside finance advisory is often welcomed rather than viewed as a challenge to the existing team.
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Follow-Up Sequence <span class="card-section-subtitle">Built for This Lead's Signal</span></div>
+          <div class="touch-block">
+            <div class="touch-day-label">Day 0</div>
+            <div class="touch-type-label">Connection Request</div>
+            <div class="touch-message" id="touch1-3">Noticed Aumet is building out its finance team across a multi-market operation. I work with healthcare companies on finance transformation and cross-border financial systems. Would be glad to connect.</div>
+            <button class="copy-action-btn" onclick="copyToClipboard(document.getElementById('touch1-3').textContent.trim(), this)">Copy</button>
+          </div>
+          <div class="touch-collapsed-indicator">· · · 4 additional touches included in full delivery</div>
+        </div>
+        <div class="card-footer">
+          <a class="linkedin-btn" href="https://linkedin.com/in/ACoAAAs9xTMBbchKlu2_EbhbfxJ71aRqNai41bw" target="_blank" title="May require LinkedIn login">View on LinkedIn →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== CARD 4: Rajesh Davda ==================== -->
+    <div class="lead-card" id="card-4">
+      <div class="card-header" onclick="toggleCard('card-4')">
+        <span class="signal-badge warm">WARM</span>
+        <div class="card-header-info">
+          <div class="lead-name">Rajesh Davda, MD MBA</div>
+          <div class="lead-company">Chief Medical Officer · Community Health Center Network</div>
+          <div class="why-now-line">Finance hiring signal at federally qualified health center network, Alameda County CA</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit: YES</span>
+        <span class="expand-icon">&#9662;</span>
+      </div>
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item"><a href="https://chcnetwork.org" target="_blank">chcnetwork.org</a></span>
+          <span class="identity-item">San Leandro, CA · US</span>
+          <span class="identity-item">51-200 employees</span>
+          <span class="identity-item">Healthcare · Nonprofit MSO</span>
+          <span class="identity-item">$25M-$75M revenue</span>
+        </div>
+        <div class="tag-row">
+          <span class="tag industry">Healthcare</span>
+          <span class="tag industry">Nonprofit · MSO</span>
+          <span class="tag signal">Finance Hiring · Active</span>
+          <span class="tag context">Government-Backed · Multi-Site</span>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Active Market Signals</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Finance Department Hiring</div>
+              <div class="signal-timing">Active signal · last 90 days</div>
+              <div class="signal-desc">CHCN is actively adding finance staff at a managed services organization serving eight federally qualified health centers. Nonprofit healthcare at this structure carries complex grant reporting, Medi-Cal contract management, and multi-entity financial consolidation — all areas where finance operations and process improvement expertise creates immediate, measurable value.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">Multi-Site Operations</div>
+              <div class="signal-timing">Established · 8-site network, Alameda County CA</div>
+              <div class="signal-desc">An eight-center network operating under a single MSO structure means centralized financial reporting has to accommodate eight cost centers, multiple payer contracts, and standardized reporting for federal compliance. This is precisely the type of financial systems and process integration work that maps to Mahen's background at DLC and in multi-entity environments.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing <span class="card-section-subtitle">Configured for Mahen's Practice</span></div>
+          <div class="intel-grid">
+            <div class="intel-cell"><div class="intel-cell-label">Leadership Movement</div><div class="intel-cell-value">No leadership movement in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Capital Activity</div><div class="intel-cell-value">No public funding activity in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Hiring Signals</div><div class="intel-cell-value">Finance department hiring activity detected in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Expansion Signals</div><div class="intel-cell-value">No expansion signals in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Growth Trajectory</div><div class="intel-cell-value">Multi-site nonprofit MSO serving 8 FQHCs, $25M-$75M revenue range</div></div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Work Email</div>
+                <div class="contact-value">rdavda@chcnetwork.org</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('rdavda@chcnetwork.org', this)">Copy</button>
+            </div>
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Mobile</div>
+                <div class="contact-value">+1 (817) 366-8694</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('+18173668694', this)">Copy</button>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div class="why-block">
+              <div class="why-block-title">ICP Fit for Mahen</div>
+              <div class="why-block-text">CHCN is a managed services organization with centralized finance responsibility across eight FQHCs — a structure that creates significant complexity in cost allocation, payer contract reporting, and multi-entity financial consolidation. Rajesh holds a CMO title with an MBA, making him a credible executive peer for a finance-adjacent conversation. Mahen's healthcare background and process improvement experience maps directly to the reporting and systems challenges this organization faces.</div>
+              <div class="fit-signal">
+                <div class="fit-signal-label">Strongest Fit Signal</div>
+                Finance hiring at an 8-site healthcare MSO with complex payer contract and multi-entity reporting needs
+              </div>
+            </div>
+            <div class="why-block">
+              <div class="why-block-title">Why They're Looking</div>
+              <div class="why-block-text">MSOs at CHCN's stage are typically managing finance consolidation manually across member health centers — a process that becomes unsustainable as headcount, payer contracts, and reporting requirements grow. The decision to add finance headcount is often preceded by a recognition that the current reporting infrastructure cannot support strategic decisions at the network level. Finance transformation advisory that addresses the architecture before the headcount fills the seats is the highest-value entry point.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal <span class="card-section-subtitle">2 Channels Ready</span></div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="conn-note-4">
+              Noticed CHCN is adding finance capacity. I work with multi-site healthcare organizations on financial systems integration and reporting infrastructure. The FQHC multi-entity structure is an area I have worked in specifically. Would be glad to connect.
+              <div class="char-count">246 characters · LinkedIn limit: 300</div>
+            </div>
+            <button class="copy-action-btn" onclick="copyElementText('conn-note-4', this)">Copy Connection Note</button>
+          </div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Email Draft · Ready to Send</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject Line</div>
+              <div class="email-subject-value" id="email-subj-4">Financial systems across CHCN's eight centers</div>
+              <div class="email-body" id="email-body-4">Rajesh,
+
+Noticed Community Health Center Network is adding to its finance team. Running a managed services operation across eight FQHCs creates a specific class of financial systems challenge — multi-entity consolidation, cost allocation across member centers, and Medi-Cal contract reporting that most standard setups handle inconsistently at scale.
+
+I work with healthcare organizations on financial systems integration, process improvement, and management reporting. The multi-entity FQHC structure is one I have dealt with directly.
+
+Would a 15-minute conversation on how organizations at CHCN's structure have approached the finance systems build be useful?
+
+Mahen Gosar
+Twenty Consulting · twentyconsulting.com</div>
+              <div class="email-meta">
+                <span class="email-word-count">~120 words · safe for cold send</span>
+                <span class="email-safe-label">Ready to Send</span>
+              </div>
+            </div>
+            <button class="copy-action-btn" onclick="copyFullEmail('email-subj-4', 'email-body-4', this)">Copy Email Draft</button>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Prospect Intelligence</div>
+          <div class="intel-callout">
+            <div class="intel-callout-label">Role Start Anniversary Detected</div>
+            Rajesh reached his 1-year mark as Chief Medical Officer at CHCN approximately 6 weeks ago. The first 12-18 months in a senior healthcare leadership role is often when executives begin evaluating the adequacy of the organization's finance and operational infrastructure. This is a natural window for a peer-level conversation about finance systems.
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Follow-Up Sequence <span class="card-section-subtitle">Built for This Lead's Signal</span></div>
+          <div class="touch-block">
+            <div class="touch-day-label">Day 0</div>
+            <div class="touch-type-label">Connection Request</div>
+            <div class="touch-message" id="touch1-4">Noticed CHCN is adding finance capacity. I work with multi-site healthcare organizations on financial systems integration and reporting infrastructure. The FQHC multi-entity structure is an area I have worked in specifically. Would be glad to connect.</div>
+            <button class="copy-action-btn" onclick="copyToClipboard(document.getElementById('touch1-4').textContent.trim(), this)">Copy</button>
+          </div>
+          <div class="touch-collapsed-indicator">· · · 4 additional touches included in full delivery</div>
+        </div>
+        <div class="card-footer">
+          <a class="linkedin-btn" href="https://linkedin.com/in/ACoAAAMyauYBfsicmCCgQf_MRnV0ZgnPkFyLvZQ" target="_blank" title="May require LinkedIn login">View on LinkedIn →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== CARD 5: Ajit S. ==================== -->
+    <div class="lead-card" id="card-5">
+      <div class="card-header" onclick="toggleCard('card-5')">
+        <span class="signal-badge warm">WARM</span>
+        <div class="card-header-info">
+          <div class="lead-name">Ajit S.</div>
+          <div class="lead-company">Chief Product Officer · Subtle Medical</div>
+          <div class="why-now-line">Finance hiring signal at AI medical imaging company, Menlo Park CA</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit: YES</span>
+        <span class="expand-icon">&#9662;</span>
+      </div>
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item"><a href="https://subtlemedical.com" target="_blank">subtlemedical.com</a></span>
+          <span class="identity-item">Menlo Park, CA · US</span>
+          <span class="identity-item">51-200 employees</span>
+          <span class="identity-item">AI Medical Imaging · SaaS</span>
+          <span class="identity-item">$25M-$75M revenue</span>
+        </div>
+        <div class="tag-row">
+          <span class="tag industry">Healthcare</span>
+          <span class="tag industry">AI · Medical Imaging</span>
+          <span class="tag signal">Finance Hiring · Active</span>
+          <span class="tag context">Deep-Tech · FDA-Regulated</span>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Active Market Signals</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Finance Department Hiring</div>
+              <div class="signal-timing">Active signal · last 90 days</div>
+              <div class="signal-desc">Subtle Medical is actively adding finance headcount — a signal that its AI medical imaging platform has reached the revenue stage where software revenue recognition, FDA compliance cost allocation, and customer contract economics require structured financial management. This is precisely the inflection point where FP&amp;A advisory and finance transformation work delivers the highest leverage.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">Deep-Tech Scaling Stage</div>
+              <div class="signal-timing">$25M-$75M revenue · 51-200 employees</div>
+              <div class="signal-desc">AI medical software at this revenue stage typically carries complex deferred revenue, R&amp;D capitalization decisions, and FDA compliance cost accounting that requires a finance function capable of navigating both GAAP complexity and healthcare regulatory context. Mahen's dual background in healthcare and financial systems integration is a direct match for this profile.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing <span class="card-section-subtitle">Configured for Mahen's Practice</span></div>
+          <div class="intel-grid">
+            <div class="intel-cell"><div class="intel-cell-label">Leadership Movement</div><div class="intel-cell-value">No leadership movement in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Capital Activity</div><div class="intel-cell-value">No public funding activity in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Hiring Signals</div><div class="intel-cell-value">Finance department hiring activity detected in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Expansion Signals</div><div class="intel-cell-value">No expansion signals in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Growth Trajectory</div><div class="intel-cell-value">AI medical imaging SaaS scaling through FDA-regulated commercial stage, $25M-$75M</div></div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Work Email</div>
+                <div class="contact-value unavailable">Direct contact not on record</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div class="why-block">
+              <div class="why-block-title">ICP Fit for Mahen</div>
+              <div class="why-block-text">Subtle Medical operates at the intersection of AI and healthcare regulatory compliance — a combination that creates distinctive finance complexity around R&amp;D cost capitalization, revenue recognition for SaaS healthcare contracts, and FDA-related cost accounting. Mahen's technology fluency, healthcare industry background, and financial modeling depth position him well for a conversation with a senior technology executive who will be sensitive to the finance function's ability to support product and regulatory decisions.</div>
+              <div class="fit-signal">
+                <div class="fit-signal-label">Strongest Fit Signal</div>
+                Finance hiring at an AI medical imaging company with FDA regulatory cost and SaaS revenue recognition complexity
+              </div>
+            </div>
+            <div class="why-block">
+              <div class="why-block-title">Why They're Looking</div>
+              <div class="why-block-text">CPOs at deep-tech healthcare companies are acutely aware of the relationship between finance function quality and their ability to make product investment decisions credibly. At the $25M-$75M stage, R&amp;D capitalization and revenue recognition directly affect how the company's financials read to investors and acquirers. The decision to hire in finance is often driven by a recognition that the current setup cannot support the reporting sophistication the company's next stage requires.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal <span class="card-section-subtitle">2 Channels Ready</span></div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="conn-note-5">
+              Noticed Subtle Medical is building out its finance team. I work with healthcare technology companies on FP&A and financial systems — specifically at the stage where R&D capitalization and SaaS revenue recognition need to be structured properly. Would be glad to connect.
+              <div class="char-count">262 characters · LinkedIn limit: 300</div>
+            </div>
+            <button class="copy-action-btn" onclick="copyElementText('conn-note-5', this)">Copy Connection Note</button>
+          </div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Email Draft · Ready to Send</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject Line</div>
+              <div class="email-subject-value" id="email-subj-5">Finance function build at Subtle Medical</div>
+              <div class="email-body" id="email-body-5">Ajit,
+
+Noticed Subtle Medical is adding finance headcount. AI medical imaging software at the $25M-$75M stage tends to carry a specific cluster of finance complexity — deferred revenue and SaaS contract accounting, R&D capitalization decisions, and FDA compliance cost allocation that most standard finance teams have not dealt with before.
+
+I work with healthcare technology companies on finance transformation and FP&A infrastructure, specifically at the stage where the reporting needs to support both board-level conversations and regulatory context.
+
+Would a 15-minute conversation on how companies at Subtle's stage have structured the finance function be worth your time?
+
+Mahen Gosar
+Twenty Consulting · twentyconsulting.com</div>
+              <div class="email-meta">
+                <span class="email-word-count">~125 words · safe for cold send</span>
+                <span class="email-safe-label">Ready to Send</span>
+              </div>
+            </div>
+            <button class="copy-action-btn" onclick="copyFullEmail('email-subj-5', 'email-body-5', this)">Copy Email Draft</button>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Follow-Up Sequence <span class="card-section-subtitle">Built for This Lead's Signal</span></div>
+          <div class="touch-block">
+            <div class="touch-day-label">Day 0</div>
+            <div class="touch-type-label">Connection Request</div>
+            <div class="touch-message" id="touch1-5">Noticed Subtle Medical is building out its finance team. I work with healthcare technology companies on FP&A and financial systems — specifically at the stage where R&D capitalization and SaaS revenue recognition need to be structured properly. Would be glad to connect.</div>
+            <button class="copy-action-btn" onclick="copyToClipboard(document.getElementById('touch1-5').textContent.trim(), this)">Copy</button>
+          </div>
+          <div class="touch-collapsed-indicator">· · · 4 additional touches included in full delivery</div>
+        </div>
+        <div class="card-footer">
+          <a class="linkedin-btn" href="https://linkedin.com/in/ACoAAAFBVssBp_FK-hxyptEBJnelvSGECdaHI_w" target="_blank" title="May require LinkedIn login">View on LinkedIn →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pipeline Math Panel -->
+    <div class="pipeline-math">
+      <div class="pipeline-math-text">
+        Five leads like these are delivered every week in the full system.
+        Over 12 weeks: <strong>120 ICP-matched buyers</strong> in Mahen's network,
+        each carrying an active signal. The math from there is Mahen's to run.
+      </div>
+    </div>
+
+    <!-- Visual Graphics Section -->
+    <div class="visuals-section">
+      <div class="visuals-header">
+        <div class="visuals-copy">
+          <h3>Every Monday, your content arrives finished.</h3>
+          <p>The leads are one side of the system. The content is the other. Decision-makers skim before they read. A post without a visual is half a post. Consultants who post with structured visuals consistently outperform those who post text alone — not because their thinking is sharper, but because the visual stops the scroll long enough for the thinking to land.</p>
+          <p>Every piece that benefits from a visual gets one. Finished. Attached. Ready to schedule.</p>
+          <ul class="visuals-list">
+            <li><span class="visuals-list-dot">→</span> 3 LinkedIn posts per week in your voice, formatted and ready</li>
+            <li><span class="visuals-list-dot">→</span> Carousel covers, quote graphics, and infographics — finished PNG files</li>
+            <li><span class="visuals-list-dot">→</span> Monthly strategy session walking through the week's package</li>
+            <li><span class="visuals-list-dot">→</span> Zero design work on your end. Zero</li>
+          </ul>
+        </div>
+        <div>
+          <div class="visuals-tiles">
+            <div class="visual-tile carousel"><div class="visual-tile-inner"><div class="tile-accent-bar"></div><div class="tile-lines"><div class="tile-line full"></div><div class="tile-line medium"></div><div class="tile-line short"></div></div></div><div class="tile-label">Carousel Cover</div></div>
+            <div class="visual-tile post"><div class="visual-tile-inner"><div class="tile-accent-bar"></div><div class="tile-lines"><div class="tile-line medium"></div><div class="tile-line full"></div><div class="tile-line short"></div></div></div><div class="tile-label">Post Visual</div></div>
+            <div class="visual-tile infographic"><div class="visual-tile-inner"><div class="tile-accent-bar"></div><div class="tile-lines"><div class="tile-line full"></div><div class="tile-line short"></div><div class="tile-line medium"></div></div></div><div class="tile-label">Infographic</div></div>
+          </div>
+          <div class="visuals-note"><strong>Visuals are finished and attached in the Monday package.</strong><br>You schedule. Nothing to design. Nothing to brief.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA Footer -->
+    <div class="cta-footer">
+      <div class="cta-footer-headline">This is what one week of the full system looks like for Mahen.</div>
+      <div class="cta-footer-subhead">Every Monday: 10 ICP-matched buyers with full signal intelligence, direct contact details, and outreach ready to send. Plus 3 posts and finished visuals in your voice. 30 minutes of your time per week.</div>
+      <a class="cta-footer-btn" href="https://calendly.com/saurabh_zentro/30-min" target="_blank">Book Your 20-Min Fit Call →</a>
+      <div class="cta-footer-note">No pitch. No deck. We talk through your specific situation and confirm whether this is the right fit.</div>
+    </div>
+
+  </div><!-- end pipeline view -->
+
+  <!-- CONTENT ENGINE VIEW -->
+  <div class="view" id="view-content">
+
+    <div class="welcome-banner">
+      <div class="welcome-tag">Content Engine · Personalized for Mahen G.</div>
+      <div class="welcome-text">
+        Two sample LinkedIn posts written in your voice — one teaching post and one handraiser.
+        These are the kinds of posts that generate buyer conversations rather than peer likes.
+        <strong>Every Monday delivery includes three posts like these, plus finished visuals attached.</strong>
+        Your only job is to review, approve, and schedule from your own account.
+      </div>
+    </div>
+
+    <div class="post-cards-grid">
+      <div class="post-card">
+        <div class="post-type-label">Teaching Post</div>
+        <div class="post-type-desc">Finance pattern insight · designed to establish authority with CEOs and founders at scaling companies</div>
+        <div class="post-text">Most founders think the finance function build starts with the CFO hire.
+
+It does not.
+
+The CFO hire solves the capacity problem. It does not solve the architecture problem.
+
+The companies that scale finance cleanly start with the structure: what the forecasting model needs to do, how COGS gets allocated across product lines, what management reporting has to tell the board. They build the architecture first. The hire fills it.
+
+The companies that hire first and build after spend six months teaching the new CFO what the business actually looks like financially — and often rebuild the model from scratch anyway.
+
+Not a process problem. Not a headcount problem. An architecture decision that gets made before the hire or after the hire. The timing determines how painful the next twelve months are.
+
+Comment FRAMEWORK and I will send you the finance infrastructure build sequence I use with founders at the $10M-$75M stage.</div>
+        <div class="post-cta-line">CTA: Comment FRAMEWORK</div>
+      </div>
+      <div class="post-card">
+        <div class="post-type-label">Handraiser Post</div>
+        <div class="post-type-desc">Signal-based buyer identifier · designed to generate LEAD comments from CFO-ready founders and senior executives</div>
+        <div class="post-text">Three signals that a company's finance function is about to become a problem:
+
+The forecasting model is a spreadsheet that only one person understands.
+
+The board asks a question about gross margin and the answer takes three days.
+
+The company just hired a finance person and the first project is to figure out what the existing numbers actually mean.
+
+These are not isolated incidents. They are the same pattern at a different stage of the same problem. The finance infrastructure was not built to scale with the business. It was built to get through the current quarter.
+
+I work with founders and operators in healthcare, manufacturing, and retail on the finance infrastructure build — FP&A architecture, pricing model design, financial systems integration. The work happens before the crisis, not after.
+
+If any of these signals are active in your company right now, comment LEAD and I will send you a sample of how I map the problem for companies at your stage.</div>
+        <div class="post-cta-line">CTA: Comment LEAD</div>
+      </div>
+    </div>
+
+    <!-- Visual Graphics Section (Content Engine version) -->
+    <div class="visuals-section">
+      <div class="visuals-header">
+        <div class="visuals-copy">
+          <h3>Content without visuals is half a system.</h3>
+          <p>Most consultants post text. The ones building consistent inbound post text with structure behind it. A carousel that breaks down a framework visually gets saved. A quote graphic gets shared. An infographic gets screenshotted. Saves, shares, and screenshots reach buyers who never followed you. That is organic reach you do not have to pay for.</p>
+          <p>The full system produces the visuals. You attach and schedule.</p>
+          <ul class="visuals-list">
+            <li><span class="visuals-list-dot">→</span> 2 carousels per month with finished slide visuals</li>
+            <li><span class="visuals-list-dot">→</span> 2 standalone infographics per month</li>
+            <li><span class="visuals-list-dot">→</span> Post graphics for any text post that benefits from one</li>
+            <li><span class="visuals-list-dot">→</span> All delivered as finished PNG files in the Monday package</li>
+          </ul>
+        </div>
+        <div>
+          <div class="visuals-tiles">
+            <div class="visual-tile carousel"><div class="visual-tile-inner"><div class="tile-accent-bar"></div><div class="tile-lines"><div class="tile-line full"></div><div class="tile-line medium"></div><div class="tile-line short"></div></div></div><div class="tile-label">Carousel Cover</div></div>
+            <div class="visual-tile post"><div class="visual-tile-inner"><div class="tile-accent-bar"></div><div class="tile-lines"><div class="tile-line medium"></div><div class="tile-line full"></div><div class="tile-line short"></div></div></div><div class="tile-label">Post Visual</div></div>
+            <div class="visual-tile infographic"><div class="visual-tile-inner"><div class="tile-accent-bar"></div><div class="tile-lines"><div class="tile-line full"></div><div class="tile-line short"></div><div class="tile-line medium"></div></div></div><div class="tile-label">Infographic</div></div>
+          </div>
+          <div class="visuals-note"><strong>18 content pieces per month. Finished. Attached. Ready to schedule.</strong><br>Your client schedules from their own account. Zero design work on your end.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA Footer -->
+    <div class="cta-footer">
+      <div class="cta-footer-headline">This is what one week of the full system looks like for Mahen.</div>
+      <div class="cta-footer-subhead">Every Monday: 10 ICP-matched buyers with full signal intelligence, direct contact details, and outreach ready to send. Plus 3 posts and finished visuals in your voice. 30 minutes of your time per week.</div>
+      <a class="cta-footer-btn" href="https://calendly.com/saurabh_zentro/30-min" target="_blank">Book Your 20-Min Fit Call →</a>
+      <div class="cta-footer-note">No pitch. No deck. We talk through your specific situation and confirm whether this is the right fit.</div>
+    </div>
+
+  </div><!-- end content view -->
+
+</main>
+
+<script>
+function showView(name, triggerEl) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view-' + name).classList.add('active');
+  document.querySelectorAll('.nav-item, .tab-btn, .mobile-tab-pill').forEach(el => el.classList.remove('active'));
+  const navEl = document.getElementById('nav-' + name);
+  if (navEl) navEl.classList.add('active');
+  document.querySelectorAll('.tab-btn, .mobile-tab-pill').forEach(btn => {
+    if (btn.getAttribute('onclick') && btn.getAttribute('onclick').includes("'" + name + "'")) {
+      btn.classList.add('active');
+    }
+  });
+}
+
+function toggleCard(cardId) {
+  document.getElementById(cardId).classList.toggle('expanded');
+}
+
+function copyToClipboard(text, btn) {
+  navigator.clipboard.writeText(text).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = 'Copied.';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 2000);
+  }).catch(() => {
+    const el = document.createElement('textarea');
+    el.value = text;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+    btn.textContent = 'Copied.';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+function copyElementText(elementId, btn) {
+  const el = document.getElementById(elementId);
+  if (!el) return;
+  const charCountEl = el.querySelector('.char-count');
+  let text = el.textContent;
+  if (charCountEl) text = text.replace(charCountEl.textContent, '').trim();
+  copyToClipboard(text, btn);
+}
+
+function copyFullEmail(subjId, bodyId, btn) {
+  const subj = document.getElementById(subjId);
+  const body = document.getElementById(bodyId);
+  const text = 'Subject: ' + (subj ? subj.textContent.trim() : '') + '\n\n' + (body ? body.textContent.trim() : '');
+  copyToClipboard(text, btn);
+}
+</script>
+</body>
+</html>
