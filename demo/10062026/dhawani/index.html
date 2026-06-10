@@ -1,0 +1,1340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dhwani D. · Lead Demo · Pipelind</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0A0A12;
+  --bg2: #12121E;
+  --bg3: #0E0E19;
+  --primary: #6A66A3;
+  --primary-light: #9B98C4;
+  --accent: #FF9900;
+  --success: #019047;
+  --success-light: #5AC88A;
+  --text: rgba(255,255,255,0.90);
+  --text-dim: rgba(255,255,255,0.72);
+  --text-muted: rgba(255,255,255,0.55);
+  --border: rgba(106,102,163,0.25);
+  --border-hover: rgba(106,102,163,0.55);
+  --hot: #FF4444;
+  --warm: #FF9900;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: "Plus Jakarta Sans", sans-serif; min-height: 100vh; }
+
+.sidebar {
+  position: fixed; top: 0; left: 0; width: 240px; height: 100vh;
+  background: var(--bg2); border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; padding: 24px 20px; z-index: 100;
+}
+.sidebar-logo { font-family: "Space Mono", monospace; font-size: 13px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--primary-light); margin-bottom: 28px; }
+.prospect-block { margin-bottom: 32px; }
+.prospect-label { font-family: "Space Mono", monospace; font-size: 10px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px; }
+.prospect-name { font-size: 17px; font-weight: 800; color: var(--text); line-height: 1.25; }
+.prospect-meta { font-family: "Space Mono", monospace; font-size: 10px; color: var(--text-muted);
+  letter-spacing: .06em; margin-top: 4px; }
+.nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 8px;
+  cursor: pointer; margin-bottom: 4px; font-size: 13px; font-weight: 600; color: var(--text-dim);
+  transition: all .15s; border: 1px solid transparent; }
+.nav-item:hover { background: rgba(106,102,163,0.10); color: var(--text); }
+.nav-item.active { background: rgba(106,102,163,0.15); color: var(--primary-light); border-color: var(--border); }
+.sidebar-footer { margin-top: auto; font-family: "Space Mono", monospace; font-size: 10px;
+  color: var(--text-muted); letter-spacing: .04em; line-height: 1.8; }
+
+.mobile-topbar {
+  display: none; position: sticky; top: 0; z-index: 200;
+  background: var(--bg2); border-bottom: 1px solid var(--border);
+  padding: 14px 16px; align-items: center; justify-content: space-between;
+}
+.mobile-logo { font-family: "Space Mono", monospace; font-size: 12px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--primary-light); }
+.mobile-prospect-name { font-size: 13px; font-weight: 700; color: var(--text); }
+
+.mobile-tabs {
+  display: none; position: sticky; top: 53px; z-index: 199;
+  background: var(--bg); border-bottom: 1px solid var(--border);
+  padding: 10px 16px; gap: 8px;
+}
+.mobile-tab-pill { padding: 7px 16px; border-radius: 20px; font-size: 12px; font-weight: 700;
+  font-family: "Space Mono", monospace; letter-spacing: .06em; text-transform: uppercase;
+  cursor: pointer; border: 1px solid var(--border); color: var(--text-muted); background: transparent;
+  transition: all .15s; }
+.mobile-tab-pill.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+.main { margin-left: 240px; padding: 32px 36px; max-width: 1140px; }
+
+.tab-bar {
+  position: sticky; top: 0; z-index: 50; background: var(--bg);
+  border-bottom: 1px solid var(--border); display: flex; margin: -32px -36px 32px; padding: 0 36px;
+}
+.tab-btn { padding: 14px 22px; font-family: "Space Mono", monospace; font-size: 11px;
+  font-weight: 700; letter-spacing: .10em; text-transform: uppercase; color: var(--text-muted);
+  cursor: pointer; border: none; background: transparent; border-bottom: 2px solid transparent;
+  transition: all .15s; }
+.tab-btn.active { color: var(--primary-light); border-bottom-color: var(--primary); }
+
+.welcome-banner { background: linear-gradient(135deg, rgba(106,102,163,0.10) 0%, rgba(255,153,0,0.05) 100%);
+  border: 1px solid var(--border); border-radius: 12px; padding: 24px 28px; margin-bottom: 28px; }
+.welcome-tag { font-family: "Space Mono", monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+.welcome-text { font-size: 14px; line-height: 1.75; color: var(--text-dim); }
+.welcome-text strong { color: var(--text); font-weight: 700; }
+
+.pulse-panel { background: rgba(255,153,0,0.06); border: 1px solid rgba(255,153,0,0.25); border-radius: 10px;
+  padding: 18px 22px; margin-bottom: 24px; }
+.pulse-label { font-family: "Space Mono", monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+.pulse-text { font-size: 13px; color: var(--text-dim); line-height: 1.8; }
+
+.icp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 28px; }
+.icp-panel { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 20px 22px; }
+.icp-panel-title { font-family: "Space Mono", monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--primary-light); margin-bottom: 14px; }
+.icp-row { display: flex; justify-content: space-between; align-items: flex-start;
+  padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 12px; gap: 10px; }
+.icp-row:last-child { border-bottom: none; }
+.icp-key { color: var(--text-muted); flex-shrink: 0; }
+.icp-val { color: var(--text); font-weight: 600; text-align: right; }
+
+.section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.section-title { font-size: 18px; font-weight: 800; color: var(--text); }
+.section-sub { font-family: "Space Mono", monospace; font-size: 10px; color: var(--text-muted);
+  letter-spacing: .08em; text-transform: uppercase; }
+
+.lead-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px;
+  margin-bottom: 16px; overflow: hidden; transition: border-color .15s; }
+.lead-card:hover { border-color: var(--border-hover); }
+.lead-card .card-body { display: none; }
+.lead-card.expanded .card-body { display: block; }
+.lead-card.expanded .expand-icon { transform: rotate(180deg); }
+
+.card-header { display: flex; align-items: center; gap: 14px; padding: 18px 22px; cursor: pointer; }
+.signal-badge { font-family: "Space Mono", monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .10em; text-transform: uppercase; padding: 5px 10px; border-radius: 5px; flex-shrink: 0; }
+.signal-badge.hot { background: rgba(255,68,68,0.15); color: var(--hot); border: 1px solid rgba(255,68,68,0.30); }
+.signal-badge.warm { background: rgba(255,153,0,0.15); color: var(--warm); border: 1px solid rgba(255,153,0,0.30); }
+.card-header-info { flex: 1; }
+.lead-name { font-size: 16px; font-weight: 800; color: var(--text); }
+.lead-company { font-size: 12px; color: var(--text-dim); margin-top: 2px; }
+.why-now-line { font-family: "Space Mono", monospace; font-size: 10px; color: var(--accent);
+  letter-spacing: .06em; margin-top: 5px; }
+.icp-fit-badge { font-family: "Space Mono", monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase; padding: 5px 10px; border-radius: 5px;
+  background: rgba(1,144,71,0.15); color: var(--success-light); border: 1px solid rgba(1,144,71,0.30); flex-shrink: 0; }
+.expand-icon { color: var(--text-muted); font-size: 14px; transition: transform .2s; flex-shrink: 0; }
+
+.card-body { border-top: 1px solid var(--border); }
+.identity-strip { display: flex; flex-wrap: wrap; gap: 12px; padding: 14px 22px 0;
+  font-size: 12px; color: var(--text-dim); }
+.identity-item a { color: var(--primary-light); text-decoration: none; }
+.identity-item a:hover { text-decoration: underline; }
+
+.tag-row { display: flex; flex-wrap: wrap; gap: 8px; padding: 12px 22px; }
+.tag { font-family: "Space Mono", monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase; padding: 4px 10px; border-radius: 4px; }
+.tag.industry { background: rgba(106,102,163,0.12); color: var(--primary-light); border: 1px solid var(--border); }
+.tag.signal { background: rgba(255,153,0,0.10); color: var(--warm); border: 1px solid rgba(255,153,0,0.25); }
+.tag.context { background: rgba(90,200,138,0.10); color: var(--success-light); border: 1px solid rgba(90,200,138,0.25); }
+
+.card-section { padding: 18px 22px; border-top: 1px solid var(--border); }
+.card-section-title { font-family: "Space Mono", monospace; font-size: 11px; font-weight: 700;
+  letter-spacing: .10em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 14px; }
+.card-section-subtitle { font-weight: 400; color: var(--text-muted); font-size: 10px; margin-left: 8px; }
+
+.signal-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.signal-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+.signal-type { font-family: "Space Mono", monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .10em; text-transform: uppercase; color: var(--accent); margin-bottom: 4px; }
+.signal-timing { font-size: 11px; color: var(--text-muted); margin-bottom: 8px; }
+.signal-desc { font-size: 13px; color: var(--text-dim); line-height: 1.65; }
+
+.intel-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+.intel-cell { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; }
+.intel-cell-label { font-family: "Space Mono", monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: .10em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px; }
+.intel-cell-value { font-size: 12px; color: var(--text-dim); line-height: 1.55; }
+
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.contact-item { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px;
+  display: flex; justify-content: space-between; align-items: center; }
+.contact-label { font-family: "Space Mono", monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: .10em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 5px; }
+.contact-value { font-size: 13px; color: var(--text); font-weight: 600; }
+.contact-value.unavailable { color: var(--text-muted); font-weight: 400; font-style: italic; }
+.copy-btn { font-family: "Space Mono", monospace; font-size: 10px; font-weight: 700; letter-spacing: .06em;
+  text-transform: uppercase; padding: 6px 12px; border-radius: 5px; border: 1px solid var(--border);
+  color: var(--primary-light); background: transparent; cursor: pointer; transition: all .15s; flex-shrink: 0; }
+.copy-btn:hover { background: rgba(106,102,163,0.15); border-color: var(--primary); }
+.copy-btn.copied { color: var(--success-light); border-color: var(--success); }
+
+.why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.why-block { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 16px 18px; }
+.why-block-title { font-family: "Space Mono", monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .10em; text-transform: uppercase; color: var(--primary-light); margin-bottom: 10px; }
+.why-block-text { font-size: 13px; color: var(--text-dim); line-height: 1.7; }
+.fit-signal { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
+.fit-signal-label { font-family: "Space Mono", monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: .10em; text-transform: uppercase; color: var(--accent); margin-bottom: 5px; }
+
+.outreach-channel { margin-bottom: 18px; }
+.outreach-channel-label { font-family: "Space Mono", monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .10em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; }
+.connection-note { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px;
+  padding: 14px 16px; font-size: 13px; color: var(--text-dim); line-height: 1.7; margin-bottom: 8px; }
+.char-count { font-family: "Space Mono", monospace; font-size: 10px; color: var(--text-muted); margin-top: 8px; }
+.copy-action-btn { font-family: "Space Mono", monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase; padding: 8px 16px; border-radius: 6px;
+  border: 1px solid var(--border); color: var(--primary-light); background: transparent;
+  cursor: pointer; transition: all .15s; margin-bottom: 4px; }
+.copy-action-btn:hover { background: rgba(106,102,163,0.15); border-color: var(--primary); }
+.copy-action-btn.copied { color: var(--success-light); border-color: var(--success); }
+
+.email-block { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 16px 18px; margin-bottom: 8px; }
+.email-subject-label { font-family: "Space Mono", monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: .10em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px; }
+.email-subject-value { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 14px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
+.email-body { font-size: 13px; color: var(--text-dim); line-height: 1.8; white-space: pre-line; }
+.email-meta { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
+.email-word-count { font-family: "Space Mono", monospace; font-size: 10px; color: var(--text-muted); }
+.email-safe-label { font-family: "Space Mono", monospace; font-size: 10px; color: var(--success-light);
+  background: rgba(1,144,71,0.10); padding: 3px 8px; border-radius: 4px; border: 1px solid rgba(1,144,71,0.25); }
+
+.dm-engine { background: var(--bg3); border: 1px solid rgba(255,153,0,0.20); border-radius: 10px; padding: 18px 20px; margin-top: 8px; }
+.dm-engine-header { font-family: "Space Mono", monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin-bottom: 14px; }
+.touch-block { padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.touch-block:last-of-type { border-bottom: none; }
+.touch-label { font-family: "Space Mono", monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: .10em; text-transform: uppercase; color: var(--primary-light); margin-bottom: 4px; }
+.touch-type-label { font-size: 11px; color: rgba(255,255,255,0.55); margin-bottom: 8px; }
+.touch-message { font-size: 14px; color: rgba(255,255,255,0.90); line-height: 1.65; margin-bottom: 10px; }
+.touch-collapsed-indicator { font-size: 12px; color: rgba(255,255,255,0.45); font-style: italic; padding: 10px 0; }
+
+.card-footer { padding: 12px 22px; background: var(--bg3); border-top: 1px solid var(--border); display: flex; justify-content: flex-end; }
+.linkedin-btn { font-family: "Space Mono", monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase; padding: 8px 16px; border-radius: 6px;
+  border: 1px solid var(--border); color: var(--primary-light); text-decoration: none; transition: all .15s; }
+.linkedin-btn:hover { border-color: var(--primary); background: rgba(106,102,163,0.10); }
+
+.pipeline-math { background: rgba(106,102,163,0.06); border: 1px solid var(--border);
+  border-radius: 12px; padding: 22px 28px; margin: 28px 0; text-align: center; }
+.pipeline-math-text { font-size: 15px; color: var(--text-dim); line-height: 1.8; }
+.pipeline-math-text strong { color: var(--primary-light); font-weight: 700; }
+
+.visuals-section { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; padding: 28px 32px; margin: 28px 0; }
+.visuals-header { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-bottom: 24px; }
+.visuals-copy h3 { font-size: 18px; font-weight: 800; color: var(--text); line-height: 1.3; margin-bottom: 12px; }
+.visuals-copy p { font-size: 13px; color: var(--text-dim); line-height: 1.75; margin-bottom: 10px; }
+.visuals-list { list-style: none; margin-top: 14px; }
+.visuals-list li { font-size: 13px; color: var(--text-dim); padding: 6px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04); display: flex; gap: 10px; }
+.visuals-list li:last-child { border-bottom: none; }
+.visuals-list-dot { color: var(--success-light); font-weight: 700; flex-shrink: 0; }
+.visuals-tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.visual-tile { border-radius: 10px; overflow: hidden; }
+.visual-tile-inner { aspect-ratio: 4/3; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 16px; }
+.visual-tile.carousel { background: linear-gradient(135deg, #1B2A4A 0%, #243655 100%); border: 1px solid rgba(240,165,0,0.20); }
+.visual-tile.post { background: linear-gradient(135deg, #1B2A4A 0%, #1D2D47 100%); border: 1px solid rgba(240,165,0,0.15); }
+.visual-tile.infographic { background: linear-gradient(135deg, #162238 0%, #1B2A4A 100%); border: 1px solid rgba(240,165,0,0.10); }
+.tile-accent-bar { width: 36px; height: 3px; background: #F0A500; border-radius: 2px; margin-bottom: 12px; }
+.tile-lines { width: 100%; }
+.tile-line { height: 7px; background: rgba(245,240,232,0.15); border-radius: 3px; margin-bottom: 6px; }
+.tile-line.short { width: 60%; }
+.tile-line.medium { width: 80%; }
+.tile-line.full { width: 100%; }
+.tile-label { font-family: "Space Mono", monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); text-align: center; margin-top: 10px; padding: 6px; background: var(--bg3); }
+.visuals-note { font-size: 13px; color: var(--text-dim); text-align: center; margin-top: 18px;
+  padding-top: 18px; border-top: 1px solid var(--border); line-height: 1.7; }
+.visuals-note strong { color: var(--text); }
+
+.cta-footer { margin-top: 36px; background: linear-gradient(135deg, rgba(255,153,0,0.08) 0%, rgba(106,102,163,0.06) 100%);
+  border: 1px solid rgba(255,153,0,0.30); border-radius: 12px; padding: 36px 40px; text-align: center; }
+.cta-footer-headline { font-size: 22px; font-weight: 800; color: var(--text); letter-spacing: -.01em; margin-bottom: 14px; line-height: 1.3; }
+.cta-footer-subhead { font-size: 14px; color: var(--text-dim); line-height: 1.8; max-width: 680px; margin: 0 auto 26px; }
+.cta-footer-btn { display: inline-block; background: var(--accent); color: var(--bg);
+  padding: 15px 34px; border-radius: 8px; font-family: "Space Mono", monospace;
+  font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em;
+  text-decoration: none; transition: background .15s; margin-bottom: 14px; }
+.cta-footer-btn:hover { background: #ffb340; }
+.cta-footer-note { font-family: "Space Mono", monospace; font-size: 11px; color: var(--text-muted); letter-spacing: .04em; }
+
+.post-cards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 28px; }
+.post-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 24px 26px; }
+.post-type-label { font-family: "Space Mono", monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--primary-light); margin-bottom: 6px; }
+.post-type-desc { font-size: 11px; color: var(--text-muted); margin-bottom: 16px;
+  padding-bottom: 16px; border-bottom: 1px solid var(--border); line-height: 1.5; }
+.post-text { font-size: 13px; color: var(--text-dim); line-height: 1.85; white-space: pre-line; }
+.post-cta-line { margin-top: 14px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.06);
+  font-size: 12px; color: var(--accent); font-weight: 600; }
+
+.view { display: none; }
+.view.active { display: block; }
+
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+  .mobile-topbar { display: flex; }
+  .mobile-tabs { display: flex; }
+  .main { margin-left: 0; padding: 16px; }
+  .tab-bar { display: none; }
+  .icp-grid { grid-template-columns: 1fr; }
+  .signal-cards { grid-template-columns: 1fr; }
+  .intel-grid { grid-template-columns: 1fr 1fr; }
+  .contact-grid { grid-template-columns: 1fr; }
+  .why-grid { grid-template-columns: 1fr; }
+  .nurture-grid { grid-template-columns: 1fr; }
+  .post-cards-grid { grid-template-columns: 1fr; }
+  .visuals-header { grid-template-columns: 1fr; }
+  .card-header { flex-wrap: wrap; gap: 8px; }
+  .lead-name { font-size: 15px; }
+  .cta-footer { padding: 24px 20px; }
+  .cta-footer-btn { width: 100%; text-align: center; display: block; }
+  .email-meta { flex-direction: column; align-items: flex-start; gap: 8px; }
+}
+@media (max-width: 480px) {
+  .intel-grid { grid-template-columns: 1fr; }
+  .visuals-tiles { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- Mobile topbar -->
+<div class="mobile-topbar">
+  <div class="mobile-logo">Pipelind</div>
+  <div class="mobile-prospect-name">Dhwani's Report</div>
+</div>
+
+<!-- Mobile tab pills -->
+<div class="mobile-tabs">
+  <button class="mobile-tab-pill active" onclick="showView('pipeline', this)">Pipeline Engine</button>
+  <button class="mobile-tab-pill" onclick="showView('content', this)">Content Engine</button>
+</div>
+
+<!-- Desktop sidebar -->
+<nav class="sidebar">
+  <div class="sidebar-logo">Pipelind</div>
+  <div class="prospect-block">
+    <div class="prospect-label">Personalized For</div>
+    <div class="prospect-name">Dhwani D.</div>
+    <div class="prospect-meta">June 2026 · Lead Demo</div>
+  </div>
+  <div class="nav-item active" id="nav-pipeline" onclick="showView('pipeline', this)">Pipeline Engine</div>
+  <div class="nav-item" id="nav-content" onclick="showView('content', this)">Content Engine</div>
+  <div class="sidebar-footer">Personalized build<br>Real signal data<br>Sample of your full delivery</div>
+</nav>
+
+<!-- Main content -->
+<main class="main">
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="showView('pipeline', this)">Pipeline Engine</button>
+    <button class="tab-btn" onclick="showView('content', this)">Content Engine</button>
+  </div>
+
+  <!-- PIPELINE ENGINE VIEW -->
+  <div id="view-pipeline" class="view active">
+
+    <div class="welcome-banner">
+      <div class="welcome-tag">Pipeline Engine · Personalised for Dhwani</div>
+      <div class="welcome-text">
+        Founders don't know they need a fractional CFO until a signal fires. A funding round closes and the cash management question has no answer. A finance hire falls through and the books are unattended for 90 days. A growth-stage company hits the scaling wall and discovers the numbers have not kept pace with the headcount.<br><br>
+        <strong>Every lead below has at least one of those signals active right now.</strong> Each card includes the signal context, a ready-to-send connection note, a full email draft, and a 5-touch conversation sequence you can deploy from your own account.
+      </div>
+    </div>
+
+    <div class="pulse-panel">
+      <div class="pulse-label">Market Intelligence Pulse &middot; Week of June 10, 2026</div>
+      <div class="pulse-text">This week's signal pool shows active funding activity across 8 software and AI companies in the $10M-$25M revenue band, with finance department hiring signals at 4 of them and 2 showing recent leadership transitions in the finance function. The funding-plus-finance-hiring combination is the clearest buying window for fractional CFO work: cash just came in, no one is managing it with rigor, and the founder knows it. Content angle: the cash clarity post maps directly to this moment, specifically why most funded founders can see revenue but cannot see cash.</div>
+    </div>
+
+    <div class="icp-grid">
+      <div class="icp-panel">
+        <div class="icp-panel-title">Target Buyer Profile</div>
+        <div class="icp-row"><span class="icp-key">Titles</span><span class="icp-val">Founder, CEO, Co-Founder</span></div>
+        <div class="icp-row"><span class="icp-key">Stage</span><span class="icp-val">Post-seed to Series B</span></div>
+        <div class="icp-row"><span class="icp-key">Headcount</span><span class="icp-val">11-200 employees</span></div>
+        <div class="icp-row"><span class="icp-key">Industries</span><span class="icp-val">SaaS, AI, Healthcare, Tech</span></div>
+        <div class="icp-row"><span class="icp-key">Geography</span><span class="icp-val">United States</span></div>
+        <div class="icp-row"><span class="icp-key">Revenue</span><span class="icp-val">$3M - $25M ARR</span></div>
+      </div>
+      <div class="icp-panel">
+        <div class="icp-panel-title">Sample Quality</div>
+        <div class="icp-row"><span class="icp-key">Total leads this sample</span><span class="icp-val">5</span></div>
+        <div class="icp-row"><span class="icp-key">Active signals</span><span class="icp-val">5 of 5</span></div>
+        <div class="icp-row"><span class="icp-key">Direct contact available</span><span class="icp-val">4 of 5</span></div>
+        <div class="icp-row"><span class="icp-key">Signal window</span><span class="icp-val">Last 90 days</span></div>
+        <div class="icp-row"><span class="icp-key">Full monthly delivery</span><span class="icp-val">40 leads like these</span></div>
+        <div class="icp-row"><span class="icp-key">Deduplication</span><span class="icp-val">Global · no repeats</span></div>
+      </div>
+    </div>
+
+    <div class="section-header">
+      <div class="section-title">ICP-Matched Buyers</div>
+      <div class="section-sub">5 of 40 monthly leads</div>
+    </div>
+
+    <!-- CARD 1: Nikhil Gupta - Vapi - EXPANDED -->
+    <div class="lead-card expanded" id="card-1">
+      <div class="card-header" onclick="toggleCard('card-1')">
+        <span class="signal-badge hot">HOT</span>
+        <div class="card-header-info">
+          <div class="lead-name">Nikhil Gupta</div>
+          <div class="lead-company">Founder &amp; CTO &middot; Vapi</div>
+          <div class="why-now-line">Raised $20M approximately 60 days ago &middot; Finance function scaling gap wide open</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit: YES</span>
+        <span class="expand-icon">&#9662;</span>
+      </div>
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item"><a href="https://vapi.ai" target="_blank">vapi.ai</a></span>
+          <span class="identity-item">San Francisco, CA</span>
+          <span class="identity-item">51-200 employees</span>
+          <span class="identity-item">Series A</span>
+          <span class="identity-item">AI Voice Infrastructure</span>
+        </div>
+        <div class="tag-row">
+          <span class="tag industry">AI / SaaS</span>
+          <span class="tag industry">Voice Infrastructure</span>
+          <span class="tag signal">Funding round &middot; ~60 days ago</span>
+          <span class="tag context">Finance hiring signal active</span>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Active Market Signals</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Capital Activity</div>
+              <div class="signal-timing">Approximately 60 days ago</div>
+              <div class="signal-desc">Vapi raised $20M to scale its voice AI infrastructure for enterprise clients. A round this size means a cash management mandate just appeared with no finance infrastructure to match it.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">Finance Department Hiring</div>
+              <div class="signal-timing">Active signal, last 90 days</div>
+              <div class="signal-desc">Finance department hiring trend detected at Vapi. The company is attempting to build the finance function from scratch post-funding, which is exactly the window where a fractional CFO delivers the highest leverage.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing <span class="card-section-subtitle">Configured for Dhwani's Practice</span></div>
+          <div class="intel-grid">
+            <div class="intel-cell">
+              <div class="intel-cell-label">Leadership Movement</div>
+              <div class="intel-cell-value">No leadership movement in last 90 days</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Capital Activity</div>
+              <div class="intel-cell-value">$20M raise confirmed, approximately 60 days ago. Series A stage.</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Hiring Signals</div>
+              <div class="intel-cell-value">Finance department hiring trend active. Company scaling headcount post-raise.</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Expansion Signals</div>
+              <div class="intel-cell-value">Enterprise market expansion indicated in company description.</div>
+            </div>
+            <div class="intel-cell">
+              <div class="intel-cell-label">Growth Trajectory</div>
+              <div class="intel-cell-value">$10M-$25M revenue range. 51-200 employees. Rapid headcount growth post-raise.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Work Email</div>
+                <div class="contact-value">nikhil@vapi.ai</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('nikhil@vapi.ai', this)">Copy</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div class="why-block">
+              <div class="why-block-title">ICP Fit for Dhwani</div>
+              <div class="why-block-text">Nikhil is a technical founder at a venture-backed AI company that just closed a growth round. Vapi sits squarely in Dhwani's stated ICP: growth-stage tech company, founder without a finance partner, active capital event requiring cash management. The company is building infrastructure at pace, which creates exactly the FP&amp;A, treasury, and reporting gap that Dhwani's practice fills.</div>
+              <div class="fit-signal">
+                <div class="fit-signal-label">Strongest Fit Signal</div>
+                $20M raise with active finance hiring signal indicates the cash management problem is acknowledged but unsolved.
+              </div>
+            </div>
+            <div class="why-block">
+              <div class="why-block-title">Why They're Looking</div>
+              <div class="why-block-text">A $20M raise creates immediate obligations: investor reporting, cash runway modeling, burn rate visibility, and payroll scaling. Nikhil is a technical founder, not a finance operator. The finance hiring signal suggests he knows this and is trying to solve it, but building a full-time finance team from scratch is slow. A fractional CFO delivers those answers in weeks, not months.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal <span class="card-section-subtitle">2 Channels Ready</span></div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="conn-note-1">Noticed Vapi closed a $20M round recently. Congrats on the milestone. I work with funded founders on cash clarity, FP&A, and investor reporting once capital comes in. Would love to connect.
+              <div class="char-count">221 characters &middot; LinkedIn limit: 300</div>
+            </div>
+            <button class="copy-action-btn" onclick="copyElementText('conn-note-1', this)">Copy Connection Note</button>
+          </div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Email Draft &middot; Ready to Send</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject Line</div>
+              <div class="email-subject-value" id="email-subj-1">Vapi's post-raise finance function</div>
+              <div class="email-body" id="email-body-1">Nikhil,
+
+Noticed Vapi closed a $20M raise about two months ago. A round that size shifts the finance equation overnight: investor reporting, cash runway visibility, burn modeling, and finance team buildout all land at the same time.
+
+Most technical founders I work with are running these processes manually at this stage, or they're not running them at all. I help growth-stage companies set up the FP&amp;A and reporting infrastructure that makes the next raise, or the next board meeting, straightforward rather than a scramble.
+
+Worth a 15-minute call to see if the timing makes sense?
+
+Dhwani Doshi
+Accounting Square Private Limited &middot; accsquare.com</div>
+              <div class="email-meta">
+                <span class="email-word-count">128 words &middot; safe for cold send</span>
+                <span class="email-safe-label">Ready to Send</span>
+              </div>
+            </div>
+            <button class="copy-action-btn" onclick="copyFullEmail('email-subj-1', 'email-body-1', this)">Copy Full Email</button>
+          </div>
+
+          <div class="dm-engine">
+            <div class="dm-engine-header">FULL DFY PIPELINE &middot; 5-TOUCH CONVERSATION ENGINE</div>
+
+            <div class="touch-block">
+              <div class="touch-label">Day 0 &middot; Connection Request</div>
+              <div class="touch-type-label">Send with connection request on LinkedIn</div>
+              <div class="touch-message">Noticed Vapi closed a $20M round recently. Congrats on the milestone. I work with funded founders on cash clarity, FP&A, and investor reporting once capital comes in. Would love to connect.</div>
+              <button class="copy-action-btn" onclick="copyToClipboard('Noticed Vapi closed a $20M round recently. Congrats on the milestone. I work with funded founders on cash clarity, FP&A, and investor reporting once capital comes in. Would love to connect.', this)">Copy Touch 1</button>
+            </div>
+
+            <div class="touch-block">
+              <div class="touch-label">Day 3-5 &middot; After Connection Accepts</div>
+              <div class="touch-type-label">Ice break. No pitch. One natural question.</div>
+              <div class="touch-message">Thanks for connecting, Nikhil. Vapi's raise and the enterprise push are interesting to watch. Curious how the finance function is being structured at your stage, specifically around investor reporting cadence. Are you handling that internally right now?</div>
+              <button class="copy-action-btn" onclick="copyToClipboard('Thanks for connecting, Nikhil. Vapi's raise and the enterprise push are interesting to watch. Curious how the finance function is being structured at your stage, specifically around investor reporting cadence. Are you handling that internally right now?', this)">Copy Touch 2</button>
+            </div>
+
+            <div class="touch-block">
+              <div class="touch-label">Day 8-12 &middot; Value Drop</div>
+              <div class="touch-type-label">Expertise signal. No ask.</div>
+              <div class="touch-message">One pattern I see consistently after Series A: the cash management infrastructure that worked during pre-funding breaks within 60-90 days of the raise closing. Not because the company is doing anything wrong, but because the complexity of multi-stakeholder reporting, payroll scaling, and burn visibility requires a different system entirely. Happy to share what that transition typically looks like if useful.</div>
+              <button class="copy-action-btn" onclick="copyToClipboard('One pattern I see consistently after Series A: the cash management infrastructure that worked during pre-funding breaks within 60-90 days of the raise closing. Not because the company is doing anything wrong, but because the complexity of multi-stakeholder reporting, payroll scaling, and burn visibility requires a different system entirely. Happy to share what that transition typically looks like if useful.', this)">Copy Touch 3</button>
+            </div>
+
+            <div class="touch-block">
+              <div class="touch-label">Day 15-20 &middot; Soft Ask</div>
+              <div class="touch-type-label">Surface intent without pressure.</div>
+              <div class="touch-message">I've helped a handful of funded AI founders set up the FP&A and board reporting layer after their first institutional raise. If it would be useful to spend 15 minutes on what that looks like at Vapi's current stage, I'm happy to make that available.</div>
+              <button class="copy-action-btn" onclick="copyToClipboard('I've helped a handful of funded AI founders set up the FP&A and board reporting layer after their first institutional raise. If it would be useful to spend 15 minutes on what that looks like at Vapi's current stage, I'm happy to make that available.', this)">Copy Touch 4</button>
+            </div>
+
+            <div class="touch-block">
+              <div class="touch-label">Day 25-30 &middot; Clean Exit</div>
+              <div class="touch-type-label">Leave the door open. No burn.</div>
+              <div class="touch-message">Timing is likely not right at the moment. If the post-raise finance buildout becomes a priority, the door is open. The $20M gives Vapi a real runway to get this right.</div>
+              <button class="copy-action-btn" onclick="copyToClipboard('Timing is likely not right at the moment. If the post-raise finance buildout becomes a priority, the door is open. The $20M gives Vapi a real runway to get this right.', this)">Copy Touch 5</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <a class="linkedin-btn" href="https://linkedin.com/in/ACoAACDwLsQBkSZKX_diSP6VRJtfOXCAZwasWD0" target="_blank" title="May require LinkedIn login">View on LinkedIn &rarr;</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 2: Emir Atli - HockeyStack -->
+    <div class="lead-card" id="card-2">
+      <div class="card-header" onclick="toggleCard('card-2')">
+        <span class="signal-badge hot">HOT</span>
+        <div class="card-header-info">
+          <div class="lead-name">Emir Atli</div>
+          <div class="lead-company">Co-Founder &amp; CRO &middot; HockeyStack</div>
+          <div class="why-now-line">Funding round closed, finance hiring active &middot; Revenue-stage scaling gap</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit: YES</span>
+        <span class="expand-icon">&#9662;</span>
+      </div>
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item"><a href="https://hockeystack.com" target="_blank">hockeystack.com</a></span>
+          <span class="identity-item">San Francisco, CA</span>
+          <span class="identity-item">51-200 employees</span>
+          <span class="identity-item">Series A</span>
+          <span class="identity-item">Revenue Analytics / AI</span>
+        </div>
+        <div class="tag-row">
+          <span class="tag industry">B2B SaaS</span>
+          <span class="tag industry">Revenue Analytics</span>
+          <span class="tag signal">Funding + finance hiring signal</span>
+          <span class="tag context">Scaling team aggressively</span>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Active Market Signals</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Capital Activity</div>
+              <div class="signal-timing">Active signal, last 90 days</div>
+              <div class="signal-desc">HockeyStack raised institutional capital and is scaling its revenue team aggressively. The finance oversight lag at this stage is well-documented: revenue grows faster than the reporting infrastructure.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">Finance Department Hiring</div>
+              <div class="signal-timing">Active signal, last 90 days</div>
+              <div class="signal-desc">Finance department hiring trend active at HockeyStack. The hiring signal indicates finance gaps are acknowledged, but building full-time capacity takes 90+ days. A fractional CFO closes that gap immediately.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing <span class="card-section-subtitle">Configured for Dhwani's Practice</span></div>
+          <div class="intel-grid">
+            <div class="intel-cell"><div class="intel-cell-label">Leadership Movement</div><div class="intel-cell-value">No leadership movement in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Capital Activity</div><div class="intel-cell-value">Funding round active, last 90 days. Series A stage.</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Hiring Signals</div><div class="intel-cell-value">Finance department hiring trend confirmed. Revenue team expanding in parallel.</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Expansion Signals</div><div class="intel-cell-value">No expansion signals in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Growth Trajectory</div><div class="intel-cell-value">$10M-$25M revenue range. AI revenue platform scaling post-raise.</div></div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Work Email</div>
+                <div class="contact-value">emir@hockeystack.com</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('emir@hockeystack.com', this)">Copy</button>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div class="why-block">
+              <div class="why-block-title">ICP Fit for Dhwani</div>
+              <div class="why-block-text">Emir is a co-founder at a funded B2B SaaS company with active capital and hiring signals. HockeyStack's revenue analytics product means the company understands data, which makes a fractional CFO conversation about financial systems natural and peer-level. The company is in the exact size range where informal finance processes break under growth pressure.</div>
+              <div class="fit-signal"><div class="fit-signal-label">Strongest Fit Signal</div>Funding round plus active finance hiring: the company knows it needs the function but hasn't solved it yet.</div>
+            </div>
+            <div class="why-block">
+              <div class="why-block-title">Why They're Looking</div>
+              <div class="why-block-text">HockeyStack builds attribution and revenue analytics for B2B companies, so Emir understands the value of financial clarity in principle. The gap is applying that clarity to his own company's books. Post-raise growth creates payroll complexity, board reporting pressure, and cash runway visibility requirements that a CRO-background founder is not positioned to manage alone.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal <span class="card-section-subtitle">2 Channels Ready</span></div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="conn-note-2">Saw HockeyStack's recent funding and the finance hiring signal. I work with founders at your stage on FP&A, cash management, and board reporting. Would love to connect.
+              <div class="char-count">183 characters &middot; LinkedIn limit: 300</div>
+            </div>
+            <button class="copy-action-btn" onclick="copyElementText('conn-note-2', this)">Copy Connection Note</button>
+          </div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Email Draft &middot; Ready to Send</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject Line</div>
+              <div class="email-subject-value" id="email-subj-2">HockeyStack's finance infrastructure post-raise</div>
+              <div class="email-body" id="email-body-2">Emir,
+
+Noticed HockeyStack closed a funding round recently and has active finance hiring underway. That combination usually means the finance infrastructure conversation is live internally but not yet resolved.
+
+I work with B2B SaaS founders at the Series A stage on the FP&A systems, cash visibility, and investor reporting layer that typically doesn't exist before institutional capital arrives. Dhwani Doshi, Accounting Square, fractional CFO. The irony of building a revenue analytics company without clean financial systems is not lost.
+
+If a 15-minute call makes sense to compare notes on where you are, happy to make that time.
+
+Dhwani Doshi
+Accounting Square Private Limited &middot; accsquare.com</div>
+              <div class="email-meta">
+                <span class="email-word-count">131 words &middot; safe for cold send</span>
+                <span class="email-safe-label">Ready to Send</span>
+              </div>
+            </div>
+            <button class="copy-action-btn" onclick="copyFullEmail('email-subj-2', 'email-body-2', this)">Copy Full Email</button>
+          </div>
+          <div class="dm-engine">
+            <div class="touch-block">
+              <div class="touch-label">Day 0 &middot; Connection Request</div>
+              <div class="touch-type-label">Send with connection request on LinkedIn</div>
+              <div class="touch-message">Saw HockeyStack's recent funding and the finance hiring signal. I work with founders at your stage on FP&A, cash management, and board reporting. Would love to connect.</div>
+              <button class="copy-action-btn" onclick="copyToClipboard('Saw HockeyStack's recent funding and the finance hiring signal. I work with founders at your stage on FP&A, cash management, and board reporting. Would love to connect.', this)">Copy Touch 1</button>
+            </div>
+            <div class="touch-collapsed-indicator">&middot; &middot; &middot; 4 additional touches included in full delivery</div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a class="linkedin-btn" href="https://linkedin.com/in/ACoAABvDA9MB9AZL22PMDd9P_31PBb8n9FgDdug" target="_blank" title="May require LinkedIn login">View on LinkedIn &rarr;</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 3: David Elkington - Atonom/Signals -->
+    <div class="lead-card" id="card-3">
+      <div class="card-header" onclick="toggleCard('card-3')">
+        <span class="signal-badge warm">WARM</span>
+        <div class="card-header-info">
+          <div class="lead-name">David Elkington</div>
+          <div class="lead-company">Founder &amp; CEO &middot; Atonom (formerly Signals)</div>
+          <div class="why-now-line">Active funding signal, AI automation pivot &middot; Strategic finance gap at transition stage</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit: YES</span>
+        <span class="expand-icon">&#9662;</span>
+      </div>
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item"><a href="https://atonom.ai" target="_blank">atonom.ai</a></span>
+          <span class="identity-item">Provo, UT</span>
+          <span class="identity-item">51-200 employees</span>
+          <span class="identity-item">Growth Stage</span>
+          <span class="identity-item">AI Automation</span>
+        </div>
+        <div class="tag-row">
+          <span class="tag industry">AI / B2B SaaS</span>
+          <span class="tag industry">Workflow Automation</span>
+          <span class="tag signal">Funding + company pivot signal</span>
+          <span class="tag context">Experienced operator, new growth phase</span>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Active Market Signals</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Capital Activity</div>
+              <div class="signal-timing">Active signal, last 90 days</div>
+              <div class="signal-desc">Atonom is in an active growth phase following a company repositioning to AI automation. New capital and a strategic pivot creates a finance function that needs to be rebuilt around a new operating model.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">Finance Department Hiring</div>
+              <div class="signal-timing">Active signal, last 90 days</div>
+              <div class="signal-desc">Finance hiring trend active at Atonom. David has a financial analyst background, which means he understands the need for structured financial oversight, and is more likely to value fractional CFO work than a purely technical founder would be.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing <span class="card-section-subtitle">Configured for Dhwani's Practice</span></div>
+          <div class="intel-grid">
+            <div class="intel-cell"><div class="intel-cell-label">Leadership Movement</div><div class="intel-cell-value">No leadership movement in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Capital Activity</div><div class="intel-cell-value">Funding round active, last 90 days. Company in growth/pivot phase.</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Hiring Signals</div><div class="intel-cell-value">Finance department hiring active. Company rebuilding operating model post-repositioning.</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Expansion Signals</div><div class="intel-cell-value">No expansion signals in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Growth Trajectory</div><div class="intel-cell-value">$10M-$25M revenue range. 51-200 employees. AI automation positioning.</div></div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Work Email</div>
+                <div class="contact-value">dave@getsignals.ai</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('dave@getsignals.ai', this)">Copy</button>
+            </div>
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Mobile</div>
+                <div class="contact-value">+1 801 358 5112</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('+18013585112', this)">Copy</button>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div class="why-block">
+              <div class="why-block-title">ICP Fit for Dhwani</div>
+              <div class="why-block-text">David has a financial analyst background and serial founder experience, which means the fractional CFO conversation does not require explaining the function. Atonom is a company mid-pivot with new capital, creating exactly the financial systems rebuild that Dhwani's practice handles: new operating model, new budget architecture, new investor reporting requirements.</div>
+              <div class="fit-signal"><div class="fit-signal-label">Strongest Fit Signal</div>Financial background founder in an active pivot: the demand for structured financial oversight is understood and the gap is recognized.</div>
+            </div>
+            <div class="why-block">
+              <div class="why-block-title">Why They're Looking</div>
+              <div class="why-block-text">Repositioning a company from Signals to Atonom means rewriting the P&L, the cost structure, and the investor narrative simultaneously. That is a fractional CFO engagement by definition. David has the financial literacy to know this problem exists, and the operational focus to know he cannot solve it alone while also running the company through a transition.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal <span class="card-section-subtitle">2 Channels Ready</span></div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="conn-note-3">Noticed Atonom's repositioning and the active capital phase. I work with founders on the financial systems rebuild that typically comes with a strategic pivot. The timing looks interesting. Would love to connect.
+              <div class="char-count">213 characters &middot; LinkedIn limit: 300</div>
+            </div>
+            <button class="copy-action-btn" onclick="copyElementText('conn-note-3', this)">Copy Connection Note</button>
+          </div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Email Draft &middot; Ready to Send</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject Line</div>
+              <div class="email-subject-value" id="email-subj-3">Atonom's financial systems during the pivot</div>
+              <div class="email-body" id="email-body-3">David,
+
+Noticed Atonom's repositioning from Signals and the active capital situation. A company pivot of that scope typically creates a financial systems gap: the old P&L structure does not map to the new operating model, and rebuilding it while running the business is a significant distraction.
+
+I work with founders at this stage on the finance and reporting infrastructure rebuild that comes with strategic repositioning. With your financial background you likely know where the gaps are; I help close them without requiring a full-time hire.
+
+Happy to compare notes on where Atonom is in that process over a 15-minute call if the timing works.
+
+Dhwani Doshi
+Accounting Square Private Limited &middot; accsquare.com</div>
+              <div class="email-meta">
+                <span class="email-word-count">129 words &middot; safe for cold send</span>
+                <span class="email-safe-label">Ready to Send</span>
+              </div>
+            </div>
+            <button class="copy-action-btn" onclick="copyFullEmail('email-subj-3', 'email-body-3', this)">Copy Full Email</button>
+          </div>
+          <div class="dm-engine">
+            <div class="touch-block">
+              <div class="touch-label">Day 0 &middot; Connection Request</div>
+              <div class="touch-type-label">Send with connection request on LinkedIn</div>
+              <div class="touch-message">Noticed Atonom's repositioning and the active capital phase. I work with founders on the financial systems rebuild that typically comes with a strategic pivot. The timing looks interesting. Would love to connect.</div>
+              <button class="copy-action-btn" onclick="copyToClipboard('Noticed Atonom's repositioning and the active capital phase. I work with founders on the financial systems rebuild that typically comes with a strategic pivot. The timing looks interesting. Would love to connect.', this)">Copy Touch 1</button>
+            </div>
+            <div class="touch-collapsed-indicator">&middot; &middot; &middot; 4 additional touches included in full delivery</div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a class="linkedin-btn" href="https://linkedin.com/in/ACoAAAAC-8cBZJ5JuSM6ZFT2_qWePPefIFQ4rjc" target="_blank" title="May require LinkedIn login">View on LinkedIn &rarr;</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 4: Adam Geitgey - Turquoise Health -->
+    <div class="lead-card" id="card-4">
+      <div class="card-header" onclick="toggleCard('card-4')">
+        <span class="signal-badge warm">WARM</span>
+        <div class="card-header-info">
+          <div class="lead-name">Adam Geitgey</div>
+          <div class="lead-company">Co-Founder &amp; CTO &middot; Turquoise Health</div>
+          <div class="why-now-line">Healthcare tech funding signal active &middot; Finance function scaling gap in regulated sector</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit: YES</span>
+        <span class="expand-icon">&#9662;</span>
+      </div>
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item">turquoise.health</span>
+          <span class="identity-item">United States</span>
+          <span class="identity-item">51-200 employees</span>
+          <span class="identity-item">Growth Stage</span>
+          <span class="identity-item">Healthcare Technology</span>
+        </div>
+        <div class="tag-row">
+          <span class="tag industry">Healthcare Tech</span>
+          <span class="tag industry">Price Transparency</span>
+          <span class="tag signal">Funding + finance hiring signal</span>
+          <span class="tag context">Regulated sector complexity</span>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Active Market Signals</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Capital Activity</div>
+              <div class="signal-timing">Active signal, last 90 days</div>
+              <div class="signal-desc">Turquoise Health operates at the intersection of healthcare data and regulatory compliance, creating a finance function that requires both standard FP&A and sector-specific reporting. New capital amplifies the complexity.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">Finance Department Hiring</div>
+              <div class="signal-timing">Active signal, last 90 days</div>
+              <div class="signal-desc">Finance hiring active at Turquoise Health. Healthcare tech companies at this stage often require finance oversight that understands both GAAP reporting and the compliance-heavy revenue structures of the sector.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing <span class="card-section-subtitle">Configured for Dhwani's Practice</span></div>
+          <div class="intel-grid">
+            <div class="intel-cell"><div class="intel-cell-label">Leadership Movement</div><div class="intel-cell-value">No leadership movement in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Capital Activity</div><div class="intel-cell-value">Funding signal active, last 90 days. Healthcare tech growth stage.</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Hiring Signals</div><div class="intel-cell-value">Finance department hiring trend active. Compliance-adjacent finance function in build.</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Expansion Signals</div><div class="intel-cell-value">No expansion signals in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Growth Trajectory</div><div class="intel-cell-value">51-200 employees. Healthcare data and price transparency platform scaling.</div></div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Direct Contact</div>
+                <div class="contact-value unavailable">Direct contact not on record</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div class="why-block">
+              <div class="why-block-title">ICP Fit for Dhwani</div>
+              <div class="why-block-text">Adam leads a healthcare technology company with active funding and finance hiring signals, operating in a sector where Dhwani has specific experience from her global finance background. Healthcare tech companies require finance oversight that understands both venture-backed growth dynamics and the compliance-adjacent reporting structures of the sector.</div>
+              <div class="fit-signal"><div class="fit-signal-label">Strongest Fit Signal</div>Healthcare sector plus funding round: the finance complexity is higher than typical software, and the gap is more acute.</div>
+            </div>
+            <div class="why-block">
+              <div class="why-block-title">Why They're Looking</div>
+              <div class="why-block-text">Healthcare tech founders face a dual finance challenge: investor reporting on one side and sector-specific revenue complexity on the other. Adam is a technical founder managing this gap during a growth phase. The finance hiring signal indicates the problem is visible, but a full-time solution is either too slow or too expensive at this stage.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal <span class="card-section-subtitle">2 Channels Ready</span></div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="conn-note-4">Noticed Turquoise Health's funding signal and active finance hiring. I work with founders in healthcare tech on the FP&A and reporting layer specific to the sector. Would love to connect.
+              <div class="char-count">185 characters &middot; LinkedIn limit: 300</div>
+            </div>
+            <button class="copy-action-btn" onclick="copyElementText('conn-note-4', this)">Copy Connection Note</button>
+          </div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Email Draft &middot; Ready to Send</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject Line</div>
+              <div class="email-subject-value" id="email-subj-4">Turquoise Health's finance function post-raise</div>
+              <div class="email-body" id="email-body-4">Adam,
+
+Noticed Turquoise Health's recent funding activity and active finance hiring signal. Healthcare tech companies at your stage carry a finance complexity that general FP&A support does not cover well: compliance-adjacent revenue structures, investor reporting, and cash management all running simultaneously.
+
+My background spans global finance at Citi and Morgan Stanley, with specific experience in financial governance and reporting for growth-stage companies. I work with founders as a fractional CFO to build the finance infrastructure that matches the company's actual risk profile and reporting needs.
+
+If it would be useful to talk through where Turquoise is in that build, 15 minutes is the right starting point.
+
+Dhwani Doshi
+Accounting Square Private Limited &middot; accsquare.com</div>
+              <div class="email-meta">
+                <span class="email-word-count">135 words &middot; safe for cold send</span>
+                <span class="email-safe-label">Ready to Send</span>
+              </div>
+            </div>
+            <button class="copy-action-btn" onclick="copyFullEmail('email-subj-4', 'email-body-4', this)">Copy Full Email</button>
+          </div>
+          <div class="dm-engine">
+            <div class="touch-block">
+              <div class="touch-label">Day 0 &middot; Connection Request</div>
+              <div class="touch-type-label">Send with connection request on LinkedIn</div>
+              <div class="touch-message">Noticed Turquoise Health's funding signal and active finance hiring. I work with founders in healthcare tech on the FP&A and reporting layer specific to the sector. Would love to connect.</div>
+              <button class="copy-action-btn" onclick="copyToClipboard('Noticed Turquoise Health's funding signal and active finance hiring. I work with founders in healthcare tech on the FP&A and reporting layer specific to the sector. Would love to connect.', this)">Copy Touch 1</button>
+            </div>
+            <div class="touch-collapsed-indicator">&middot; &middot; &middot; 4 additional touches included in full delivery</div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a class="linkedin-btn" href="https://linkedin.com/in/ACoAAABkWmsBKm46qI_7TgyCkOaDXXo30jxGaq4" target="_blank" title="May require LinkedIn login">View on LinkedIn &rarr;</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 5: Jayakumar Karumbasalam - SuperOps -->
+    <div class="lead-card" id="card-5">
+      <div class="card-header" onclick="toggleCard('card-5')">
+        <span class="signal-badge warm">WARM</span>
+        <div class="card-header-info">
+          <div class="lead-name">Jayakumar Karumbasalam</div>
+          <div class="lead-company">Co-Founder &amp; CPTO &middot; SuperOps</div>
+          <div class="why-now-line">US-headquartered MSP platform, active funding signal &middot; Finance function at scale inflection</div>
+        </div>
+        <span class="icp-fit-badge">ICP Fit: YES</span>
+        <span class="expand-icon">&#9662;</span>
+      </div>
+      <div class="card-body">
+        <div class="identity-strip">
+          <span class="identity-item"><a href="https://superops.com" target="_blank">superops.com</a></span>
+          <span class="identity-item">Claymont, DE (US HQ)</span>
+          <span class="identity-item">51-200 employees</span>
+          <span class="identity-item">Growth Stage</span>
+          <span class="identity-item">MSP / IT Management SaaS</span>
+        </div>
+        <div class="tag-row">
+          <span class="tag industry">B2B SaaS</span>
+          <span class="tag industry">IT Management / MSP</span>
+          <span class="tag signal">Funding + finance hiring signal</span>
+          <span class="tag context">US-headquartered, scaling internationally</span>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Active Market Signals</div>
+          <div class="signal-cards">
+            <div class="signal-card">
+              <div class="signal-type">Capital Activity</div>
+              <div class="signal-timing">Active signal, last 90 days</div>
+              <div class="signal-desc">SuperOps is an AI-powered MSP platform with US headquarters and active funding activity. A US-domiciled SaaS company at this scale requires finance oversight across multi-entity structures, which is complex to handle without dedicated financial leadership.</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-type">Finance Department Hiring</div>
+              <div class="signal-timing">Active signal, last 90 days</div>
+              <div class="signal-desc">Finance hiring trend active at SuperOps. MSP software companies scaling internationally need finance expertise in cross-border cash management, multi-entity consolidation, and investor reporting, exactly Dhwani's stated competency.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Intelligence Briefing <span class="card-section-subtitle">Configured for Dhwani's Practice</span></div>
+          <div class="intel-grid">
+            <div class="intel-cell"><div class="intel-cell-label">Leadership Movement</div><div class="intel-cell-value">6-year company founding anniversary approaching. No recent leadership changes.</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Capital Activity</div><div class="intel-cell-value">Funding round active, last 90 days. US-based MSP platform scaling.</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Hiring Signals</div><div class="intel-cell-value">Finance department hiring trend active. Multi-entity finance structure in build.</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Expansion Signals</div><div class="intel-cell-value">No expansion signals in last 90 days</div></div>
+            <div class="intel-cell"><div class="intel-cell-label">Growth Trajectory</div><div class="intel-cell-value">$10M-$25M revenue. 51-200 employees. AI-powered product expansion underway.</div></div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Contact Details</div>
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Work Email</div>
+                <div class="contact-value">jayakumar.karumbasalam@superops.ai</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('jayakumar.karumbasalam@superops.ai', this)">Copy</button>
+            </div>
+            <div class="contact-item">
+              <div>
+                <div class="contact-label">Mobile</div>
+                <div class="contact-value">+1 866 282 1591</div>
+              </div>
+              <button class="copy-btn" onclick="copyToClipboard('+18662821591', this)">Copy</button>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Why This Lead</div>
+          <div class="why-grid">
+            <div class="why-block">
+              <div class="why-block-title">ICP Fit for Dhwani</div>
+              <div class="why-block-text">SuperOps is a US-headquartered B2B SaaS company with active capital and finance hiring signals. Jayakumar is a technical co-founder with a product and engineering background, not a finance background. The company's multi-entity structure and international scale creates a finance complexity that aligns with Dhwani's cross-border finance experience from Citi and Morgan Stanley.</div>
+              <div class="fit-signal"><div class="fit-signal-label">Strongest Fit Signal</div>US-HQ multi-entity MSP platform with active finance hiring: the cross-border finance function gap matches Dhwani's specific competency.</div>
+            </div>
+            <div class="why-block">
+              <div class="why-block-title">Why They're Looking</div>
+              <div class="why-block-text">SuperOps serves MSPs globally from a US headquarters, which creates multi-jurisdiction reporting requirements, foreign entity consolidation, and currency management needs that most Series A finance teams cannot handle without a specialist. The active finance hiring signal confirms the gap is recognized. A fractional CFO with cross-border finance experience closes it faster than a full-time hire.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Outreach Arsenal <span class="card-section-subtitle">2 Channels Ready</span></div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">LinkedIn Connection Note</div>
+            <div class="connection-note" id="conn-note-5">Noticed SuperOps' active funding phase and finance hiring signal. I work with US-headquartered SaaS founders on cross-border finance, FP&A, and multi-entity reporting. Would love to connect.
+              <div class="char-count">189 characters &middot; LinkedIn limit: 300</div>
+            </div>
+            <button class="copy-action-btn" onclick="copyElementText('conn-note-5', this)">Copy Connection Note</button>
+          </div>
+          <div class="outreach-channel">
+            <div class="outreach-channel-label">Email Draft &middot; Ready to Send</div>
+            <div class="email-block">
+              <div class="email-subject-label">Subject Line</div>
+              <div class="email-subject-value" id="email-subj-5">SuperOps' cross-border finance function</div>
+              <div class="email-body" id="email-body-5">Jayakumar,
+
+Noticed SuperOps' recent capital activity and active finance hiring signal. A US-headquartered MSP platform serving a global customer base at your stage typically needs finance oversight that covers cross-border consolidation, multi-entity reporting, and investor-grade cash visibility at the same time.
+
+My background includes global finance at Citi and Morgan Stanley, with specific experience in multi-entity financial governance and cross-border reporting structures. I work with founders as a fractional CFO when the finance complexity outpaces what a part-time bookkeeper can manage but doesn't yet justify a full-time CFO hire.
+
+If a 15-minute call makes sense to compare notes on where SuperOps is, happy to make that time.
+
+Dhwani Doshi
+Accounting Square Private Limited &middot; accsquare.com</div>
+              <div class="email-meta">
+                <span class="email-word-count">139 words &middot; safe for cold send</span>
+                <span class="email-safe-label">Ready to Send</span>
+              </div>
+            </div>
+            <button class="copy-action-btn" onclick="copyFullEmail('email-subj-5', 'email-body-5', this)">Copy Full Email</button>
+          </div>
+          <div class="dm-engine">
+            <div class="touch-block">
+              <div class="touch-label">Day 0 &middot; Connection Request</div>
+              <div class="touch-type-label">Send with connection request on LinkedIn</div>
+              <div class="touch-message">Noticed SuperOps' active funding phase and finance hiring signal. I work with US-headquartered SaaS founders on cross-border finance, FP&A, and multi-entity reporting. Would love to connect.</div>
+              <button class="copy-action-btn" onclick="copyToClipboard('Noticed SuperOps' active funding phase and finance hiring signal. I work with US-headquartered SaaS founders on cross-border finance, FP&A, and multi-entity reporting. Would love to connect.', this)">Copy Touch 1</button>
+            </div>
+            <div class="touch-collapsed-indicator">&middot; &middot; &middot; 4 additional touches included in full delivery</div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a class="linkedin-btn" href="https://linkedin.com/in/ACoAAABDDbYBMCEBK6lnQWP-mhsbqxcNB7bxSiQ" target="_blank" title="May require LinkedIn login">View on LinkedIn &rarr;</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pipeline math + visuals + CTA -->
+    <div class="pipeline-math">
+      <div class="pipeline-math-text">
+        <strong>5 leads in this sample.</strong> Full delivery is <strong>40 ICP-matched buyers per month.</strong><br>
+        Each with active signal data, direct contact details, and outreach ready to send.<br>
+        10 leads per Monday. 30 minutes of your time to review and send.
+      </div>
+    </div>
+
+    <div class="visuals-section">
+      <div class="visuals-header">
+        <div class="visuals-copy">
+          <h3>Your buyers read before they connect.</h3>
+          <p>Founders and CEOs at growth-stage companies consume content before they take a meeting. A post that explains the cash management gap after a funding round is a warm introduction. A post that explains nothing is a cold DM with no context.</p>
+          <p>The full system delivers 3 posts per week in your voice, plus monthly carousels, articles, and infographics. Every piece is written to reach the buyers on the pipeline list.</p>
+          <ul class="visuals-list">
+            <li><span class="visuals-list-dot">+</span>12 LinkedIn posts per month in Dhwani's voice</li>
+            <li><span class="visuals-list-dot">+</span>2 long-form articles per month</li>
+            <li><span class="visuals-list-dot">+</span>2 carousels with finished slide visuals</li>
+            <li><span class="visuals-list-dot">+</span>2 standalone infographics</li>
+          </ul>
+        </div>
+        <div>
+          <div class="visuals-tiles">
+            <div class="visual-tile carousel">
+              <div class="visual-tile-inner">
+                <div class="tile-accent-bar"></div>
+                <div class="tile-lines">
+                  <div class="tile-line full"></div>
+                  <div class="tile-line medium"></div>
+                  <div class="tile-line short"></div>
+                </div>
+              </div>
+              <div class="tile-label">Carousel</div>
+            </div>
+            <div class="visual-tile post">
+              <div class="visual-tile-inner">
+                <div class="tile-accent-bar"></div>
+                <div class="tile-lines">
+                  <div class="tile-line full"></div>
+                  <div class="tile-line short"></div>
+                  <div class="tile-line medium"></div>
+                </div>
+              </div>
+              <div class="tile-label">Post Visual</div>
+            </div>
+            <div class="visual-tile infographic">
+              <div class="visual-tile-inner">
+                <div class="tile-accent-bar"></div>
+                <div class="tile-lines">
+                  <div class="tile-line full"></div>
+                  <div class="tile-line short"></div>
+                  <div class="tile-line medium"></div>
+                </div>
+              </div>
+              <div class="tile-label">Infographic</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="visuals-note">
+        <strong>Visuals are finished and attached in the Monday package.</strong><br>
+        You schedule. Nothing to design. Nothing to brief.
+      </div>
+    </div>
+
+    <div class="cta-footer">
+      <div class="cta-footer-headline">This is what one week of the full system looks like for Dhwani.</div>
+      <div class="cta-footer-subhead">
+        Every Monday: 10 ICP-matched buyers with full signal intelligence, direct contact details,
+        and outreach ready to send. Plus 3 posts and finished visuals in your voice.
+        30 minutes of your time per week.
+      </div>
+      <a class="cta-footer-btn" href="https://calendly.com/saurabh_zentro/30-min" target="_blank">Book Your 20-Min Fit Call &rarr;</a>
+      <div class="cta-footer-note">No pitch. No deck. We talk through your specific situation and confirm whether this is the right fit.</div>
+    </div>
+
+  </div>
+  <!-- END PIPELINE ENGINE VIEW -->
+
+  <!-- CONTENT ENGINE VIEW -->
+  <div id="view-content" class="view">
+
+    <div class="welcome-banner">
+      <div class="welcome-tag">Content Engine &middot; Personalised for Dhwani</div>
+      <div class="welcome-text">
+        Most fractional CFOs posting on LinkedIn are writing for other fractional CFOs.<br><br>
+        The posts below are written in your voice for the founders and CEOs who need to understand their numbers but don't yet know they need a fractional CFO. One post explains a pattern. One post asks those buyers to identify themselves. <strong>This is what your Monday content delivery looks like.</strong>
+      </div>
+    </div>
+
+    <div class="post-cards-grid">
+      <div class="post-card">
+        <div class="post-type-label">Teaching Post</div>
+        <div class="post-type-desc">Explains a pattern most founders recognize. Builds credibility. Positions Dhwani as the diagnostician, not the salesperson.</div>
+        <div class="post-text">Most founders don't struggle because they lack revenue.
+
+They struggle because they don't know where the money is actually going.
+
+The revenue line looks fine. The bank account doesn't agree.
+
+This is the cash clarity gap. It shows up at every growth stage, but it gets dangerous after a funding round, when the numbers move fast and the reporting infrastructure hasn't kept up.
+
+Three things that create the gap:
+
+Revenue recognized before cash is collected.
+Payroll scaling faster than the cash runway model.
+Finance reports that show last month's numbers while the business is operating on this week's decisions.
+
+The businesses that scale cleanly are not the ones earning the most.
+
+They are the ones who can see where the cash actually is.</div>
+        <div class="post-cta-line">Comment CASH and I will send you the 5 signals that indicate your business has a cash clarity problem before it becomes a cash flow crisis.</div>
+      </div>
+
+      <div class="post-card">
+        <div class="post-type-label">Handraiser Post</div>
+        <div class="post-type-desc">Drives comment responses from qualified buyers. Uses a keyword trigger to surface fractional CFO leads from Dhwani's existing audience.</div>
+        <div class="post-text">The scariest sentence in a growing company is not "we are losing money."
+
+It is "the numbers look fine but something feels off."
+
+That sentence shows up in three situations:
+
+Revenue is growing but the bank account is not keeping pace.
+A funding round just closed and no one has built the investor reporting layer yet.
+The company added 20 people in six months and the budget model is two quarters out of date.
+
+None of these are accounting problems.
+
+They are financial visibility problems.
+
+A company that can see its numbers clearly makes faster decisions, handles board meetings without scrambling, and knows exactly how long its runway is at any burn rate.
+
+Most founders figure this out later than they should.
+
+If you are at a stage where the numbers feel uncertain, comment LEAD and I will send you five specific questions to diagnose where your financial visibility gaps actually are.</div>
+        <div class="post-cta-line">Comment LEAD below.</div>
+      </div>
+    </div>
+
+    <div class="visuals-section">
+      <div class="visuals-header">
+        <div class="visuals-copy">
+          <h3>Content without visuals is half a system.</h3>
+          <p>Most consultants post text. The ones building consistent inbound post text with structure behind it. A carousel that breaks down a framework visually gets saved. A quote graphic gets shared. An infographic gets screenshotted. Saves, shares, and screenshots reach buyers who never followed you. That is organic reach you do not have to pay for.</p>
+          <p>The full system produces the visuals. You attach and schedule.</p>
+          <ul class="visuals-list">
+            <li><span class="visuals-list-dot">+</span>2 carousels per month with finished slide visuals</li>
+            <li><span class="visuals-list-dot">+</span>2 standalone infographics per month</li>
+            <li><span class="visuals-list-dot">+</span>Post graphics for any text post that benefits from one</li>
+            <li><span class="visuals-list-dot">+</span>All delivered as finished PNG files in the Monday package</li>
+          </ul>
+        </div>
+        <div>
+          <div class="visuals-tiles">
+            <div class="visual-tile carousel">
+              <div class="visual-tile-inner">
+                <div class="tile-accent-bar"></div>
+                <div class="tile-lines">
+                  <div class="tile-line full"></div>
+                  <div class="tile-line medium"></div>
+                  <div class="tile-line short"></div>
+                </div>
+              </div>
+              <div class="tile-label">Carousel</div>
+            </div>
+            <div class="visual-tile post">
+              <div class="visual-tile-inner">
+                <div class="tile-accent-bar"></div>
+                <div class="tile-lines">
+                  <div class="tile-line full"></div>
+                  <div class="tile-line short"></div>
+                  <div class="tile-line medium"></div>
+                </div>
+              </div>
+              <div class="tile-label">Post Visual</div>
+            </div>
+            <div class="visual-tile infographic">
+              <div class="visual-tile-inner">
+                <div class="tile-accent-bar"></div>
+                <div class="tile-lines">
+                  <div class="tile-line full"></div>
+                  <div class="tile-line short"></div>
+                  <div class="tile-line medium"></div>
+                </div>
+              </div>
+              <div class="tile-label">Infographic</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="visuals-note">
+        <strong>18 content pieces per month. Finished. Attached. Ready to schedule.</strong><br>
+        Your client schedules from their own account. Zero design work on your end.
+      </div>
+    </div>
+
+    <div class="cta-footer">
+      <div class="cta-footer-headline">This is what one week of the full system looks like for Dhwani.</div>
+      <div class="cta-footer-subhead">
+        Every Monday: 10 ICP-matched buyers with full signal intelligence, direct contact details,
+        and outreach ready to send. Plus 3 posts and finished visuals in your voice.
+        30 minutes of your time per week.
+      </div>
+      <a class="cta-footer-btn" href="https://calendly.com/saurabh_zentro/30-min" target="_blank">Book Your 20-Min Fit Call &rarr;</a>
+      <div class="cta-footer-note">No pitch. No deck. We talk through your specific situation and confirm whether this is the right fit.</div>
+    </div>
+
+  </div>
+  <!-- END CONTENT ENGINE VIEW -->
+
+</main>
+
+<script>
+function showView(name, triggerEl) {
+  document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
+  document.getElementById("view-" + name).classList.add("active");
+  document.querySelectorAll(".nav-item, .tab-btn, .mobile-tab-pill").forEach(el => el.classList.remove("active"));
+  const navEl = document.getElementById("nav-" + name);
+  if (navEl) navEl.classList.add("active");
+  document.querySelectorAll(".tab-btn, .mobile-tab-pill").forEach(btn => {
+    if (btn.getAttribute("onclick") && btn.getAttribute("onclick").includes("'" + name + "'")) {
+      btn.classList.add("active");
+    }
+  });
+}
+
+function toggleCard(cardId) {
+  document.getElementById(cardId).classList.toggle("expanded");
+}
+
+function copyToClipboard(text, btn) {
+  navigator.clipboard.writeText(text).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = "Copied.";
+    btn.classList.add("copied");
+    setTimeout(() => { btn.textContent = orig; btn.classList.remove("copied"); }, 2000);
+  }).catch(() => {
+    const el = document.createElement("textarea");
+    el.value = text;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand("copy");
+    document.body.removeChild(el);
+    btn.textContent = "Copied."; btn.classList.add("copied");
+    setTimeout(() => { btn.textContent = "Copy"; btn.classList.remove("copied"); }, 2000);
+  });
+}
+
+function copyElementText(elementId, btn) {
+  const el = document.getElementById(elementId);
+  if (!el) return;
+  const charCountEl = el.querySelector(".char-count");
+  let text = el.textContent;
+  if (charCountEl) text = text.replace(charCountEl.textContent, "").trim();
+  copyToClipboard(text, btn);
+}
+
+function copyFullEmail(subjId, bodyId, btn) {
+  const subj = document.getElementById(subjId);
+  const body = document.getElementById(bodyId);
+  const text = "Subject: " + (subj ? subj.textContent.trim() : "") + "\n\n" + (body ? body.textContent.trim() : "");
+  copyToClipboard(text, btn);
+}
+</script>
+
+</body>
+</html>
