@@ -1,0 +1,1599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pipeline Report · Dave Cotter · Kelsor Ventures</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   PIPELIND · PIPELINE REPORT DASHBOARD TEMPLATE v1.0
+   Brand: Palette B (Dark)
+   Template tokens: {{TOKEN_NAME}} — replaced by routine at runtime
+   ═══════════════════════════════════════════════════════════════ */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #06060E;
+  --bg-elevated: #0A0A14;
+  --surface: #111120;
+  --surface-raised: #16162A;
+  --card: #1A1A2E;
+  --card-hover: #1E1E36;
+  --border: rgba(106,102,163,0.15);
+  --border-hover: rgba(106,102,163,0.30);
+  --border-focus: rgba(106,102,163,0.50);
+  --purple: #6A66A3;
+  --purple-glow: rgba(106,102,163,0.20);
+  --amber: #FF9900;
+  --amber-soft: rgba(255,153,0,0.10);
+  --amber-mid: rgba(255,153,0,0.25);
+  --green: #10B981;
+  --green-soft: rgba(16,185,129,0.08);
+  --green-mid: rgba(16,185,129,0.20);
+  --red: #EF4444;
+  --text-100: #FFFFFF;
+  --text-90: rgba(255,255,255,0.92);
+  --text-72: rgba(255,255,255,0.72);
+  --text-55: rgba(255,255,255,0.50);
+  --text-30: rgba(255,255,255,0.25);
+  --display: 'Plus Jakarta Sans', -apple-system, sans-serif;
+  --mono: 'Space Mono', 'SF Mono', monospace;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text-90);
+  font-family: var(--display);
+  font-size: 14px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── TOPBAR (sticky) ─── */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(6,6,14,0.85);
+  backdrop-filter: blur(20px) saturate(1.4);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px;
+}
+
+.topbar-inner {
+  max-width: 1080px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.topbar-wordmark {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  color: var(--purple);
+  text-transform: uppercase;
+}
+
+.topbar-divider {
+  width: 1px;
+  height: 20px;
+  background: var(--border-hover);
+}
+
+.topbar-client {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-72);
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.topbar-date {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text-55);
+  letter-spacing: 0.08em;
+}
+
+.topbar-live {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--green);
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+}
+
+.topbar-live::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  background: var(--green);
+  border-radius: 50%;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(16,185,129,0.4); }
+  50% { opacity: 0.7; box-shadow: 0 0 0 6px rgba(16,185,129,0); }
+}
+
+/* ─── MAIN CONTAINER ─── */
+.main {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+}
+
+/* ─── TEST BANNER ─── */
+.test-banner {
+  margin: 20px 0;
+  background: var(--amber-soft);
+  border: 1px solid var(--amber-mid);
+  border-radius: var(--radius-md);
+  padding: 12px 20px;
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--amber);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* ─── HERO HEADER ─── */
+.hero {
+  padding: 40px 0 20px;
+}
+
+.hero-eyebrow {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--amber);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.hero-title {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--text-100);
+  line-height: 1.15;
+  margin-bottom: 8px;
+}
+
+.hero-subtitle {
+  font-size: 14px;
+  color: var(--text-55);
+  font-weight: 500;
+  max-width: 600px;
+}
+
+/* ─── TAB NAV ─── */
+.tab-nav {
+  display: flex;
+  gap: 4px;
+  padding: 28px 0 24px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 32px;
+}
+
+.tab {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 8px 18px;
+  border-radius: var(--radius-xl);
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-55);
+}
+
+.tab:hover { color: var(--text-72); background: var(--surface); }
+
+.tab.active {
+  background: var(--purple-glow);
+  color: var(--purple);
+  border-color: rgba(106,102,163,0.30);
+  font-weight: 700;
+}
+
+.tab.disabled {
+  opacity: 0.35;
+  cursor: default;
+  pointer-events: none;
+}
+
+.tab-badge {
+  display: inline-block;
+  font-size: 8px;
+  background: var(--amber-soft);
+  color: var(--amber);
+  border: 1px solid var(--amber-mid);
+  border-radius: 10px;
+  padding: 1px 6px;
+  margin-left: 6px;
+  letter-spacing: 0.06em;
+  vertical-align: middle;
+}
+
+/* ─── SIGNAL SUMMARY ─── */
+.signal-summary {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+@media (max-width: 640px) {
+  .signal-summary { grid-template-columns: repeat(2, 1fr); }
+}
+
+.stat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+}
+
+.stat-card.funding::after { background: linear-gradient(90deg, var(--amber), transparent); }
+.stat-card.hiring::after { background: linear-gradient(90deg, var(--green), transparent); }
+.stat-card.leadership::after { background: linear-gradient(90deg, var(--purple), transparent); }
+.stat-card.total::after { background: linear-gradient(90deg, var(--text-55), transparent); }
+
+.stat-number {
+  font-family: var(--mono);
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.stat-card.funding .stat-number { color: var(--amber); }
+.stat-card.hiring .stat-number { color: var(--green); }
+.stat-card.leadership .stat-number { color: var(--purple); }
+.stat-card.total .stat-number { color: var(--text-90); }
+
+.stat-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--text-55);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.stat-bar {
+  height: 3px;
+  background: var(--surface-raised);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-top: 12px;
+}
+
+.stat-bar-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 1s ease-out;
+}
+
+.stat-card.funding .stat-bar-fill { background: var(--amber); }
+.stat-card.hiring .stat-bar-fill { background: var(--green); }
+.stat-card.leadership .stat-bar-fill { background: var(--purple); }
+.stat-card.total .stat-bar-fill { background: var(--text-55); }
+
+/* ─── MARKET PULSE ─── */
+.market-pulse {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 22px 24px;
+  margin-bottom: 36px;
+  position: relative;
+  overflow: hidden;
+}
+
+.market-pulse::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--purple);
+}
+
+.pulse-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.pulse-icon {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--purple-glow);
+  border: 1px solid rgba(106,102,163,0.30);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  color: var(--purple);
+}
+
+.pulse-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--purple);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.pulse-text {
+  font-size: 14px;
+  color: var(--text-72);
+  line-height: 1.7;
+  padding-left: 26px;
+}
+
+/* ─── SECTION DIVIDER ─── */
+.section-divider {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 8px 0 20px;
+}
+
+.section-tag {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.section-tag.priority { color: var(--green); }
+.section-tag.pipeline { color: var(--amber); }
+
+.section-count {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--text-30);
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+.section-rule {
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* ─── LEAD CARD ─── */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  margin-bottom: 16px;
+  overflow: hidden;
+  transition: border-color 0.25s, box-shadow 0.25s;
+}
+
+.card:hover {
+  border-color: var(--border-hover);
+}
+
+.card.priority-card {
+  border-color: var(--green-mid);
+  box-shadow: 0 0 0 1px var(--green-soft), 0 4px 24px -4px rgba(16,185,129,0.08);
+}
+
+.card-top {
+  padding: 22px 24px 0;
+}
+
+/* Card Header */
+.card-badges {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.badge {
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: var(--radius-xl);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.badge-hot {
+  background: var(--green-soft);
+  color: var(--green);
+  border: 1px solid var(--green-mid);
+}
+
+.badge-hot::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  background: var(--green);
+  border-radius: 50%;
+}
+
+.badge-warm {
+  background: var(--amber-soft);
+  color: var(--amber);
+  border: 1px solid var(--amber-mid);
+}
+
+.badge-priority {
+  background: var(--green-soft);
+  color: var(--green);
+  border: 1px solid var(--green-mid);
+  margin-left: auto;
+  font-size: 8px;
+}
+
+.signal-tag {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--amber);
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+}
+
+/* Identity */
+.identity {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-100);
+  flex-shrink: 0;
+  position: relative;
+}
+
+.avatar.funding-signal { background: linear-gradient(135deg, #2a1f00, #3d2e00); border: 1px solid var(--amber-mid); }
+.avatar.hiring-signal { background: linear-gradient(135deg, #001f1a, #003328); border: 1px solid var(--green-mid); }
+.avatar.leadership-signal { background: linear-gradient(135deg, #1a1830, #252244); border: 1px solid rgba(106,102,163,0.30); }
+.avatar.expansion-signal { background: linear-gradient(135deg, #1a0000, #2d1111); border: 1px solid rgba(239,68,68,0.25); }
+
+.identity-text { flex: 1; min-width: 0; }
+
+.lead-name {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-100);
+  margin-bottom: 3px;
+  line-height: 1.2;
+}
+
+.lead-role {
+  font-size: 13px;
+  color: var(--text-72);
+  margin-bottom: 6px;
+}
+
+.lead-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.meta-tag {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--text-55);
+  letter-spacing: 0.06em;
+  background: var(--surface);
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+}
+
+/* Company Intelligence */
+.intel-section {
+  margin: 0 24px 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.intel-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.intel-icon {
+  font-size: 12px;
+  opacity: 0.6;
+}
+
+.intel-title {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--text-55);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.intel-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+@media (max-width: 640px) {
+  .intel-grid { grid-template-columns: 1fr; }
+}
+
+.intel-cell {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+}
+
+.intel-cell:nth-child(2n) { border-right: none; }
+.intel-cell:nth-last-child(-n+2) { border-bottom: none; }
+
+@media (max-width: 640px) {
+  .intel-cell { border-right: none; }
+  .intel-cell:last-child { border-bottom: none; }
+}
+
+.intel-cell-label {
+  font-family: var(--mono);
+  font-size: 8px;
+  color: var(--text-30);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.intel-cell-value {
+  font-size: 12px;
+  color: var(--text-90);
+  line-height: 1.5;
+}
+
+/* Why Now */
+.why-now {
+  margin: 0 24px 20px;
+  padding: 14px 18px;
+  background: var(--amber-soft);
+  border: 1px solid var(--amber-mid);
+  border-left: 3px solid var(--amber);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+
+.why-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--amber);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.why-text {
+  font-size: 13px;
+  color: var(--text-90);
+  line-height: 1.6;
+}
+
+/* Signal Grid */
+.signal-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--border);
+  margin: 0 24px 0;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+@media (max-width: 640px) {
+  .signal-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+.sig-cell {
+  background: var(--surface);
+  padding: 14px 14px 12px;
+}
+
+.sig-label {
+  font-family: var(--mono);
+  font-size: 8px;
+  color: var(--text-30);
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+}
+
+.sig-value {
+  font-size: 12px;
+  color: var(--text-90);
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+/* Outreach Toggle */
+.outreach-section {
+  margin-top: 0;
+}
+
+.outreach-btn {
+  width: 100%;
+  background: none;
+  border: none;
+  border-top: 1px solid var(--border);
+  padding: 14px 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text-55);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: background 0.2s, color 0.2s;
+}
+
+.outreach-btn:hover { background: var(--surface); color: var(--text-72); }
+
+.outreach-btn .chevron {
+  font-size: 14px;
+  transition: transform 0.3s;
+  font-style: normal;
+}
+
+.outreach-btn.open .chevron { transform: rotate(180deg); }
+
+.outreach-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+}
+
+.outreach-body.visible {
+  max-height: 800px;
+}
+
+.outreach-inner {
+  padding: 20px 24px;
+  display: grid;
+  gap: 16px;
+}
+
+.outreach-block-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--purple);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.outreach-text-wrap {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  position: relative;
+  font-size: 13px;
+  color: var(--text-90);
+  line-height: 1.65;
+}
+
+.copy-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: var(--purple-glow);
+  border: 1px solid rgba(106,102,163,0.30);
+  border-radius: var(--radius-sm);
+  padding: 4px 10px;
+  font-family: var(--mono);
+  font-size: 8px;
+  color: var(--purple);
+  cursor: pointer;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  transition: all 0.15s;
+  z-index: 2;
+}
+
+.copy-btn:hover { background: rgba(106,102,163,0.35); color: var(--text-100); }
+.copy-btn.copied { color: var(--green); border-color: var(--green-mid); background: var(--green-soft); }
+
+.email-subj {
+  font-weight: 700;
+  color: var(--amber);
+  margin-bottom: 10px;
+  font-size: 13px;
+}
+
+/* Card Test Footer */
+.card-test-footer {
+  padding: 12px 24px;
+  border-top: 1px solid var(--border);
+  font-family: var(--mono);
+  font-size: 8px;
+  color: rgba(255,153,0,0.40);
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+}
+
+/* ─── ICP PANEL ─── */
+.icp-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  margin: 40px 0;
+}
+
+.icp-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--text-55);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.icp-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+@media (max-width: 640px) {
+  .icp-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+.icp-cell {
+  background: var(--card);
+  padding: 14px 16px;
+}
+
+.icp-cell-label {
+  font-family: var(--mono);
+  font-size: 8px;
+  color: var(--text-30);
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.icp-cell-value {
+  font-size: 12px;
+  color: var(--text-90);
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+/* ─── FOOTER ─── */
+.footer {
+  border-top: 1px solid var(--border);
+  padding: 32px 0;
+  text-align: center;
+}
+
+.footer-brand {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--purple);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.footer-text {
+  font-size: 12px;
+  color: var(--text-30);
+  line-height: 1.8;
+}
+
+.footer-text a {
+  color: var(--purple);
+  text-decoration: none;
+}
+
+/* ─── TOAST NOTIFICATION ─── */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: var(--green);
+  color: var(--bg);
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 10px 20px;
+  border-radius: var(--radius-xl);
+  z-index: 1000;
+  opacity: 0;
+  transition: transform 0.3s, opacity 0.3s;
+  pointer-events: none;
+}
+
+.toast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+/* ─── MOBILE REFINEMENTS ─── */
+@media (max-width: 640px) {
+  .topbar-inner { height: 48px; }
+  .topbar-client { display: none; }
+  .topbar-divider { display: none; }
+  .hero-title { font-size: 22px; }
+  .stat-number { font-size: 28px; }
+  .identity { gap: 12px; }
+  .avatar { width: 40px; height: 40px; border-radius: 10px; font-size: 12px; }
+  .lead-name { font-size: 16px; }
+  .card-top { padding: 18px 18px 0; }
+  .intel-section { margin: 0 18px 16px; }
+  .why-now { margin: 0 18px 16px; }
+  .signal-grid { margin: 0 18px; }
+  .outreach-btn { padding: 12px 18px; }
+  .outreach-inner { padding: 16px 18px; }
+  .card-test-footer { padding: 10px 18px; }
+}
+</style>
+</head>
+<body>
+
+<!-- TOAST -->
+<div class="toast" id="toast">Copied to clipboard</div>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="topbar-left">
+      <span class="topbar-wordmark">Pipelind</span>
+      <span class="topbar-divider"></span>
+      <span class="topbar-client">Dave Cotter · Kelsor Ventures</span>
+    </div>
+    <div class="topbar-right">
+      <span class="topbar-date">June 13, 2026</span>
+      <span class="topbar-live">Updated</span>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- TEST BANNER -->
+  <div class="test-banner">Test run · Synthetic data only · Not for client delivery</div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-eyebrow">Weekly Pipeline Report · Week of June 13, 2026</div>
+    <div class="hero-title">Pipeline Report</div>
+    <div class="hero-subtitle">ICP-matched buyer profiles with active market signals for Kelsor Ventures</div>
+  </div>
+
+  <!-- TAB NAV -->
+  <div class="tab-nav">
+    <button class="tab active">Pipeline Engine</button>
+    <button class="tab disabled">Content Engine <span class="tab-badge">Soon</span></button>
+  </div>
+
+  <!-- SIGNAL SUMMARY -->
+  <div class="signal-summary">
+    <div class="stat-card funding">
+      <div class="stat-number">3</div>
+      <div class="stat-label">Funding Rounds</div>
+      <div class="stat-bar"><div class="stat-bar-fill" style="width: 60%"></div></div>
+    </div>
+    <div class="stat-card hiring">
+      <div class="stat-number">4</div>
+      <div class="stat-label">Hiring Signals</div>
+      <div class="stat-bar"><div class="stat-bar-fill" style="width: 80%"></div></div>
+    </div>
+    <div class="stat-card leadership">
+      <div class="stat-number">1</div>
+      <div class="stat-label">Leadership Changes</div>
+      <div class="stat-bar"><div class="stat-bar-fill" style="width: 20%"></div></div>
+    </div>
+    <div class="stat-card total">
+      <div class="stat-number">5</div>
+      <div class="stat-label">Total Leads</div>
+      <div class="stat-bar"><div class="stat-bar-fill" style="width: 50%"></div></div>
+    </div>
+  </div>
+
+  <!-- MARKET PULSE -->
+  <div class="market-pulse">
+    <div class="pulse-header">
+      <div class="pulse-icon">◆</div>
+      <div class="pulse-label">Market Intelligence Pulse</div>
+    </div>
+    <div class="pulse-text">
+      Seed and Series A funding activity in Healthtech remains elevated, with three rounds closing in the ICP window this week. Post-round founders are scaling headcount before building the financial infrastructure to manage it. The pattern is consistent: hire fast, build ops later, run into board reporting gaps by month four. That is the window for fractional COO/CFO engagement.
+    </div>
+  </div>
+
+  <!-- PRIORITY THIS WEEK -->
+  <div class="section-divider">
+    <span class="section-tag priority">Priority This Week</span>
+    <span class="section-count">2 leads · Act within 48 hours</span>
+    <span class="section-rule"></span>
+  </div>
+
+  <!-- PRIORITY CARD 1: Priya Mehta (Dual signal) -->
+  <div class="card priority-card">
+    <div class="card-top">
+      <div class="card-badges">
+        <span class="badge badge-hot">HOT</span>
+        <span class="signal-tag">Dual Signal · Funding + Finance Hiring · 9 Days</span>
+        <span class="badge badge-priority">Priority</span>
+      </div>
+      <div class="identity">
+        <div class="avatar funding-signal">PM</div>
+        <div class="identity-text">
+          <div class="lead-name">Priya Mehta</div>
+          <div class="lead-role">Founder & CEO · Runwai.io · Australia</div>
+          <div class="lead-meta">
+            <span class="meta-tag">Seed</span>
+            <span class="meta-tag">SaaS</span>
+            <span class="meta-tag">11 employees</span>
+            <span class="meta-tag">$1M–$5M</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="intel-section">
+      <div class="intel-header">
+        <span class="intel-icon">◈</span>
+        <span class="intel-title">Company Intelligence</span>
+      </div>
+      <div class="intel-grid">
+        <div class="intel-cell">
+          <div class="intel-cell-label">What They Do</div>
+          <div class="intel-cell-value">AI-powered runway forecasting platform for early-stage SaaS founders. Automates burn rate modeling and investor reporting.</div>
+        </div>
+        <div class="intel-cell">
+          <div class="intel-cell-label">Recent News</div>
+          <div class="intel-cell-value">Seed extension of $1.9M closed 9 days ago. Two finance roles posted simultaneously.</div>
+        </div>
+        <div class="intel-cell">
+          <div class="intel-cell-label">Founder Focus</div>
+          <div class="intel-cell-value">Priya has been discussing the gap between what founders track and what investors expect to see in financial reporting.</div>
+        </div>
+        <div class="intel-cell">
+          <div class="intel-cell-label">Team Trajectory</div>
+          <div class="intel-cell-value">Active growth. From 7 to 11 employees in 90 days. Finance function being built from zero.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="why-now">
+      <div class="why-label">Why Now</div>
+      <div class="why-text">Dual signal: fresh capital and active finance hiring in the same window. A founder building a financial tool who is simultaneously hiring her own finance function is the strongest indicator of need in this dataset. The irony is the signal.</div>
+    </div>
+
+    <div class="signal-grid">
+      <div class="sig-cell">
+        <div class="sig-label">Primary Signal</div>
+        <div class="sig-value">Seed Extension · $1.9M · 9 days ago</div>
+      </div>
+      <div class="sig-cell">
+        <div class="sig-label">Secondary Signal</div>
+        <div class="sig-value">Finance Hiring · 2 roles · 14 days</div>
+      </div>
+      <div class="sig-cell">
+        <div class="sig-label">Company Stage</div>
+        <div class="sig-value">Seed · Building first finance hire</div>
+      </div>
+      <div class="sig-cell">
+        <div class="sig-label">Engagement Window</div>
+        <div class="sig-value">HOT · Act within 48 hours</div>
+      </div>
+    </div>
+
+    <div class="outreach-section">
+      <button class="outreach-btn" onclick="toggleOutreach(this)">
+        <span>Outreach Arsenal</span>
+        <em class="chevron">▾</em>
+      </button>
+      <div class="outreach-body">
+        <div class="outreach-inner">
+          <div>
+            <div class="outreach-block-label">Connection Note</div>
+            <div class="outreach-text-wrap">
+              <button class="copy-btn" onclick="copyText(this, 'conn-1')">Copy</button>
+              <span id="conn-1">Priya, congrats on the extension. Building a finance function at seed while scaling product is one of the harder sequencing problems. I work with SaaS founders at your stage to get that infrastructure right before it becomes the bottleneck.</span>
+            </div>
+          </div>
+          <div>
+            <div class="outreach-block-label">Email Draft</div>
+            <div class="outreach-text-wrap">
+              <button class="copy-btn" onclick="copyText(this, 'email-1')">Copy</button>
+              <div class="email-subj">Subject: Finance build at Runwai post-round</div>
+              <span id="email-1">Noticed the seed extension and the finance hires at Runwai. That combination at 11 people means you are building the financial function from scratch while simultaneously managing post-round reporting obligations. The sequencing matters more than most founders expect.
+
+What I have seen work at this stage is getting the financial architecture set before the first finance hire joins, so they inherit a system rather than building one from a blank page. Happy to share what that looks like if the timing works.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-test-footer">Test data · Illustrative only</div>
+  </div>
+
+  <!-- PRIORITY CARD 2: Ryan Mitchell -->
+  <div class="card priority-card">
+    <div class="card-top">
+      <div class="card-badges">
+        <span class="badge badge-hot">HOT</span>
+        <span class="signal-tag">New Funding Round · Series A · 14 Days</span>
+        <span class="badge badge-priority">Priority</span>
+      </div>
+      <div class="identity">
+        <div class="avatar funding-signal">RM</div>
+        <div class="identity-text">
+          <div class="lead-name">Ryan Mitchell</div>
+          <div class="lead-role">Co-Founder & CEO · PulseMetrics Health · United States</div>
+          <div class="lead-meta">
+            <span class="meta-tag">Series A</span>
+            <span class="meta-tag">Healthtech</span>
+            <span class="meta-tag">28 employees</span>
+            <span class="meta-tag">$5M–$10M</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="intel-section">
+      <div class="intel-header">
+        <span class="intel-icon">◈</span>
+        <span class="intel-title">Company Intelligence</span>
+      </div>
+      <div class="intel-grid">
+        <div class="intel-cell">
+          <div class="intel-cell-label">What They Do</div>
+          <div class="intel-cell-value">AI-powered patient monitoring platform for chronic conditions. Real-time vitals analysis with predictive alerts for clinical teams.</div>
+        </div>
+        <div class="intel-cell">
+          <div class="intel-cell-label">Recent News</div>
+          <div class="intel-cell-value">Series A of $6.8M closed 14 days ago. Expanding clinical partnerships across three US hospital systems.</div>
+        </div>
+        <div class="intel-cell">
+          <div class="intel-cell-label">Founder Focus</div>
+          <div class="intel-cell-value">Ryan has been writing about the FDA regulatory pathway for AI diagnostics and the operational burden it creates for small teams.</div>
+        </div>
+        <div class="intel-cell">
+          <div class="intel-cell-label">Team Trajectory</div>
+          <div class="intel-cell-value">Growing. From 16 to 28 employees in six months. Engineering-heavy build. No finance or ops leadership visible yet.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="why-now">
+      <div class="why-label">Why Now</div>
+      <div class="why-text">Series A closed two weeks ago with no finance leadership in place. At 28 employees with hospital partnerships, the board reporting and compliance requirements arrive faster than the infrastructure to handle them. That gap is where founders lose the most time.</div>
+    </div>
+
+    <div class="signal-grid">
+      <div class="sig-cell">
+        <div class="sig-label">Primary Signal</div>
+        <div class="sig-value">Series A · $6.8M · 14 days ago</div>
+      </div>
+      <div class="sig-cell">
+        <div class="sig-label">Company Stage</div>
+        <div class="sig-value">Series A · Post-round scaling</div>
+      </div>
+      <div class="sig-cell">
+        <div class="sig-label">Department Activity</div>
+        <div class="sig-value">Engineering scaling · No finance lead</div>
+      </div>
+      <div class="sig-cell">
+        <div class="sig-label">Engagement Window</div>
+        <div class="sig-value">HOT · Act within 48 hours</div>
+      </div>
+    </div>
+
+    <div class="outreach-section">
+      <button class="outreach-btn" onclick="toggleOutreach(this)">
+        <span>Outreach Arsenal</span>
+        <em class="chevron">▾</em>
+      </button>
+      <div class="outreach-body">
+        <div class="outreach-inner">
+          <div>
+            <div class="outreach-block-label">Connection Note</div>
+            <div class="outreach-text-wrap">
+              <button class="copy-btn" onclick="copyText(this, 'conn-2')">Copy</button>
+              <span id="conn-2">Ryan, congrats on the Series A. Post-round at 28 people in Healthtech, the finance and compliance infrastructure usually becomes the first bottleneck that is not on the product roadmap. Worth connecting.</span>
+            </div>
+          </div>
+          <div>
+            <div class="outreach-block-label">Email Draft</div>
+            <div class="outreach-text-wrap">
+              <button class="copy-btn" onclick="copyText(this, 'email-2')">Copy</button>
+              <div class="email-subj">Subject: Post-Series A finance build · PulseMetrics</div>
+              <span id="email-2">Noticed the Series A close at PulseMetrics. At 28 people with clinical partnerships, the finance and compliance build lands all at once: board reporting cadence, healthcare compliance frameworks, burn modeling for the next 18 months.
+
+What I have seen work at this stage is a fractional layer that builds the financial infrastructure the incoming full-time CFO inherits, not a placeholder but a system builder. Happy to share what that typically looks like.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-test-footer">Test data · Illustrative only</div>
+  </div>
+
+  <!-- FULL PIPELINE -->
+  <div class="section-divider">
+    <span class="section-tag pipeline">Full Pipeline</span>
+    <span class="section-count">3 leads · Act within 7 days</span>
+    <span class="section-rule"></span>
+  </div>
+
+  <!-- CARD 3: Declan Walsh -->
+  <div class="card">
+    <div class="card-top">
+      <div class="card-badges">
+        <span class="badge badge-hot">HOT</span>
+        <span class="signal-tag">Market Expansion · US Office · 12 Days</span>
+      </div>
+      <div class="identity">
+        <div class="avatar expansion-signal">DW</div>
+        <div class="identity-text">
+          <div class="lead-name">Declan Walsh</div>
+          <div class="lead-role">Co-Founder & COO · MedStack Solutions · Ireland</div>
+          <div class="lead-meta">
+            <span class="meta-tag">Series A</span>
+            <span class="meta-tag">Healthtech</span>
+            <span class="meta-tag">44 employees</span>
+            <span class="meta-tag">$5M–$10M</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="intel-section">
+      <div class="intel-header">
+        <span class="intel-icon">◈</span>
+        <span class="intel-title">Company Intelligence</span>
+      </div>
+      <div class="intel-grid">
+        <div class="intel-cell">
+          <div class="intel-cell-label">What They Do</div>
+          <div class="intel-cell-value">Healthcare data infrastructure platform enabling secure interoperability between clinical systems across EU and US markets.</div>
+        </div>
+        <div class="intel-cell">
+          <div class="intel-cell-label">Recent News</div>
+          <div class="intel-cell-value">US office opened in Boston 12 days ago. First hire is a US-based sales lead.</div>
+        </div>
+        <div class="intel-cell">
+          <div class="intel-cell-label">Founder Focus</div>
+          <div class="intel-cell-value">Declan has been discussing cross-border healthcare compliance and the operational challenge of managing two regulatory frameworks simultaneously.</div>
+        </div>
+        <div class="intel-cell">
+          <div class="intel-cell-label">Team Trajectory</div>
+          <div class="intel-cell-value">Expanding internationally. Ireland HQ plus new US presence. Multi-jurisdiction ops complexity increasing.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="why-now">
+      <div class="why-label">Why Now</div>
+      <div class="why-text">A Healthtech company opening a US office from an Irish HQ introduces multi-jurisdiction financial complexity: transfer pricing, US entity setup, dual-market compliance. The COO is handling this alongside product delivery. That is a capacity problem disguised as a strategy problem.</div>
+    </div>
+
+    <div class="signal-grid">
+      <div class="sig-cell">
+        <div class="sig-label">Primary Signal</div>
+        <div class="sig-value">US Market Entry · 12 days ago</div>
+      </div>
+      <div class="sig-cell">
+        <div class="sig-label">Company Stage</div>
+        <div class="sig-value">Series A · International expansion</div>
+      </div>
+      <div class="sig-cell">
+        <div class="sig-label">Department Activity</div>
+        <div class="sig-value">New US entity · Sales hire underway</div>
+      </div>
+      <div class="sig-cell">
+        <div class="sig-label">Engagement Window</div>
+        <div class="sig-value">HOT · Act within 7 days</div>
+      </div>
+    </div>
+
+    <div class="outreach-section">
+      <button class="outreach-btn" onclick="toggleOutreach(this)">
+        <span>Outreach Arsenal</span>
+        <em class="chevron">▾</em>
+      </button>
+      <div class="outreach-body">
+        <div class="outreach-inner">
+          <div>
+            <div class="outreach-block-label">Connection Note</div>
+            <div class="outreach-text-wrap">
+              <button class="copy-btn" onclick="copyText(this, 'conn-3')">Copy</button>
+              <span id="conn-3">Declan, opening a US office from Ireland adds a layer of financial and ops complexity that most founders underestimate until the first quarter-end. I work with Healthtech leaders at your stage to build that cross-border infrastructure. Worth connecting.</span>
+            </div>
+          </div>
+          <div>
+            <div class="outreach-block-label">Email Draft</div>
+            <div class="outreach-text-wrap">
+              <button class="copy-btn" onclick="copyText(this, 'email-3')">Copy</button>
+              <div class="email-subj">Subject: Cross-border ops at MedStack</div>
+              <span id="email-3">Noticed MedStack opened a US office. Ireland to US at Series A introduces transfer pricing, dual-entity compliance, and the operational overhead of running two regulatory environments simultaneously. That is a specific financial architecture challenge, not something a bookkeeper can solve.
+
+What I have seen work is getting the cross-border financial structure right in the first 90 days, before the complexity compounds. Happy to share what that build looks like if the timing is useful.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-test-footer">Test data · Illustrative only</div>
+  </div>
+
+  <!-- CARD 4: Sophie Lau -->
+  <div class="card">
+    <div class="card-top">
+      <div class="card-badges">
+        <span class="badge badge-hot">HOT</span>
+        <span class="signal-tag">CFO Departure · Finance Gap · 19 Days</span>
+      </div>
+      <div class="identity">
+        <div class="avatar leadership-signal">SL</div>
+        <div class="identity-text">
+          <div class="lead-name">Sophie Lau</div>
+          <div class="lead-role">Founder & CEO · Clearview SaaS · Canada</div>
+          <div class="lead-meta">
+            <span class="meta-tag">Series B</span>
+            <span class="meta-tag">B2B SaaS</span>
+            <span class="meta-tag">61 employees</span>
+            <span class="meta-tag">$10M–$25M</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="intel-section">
+      <div class="intel-header">
+        <span class="intel-icon">◈</span>
+        <span class="intel-title">Company Intelligence</span>
+      </div>
+      <div class="intel-grid">
+        <div class="intel-cell">
+          <div class="intel-cell-label">What They Do</div>
+          <div class="intel-cell-value">B2B procurement intelligence platform helping mid-market companies consolidate vendor spend through automated analysis.</div>
+        </div>
+        <div class="intel-cell">
+          <div class="intel-cell-label">Recent News</div>
+          <div class="intel-cell-value">CFO departed 19 days ago. Permanent CFO search underway while managing Series B reporting obligations.</div>
+        </div>
+        <div class="intel-cell">
+          <div class="intel-cell-label">Founder Focus</div>
+          <div class="intel-cell-value">Sophie has been writing about the talent market for senior finance hires and the time cost of an open CFO seat at growth-stage companies.</div>
+        </div>
+        <div class="intel-cell">
+          <div class="intel-cell-label">Team Trajectory</div>
+          <div class="intel-cell-value">Finance function in transition. Gap between departure and permanent hire averages four to six months at this stage.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="why-now">
+      <div class="why-label">Why Now</div>
+      <div class="why-text">CFO departure at Series B with 61 employees means board reporting, budget cycles, and capital planning decisions are landing on the CEO while a permanent search runs for four to six months. That is the window where fractional CFO engagement converts fastest.</div>
+    </div>
+
+    <div class="signal-grid">
+      <div class="sig-cell">
+        <div class="sig-label">Primary Signal</div>
+        <div class="sig-value">CFO Departure · 19 days ago</div>
+      </div>
+      <div class="sig-cell">
+        <div class="sig-label">Company Stage</div>
+        <div class="sig-value">Series B · Finance in transition</div>
+      </div>
+      <div class="sig-cell">
+        <div class="sig-label">Department Activity</div>
+        <div class="sig-value">CFO search active · Gap cover needed</div>
+      </div>
+      <div class="sig-cell">
+        <div class="sig-label">Engagement Window</div>
+        <div class="sig-value">HOT · Act within 7 days</div>
+      </div>
+    </div>
+
+    <div class="outreach-section">
+      <button class="outreach-btn" onclick="toggleOutreach(this)">
+        <span>Outreach Arsenal</span>
+        <em class="chevron">▾</em>
+      </button>
+      <div class="outreach-body">
+        <div class="outreach-inner">
+          <div>
+            <div class="outreach-block-label">Connection Note</div>
+            <div class="outreach-text-wrap">
+              <button class="copy-btn" onclick="copyText(this, 'conn-4')">Copy</button>
+              <span id="conn-4">Sophie, a CFO departure at Series B with board reporting obligations running means someone is covering that seat without the title. I work with SaaS founders to hold that function steady during the search. Worth connecting.</span>
+            </div>
+          </div>
+          <div>
+            <div class="outreach-block-label">Email Draft</div>
+            <div class="outreach-text-wrap">
+              <button class="copy-btn" onclick="copyText(this, 'email-4')">Copy</button>
+              <div class="email-subj">Subject: CFO gap at Clearview</div>
+              <span id="email-4">Noticed the CFO transition at Clearview. At Series B with 61 people, the gap between a finance lead departure and a permanent hire runs four to six months. That window sits on top of board reporting, budget cycles, and the commercial decisions that require financial context.
+
+What I have seen work is a fractional layer that holds the financial function steady while the permanent search runs. Not a placeholder, but someone who builds the model the incoming CFO inherits. Happy to share what that structure typically looks like.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-test-footer">Test data · Illustrative only</div>
+  </div>
+
+  <!-- CARD 5: Tom Eriksen -->
+  <div class="card">
+    <div class="card-top">
+      <div class="card-badges">
+        <span class="badge badge-hot">HOT</span>
+        <span class="signal-tag">Ops Hiring Surge · 4 Roles · 21 Days</span>
+      </div>
+      <div class="identity">
+        <div class="avatar hiring-signal">TE</div>
+        <div class="identity-text">
+          <div class="lead-name">Tom Eriksen</div>
+          <div class="lead-role">Co-Founder & CEO · HealthBridge Analytics · United Kingdom</div>
+          <div class="lead-meta">
+            <span class="meta-tag">Pre-Series A</span>
+            <span class="meta-tag">Healthtech</span>
+            <span class="meta-tag">18 employees</span>
+            <span class="meta-tag">$1M–$5M</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="intel-section">
+      <div class="intel-header">
+        <span class="intel-icon">◈</span>
+        <span class="intel-title">Company Intelligence</span>
+      </div>
+      <div class="intel-grid">
+        <div class="intel-cell">
+          <div class="intel-cell-label">What They Do</div>
+          <div class="intel-cell-value">Clinical analytics platform aggregating patient pathway data for NHS and private healthcare providers. Automates diagnostic reporting.</div>
+        </div>
+        <div class="intel-cell">
+          <div class="intel-cell-label">Recent News</div>
+          <div class="intel-cell-value">Four operations roles posted in 21 days. Structured ops build-out ahead of anticipated Pre-Series A close.</div>
+        </div>
+        <div class="intel-cell">
+          <div class="intel-cell-label">Founder Focus</div>
+          <div class="intel-cell-value">Tom has been writing about NHS procurement cycles and building a sales motion inside a market with long approval timelines.</div>
+        </div>
+        <div class="intel-cell">
+          <div class="intel-cell-label">Team Trajectory</div>
+          <div class="intel-cell-value">Active growth. Ops hiring at 18 people signals delivery outpacing management capacity. Pre-raise infrastructure build.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="why-now">
+      <div class="why-label">Why Now</div>
+      <div class="why-text">Four operations roles in 21 days at 18 people. A founder building ops infrastructure ahead of a capital raise, but without the financial oversight layer to sequence those hires against burn. The hire order shapes the raise narrative more than most founders expect.</div>
+    </div>
+
+    <div class="signal-grid">
+      <div class="sig-cell">
+        <div class="sig-label">Primary Signal</div>
+        <div class="sig-value">Ops Hiring · 4 roles · 21 days ago</div>
+      </div>
+      <div class="sig-cell">
+        <div class="sig-label">Company Stage</div>
+        <div class="sig-value">Pre-Series A · Structuring for raise</div>
+      </div>
+      <div class="sig-cell">
+        <div class="sig-label">Department Activity</div>
+        <div class="sig-value">Operations build-out · 4 active roles</div>
+      </div>
+      <div class="sig-cell">
+        <div class="sig-label">Engagement Window</div>
+        <div class="sig-value">HOT · Act within 7 days</div>
+      </div>
+    </div>
+
+    <div class="outreach-section">
+      <button class="outreach-btn" onclick="toggleOutreach(this)">
+        <span>Outreach Arsenal</span>
+        <em class="chevron">▾</em>
+      </button>
+      <div class="outreach-body">
+        <div class="outreach-inner">
+          <div>
+            <div class="outreach-block-label">Connection Note</div>
+            <div class="outreach-text-wrap">
+              <button class="copy-btn" onclick="copyText(this, 'conn-5')">Copy</button>
+              <span id="conn-5">Tom, four ops roles at 18 people pre-raise is a specific decision. The hire sequence and burn positioning interact in ways that shape the raise narrative. I work with Healthtech founders at this stage. Worth connecting.</span>
+            </div>
+          </div>
+          <div>
+            <div class="outreach-block-label">Email Draft</div>
+            <div class="outreach-text-wrap">
+              <button class="copy-btn" onclick="copyText(this, 'email-5')">Copy</button>
+              <div class="email-subj">Subject: Ops sequencing pre-raise · HealthBridge</div>
+              <span id="email-5">Noticed four operations roles posted in three weeks. At 18 people pre-raise, that hiring pace changes the burn position before the revenue catches up, and the ops structure you build now is what investors see when they model the team.
+
+What I have seen work at this stage is getting the financial model and the ops sequencing aligned before the headcount moves, not after. Happy to share what that looks like if the timing is useful.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-test-footer">Test data · Illustrative only</div>
+  </div>
+
+  <!-- ICP PANEL -->
+  <div class="icp-panel">
+    <div class="icp-label">Targeting Parameters · This Week</div>
+    <div class="icp-grid">
+      <div class="icp-cell">
+        <div class="icp-cell-label">Target Titles</div>
+        <div class="icp-cell-value">Co-Founder, CEO, Founder, COO</div>
+      </div>
+      <div class="icp-cell">
+        <div class="icp-cell-label">Industries</div>
+        <div class="icp-cell-value">Healthtech, B2B SaaS</div>
+      </div>
+      <div class="icp-cell">
+        <div class="icp-cell-label">Stage Range</div>
+        <div class="icp-cell-value">Seed through Series B</div>
+      </div>
+      <div class="icp-cell">
+        <div class="icp-cell-label">Geography</div>
+        <div class="icp-cell-value">US, CA, GB, AU, NZ, IE, SG</div>
+      </div>
+      <div class="icp-cell">
+        <div class="icp-cell-label">Signal Types</div>
+        <div class="icp-cell-value">Funding, Finance/Ops Hiring, Leadership Changes, Market Expansion</div>
+      </div>
+      <div class="icp-cell">
+        <div class="icp-cell-label">Signal Window</div>
+        <div class="icp-cell-value">0-30 days HOT · 30-90 days WARM</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-brand">Pipelind · Pipeline Report · Kelsor Ventures</div>
+    <div class="footer-text">
+      Review leads and send connection requests from your LinkedIn account using the note on each card.<br>
+      New report available every Monday at: <a href="https://pipelind.com/clients/dave/report">pipelind.com/clients/dave/report</a><br><br>
+      Questions: saurabh@pipelind.com · Generated June 13, 2026
+    </div>
+  </div>
+
+</div>
+
+<script>
+function toggleOutreach(btn) {
+  btn.classList.toggle('open');
+  const body = btn.nextElementSibling;
+  body.classList.toggle('visible');
+}
+
+function copyText(btn, id) {
+  const el = document.getElementById(id);
+  const text = el.innerText || el.textContent;
+  navigator.clipboard.writeText(text.trim()).then(() => {
+    btn.textContent = 'Copied';
+    btn.classList.add('copied');
+    showToast();
+    setTimeout(() => {
+      btn.textContent = 'Copy';
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+
+function showToast() {
+  const toast = document.getElementById('toast');
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2000);
+}
+</script>
+</body>
+</html>
