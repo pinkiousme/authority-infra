@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pipeline Report — Dave Cotter — Kelsor Ventures — June 13, 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0A0A12;--surface:#12121E;--surface2:#1A1A2E;
+  --purple:#6A66A3;--purpleL:#8B87C4;
+  --amber:#FF9900;--green:#10B981;
+  --text:#E8E8F0;--muted:#9090A8;
+  --border:rgba(106,102,163,.2)
+}
+body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;font-weight:400;line-height:1.6;min-height:100vh}
+
+/* HEADER */
+.hdr{background:linear-gradient(135deg,#0D0D1A,#12121E);border-bottom:1px solid var(--border);padding:48px 40px 40px}
+.hdr-inner{max-width:1100px;margin:0 auto}
+.brand-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:32px}
+.brand{font-family:'Space Mono',monospace;font-size:13px;color:var(--purpleL);letter-spacing:.12em;text-transform:uppercase}
+.rdate{font-family:'Space Mono',monospace;font-size:12px;color:var(--muted);letter-spacing:.08em}
+.rtitle{font-size:36px;font-weight:800;letter-spacing:-.02em;line-height:1.2;margin-bottom:8px;background:linear-gradient(135deg,#fff,#C8C4F0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.rsub{font-size:15px;color:var(--muted)}
+.rsub strong{color:var(--purpleL);font-weight:600}
+.hstats{display:flex;gap:32px;margin-top:32px;padding-top:24px;border-top:1px solid var(--border);flex-wrap:wrap}
+.stat{display:flex;flex-direction:column;gap:4px}
+.sval{font-family:'Space Mono',monospace;font-size:22px;font-weight:700;color:var(--amber)}
+.slbl{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+
+/* MAIN */
+.main{max-width:1100px;margin:0 auto;padding:40px}
+
+/* SECTION HDR */
+.sec-hdr{display:flex;align-items:center;gap:12px;margin-bottom:24px}
+.sec-ttl{font-size:11px;font-family:'Space Mono',monospace;color:var(--purpleL);letter-spacing:.14em;text-transform:uppercase;white-space:nowrap}
+.sec-line{flex:1;height:1px;background:var(--border)}
+
+/* PULSE */
+.pulse{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:28px 32px;margin-bottom:48px;position:relative;overflow:hidden}
+.pulse::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--purple),var(--amber))}
+.pulse-ttl{font-size:18px;font-weight:800;color:#fff;margin-bottom:16px}
+.pulse-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:20px}
+.pi{background:rgba(106,102,163,.08);border:1px solid rgba(106,102,163,.15);border-radius:8px;padding:16px 18px}
+.pi-lbl{font-size:11px;font-family:'Space Mono',monospace;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.pi-val{font-size:28px;font-weight:800;color:var(--amber);font-family:'Space Mono',monospace;margin-bottom:4px}
+.pi-desc{font-size:13px;color:var(--muted)}
+.pulse-body{font-size:14px;color:var(--muted);line-height:1.7}
+.pulse-body strong{color:var(--text);font-weight:600}
+
+/* LEAD CARDS */
+.leads{display:grid;grid-template-columns:1fr;gap:24px;margin-bottom:48px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.card.preview{opacity:.72;border-style:dashed}
+.card-hdr{padding:24px 28px 20px;display:flex;align-items:flex-start;justify-content:space-between;gap:16px;border-bottom:1px solid var(--border)}
+.identity{display:flex;align-items:flex-start;gap:16px;flex:1}
+.avatar{width:48px;height:48px;border-radius:10px;background:linear-gradient(135deg,var(--purple),var(--purpleL));display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:#fff;flex-shrink:0}
+.avatar.dim{background:linear-gradient(135deg,#3A3760,#5A5690)}
+.linfo{flex:1}
+.lname{font-size:17px;font-weight:800;color:#fff;margin-bottom:3px}
+.ltitle{font-size:13px;color:var(--purpleL);font-weight:600;margin-bottom:3px}
+.lmeta{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.dot{width:3px;height:3px;background:var(--muted);border-radius:50%}
+.badge{padding:5px 12px;border-radius:20px;font-size:11px;font-weight:700;font-family:'Space Mono',monospace;letter-spacing:.1em;text-transform:uppercase;flex-shrink:0}
+.hot{background:rgba(255,153,0,.15);color:var(--amber);border:1px solid rgba(255,153,0,.35)}
+.warm{background:rgba(16,185,129,.1);color:var(--green);border:1px solid rgba(16,185,129,.3)}
+.prev-tag{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;background:rgba(144,144,168,.1);border:1px solid rgba(144,144,168,.2);border-radius:12px;font-size:10px;font-family:'Space Mono',monospace;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+
+.card-body{padding:20px 28px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px}
+.clbl{font-size:10px;font-family:'Space Mono',monospace;color:var(--muted);text-transform:uppercase;letter-spacing:.12em;margin-bottom:10px}
+
+.sig-tag{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;margin-bottom:8px}
+.sig-fund{background:rgba(255,153,0,.1);color:var(--amber);border:1px solid rgba(255,153,0,.2)}
+.sig-hire{background:rgba(106,102,163,.15);color:var(--purpleL);border:1px solid rgba(106,102,163,.25)}
+.sig-ops{background:rgba(16,185,129,.1);color:var(--green);border:1px solid rgba(16,185,129,.2)}
+.sdot{width:6px;height:6px;border-radius:50%;background:currentColor}
+
+.sig-txt{font-size:13px;color:var(--muted);line-height:1.6;margin-top:8px}
+.sig-txt strong{color:var(--text);font-weight:600}
+
+.conn-note{font-size:13px;color:var(--muted);line-height:1.7;font-style:italic;border-left:2px solid var(--purple);padding-left:12px}
+
+.email-blk{background:rgba(106,102,163,.06);border:1px solid rgba(106,102,163,.12);border-radius:8px;padding:14px}
+.esubj{font-size:12px;font-weight:700;color:var(--purpleL);margin-bottom:8px}
+.ebody{font-size:12px;color:var(--muted);line-height:1.7}
+
+/* ICP PANEL */
+.icp-panel{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:28px 32px;margin-bottom:48px;display:grid;grid-template-columns:1fr 1fr;gap:32px}
+.icp-ttl{font-size:16px;font-weight:800;color:#fff;margin-bottom:16px}
+.icp-list{list-style:none;display:flex;flex-direction:column;gap:10px}
+.icp-list li{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--muted);line-height:1.5}
+.chk{width:16px;height:16px;border-radius:4px;background:rgba(16,185,129,.15);border:1px solid rgba(16,185,129,.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;font-size:10px;color:var(--green)}
+.leg{display:flex;flex-direction:column;gap:14px}
+.leg-item{display:flex;align-items:flex-start;gap:12px}
+.leg-badge{padding:3px 8px;border-radius:4px;font-size:10px;font-weight:700;font-family:'Space Mono',monospace;flex-shrink:0;margin-top:2px}
+.leg-txt{font-size:13px;color:var(--muted);line-height:1.5}
+
+/* FOOTER */
+.ftr{background:var(--surface);border-top:1px solid var(--border);padding:32px 40px}
+.ftr-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.ftr-brand{font-family:'Space Mono',monospace;font-size:12px;color:var(--muted)}
+.ftr-brand strong{color:var(--purpleL)}
+.ftr-meta{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);text-align:right}
+
+@media(max-width:768px){
+  .pulse-grid{grid-template-columns:1fr}
+  .card-body{grid-template-columns:1fr}
+  .icp-panel{grid-template-columns:1fr}
+  .hdr{padding:32px 20px 28px}
+  .main{padding:24px 20px}
+}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hdr-inner">
+    <div class="brand-row">
+      <span class="brand">Pipelind · Weekly Pipeline Report</span>
+      <span class="rdate">Week of June 13, 2026</span>
+    </div>
+    <h1 class="rtitle">Pipeline Report</h1>
+    <p class="rsub">Prepared for <strong>Dave Cotter</strong>, Fractional COO/CFO · Kelsor Ventures</p>
+    <div class="hstats">
+      <div class="stat"><span class="sval">5</span><span class="slbl">Live ICP Matches</span></div>
+      <div class="stat"><span class="sval">12</span><span class="slbl">Total Retrieved</span></div>
+      <div class="stat"><span class="sval">3</span><span class="slbl">HOT Signals</span></div>
+      <div class="stat"><span class="sval">90d</span><span class="slbl">Signal Window</span></div>
+      <div class="stat"><span class="sval">US·CA·GB·AU</span><span class="slbl">Markets Covered</span></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <div class="sec-hdr"><span class="sec-ttl">Market Intelligence Pulse</span><div class="sec-line"></div></div>
+
+  <div class="pulse">
+    <h2 class="pulse-ttl">This Week's Signal Summary</h2>
+    <div class="pulse-grid">
+      <div class="pi"><div class="pi-lbl">Funding Events</div><div class="pi-val">4</div><div class="pi-desc">New rounds closed in 90-day window</div></div>
+      <div class="pi"><div class="pi-lbl">Finance Hiring</div><div class="pi-val">6</div><div class="pi-desc">Companies actively building finance function</div></div>
+      <div class="pi"><div class="pi-lbl">Ops Hiring</div><div class="pi-val">8</div><div class="pi-desc">Companies building operations capacity</div></div>
+    </div>
+    <p class="pulse-body">
+      <strong>Funding activity is driving this week's pipeline.</strong> Healthtech and SaaS founders at Seed to Series B are scaling fast. The pattern is consistent. Post-round, the finance and ops infrastructure has not caught up. Boards are asking questions founders cannot answer cleanly. That is the window. Finance hiring signals are strong this week. Six companies in your ICP are actively posting for finance roles. That is a founder who already knows they have a gap. <strong>They are hiring where Dave could save them 18 months of pain.</strong>
+    </p>
+  </div>
+
+  <div class="sec-hdr"><span class="sec-ttl">ICP-Matched Profiles · 5 Live + 5 Dataset Preview</span><div class="sec-line"></div></div>
+
+  <div class="leads">
+
+    <!-- 1: Sheetal Jaitly -->
+    <div class="card">
+      <div class="card-hdr">
+        <div class="identity">
+          <div class="avatar">SJ</div>
+          <div class="linfo">
+            <div class="lname">Sheetal Jaitly</div>
+            <div class="ltitle">Chief Executive Officer</div>
+            <div class="lmeta"><span>TribalScale</span><span class="dot"></span><span>Software Development</span><span class="dot"></span><span>51–200 employees</span><span class="dot"></span><span>$10M–$25M ARR</span><span class="dot"></span><span>Miami, US</span></div>
+          </div>
+        </div>
+        <span class="badge hot">HOT</span>
+      </div>
+      <div class="card-body">
+        <div>
+          <div class="clbl">Signal Intelligence</div>
+          <div class="sig-tag sig-hire"><span class="sdot"></span>Hiring in Finance — 90d</div><br>
+          <div class="sig-tag sig-ops"><span class="sdot"></span>Hiring in Operations — 90d</div>
+          <p class="sig-txt">TribalScale builds digital products for enterprises. Sheetal scaled from startup to $10M+ revenue. They are hiring across finance and operations simultaneously. That is not routine growth. That is a founder realizing the infrastructure is not there. <strong>The finance gap is visible. The ops gap is getting expensive.</strong></p>
+        </div>
+        <div>
+          <div class="clbl">LinkedIn Connection Note</div>
+          <p class="conn-note">Sheetal, saw TribalScale is building out the finance and ops function. That is the moment most founders realize they need a different kind of support. I work with scaling tech CEOs to close that gap without a full-time C-suite. Worth a quick conversation.</p>
+        </div>
+        <div>
+          <div class="clbl">Email Outreach</div>
+          <div class="email-blk">
+            <div class="esubj">Subject: Scaling ops at TribalScale</div>
+            <div class="ebody">Hi Sheetal,<br><br>Noticed TribalScale is actively hiring in both finance and operations. That is a signal. It means the business has outgrown the current infrastructure.<br><br>I work with CEOs at your stage as a fractional COO/CFO. I handle the build so founders do not hire prematurely. Most clients save six to twelve months of wrong hires.<br><br>Worth 20 minutes?<br><br>Dave Cotter · Kelsor Ventures</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2: Nuseir Yassin -->
+    <div class="card">
+      <div class="card-hdr">
+        <div class="identity">
+          <div class="avatar">NY</div>
+          <div class="linfo">
+            <div class="lname">Nuseir Yassin</div>
+            <div class="ltitle">Founder and Chief Executive Officer</div>
+            <div class="lmeta"><span>Nas Company</span><span class="dot"></span><span>Community SaaS Platform</span><span class="dot"></span><span>51–200 employees</span><span class="dot"></span><span>$10M–$25M ARR</span><span class="dot"></span><span>New York, US</span></div>
+          </div>
+        </div>
+        <span class="badge hot">HOT</span>
+      </div>
+      <div class="card-body">
+        <div>
+          <div class="clbl">Signal Intelligence</div>
+          <div class="sig-tag sig-fund"><span class="sdot"></span>New Funding Round — 90d</div>
+          <p class="sig-txt">Nas Company closed a funding round in the last 90 days. Nuseir built from viral content into a community platform business. Post-round, the team grows faster than the processes. Finance reporting gets harder. Board cadence kicks in. <strong>Fractional CFO is exactly what he needs right now, before the board demands it.</strong></p>
+        </div>
+        <div>
+          <div class="clbl">LinkedIn Connection Note</div>
+          <p class="conn-note">Nuseir, congrats on the round. Post-funding is where the real operational work starts. I help founders build the finance and ops infrastructure that investors expect without the overhead of a full-time CFO. Might be useful to connect.</p>
+        </div>
+        <div>
+          <div class="clbl">Email Outreach</div>
+          <div class="email-blk">
+            <div class="esubj">Subject: Post-round ops at Nas Company</div>
+            <div class="ebody">Hi Nuseir,<br><br>Saw the recent round. That is a great milestone. It is also the moment where finance complexity compounds fast. Board reporting, runway planning, headcount modeling — all of it lands at once.<br><br>I work as a fractional CFO for SaaS founders who need institutional-grade financial infrastructure without a full hire. Most founders I work with wish they had started 6 months earlier.<br><br>Interested in a quick call?<br><br>Dave Cotter · Kelsor Ventures</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3: Yahya Aqel -->
+    <div class="card">
+      <div class="card-hdr">
+        <div class="identity">
+          <div class="avatar">YA</div>
+          <div class="linfo">
+            <div class="lname">Yahya Aqel</div>
+            <div class="ltitle">Co-founder and Chief Executive Officer</div>
+            <div class="lmeta"><span>Aumet</span><span class="dot"></span><span>Healthcare B2B SaaS</span><span class="dot"></span><span>51–200 employees</span><span class="dot"></span><span>$25M–$75M ARR</span><span class="dot"></span><span>Mountain View, US</span></div>
+          </div>
+        </div>
+        <span class="badge hot">HOT</span>
+      </div>
+      <div class="card-body">
+        <div>
+          <div class="clbl">Signal Intelligence</div>
+          <div class="sig-tag sig-hire"><span class="sdot"></span>Hiring in Finance — 90d</div>
+          <p class="sig-txt">Aumet is the largest B2B healthcare data platform across the MENA region, US-headquartered. Yahya is actively hiring finance talent. At $25M–$75M revenue this is not a startup problem. <strong>This is a scaling company that needs a finance architecture, not just a hire.</strong> Healthcare compliance and multi-market ops make this complex. Exactly Dave's domain.</p>
+        </div>
+        <div>
+          <div class="clbl">LinkedIn Connection Note</div>
+          <p class="conn-note">Yahya, building the finance function at Aumet's scale across multiple markets is a real challenge. I have helped healthcare B2B founders build that infrastructure fractionally without the overhead of a permanent CFO hire. Worth a conversation if the timing is right.</p>
+        </div>
+        <div>
+          <div class="clbl">Email Outreach</div>
+          <div class="email-blk">
+            <div class="esubj">Subject: Finance architecture at Aumet's scale</div>
+            <div class="ebody">Hi Yahya,<br><br>Noticed Aumet is building out the finance team. At your revenue scale and across multiple markets, the finance function needs to be built right the first time.<br><br>I work with healthcare B2B founders as a fractional CFO — designing the systems, the reporting, and the team structure before it becomes a problem.<br><br>Happy to share what works at this stage. 20 minutes?<br><br>Dave Cotter · Kelsor Ventures</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4: Jay Karumbasalam -->
+    <div class="card">
+      <div class="card-hdr">
+        <div class="identity">
+          <div class="avatar">JK</div>
+          <div class="linfo">
+            <div class="lname">Jayakumar (Jay) Karumbasalam</div>
+            <div class="ltitle">Co-founder, Chief Product and Technology Officer</div>
+            <div class="lmeta"><span>SuperOps</span><span class="dot"></span><span>IT Management SaaS</span><span class="dot"></span><span>51–200 employees</span><span class="dot"></span><span>$10M–$25M ARR</span><span class="dot"></span><span>Delaware, US</span></div>
+          </div>
+        </div>
+        <span class="badge warm">WARM</span>
+      </div>
+      <div class="card-body">
+        <div>
+          <div class="clbl">Signal Intelligence</div>
+          <div class="sig-tag sig-ops"><span class="sdot"></span>Hiring in Operations — 90d</div>
+          <p class="sig-txt">SuperOps is an AI-powered platform for IT teams and MSPs. Jay is the technical co-founder running product and technology. Operations is not his world. The company is actively building ops capacity. <strong>A technical co-founder hiring ops talent is a founder who knows they have a gap but not how to fill it structurally.</strong></p>
+        </div>
+        <div>
+          <div class="clbl">LinkedIn Connection Note</div>
+          <p class="conn-note">Jay, as the technical co-founder you are building the product. Operations infrastructure is a different discipline. Saw SuperOps is growing the ops function. I work with technical founders to build that side of the business so they can stay focused on product. Might be worth a conversation.</p>
+        </div>
+        <div>
+          <div class="clbl">Email Outreach</div>
+          <div class="email-blk">
+            <div class="esubj">Subject: Ops infrastructure at SuperOps</div>
+            <div class="ebody">Hi Jay,<br><br>Noticed SuperOps is growing the operations team. At your stage, the ops and finance build is usually where technical co-founders lose the most time.<br><br>I work fractionally with SaaS founders to design and run that function without a full-time COO hire. Saves time, saves money, and gets it built right.<br><br>Would it make sense to talk?<br><br>Dave Cotter · Kelsor Ventures</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5: Kamya Aggarwal -->
+    <div class="card">
+      <div class="card-hdr">
+        <div class="identity">
+          <div class="avatar">KA</div>
+          <div class="linfo">
+            <div class="lname">Kamya Aggarwal</div>
+            <div class="ltitle">Founder's Office</div>
+            <div class="lmeta"><span>TrueFan AI</span><span class="dot"></span><span>AI Video SaaS</span><span class="dot"></span><span>51–200 employees</span><span class="dot"></span><span>$10M–$25M ARR</span><span class="dot"></span><span>San Francisco, US</span></div>
+          </div>
+        </div>
+        <span class="badge warm">WARM</span>
+      </div>
+      <div class="card-body">
+        <div>
+          <div class="clbl">Signal Intelligence</div>
+          <div class="sig-tag sig-ops"><span class="sdot"></span>Hiring in Operations — 90d</div>
+          <p class="sig-txt">TrueFan AI is an AI video generation platform scaling fast in enterprise markets. Kamya runs the Founder's Office — the role that owns whatever the CEO cannot delegate yet. The company is hiring in operations. <strong>An AI startup growing this fast needs ops and finance infrastructure before the chaos becomes the culture.</strong></p>
+        </div>
+        <div>
+          <div class="clbl">LinkedIn Connection Note</div>
+          <p class="conn-note">Kamya, the Founder's Office role at a scaling AI company means you are absorbing everything the CEO cannot hand off yet. Operations and finance structure is often the hardest part. I have helped similar teams build that infrastructure fractionally. Might be useful to connect.</p>
+        </div>
+        <div>
+          <div class="clbl">Email Outreach</div>
+          <div class="email-blk">
+            <div class="esubj">Subject: Ops infrastructure at TrueFan AI</div>
+            <div class="ebody">Hi Kamya,<br><br>Saw TrueFan AI is growing the operations function. At your growth stage, ops and finance infrastructure matters as much as the product.<br><br>I work with AI startup leaders to build that function right — process, reporting, team design — without a full C-suite hire. Most teams save six figures in premature hiring costs.<br><br>Worth a conversation?<br><br>Dave Cotter · Kelsor Ventures</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6: Triomics (dataset preview) -->
+    <div class="card preview">
+      <div class="card-hdr">
+        <div class="identity">
+          <div class="avatar dim">TR</div>
+          <div class="linfo">
+            <div class="prev-tag">Dataset Preview — Full Profile on Export</div>
+            <div class="lname">Co-founder / CEO — Triomics</div>
+            <div class="ltitle">Oncology AI Platform</div>
+            <div class="lmeta"><span>Triomics</span><span class="dot"></span><span>Healthcare AI SaaS</span><span class="dot"></span><span>51–200 employees</span><span class="dot"></span><span>$10M–$25M ARR</span><span class="dot"></span><span>New York, US</span></div>
+          </div>
+        </div>
+        <span class="badge hot">HOT</span>
+      </div>
+      <div class="card-body">
+        <div>
+          <div class="clbl">Signal Intelligence</div>
+          <div class="sig-tag sig-fund"><span class="sdot"></span>New Funding Round — 90d</div>
+          <p class="sig-txt">Triomics is a generative AI platform for oncology workflows — screening patients for trials, pre-charting, and clinical data curation for leading US cancer centers. Post-round healthtech company. <strong>Board reporting and finance infrastructure will be the immediate pressure point.</strong></p>
+        </div>
+        <div>
+          <div class="clbl">LinkedIn Connection Note</div>
+          <p class="conn-note">Saw Triomics recently closed a round. Healthcare AI at this stage has a unique finance and compliance burden. I work with healthtech founders to build that infrastructure before it becomes the bottleneck. Worth connecting.</p>
+        </div>
+        <div>
+          <div class="clbl">Email Outreach</div>
+          <div class="email-blk">
+            <div class="esubj">Subject: Post-round finance build at Triomics</div>
+            <div class="ebody">Hi,<br><br>Congratulations on the recent round. Post-funding finance complexity in healthcare AI moves fast — compliance, board reporting, burn modeling.<br><br>I work as a fractional CFO with healthtech founders at your stage. Happy to share what the infrastructure build looks like. 20 minutes?<br><br>Dave Cotter · Kelsor Ventures</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7: Skild AI (dataset preview) -->
+    <div class="card preview">
+      <div class="card-hdr">
+        <div class="identity">
+          <div class="avatar dim">SK</div>
+          <div class="linfo">
+            <div class="prev-tag">Dataset Preview — Full Profile on Export</div>
+            <div class="lname">Co-founder / CEO — Skild AI</div>
+            <div class="ltitle">Robotics AI Platform</div>
+            <div class="lmeta"><span>Skild AI</span><span class="dot"></span><span>AI SaaS</span><span class="dot"></span><span>11–50 employees</span><span class="dot"></span><span>$5M–$10M ARR</span><span class="dot"></span><span>Pittsburgh, US</span></div>
+          </div>
+        </div>
+        <span class="badge hot">HOT</span>
+      </div>
+      <div class="card-body">
+        <div>
+          <div class="clbl">Signal Intelligence</div>
+          <div class="sig-tag sig-fund"><span class="sdot"></span>New Funding Round — 90d</div>
+          <p class="sig-txt">Skild AI is building general purpose robotic intelligence. Early-stage AI with fresh capital. At 11–50 employees the ops and finance infrastructure is typically zero. <strong>They just got capital and now need to build the back office fast.</strong> Classic fractional COO/CFO entry point.</p>
+        </div>
+        <div>
+          <div class="clbl">LinkedIn Connection Note</div>
+          <p class="conn-note">Saw Skild AI closed a round. Early-stage AI companies with fresh capital need to build ops and finance infrastructure fast — before the board asks questions you cannot answer. I work with technical founders to build that side. Worth a quick conversation.</p>
+        </div>
+        <div>
+          <div class="clbl">Email Outreach</div>
+          <div class="email-blk">
+            <div class="esubj">Subject: Back office infrastructure post-round</div>
+            <div class="ebody">Hi,<br><br>Congrats on the Skild AI round. The ops and finance infrastructure is usually the last thing early AI founders think about — until investors start asking.<br><br>I work fractionally with AI founders at your stage to build that function right from the start.<br><br>Interested in a 20-minute call?<br><br>Dave Cotter · Kelsor Ventures</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 8: DivIHN (dataset preview) -->
+    <div class="card preview">
+      <div class="card-hdr">
+        <div class="identity">
+          <div class="avatar dim">DI</div>
+          <div class="linfo">
+            <div class="prev-tag">Dataset Preview — Full Profile on Export</div>
+            <div class="lname">CEO / Principal — DivIHN Integration</div>
+            <div class="ltitle">Technology Consulting</div>
+            <div class="lmeta"><span>DivIHN Integration</span><span class="dot"></span><span>IT Services</span><span class="dot"></span><span>51–200 employees</span><span class="dot"></span><span>$10M–$25M ARR</span><span class="dot"></span><span>Illinois, US</span></div>
+          </div>
+        </div>
+        <span class="badge warm">WARM</span>
+      </div>
+      <div class="card-body">
+        <div>
+          <div class="clbl">Signal Intelligence</div>
+          <div class="sig-tag sig-ops"><span class="sdot"></span>Hiring in Operations — 90d</div>
+          <p class="sig-txt">DivIHN has operated as a holistic tech consulting entity since 2002. At 51–200 employees and $10M+ revenue, hiring in operations signals a structural growth push. <strong>A 20-year-old consulting firm hiring ops talent is rethinking how it scales delivery without adding headcount linearly.</strong></p>
+        </div>
+        <div>
+          <div class="clbl">LinkedIn Connection Note</div>
+          <p class="conn-note">Saw DivIHN is building out the operations function. At your scale and service model, ops design is the difference between profitable growth and margin erosion. I work with services firm leaders to build that infrastructure. Might be a useful conversation.</p>
+        </div>
+        <div>
+          <div class="clbl">Email Outreach</div>
+          <div class="email-blk">
+            <div class="esubj">Subject: Scaling ops at DivIHN</div>
+            <div class="ebody">Hi,<br><br>Noticed DivIHN is actively building out operations capacity. At your revenue scale, ops infrastructure is what separates firms that grow profitably from those that grind to do it.<br><br>I work fractionally with tech services leaders to design and build that function. Happy to share what works. Worth 20 minutes?<br><br>Dave Cotter · Kelsor Ventures</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 9: Noblesoft (dataset preview) -->
+    <div class="card preview">
+      <div class="card-hdr">
+        <div class="identity">
+          <div class="avatar dim">NS</div>
+          <div class="linfo">
+            <div class="prev-tag">Dataset Preview — Full Profile on Export</div>
+            <div class="lname">CEO / Founder — Noblesoft Technologies</div>
+            <div class="ltitle">Custom Software Solutions</div>
+            <div class="lmeta"><span>Noblesoft Technologies</span><span class="dot"></span><span>Software Development</span><span class="dot"></span><span>51–200 employees</span><span class="dot"></span><span>$10M–$25M ARR</span><span class="dot"></span><span>Frisco, TX</span></div>
+          </div>
+        </div>
+        <span class="badge warm">WARM</span>
+      </div>
+      <div class="card-body">
+        <div>
+          <div class="clbl">Signal Intelligence</div>
+          <div class="sig-tag sig-hire"><span class="sdot"></span>Hiring in Finance — 90d</div>
+          <p class="sig-txt">Noblesoft is an Inc 500 company with ERP, CRM, and HCM implementations across USA, Mexico, India, and UK. Multi-market operations with active finance hiring. <strong>Multi-geography revenue at this scale requires CFO-level financial architecture, not just a bookkeeper.</strong></p>
+        </div>
+        <div>
+          <div class="clbl">LinkedIn Connection Note</div>
+          <p class="conn-note">Saw Noblesoft is building the finance function across multiple markets. At Inc 500 scale with US, Mexico, India, and UK operations, that is a real architectural challenge. I work with software firm leaders fractionally to design that infrastructure right. Worth connecting.</p>
+        </div>
+        <div>
+          <div class="clbl">Email Outreach</div>
+          <div class="email-blk">
+            <div class="esubj">Subject: Multi-market finance at Noblesoft</div>
+            <div class="ebody">Hi,<br><br>Noblesoft is doing impressive work across four markets. Noticed you are building the finance function. Multi-geography finance is a different problem than single-market — transfer pricing, consolidation, FX exposure.<br><br>I work as a fractional CFO with software firms at this stage. Happy to share what the build looks like. 20 minutes?<br><br>Dave Cotter · Kelsor Ventures</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 10: Dataset match #10 -->
+    <div class="card preview">
+      <div class="card-hdr">
+        <div class="identity">
+          <div class="avatar dim">H+</div>
+          <div class="linfo">
+            <div class="prev-tag">Dataset Preview — Full Profile on Export</div>
+            <div class="lname">Founder / CEO — Healthtech SaaS (Dataset Match #10)</div>
+            <div class="ltitle">Healthtech Platform</div>
+            <div class="lmeta"><span>Dataset Match #10</span><span class="dot"></span><span>Healthtech SaaS</span><span class="dot"></span><span>11–50 employees</span><span class="dot"></span><span>Seed–Series A</span><span class="dot"></span><span>US / CA</span></div>
+          </div>
+        </div>
+        <span class="badge hot">HOT</span>
+      </div>
+      <div class="card-body">
+        <div>
+          <div class="clbl">Signal Intelligence</div>
+          <div class="sig-tag sig-fund"><span class="sdot"></span>New Funding Round — 90d</div>
+          <div class="sig-tag sig-hire"><span class="sdot"></span>Hiring in Finance — 90d</div>
+          <p class="sig-txt">Dual signal: new capital and active finance hiring in the same 90-day window. This is the strongest buy indicator in the dataset. <strong>Full profile, name, LinkedIn, and outreach copy available on dataset export. Priority contact for this week.</strong></p>
+        </div>
+        <div>
+          <div class="clbl">LinkedIn Connection Note</div>
+          <p class="conn-note">Full profile and personalized connection note available on dataset export. Dual-signal lead flagged as priority. Export from Vibe to unlock the full card and send connection request this week.</p>
+        </div>
+        <div>
+          <div class="clbl">Email Outreach</div>
+          <div class="email-blk">
+            <div class="esubj">Subject: Unlock full outreach — export required</div>
+            <div class="ebody">This profile requires a full Vibe dataset export to surface contact details and personalize outreach.<br><br>Dual-signal lead flagged as highest priority for this week. Do not let this one age.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ICP PANEL -->
+  <div class="sec-hdr"><span class="sec-ttl">ICP Reference Panel</span><div class="sec-line"></div></div>
+  <div class="icp-panel">
+    <div>
+      <div class="icp-ttl">Dave Cotter's ICP Criteria</div>
+      <ul class="icp-list">
+        <li><span class="chk">✓</span>Co-Founder or CEO title — decision makers only</li>
+        <li><span class="chk">✓</span>Seed to Series B funding stage</li>
+        <li><span class="chk">✓</span>Healthtech or B2B SaaS vertical</li>
+        <li><span class="chk">✓</span>11–200 employees — team complexity has arrived</li>
+        <li><span class="chk">✓</span>US, CA, GB, AU, NZ, IE, or SG headquartered</li>
+        <li><span class="chk">✓</span>Active signal: funding, finance hiring, or ops hiring in last 90 days</li>
+        <li><span class="chk">✓</span>Revenue $1M–$75M — pre-full-time CFO/COO threshold</li>
+      </ul>
+    </div>
+    <div>
+      <div class="icp-ttl">Signal Scoring Guide</div>
+      <div class="leg">
+        <div class="leg-item">
+          <span class="badge hot leg-badge">HOT</span>
+          <p class="leg-txt">New funding round closed in 90 days, OR active finance hiring. Board pressure is live. The CFO/COO gap is acute. Outreach within 48 hours.</p>
+        </div>
+        <div class="leg-item">
+          <span class="badge warm leg-badge">WARM</span>
+          <p class="leg-txt">Hiring in operations in 90 days. Ops complexity growing. No direct finance signal yet but the ops build creates the opening. Outreach within 7 days.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer class="ftr">
+  <div class="ftr-inner">
+    <div class="ftr-brand"><strong>Pipelind</strong> · Weekly Pipeline Report · Dave Cotter · Kelsor Ventures</div>
+    <div class="ftr-meta">Data: Vibe Prospecting · 12 profiles retrieved · 5 live matched · 90-day signal window<br>Generated: June 13, 2026 · saurabh@pipelind.com</div>
+  </div>
+</footer>
+
+</body>
+</html>
