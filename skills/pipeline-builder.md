@@ -69,34 +69,50 @@ If the context file cannot be read, STOP and report the error. Never fabricate c
 
 Use Vibe Prospecting MCP. Never Apollo.io.
 
-**CRITICAL — exclude_key placement:** `exclude_key` is a TOP-LEVEL parameter of fetch-entities, never inside `filters`. Placing it inside filters causes error -32602.
+**CRITICAL · exclude_key placement:** `exclude_key` is a TOP-LEVEL parameter of fetch-entities, never inside `filters`. Placing it inside filters causes error -32602.
 
 ### 2A · Autocomplete first
 Run autocomplete on `linkedin_category` using the industry terms from the context file (e.g. "healthtech saas software b2b"). Use the standardized values returned.
 
 ### 2B · Fetch
+
+**DEMO mode (credit-efficient, intentional):**
+Fetch BUSINESSES with the events filter (events are business-level), then identify the founder/CEO of each via web research in Step 3. This is the intended DEMO path: it uses one business-level fetch and avoids prospect-level credit draw.
+```
+fetch-entities(
+  entity_type: "businesses",
+  number_of_results: 8,
+  filters: {
+    company_size: [from context],
+    company_country_code: { values: [from context] },
+    linkedin_category: [autocomplete results],
+    events: { values: [from context], last_occurrence: 90 }
+  }
+)
+```
+Pick the 5 businesses with the strongest, most recent signals. The founder/CEO name comes from web research in Step 3. Do NOT call enrich-prospects in DEMO mode.
+
+**LIVE mode (full prospect fetch + enrichment):**
 ```
 fetch-entities(
   entity_type: "prospects",
-  number_of_results: [DEMO: 8 · LIVE: 15],   ← over-fetch to guarantee clean count after filtering
+  number_of_results: 15,
   filters: {
     job_level: [from context VIBE FILTER block],
     company_size: [from context],
     company_country_code: { values: [from context] },
     linkedin_category: [autocomplete results],
-    events: {
-      values: [from context, e.g. "new_funding_round", "hiring_in_finance_department", "hiring_in_operations_department"],
-      last_occurrence: 90
-    }
+    events: { values: [from context], last_occurrence: 90 }
   }
 )
 ```
+For LIVE dedup: read the Google Sheet (SHEET_ID, tab from context), collect delivered LinkedIn URLs, discard any returned lead already in the sheet.
 
-For LIVE mode with dedup: read the Google Sheet (SHEET_ID, tab from context), collect delivered LinkedIn URLs, and discard any returned lead already in the sheet.
+Keep exactly the target count (DEMO: 5 · LIVE: 10) of clean leads. A clean lead has a real name, real company, and at least one active signal in the last 90 days. Discard borderline or unnamed entries.
 
-Keep exactly the target count (DEMO: 5 · LIVE: 10) of clean leads. A clean lead has: a real name, a real title, a real company, and at least one active signal in the last 90 days. Discard borderline or unnamed entries.
+**If Vibe credits are exhausted mid-run:** stop fetching, use whatever real businesses/prospects were already returned, and complete the build with those plus web research. Note the actual count in the output. Never fabricate leads to reach the target. A real partial build beats a padded full one.
 
-**Under-count fallback:** if fewer than the target return after filtering, widen one filter once (extend signal window to 120 days OR add one adjacent industry) and re-fetch. If still short, deliver what exists and note the count in the report header.
+**Under-count fallback:** if fewer than target return after filtering, widen one filter once (signal window to 120 days OR one adjacent industry) and re-fetch only if credits allow.
 
 ### 2C · Enrichment (LIVE mode only)
 ```
@@ -145,73 +161,82 @@ For each lead, generate from real data only:
 
 ---
 
-## STEP 5 · BUILD HTML FROM TEMPLATE
+## STEP 5 · BUILD HTML BY MECHANICAL INJECTION (NOT GENERATION)
 
-Fetch the approved template:
+**ABSOLUTE RULE: You must NOT write HTML from scratch. You must NOT design, restructure, or simplify anything. The approved template is the ONLY allowed output structure. Your job is mechanical find-and-replace on the template string, nothing more. If you generate your own HTML, the build is WRONG and must be discarded.**
+
+### 5.1 · Fetch the template verbatim
 ```
 https://raw.githubusercontent.com/pinkiousme/authority-infra/main/assets/templates/pipeline-report/index.html
 ```
+Hold this entire file as a string. It is ~58KB and contains a sidebar, six tabs (Pipeline, Dashboard, Signals, Markets, Content, Settings), glassmorphism cards, SVG charts (donutSVG, areaSVG, barsSVG), and expandable lead cards with a toggleLead function. ALL of this must survive into the output unchanged. If your output is smaller than ~50KB or is missing the sidebar, tabs, charts, or toggleLead function, you have made an error: start over from the fetched template.
 
-The template is plain HTML/CSS/SVG/vanilla-JS. Replace the data layer only. Do NOT regenerate the design.
+### 5.2 · Replace ONLY these specific tokens in the template string
 
-### Data injection
-Locate `var LEADS = [ ... ];` in the template script and replace with the real leads array. Each lead object needs every field: id, theme, name, initials, role, company, country, stage, industry, employees, revenue, signalDetail, days, priority, linkedin, website, email, phone, whatTheyDo, recentNews, founderFocus, teamTrajectory, whyFit, whyNow, connNote, emailSubj, emailBody.
+**a) The LEADS array.** Find the exact block that starts with `var LEADS = [` and ends with the matching `\n];`. Replace ONLY that block with a new `var LEADS = [...]` containing the real leads. Every lead object must keep all 27 fields: id, theme, name, initials, role, company, country, stage, industry, employees, revenue, signalDetail, days, priority, linkedin, website, email, phone, whatTheyDo, recentNews, founderFocus, teamTrajectory, whyFit, whyNow, connNote, emailSubj, emailBody.
+- theme: cycle violet, amber, teal, blue, pink
+- **NEWLINE ESCAPING (critical):** inside any string value, write newlines as the two literal characters backslash + n. NEVER put a real line break inside a double-quoted JS string. This is the single most common cause of a broken build. After replacement, mentally parse the array to confirm no real newline sits inside any quoted value.
 
-**Theme assignment:** cycle violet, amber, teal, blue, pink across the leads for visual variety.
+**b) Dashboard data variables.** Inside viewDashboard, replace the `var stats=[...]`, `var sig=[...]`, `var geo=[...]`, `var stage=[...]` lines with values matching the real leads. Same for the Market Pulse text string and the viewSignals `var types=[...]` and viewMarkets `var geo`/`var ind`. Replace values only; keep the variable names and structure identical.
 
-**CRITICAL — escape newlines:** inside the LEADS array, any real newline in a string value (especially emailBody) MUST be written as the two characters backslash-n, not an actual line break. An actual line break inside a JS double-quoted string breaks the entire script. Validate the script parses before deploying.
+**c) Header text.** Replace the client name "Dave Cotter" and "Kelsor Ventures" placeholder strings with the real prospect name and firm. Replace the week date.
 
-Also update: the signal summary stat numbers, the signal mix donut data, the geographic bar data, the funding stage bar data, the Signals view type counts and lead lists, the Markets view data, and the Market Intelligence Pulse text — all to reflect the real leads.
-
-### Header personalization
-- Topbar / sidebar: prospect full name + firm
-- Sidebar logo: use the Pipelind logo image with text fallback (see LOGO block below)
-- Page title and week label: current date
-
-### MODE-specific HTML
-- DEMO: keep the Content Engine tab and the conversion CTA. Show "Personalized For [FirstName] · Lead Demo" framing. Remove email/phone from cards and the contact strip (show only LinkedIn + website buttons). Card outreach still shows connection note + email draft (the email body is the value, even without the prospect's contact enriched).
-- LIVE: remove the conversion CTA and the Content Engine upsell. Show email + phone on cards. Add the "Updated [date]" freshness framing.
-
-### LOGO block (safe, with fallback)
-In the sidebar brand area, use:
+**d) Logo.** In the sidebar brand area, ensure the logo block is:
 ```html
-<img src="https://raw.githubusercontent.com/pinkiousme/authority-infra/main/assets/pipelind-logo-dark.png"
-     alt="Pipelind" style="height:22px;width:auto"
-     onerror="this.style.display='none';this.nextElementSibling.style.display='inline'">
-<span class="sb-wordmark" style="display:none">Pipelind</span>
+<img src="https://raw.githubusercontent.com/pinkiousme/authority-infra/main/assets/pipelind-logo-dark.png" alt="Pipelind" style="height:20px;width:auto" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="sb-wordmark" style="display:none">Pipelind</span>
 ```
-This shows the logo image; if it ever fails to load, the text wordmark appears automatically. Cannot break the build.
 
-### Remove test banner
-The template carries a "Test run · Synthetic data" banner. REMOVE it for both DEMO and LIVE real builds. This is real data.
+**e) Test banner.** Delete the line containing "Test run · Synthetic data". That is the only deletion.
+
+**f) Mode-specific:**
+- DEMO: keep the Content tab and conversion CTA exactly as in the template. In each lead card, the email and phone action buttons and contact strip should be hidden (DEMO has no enrichment), leaving LinkedIn + Website. The outreach arsenal (connection note + email draft) stays.
+- LIVE: in viewContent, the CTA stays minimal or is removed; show email + phone on cards.
+
+### 5.3 · Do not touch anything else
+Every CSS rule, every SVG icon, every function (toggleLead, cp, render, donutSVG, areaSVG, barsSVG), the sidebar, the six-tab router, the responsive media queries: all unchanged. You are editing data, not design.
 
 ---
 
 ## STEP 6 · VALIDATE BEFORE DEPLOY
 
-Before pushing, confirm:
-- The script parses as valid JavaScript (no unescaped newlines or quotes in LEADS)
+Confirm ALL of these. If any fail, fix and re-check. Never deploy a file that fails:
+- Output size is ~55KB or larger (if much smaller, the template was not used, restart from 5.1)
+- Contains `var LEADS`, `function toggleLead`, `function render`, `donutSVG`, the sidebar (`sb-item`), and all six tab names
+- The script block parses as valid JavaScript (no unescaped newline or quote inside LEADS)
 - Lead count matches target (5 DEMO / 10 LIVE)
-- Zero em dashes anywhere
+- ZERO em dashes anywhere (search the whole file for the em-dash character and remove every one)
 - Zero exclamation marks in visible copy
-- No tool names (Vibe Prospecting, Explorium, Claude, GitHub) in visible HTML
+- No tool names (Vibe, Explorium, Claude, GitHub) in visible HTML
 - No pricing anywhere
-- LinkedIn ACoA URLs rendered as-is with "may require login" title, never reconstructed
+- Logo block present with fallback
+- Test banner removed
 - Every lead has a real name, company, and at least one signal
-- DEMO: no email/phone shown · LIVE: email shown, phone where available
-
-If validation fails, fix and re-validate. Never deploy a broken file.
 
 ---
 
-## STEP 7 · DEPLOY TO VERCEL VIA GITHUB
+## STEP 7 · DEPLOY TO MAIN BRANCH (NEVER A FEATURE BRANCH)
 
+**ABSOLUTE RULE: commit directly to the `main` branch. Do NOT create a new branch. Do NOT open a pull request. The report must land on main so Vercel deploys it to pipelind.com. If you push to any branch other than main, the deploy fails to reach the live domain.**
+
+Use the GitHub Contents API (PUT to /contents/[path]) which commits directly to main:
 ```
-Repo: pinkiousme/authority-infra · Branch: main
+Repo: pinkiousme/authority-infra
+Branch: main   ← MANDATORY
 DEMO path: demo/[DATE]/[firstname]/index.html
 LIVE path: prod/[SLUG]/pipeline/index.html
-Commit: "[MODE] pipeline report · [FirstName] · [DATE]"
+Commit message: "[MODE] pipeline report · [FirstName] · [DATE]"
+Committer name: pinkiousme
+Committer email: pinkious.me@gmail.com   ← MANDATORY (wrong email causes silent Vercel deploy failure)
 ```
+Method: GET the file at the path on main to retrieve its SHA if it exists, then PUT with `branch: "main"`, the base64 content, the SHA (if updating), and the committer block above. The Contents API commits straight to main with no branch and no PR.
+
+Do NOT use `git push` (the proxy blocks it). Do NOT use a GitHub MCP tool that creates branches. Use the Contents API PUT only.
+
+On deploy success, the live URL is:
+- DEMO: https://pipelind.com/demo/[DATE]/[firstname]
+- LIVE: https://pipelind.com/prod/[SLUG]/pipeline
+
+On deploy failure: output the full HTML in chat. Never fail silently.
 
 Use the GitHub Contents API. If the file exists at the path, GET its SHA first, then PUT with the SHA to update. Base64-encode the HTML. Set committer email pinkious.me@gmail.com.
 
