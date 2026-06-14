@@ -25,6 +25,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .sidebar{width:230px;background:rgba(12,12,24,0.7);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;position:sticky;top:0;height:100vh}
 .sb-brand{padding:22px 20px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
 .sb-logo{width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,var(--purple),var(--blue));display:flex;align-items:center;justify-content:center}
+.sb-logo-img{height:30px;width:auto;max-width:170px;object-fit:contain}
 .sb-wordmark{font-family:var(--m);font-size:13px;font-weight:700;letter-spacing:0.16em;color:var(--t100);text-transform:uppercase}
 .sb-nav{flex:1;padding:14px 12px}
 .sb-item{width:100%;display:flex;align-items:center;gap:11px;padding:11px 13px;border-radius:9px;border:none;background:transparent;color:var(--t45);cursor:pointer;margin-bottom:4px;font-size:13px;font-weight:500;font-family:var(--d);position:relative;transition:all .15s;text-align:left}
@@ -77,7 +78,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .chart-row.r1{grid-template-columns:1fr 1.5fr}
 .chart-row.r2{grid-template-columns:1fr 1fr}
 .chart-card{padding:20px}
-.chart-title{font-family:var(--m);font-size:9px;color:var(--t45);letter-spacing:0.12em;text-transform:uppercase;font-weight:700;margin-bottom:16px}
+.chart-title{font-family:var(--m);font-size:10px;color:var(--t45);letter-spacing:0.12em;text-transform:uppercase;font-weight:700;margin-bottom:16px}
 .legend{margin-top:12px}
 .legend-row{display:flex;align-items:center;gap:8px;margin-bottom:7px;font-size:12px}
 .legend-dot{width:9px;height:9px;border-radius:2px;flex-shrink:0}
@@ -133,14 +134,14 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .act-li{background:#0A66C2;color:#fff;border-color:#0A66C2}
 .act.copied{color:var(--green);border-color:rgba(34,197,94,0.4)}
 .contact-strip{display:flex;flex-wrap:wrap;gap:16px;padding:10px 22px;border-bottom:1px solid var(--border);background:var(--surface)}
-.contact-item{font-size:11px;color:var(--t65);display:flex;align-items:center;gap:6px}
+.contact-item{font-size:12px;color:var(--t85);display:flex;align-items:center;gap:6px;font-weight:500}
 .contact-item svg{width:12px;height:12px}
 
 /* TILE: why-fit hero */
 .whyfit{margin:18px 22px 0;padding:16px 18px;border-radius:12px;position:relative}
 .whyfit-head{display:flex;align-items:center;gap:7px;margin-bottom:8px}
 .whyfit-head svg{width:14px;height:14px}
-.whyfit-lbl{font-family:var(--m);font-size:9px;letter-spacing:0.12em;text-transform:uppercase;font-weight:700}
+.whyfit-lbl{font-family:var(--m);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;font-weight:700}
 .whyfit-txt{font-size:13.5px;color:var(--t85);line-height:1.65}
 
 /* INTEL TILES */
@@ -154,12 +155,12 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .tile-head{display:flex;align-items:center;gap:8px;margin-bottom:8px}
 .tile-ic{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .tile-ic svg{width:14px;height:14px}
-.tile-lbl{font-family:var(--m);font-size:8px;color:var(--t45);letter-spacing:0.1em;text-transform:uppercase}
-.tile-val{font-size:13px;color:var(--t85);line-height:1.5}
+.tile-lbl{font-family:var(--m);font-size:10px;color:var(--t65);letter-spacing:0.08em;text-transform:uppercase;font-weight:700}
+.tile-val{font-size:13px;color:var(--t85);line-height:1.55}
 
 /* WHY NOW */
 .whynow{margin:0 22px 16px;padding:14px 18px;border-radius:0 10px 10px 0}
-.whynow-lbl{font-family:var(--m);font-size:9px;letter-spacing:0.12em;text-transform:uppercase;font-weight:700;margin-bottom:6px}
+.whynow-lbl{font-family:var(--m);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;font-weight:700;margin-bottom:6px}
 .whynow-txt{font-size:13.5px;color:var(--t85);line-height:1.6}
 
 /* OUTREACH */
@@ -168,7 +169,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .or-block{background:var(--surface);border-radius:12px;overflow:hidden;margin-bottom:12px}
 .or-head{display:flex;align-items:center;gap:8px;padding:10px 16px;border-bottom:1px solid var(--border)}
 .or-head svg{width:13px;height:13px}
-.or-head-lbl{font-family:var(--m);font-size:9px;letter-spacing:0.1em;text-transform:uppercase;font-weight:700;flex:1}
+.or-head-lbl{font-family:var(--m);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;font-weight:700;flex:1}
 .or-count{font-family:var(--m);font-size:8px;color:var(--t45)}
 .or-body{padding:14px 16px;position:relative}
 .or-text{font-size:13.5px;color:var(--t85);line-height:1.65;padding-right:74px;white-space:pre-wrap}
@@ -177,7 +178,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .copy-btn.copied{color:var(--green)!important;border-color:rgba(34,197,94,0.4)!important}
 .or-subj-lbl{font-size:11px;color:var(--t45);margin-bottom:4px;font-family:var(--m);padding-right:74px}
 .or-subj{font-size:13.5px;font-weight:700;margin-bottom:12px}
-.lead-foot{padding:10px 22px;border-top:1px solid var(--border);font-family:var(--m);font-size:8px;color:rgba(255,165,31,0.4);letter-spacing:0.1em;text-transform:uppercase}
+.lead-foot{padding:11px 22px;border-top:1px solid var(--border);font-family:var(--m);font-size:10px;color:rgba(255,165,31,0.7);letter-spacing:0.08em;text-transform:uppercase}
 
 /* SIGNALS VIEW */
 .sig-card{padding:22px;margin-bottom:14px}
@@ -214,7 +215,16 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .cv-cta{padding:26px;text-align:center;border:1px solid rgba(124,111,232,0.4)}
 .cv-cta-t{font-size:17px;font-weight:700;color:var(--t100);margin-bottom:8px}
 .cv-cta-d{font-size:13px;color:var(--t65);max-width:440px;margin:0 auto 18px;line-height:1.6}
-.cv-cta-btn{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--purple),var(--blue));color:#fff;border:none;border-radius:10px;padding:12px 24px;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--d)}
+.cv-cta-btn{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--purple),var(--blue));color:#fff;border:none;border-radius:10px;padding:12px 24px;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--d);text-decoration:none}
+.demo-cta-top{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;background:linear-gradient(135deg,rgba(124,111,232,0.18),rgba(59,130,246,0.10));border:1px solid rgba(124,111,232,0.45);border-radius:14px;padding:16px 22px;margin-bottom:22px;text-decoration:none;transition:border-color .2s}
+.demo-cta-top:hover{border-color:rgba(124,111,232,0.8)}
+.demo-cta-top-ey{font-family:var(--m);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--purple);font-weight:700;margin-bottom:5px}
+.demo-cta-top-t{font-size:15px;font-weight:700;color:var(--t100);line-height:1.4}
+.demo-cta-top-btn{display:inline-flex;align-items:center;gap:7px;background:linear-gradient(135deg,var(--purple),var(--blue));color:#fff;border-radius:10px;padding:11px 18px;font-size:13px;font-weight:700;white-space:nowrap;flex-shrink:0}
+.demo-cta-end{text-align:center;background:linear-gradient(135deg,rgba(124,111,232,0.14),rgba(59,130,246,0.08));border:1px solid rgba(124,111,232,0.4);border-radius:16px;padding:34px 28px;margin-top:30px}
+.demo-cta-end-t{font-size:22px;font-weight:800;color:var(--t100);margin-bottom:10px;line-height:1.3}
+.demo-cta-end-d{font-size:14px;color:var(--t85);line-height:1.65;max-width:560px;margin:0 auto 22px}
+.demo-cta-end-btn{display:inline-flex;align-items:center;gap:9px;background:linear-gradient(135deg,var(--purple),var(--blue));color:#fff;border-radius:11px;padding:14px 28px;font-size:14px;font-weight:700;text-decoration:none;box-shadow:0 8px 30px -8px rgba(124,111,232,0.6)}
 .cv-cta-btn svg{width:15px;height:15px}
 
 /* FOOTER */
@@ -258,8 +268,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
   <!-- SIDEBAR -->
   <aside class="sidebar">
     <div class="sb-brand">
-      <div class="sb-logo"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
-      <img src="https://raw.githubusercontent.com/pinkiousme/authority-infra/main/assets/pipelind-logo-dark.png" alt="Pipelind" style="height:20px;width:auto" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="sb-wordmark" style="display:none">Pipelind</span>
+      <img class="sb-logo-img" src="https://raw.githubusercontent.com/pinkiousme/authority-infra/main/assets/pipelind-logo-dark.png" alt="Pipelind" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="sb-wordmark" style="display:none">Pipelind</span>
     </div>
     <nav class="sb-nav">
       <button class="sb-item active" data-view="pipeline">
@@ -321,6 +330,8 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 <script>
 /* ========== DATA ========== */
 var CLIENT = "Dave";
+var MODE = "DEMO";
+var CALENDLY = "https://calendly.com/saurabh_zentro/30-min";
 var THEMES = {
   violet:{grad:"linear-gradient(135deg,#6D28D9,#4C1D95)",glow:"rgba(124,111,232,0.28)",accent:"#A78BFA",soft:"rgba(124,111,232,0.10)",chip:"#1a1a2e"},
   amber:{grad:"linear-gradient(135deg,#B45309,#78350F)",glow:"rgba(255,165,31,0.24)",accent:"#FFA51F",soft:"rgba(255,165,31,0.10)",chip:"#78350F"},
@@ -415,10 +426,17 @@ function leadCard(L,openByDefault){
 function viewPipeline(){
   var pri=LEADS.filter(function(l){return l.priority;});
   var pipe=LEADS.filter(function(l){return !l.priority;});
-  var h='<div class="divider"><span class="div-tag" style="color:var(--green)">Priority This Week</span><span class="div-count">'+pri.length+' leads · Act within 48 hours</span><span class="div-rule"></span></div>';
+  var h='';
+  if(MODE==="DEMO"){
+    h+='<a href="'+CALENDLY+'" target="_blank" rel="noopener" class="demo-cta-top"><div><div class="demo-cta-top-ey">This is one week of your pipeline</div><div class="demo-cta-top-t">Every Monday, 40 buyers like these land in your inbox. Done for you.</div></div><span class="demo-cta-top-btn">Book a 30-min walkthrough <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span></a>';
+  }
+  h+='<div class="divider"><span class="div-tag" style="color:var(--green)">Priority This Week</span><span class="div-count">'+pri.length+' leads · Act within 48 hours</span><span class="div-rule"></span></div>';
   pri.forEach(function(l,i){h+=leadCard(l,i===0);});
   h+='<div class="divider mt"><span class="div-tag" style="color:var(--amber)">Full Pipeline</span><span class="div-count">'+pipe.length+' leads · Act within 7 days</span><span class="div-rule"></span></div>';
   pipe.forEach(function(l){h+=leadCard(l,false);});
+  if(MODE==="DEMO"){
+    h+='<div class="demo-cta-end"><div class="demo-cta-end-t">Imagine opening this every Monday</div><div class="demo-cta-end-d">These five are a sample. The full system delivers 40 ICP-matched buyers a month, each with the signal, the intelligence, and the outreach written for you. You spend 30 minutes sending. The pipeline builds itself.</div><a href="'+CALENDLY+'" target="_blank" rel="noopener" class="demo-cta-end-btn">See how it works for '+CLIENT+' <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a></div>';
+  }
   return h;
 }
 function donutSVG(data,size){
@@ -501,15 +519,16 @@ function viewMarkets(){
   return h;
 }
 function viewContent(){
-  var posts=[{tag:"Teaching · The Model Trap",hook:"Most founders treat their financial model like a document they finish.",body:"Build it once. Use it to raise. File it away.\n\nThat is the mistake. A model is not a finished file. It is a working instrument."},{tag:"Opinion · The Bridge",hook:"A CFO leaving at Series B is not a hiring problem.",body:"It is a four-month visibility gap. Board reporting does not pause for a search.\n\nThe founders who handle it well bridge the seat before it costs them a quarter."}];
-  var bens=[{ic:IC.news,t:"3 posts weekly",d:"Written in your voice, drawn from the same market signals as your pipeline."},{ic:IC.team,t:"Warm before contact",d:"Buyers see your diagnostic thinking, then recognize your name in their inbox."},{ic:IC.sparkle,t:"One coherent system",d:"Pipeline and content move together. This week's funding wave becomes this week's post."}];
-  var h='<div class="glass cv-hero"><div class="cv-hero-grad"><div class="cv-hero-orb"></div><div class="cv-eyebrow">Content Engine</div><div class="cv-title">Your pipeline shows who to reach. Your content makes them reach first.</div><div class="cv-sub">The same signals driving this week\'s leads can drive your LinkedIn posts. Founders who see your thinking before you message them reply warmer, faster, and pre-sold.</div></div></div>';
+  var bens=[
+    {ic:IC.news,t:"3 posts a week, your voice",d:"Drawn from the same market signals as your pipeline. You approve, we draft. Buyers see your thinking before you ever message them."},
+    {ic:IC.sparkle,t:"Editorial-grade visuals",d:"Custom infographics and carousel graphics built for each post. The kind of visuals that stop the scroll and make a fractional operator look like the category leader."},
+    {ic:IC.team,t:"Warm before you reach out",d:"By the time you send the connection note, they have already seen you explain their exact problem. The reply rate is not the same as cold."}
+  ];
+  var h='<div class="glass cv-hero"><div class="cv-hero-grad"><div class="cv-hero-orb"></div><div class="cv-eyebrow">Content Engine · Add-On</div><div class="cv-title">The pipeline tells you who to reach. Content makes them reach for you.</div><div class="cv-sub">The same signals behind this week\'s leads become posts and visuals in your voice. The buyers in your pipeline start seeing your name, your thinking, your proof, before the first message lands.</div></div></div>';
   h+='<div class="cv-benefits">';
   bens.forEach(function(b){h+='<div class="glass cv-ben"><div class="cv-ben-ic">'+b.ic+'</div><div class="cv-ben-t">'+b.t+'</div><div class="cv-ben-d">'+b.d+'</div></div>';});
   h+='</div>';
-  h+='<div class="chart-title" style="margin-bottom:12px">This Week\'s Posts · Preview</div>';
-  posts.forEach(function(p){h+='<div class="glass cv-post"><span class="cv-post-tag">'+p.tag+'</span><div class="cv-post-hook">'+p.hook+'</div><div class="cv-post-body">'+esc(p.body)+'</div></div>';});
-  h+='<div class="glass cv-cta"><div class="cv-cta-t">Turn this on for your account</div><div class="cv-cta-d">Already running your own content? The Engine slots in beside it, matched to your voice, so nothing you have built goes to waste. Already on content with us? This is where it lives.</div><button class="cv-cta-btn" onclick="window.location.href=\'mailto:saurabh@pipelind.com?subject=Adding Content Engine\'">Talk to Saurabh about adding Content <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button></div>';
+  h+='<div class="glass cv-cta"><div class="cv-cta-t">Add Content to your pipeline</div><div class="cv-cta-d">Pipeline plus content is one system, not two vendors. The leads and the posts run off the same weekly intelligence. Worth fifteen minutes to see what that looks like for '+CLIENT+'.</div><a href="'+CALENDLY+'" target="_blank" rel="noopener" class="cv-cta-btn">Book a walkthrough <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a></div>';
   return h;
 }
 function viewSettings(){
