@@ -376,14 +376,20 @@ function leadCard(L,openByDefault){
   html+='</div><div class="lead-hint">Click to expand full intelligence →</div></div>';
   // body
   html+='<div class="lead-body">';
-  // actions
-  html+='<div class="actions" onclick="event.stopPropagation()">';
-  html+='<a class="act act-li" href="'+L.linkedin+'" target="_blank" rel="noopener">'+IC.linkedin+'Profile</a>';
+  // actions (email/phone only when present - DEMO has none, LIVE does)
+  var hasEmail=L.email&&L.email.length>0, hasPhone=L.phone&&L.phone.length>0&&L.phone.indexOf("not on record")<0;
+  var nbtn=2+(hasEmail?1:0)+(hasPhone?1:0);
+  html+='<div class="actions" onclick="event.stopPropagation()" style="grid-template-columns:repeat('+nbtn+',1fr)">';
+  html+='<a class="act act-li" href="'+L.linkedin+'" target="_blank" rel="noopener" title="LinkedIn profile may require login">'+IC.linkedin+'Profile</a>';
   html+='<a class="act" href="'+L.website+'" target="_blank" rel="noopener">'+IC.globe+'Website</a>';
-  html+='<button class="act" onclick="cp(this,\''+L.email+'\')">'+IC.mail+'Email</button>';
-  html+='<button class="act" onclick="cp(this,\''+L.phone+'\')">'+IC.phone+'Phone</button></div>';
-  // contact strip
-  html+='<div class="contact-strip"><span class="contact-item" style="color:'+t.accent+'">'+IC.mail+'<span style="color:var(--t65)">'+esc(L.email)+'</span></span><span class="contact-item" style="color:'+t.accent+'">'+IC.phone+'<span style="color:var(--t65)">'+esc(L.phone)+'</span></span><span class="contact-item" style="color:'+t.accent+'">'+IC.globe+'<span style="color:var(--t65)">'+esc(L.website.replace("https://",""))+'</span></span></div>';
+  if(hasEmail){html+='<button class="act" onclick="cp(this,\''+L.email+'\')">'+IC.mail+'Email</button>';}
+  if(hasPhone){html+='<button class="act" onclick="cp(this,\''+L.phone+'\')">'+IC.phone+'Phone</button>';}
+  html+='</div>';
+  // contact strip (website always; email/phone only when present)
+  html+='<div class="contact-strip"><span class="contact-item" style="color:'+t.accent+'">'+IC.globe+'<span style="color:var(--t65)">'+esc(L.website.replace("https://",""))+'</span></span>';
+  if(hasEmail){html+='<span class="contact-item" style="color:'+t.accent+'">'+IC.mail+'<span style="color:var(--t65)">'+esc(L.email)+'</span></span>';}
+  if(hasPhone){html+='<span class="contact-item" style="color:'+t.accent+'">'+IC.phone+'<span style="color:var(--t65)">'+esc(L.phone)+'</span></span>';}
+  html+='</div>';
   // why fit
   html+='<div class="whyfit" style="background:linear-gradient(135deg,'+t.soft+',transparent);border:1px solid '+t.accent+'40"><div class="whyfit-head" style="color:'+t.accent+'">'+IC.sparkle+'<span class="whyfit-lbl">Why this fits '+CLIENT+'</span></div><div class="whyfit-txt">'+esc(L.whyFit)+'</div></div>';
   // intel tiles
