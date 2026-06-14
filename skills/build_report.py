@@ -79,6 +79,10 @@ def build(data_path, template_path, output_path):
                  tpl, count=1, flags=re.DOTALL)
 
     # ---- 5. Header personalization ----
+    tpl = tpl.replace('var MODE = "DEMO";', 'var MODE = "%s";' % mode)
+    tpl = tpl.replace('var CLIENT = "Dave";', 'var CLIENT = %s;' % js(client["firstName"]))
+    cal = D.get("calendly", "https://calendly.com/saurabh_zentro/30-min")
+    tpl = tpl.replace('var CALENDLY = "https://calendly.com/saurabh_zentro/30-min";', 'var CALENDLY = %s;' % js(cal))
     tpl = tpl.replace("Dave Cotter", client["fullName"])
     tpl = tpl.replace("Kelsor Ventures", client["firm"])
     tpl = tpl.replace("Week of June 13, 2026", "Week of " + D["week"])
