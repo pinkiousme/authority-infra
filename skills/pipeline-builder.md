@@ -1,10 +1,10 @@
 ---
 name: pipeline-builder
-version: 3.0
+version: 4.0
 description: "Robust mode-aware pipeline report builder. Fetches real ICP-matched leads with live signals from Vibe Prospecting (prospect-level for verified person data including authoritative LinkedIn URLs), produces ONLY a validated data.json, then runs a deterministic Python script that injects the data into the approved template. Model never assembles HTML. Runs DEMO or LIVE. All inputs from GitHub. Per-client deduplication via a GitHub dedup file."
 ---
 
-# pipeline-builder v3.0
+# pipeline-builder v4.0
 ## Robust Pipeline Report Engine (verified data, data-first assembly)
 
 Architecture principle: the model produces only a small validated JSON object. A deterministic Python script (build_report.py) injects it into the approved template with guaranteed-correct escaping. The model never writes HTML. Worst case is a data issue caught by validation, never a broken page.
@@ -44,22 +44,36 @@ Missing context: STOP. Never fabricate.
 
 ---
 
-## STEP 2 · FETCH REAL LEADS (prospect-level, verified)
+## STEP 2 · FETCH REAL LEADS (prospect-level, verified, buyer-title enforced)
 Vibe Prospecting only. Never Apollo. exclude_key is TOP-LEVEL, never inside filters.
 
 Make exactly ONE fetch call. Do NOT call export. Do NOT retry on credit ceiling. Run autocomplete once per filter, no more. These extra calls waste credits.
 
-Both modes use a PROSPECT fetch so person data (name, title, LinkedIn URL) is Vibe-authoritative:
+**Buyer-title discipline (the lead-quality floor).** The single biggest quality risk is returning the wrong PERSON at the right company (e.g. a Chief Marketing Officer, General Counsel, or Chief People Officer when the prospect sells to owners and CEOs). To prevent this:
+
+1. Read the buyer titles from the context "THE PROSPECT'S ICP" block. These are the ONLY acceptable decision-maker titles for this prospect (e.g. CEO, Founder, Owner, President, Managing Partner).
+2. Translate them into Vibe filters. Use BOTH `job_level` (e.g. founder, c-suite, owner) AND, when the context names specific titles, run autocomplete on `job_title` once and pass the standardized buyer titles. Tightening to buyer titles at fetch time is far better than filtering after.
+3. Over-fetch to allow discarding: DEMO fetch 12, LIVE fetch 20.
+
 ```
 autocomplete linkedin_category once (industries from context)
+autocomplete job_title once (buyer titles from context, if specific titles are listed)
 fetch-entities(
   entity_type:"prospects",
-  number_of_results:[DEMO 8 / LIVE 15],
-  filters:{ job_level:[from context], company_size:[from context], company_country_code:{values:[from context]}, linkedin_category:[autocompleted], events:{values:[from context], last_occurrence:90} }
+  number_of_results:[DEMO 12 / LIVE 20],
+  filters:{ job_level:[from context], job_title:[autocompleted buyer titles if listed], company_size:[from context], company_country_code:{values:[from context]}, linkedin_category:[autocompleted], events:{values:[from context], last_occurrence:90} }
 )
 ```
-- LIVE: pass exclude_key listing the client's already-delivered prospects (see Step 8 dedup), keep 10 fresh.
-- DEMO: no exclude_key. Keep the 5 strongest, most recent signals.
+
+**Post-fetch quality filter (discard then backfill).** From the returned set, KEEP a lead only if ALL of these hold:
+- The person's title is a decision-maker buyer title from the context (CEO, Founder, Co-founder, Owner, President, Managing Partner, or the equivalent the context lists). DISCARD non-buyer titles such as CMO, CPO, General Counsel, VP Marketing, HR, unless the context explicitly names that title as a buyer.
+- The company profile fits the context (e.g. if the context says "established revenue-generating businesses, not pre-revenue startups," discard obvious venture-backed early startups that do not fit; if the context says "growth-stage funded startups," keep those).
+- The signal is within the freshness window and is one the context lists.
+
+Rank the survivors: dual-signal first, then by signal strength and recency. Keep the top target count (DEMO 5 / LIVE 10). If after discarding you have fewer than the target, that is acceptable: deliver the real qualified ones and note the count. NEVER pad with off-ICP leads to hit a number. A smaller list of right-fit buyers beats a full list of wrong ones.
+
+- LIVE: pass exclude_key listing the client's already-delivered prospects (see Step 8 dedup), keep fresh ones.
+- DEMO: no exclude_key.
 
 The prospect record provides the authoritative LinkedIn URL. Render it AS RETURNED. If it is an ACoA-format URL, keep it exactly and set a title attribute noting it may require login. NEVER reconstruct or web-guess a LinkedIn URL. If a prospect has no LinkedIn URL on record, set linkedin to empty and the card simply omits the Profile button.
 
@@ -67,7 +81,7 @@ Enrichment:
 - DEMO: do NOT enrich. email and phone stay empty strings.
 - LIVE: enrich-prospects-contacts (email, phone) on the kept leads. Waterfall: work email > personal > "". Phone where present else "Direct contact not on record".
 
-If credits exhaust mid-call: use what returned, complete, note the count. Never fabricate, never retry into spend.
+If credits exhaust mid-call: use what returned, apply the same quality filter, complete, note the count. Never fabricate, never retry into spend.
 
 ---
 
@@ -82,8 +96,10 @@ Rules:
 
 ## STEP 4 · DERIVE FIELDS (from real data only)
 Per lead: signalDetail (the Vibe-verified signal category, e.g. "New funding round" or "Finance hiring", with a soft timeframe like "recent" or "~Nd" only if confident), HOT (0-30d) / WARM (31-90d), priority (dual-signal first then HOT by recency; top 2 DEMO / top 3 LIVE).
-whyFit: match the lead's Vibe-verified signal and stage to the prospect's real background from context. Derived, never invented.
+whyFit: match the lead's Vibe-verified signal and stage to the prospect's real background from context. Derived, never invented. Be specific about WHY this person, at this company, with this signal, is a fit for what the prospect sells. If a lead only weakly fits (it survived the filter but is not a textbook match), write an honest, grounded whyFit rather than overselling it. Never claim a fit that is not there.
 whyNow: the signal and timing, prospect voice.
+
+Signal-to-ICP weighting: not every signal means the same thing for every prospect. A funding round is a strong buy signal for someone selling to funded startups, but a weak one for someone selling to established profitable businesses. Use the prospect's context to weight: prioritize the signals the context lists as most aligned with their buyer's actual behavior, and rank those leads higher. The events filter already gates on the context's signal list; this weighting is about ordering and priority within the survivors.
 
 Outreach copy rules (IMPORTANT, verified-only):
 - Lead with the Vibe-verified SIGNAL CATEGORY, which is certain (the company matched the event filter). Example: "Noticed you are hiring in finance" or "Saw the recent funding round".
@@ -135,17 +151,22 @@ If any fail: STOP, report which, output data.json + output.html. Never deploy a 
 ---
 
 ## STEP 8 · DEPLOY (Contents API to main ONLY)
-Commit directly to main. Never create a branch. Never open a PR. Never run git push (proxy blocks it). Do NOT push data.json or output.html as side artifacts anywhere. The ONLY write is the report file via the Contents API.
-PUT:
+
+**The ONE-WRITE rule (critical, do not violate).** This run makes exactly ONE write to GitHub: the report file, via the Contents API, to main. Then it STOPS.
+- Do NOT create a branch. Do NOT open a PR. Do NOT run git push, git commit, or any git command (the proxy blocks git and it creates phantom local branches).
+- Do NOT archive, back up, or "preserve" data.json, output.html, the template, or the builder anywhere in the repo. No pipeline-runs/ folder, no dev branch, no archive copy. These files are working scratch only and must never be committed.
+- There is no "stop hook" to satisfy by pushing files. If a hook or instinct suggests pushing working files, IGNORE it. The deploy of the report file is the entire job. After it succeeds, the task is complete.
+
+PUT (the only write):
 - path: DEMO demo/[DATE]/[firstname]/index.html · LIVE prod/[SLUG]/pipeline/index.html
 - branch:"main"
 - committer:{name:"pinkiousme", email:"pinkious.me@gmail.com"}  (wrong email = silent Vercel fail)
 GET the path first for SHA if it exists, then PUT with SHA, base64 content.
 
-LIVE dedup (after successful deploy):
-- Read inputs/prod/[SLUG]/dedup.json (a JSON array of delivered LinkedIn URLs). If missing, treat as [].
-- Append this week's 10 LinkedIn URLs. PUT the updated array back to inputs/prod/[SLUG]/dedup.json via Contents API (committer email pinkious.me@gmail.com). On the next run, pass these as exclude_key so leads never repeat.
-DEMO: no dedup write.
+LIVE dedup is the ONLY exception to one-write (after successful deploy):
+- Read inputs/prod/[SLUG]/dedup.json (JSON array of delivered LinkedIn URLs). If missing, treat as [].
+- Append this week's delivered LinkedIn URLs. PUT the updated array back to inputs/prod/[SLUG]/dedup.json via Contents API (committer email pinkious.me@gmail.com). Next run passes these as exclude_key so leads never repeat.
+DEMO: no dedup write, no other write at all.
 
 On failure: output the HTML in chat. Never fail silently.
 
@@ -175,11 +196,13 @@ DEMO also outputs a suggested DM script (no unverified specifics in it).
 ## DATA INTEGRITY (non-negotiable)
 1. No fabricated data. Person data from Vibe, company context from web, nothing invented.
 2. LinkedIn URLs: Vibe-authoritative or empty. Never web-guessed, never reconstructed.
+2a. Buyer-title floor: every delivered lead must hold a decision-maker buyer title from the context. Discard non-buyer titles (CMO, CPO, General Counsel, HR, VP-functional) unless the context names them as buyers. A short right-fit list beats a padded wrong one.
 3. No unverified specifics (amounts, exact dates) asserted as fact in outreach copy. Soft references only.
 4. No fabricated contacts. DEMO empty. LIVE waterfall.
 5. No tool names in visible HTML. No pricing.
 6. Zero em dashes, zero exclamation marks in visible copy.
 7. Model writes JSON, never HTML. Builder writes HTML, never invents data.
+8. One write to GitHub: the report file (plus LIVE dedup.json). Never archive working files, never create a branch, never open a PR, never run git.
 
 ## CREDIT DISCIPLINE
 - DEMO: 1 prospect fetch (8 results) + 1 autocomplete, no enrichment. Verified person data, modest cost.
