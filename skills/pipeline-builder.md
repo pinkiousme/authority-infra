@@ -45,7 +45,7 @@ Missing context: STOP. Never fabricate.
 ---
 
 ## STEP 2 · FETCH REAL LEADS (prospect-level, verified, buyer-title enforced)
-Vibe Prospecting only. Never Apollo. exclude_key is TOP-LEVEL, never inside filters.
+Vibe Prospecting only. Never Apollo. Do NOT use exclude_key at all (dedup is in-memory, see below). If any exclude_key were ever needed it is a TOP-LEVEL parameter never inside filters, but this skill does not use it.
 
 Make exactly ONE fetch call. Do NOT call export. Do NOT retry on credit ceiling. Run autocomplete once per filter, no more. These extra calls waste credits.
 
@@ -72,8 +72,8 @@ fetch-entities(
 
 Rank the survivors: dual-signal first, then by signal strength and recency. Keep the top target count (DEMO 5 / LIVE 10). If after discarding you have fewer than the target, that is acceptable: deliver the real qualified ones and note the count. NEVER pad with off-ICP leads to hit a number. A smaller list of right-fit buyers beats a full list of wrong ones.
 
-- LIVE: pass exclude_key listing the client's already-delivered prospects (see Step 8 dedup), keep fresh ones.
-- DEMO: no exclude_key.
+- LIVE: do NOT use exclude_key for dedup (Vibe exclude_key does not take a list of LinkedIn URLs, and the tenant-level "prospects" keyword is forbidden because it contaminates all client pools). Instead, dedup IN MEMORY: after the fetch, read the client dedup list and discard any returned lead whose LinkedIn URL is already on it, then keep the freshest qualifying leads up to 10. Over-fetch (20) gives enough margin to drop repeats and still reach 10.
+- DEMO: no dedup.
 
 The prospect record provides the authoritative LinkedIn URL. Render it AS RETURNED. If it is an ACoA-format URL, keep it exactly and set a title attribute noting it may require login. NEVER reconstruct or web-guess a LinkedIn URL. If a prospect has no LinkedIn URL on record, set linkedin to empty and the card simply omits the Profile button.
 
@@ -164,8 +164,10 @@ PUT (the only write):
 GET the path first for SHA if it exists, then PUT with SHA, base64 content.
 
 LIVE dedup is the ONLY exception to one-write (after successful deploy):
-- Read inputs/prod/[SLUG]/dedup.json (JSON array of delivered LinkedIn URLs). If missing, treat as [].
-- Append this week's delivered LinkedIn URLs. PUT the updated array back to inputs/prod/[SLUG]/dedup.json via Contents API (committer email pinkious.me@gmail.com). Next run passes these as exclude_key so leads never repeat.
+- The dedup READ happened in Step 2 (in memory, filtering the fetched leads). Now record what was delivered.
+- Read inputs/prod/[SLUG]/dedup.json (JSON array of previously delivered LinkedIn URLs). If missing, treat as [].
+- Append this week's delivered LinkedIn URLs (dedupe the array so no duplicates). PUT the updated array back to inputs/prod/[SLUG]/dedup.json via Contents API (committer email pinkious.me@gmail.com). Next run reads this file and filters in memory.
+- NEVER pass this list to Vibe exclude_key. Dedup is always in-memory filtering, never a Vibe parameter.
 DEMO: no dedup write, no other write at all.
 
 On failure: output the HTML in chat. Never fail silently.
