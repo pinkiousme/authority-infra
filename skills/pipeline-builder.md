@@ -75,7 +75,7 @@ Rank the survivors: dual-signal first, then by signal strength and recency. Keep
 - LIVE: do NOT use exclude_key for dedup (Vibe exclude_key does not take a list of LinkedIn URLs, and the tenant-level "prospects" keyword is forbidden because it contaminates all client pools). Instead, dedup IN MEMORY: after the fetch, read the client dedup list and discard any returned lead whose LinkedIn URL is already on it, then keep the freshest qualifying leads up to 10. Over-fetch (20) gives enough margin to drop repeats and still reach 10.
 - DEMO: no dedup.
 
-The prospect record provides the authoritative LinkedIn URL. Render it AS RETURNED. If it is an ACoA-format URL, keep it exactly and set a title attribute noting it may require login. NEVER reconstruct or web-guess a LinkedIn URL. If a prospect has no LinkedIn URL on record, set linkedin to empty and the card simply omits the Profile button.
+The prospect record provides the authoritative LinkedIn URL. Render it AS RETURNED. Store URLs (linkedin and website) WITH the https:// prefix in data.json. If a URL comes back without the scheme (e.g. "senasys.com" or "linkedin.com/in/..."), prepend "https://" so the link is absolute and clickable. The template also normalizes this defensively, but store full URLs anyway. NEVER reconstruct or web-guess a LinkedIn URL. If a prospect has no LinkedIn URL on record, set linkedin to empty and the card simply omits the Profile button.
 
 Enrichment:
 - DEMO: do NOT enrich. email and phone stay empty strings.
