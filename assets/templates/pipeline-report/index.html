@@ -368,6 +368,7 @@ var IC = {
 
 /* ========== HELPERS ========== */
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
+function httpsify(u){u=String(u||"").trim();if(!u)return"";if(/^https?:\/\//i.test(u))return u;return"https://"+u.replace(/^\/+/,"");}
 function tile(icon,accent,soft,label,value){
   return '<div class="tile"><div class="tile-head"><div class="tile-ic" style="background:'+soft+';color:'+accent+'">'+icon+'</div><div class="tile-lbl">'+label+'</div></div><div class="tile-val">'+esc(value)+'</div></div>';
 }
@@ -389,15 +390,17 @@ function leadCard(L,openByDefault){
   html+='<div class="lead-body">';
   // actions (email/phone only when present - DEMO has none, LIVE does)
   var hasEmail=L.email&&L.email.length>0, hasPhone=L.phone&&L.phone.length>0&&L.phone.indexOf("not on record")<0;
-  var nbtn=2+(hasEmail?1:0)+(hasPhone?1:0);
+  var hasLink=L.linkedin&&L.linkedin.length>0, hasSite=L.website&&L.website.length>0;
+  var nbtn=(hasLink?1:0)+(hasSite?1:0)+(hasEmail?1:0)+(hasPhone?1:0); if(nbtn<1)nbtn=1;
   html+='<div class="actions" onclick="event.stopPropagation()" style="grid-template-columns:repeat('+nbtn+',1fr)">';
-  html+='<a class="act act-li" href="'+L.linkedin+'" target="_blank" rel="noopener" title="LinkedIn profile may require login">'+IC.linkedin+'Profile</a>';
-  html+='<a class="act" href="'+L.website+'" target="_blank" rel="noopener">'+IC.globe+'Website</a>';
+  if(hasLink){html+='<a class="act act-li" href="'+httpsify(L.linkedin)+'" target="_blank" rel="noopener" title="LinkedIn profile may require login">'+IC.linkedin+'Profile</a>';}
+  if(hasSite){html+='<a class="act" href="'+httpsify(L.website)+'" target="_blank" rel="noopener">'+IC.globe+'Website</a>';}
   if(hasEmail){html+='<button class="act" onclick="cp(this,this.getAttribute(\'data-c\'))" data-c="'+esc(L.email)+'">'+IC.mail+'Email</button>';}
   if(hasPhone){html+='<button class="act" onclick="cp(this,this.getAttribute(\'data-c\'))" data-c="'+esc(L.phone)+'">'+IC.phone+'Phone</button>';}
   html+='</div>';
   // contact strip (website always; email/phone only when present)
-  html+='<div class="contact-strip"><span class="contact-item" style="color:'+t.accent+'">'+IC.globe+'<span style="color:var(--t65)">'+esc(L.website.replace("https://",""))+'</span></span>';
+  html+='<div class="contact-strip">';
+  if(hasSite){html+='<span class="contact-item" style="color:'+t.accent+'">'+IC.globe+'<span style="color:var(--t65)">'+esc(L.website.replace(/^https?:\/\//,""))+'</span></span>';}
   if(hasEmail){html+='<span class="contact-item" style="color:'+t.accent+'">'+IC.mail+'<span style="color:var(--t65)">'+esc(L.email)+'</span></span>';}
   if(hasPhone){html+='<span class="contact-item" style="color:'+t.accent+'">'+IC.phone+'<span style="color:var(--t65)">'+esc(L.phone)+'</span></span>';}
   html+='</div>';
