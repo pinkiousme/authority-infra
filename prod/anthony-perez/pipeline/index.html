@@ -368,6 +368,7 @@ var IC = {
 };
 
 /* ========== HELPERS ========== */
+function httpsify(u){u=String(u||"").trim();if(!u)return"";if(/^https?:\/\//i.test(u))return u;return"https://"+u.replace(/^\/+/,"");}
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
 function tile(icon,accent,soft,label,value){
   return '<div class="tile"><div class="tile-head"><div class="tile-ic" style="background:'+soft+';color:'+accent+'">'+icon+'</div><div class="tile-lbl">'+label+'</div></div><div class="tile-val">'+esc(value)+'</div></div>';
@@ -392,8 +393,8 @@ function leadCard(L,openByDefault){
   var hasEmail=L.email&&L.email.length>0, hasPhone=L.phone&&L.phone.length>0&&L.phone.indexOf("not on record")<0;
   var nbtn=2+(hasEmail?1:0)+(hasPhone?1:0);
   html+='<div class="actions" onclick="event.stopPropagation()" style="grid-template-columns:repeat('+nbtn+',1fr)">';
-  html+='<a class="act act-li" href="'+L.linkedin+'" target="_blank" rel="noopener" title="LinkedIn profile may require login">'+IC.linkedin+'Profile</a>';
-  html+='<a class="act" href="'+L.website+'" target="_blank" rel="noopener">'+IC.globe+'Website</a>';
+  html+='<a class="act act-li" href="'+httpsify(L.linkedin)+'" target="_blank" rel="noopener" title="LinkedIn profile may require login">'+IC.linkedin+'Profile</a>';
+  html+='<a class="act" href="'+httpsify(L.website)+'" target="_blank" rel="noopener">'+IC.globe+'Website</a>';
   if(hasEmail){html+='<button class="act" onclick="cp(this,this.getAttribute(\'data-c\'))" data-c="'+esc(L.email)+'">'+IC.mail+'Email</button>';}
   if(hasPhone){html+='<button class="act" onclick="cp(this,this.getAttribute(\'data-c\'))" data-c="'+esc(L.phone)+'">'+IC.phone+'Phone</button>';}
   html+='</div>';
