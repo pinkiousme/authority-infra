@@ -35,9 +35,9 @@ Nathan is the founder of Strategin Advisory, working as a Fractional CFO and Adv
 - Example line in his own style, drawn from his post titles: "Why good businesses stall, and what founders must understand before they can scale"
 
 ## VIBE FILTER DERIVATION (for the skill)
-job_level: founder, owner, c-suite, president, board member
+job_level: founder, owner, president
 job_title: chief executive officer, founder, owner, president, managing director, executive director
-company_size: 51-200, 201-500, 501-1000, 1001-5000
+company_size: 11-50, 51-200
 company_country_code: AU, NZ
 linkedin_category: Retail, Wholesale, Non-profit Organization Management, Hospitality, Individual and Family Services, Real Estate, Building Materials, Food and Beverages, Consumer Goods
 events: merger_and_acquisitions, cost_cutting, hiring_in_finance_department, increase_in_operations_department
