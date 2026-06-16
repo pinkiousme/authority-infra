@@ -1,10 +1,10 @@
 ---
 name: pipeline-builder
-version: 4.0
+version: 5.0
 description: "Robust mode-aware pipeline report builder. Fetches real ICP-matched leads with live signals from Vibe Prospecting (prospect-level for verified person data including authoritative LinkedIn URLs), produces ONLY a validated data.json, then runs a deterministic Python script that injects the data into the approved template. Model never assembles HTML. Runs DEMO or LIVE. All inputs from GitHub. Per-client deduplication via a GitHub dedup file."
 ---
 
-# pipeline-builder v4.0
+# pipeline-builder v5.0
 ## Robust Pipeline Report Engine (verified data, data-first assembly)
 
 Architecture principle: the model produces only a small validated JSON object. A deterministic Python script (build_report.py) injects it into the approved template with guaranteed-correct escaping. The model never writes HTML. Worst case is a data issue caught by validation, never a broken page.
@@ -25,10 +25,10 @@ Data principle (v3): every person-level fact shown to a prospect must be Vibe-au
 | Setting | DEMO | LIVE |
 |---|---|---|
 | Leads | 5 | 10 |
-| Vibe fetch | prospects (verified person data) | prospects |
-| Enrichment (email/phone) | OFF | ON |
-| LinkedIn URL source | Vibe prospect record (authoritative) | Vibe prospect record |
-| Email/phone on cards | hidden | shown |
+| Vibe fetch | prospects (tight buyer-title filter) | prospects |
+| Enrichment | YES, email only (to UNMASK identity + LinkedIn URL) | YES, email + phone |
+| LinkedIn URL source | Vibe prospect record, unmasked by enrichment | same |
+| Email/phone on cards | hidden (not displayed even though fetched) | shown |
 | Conversion CTAs | YES (top banner + closing + Content upsell) | NO |
 | Deploy path | demo/[DATE]/[firstname]/index.html | prod/[SLUG]/pipeline/index.html |
 | Dedup | no | yes (GitHub dedup file) |
@@ -45,43 +45,48 @@ Missing context: STOP. Never fabricate.
 ---
 
 ## STEP 2 · FETCH REAL LEADS (prospect-level, verified, buyer-title enforced)
-Vibe Prospecting only. Never Apollo. Do NOT use exclude_key at all (dedup is in-memory, see below). If any exclude_key were ever needed it is a TOP-LEVEL parameter never inside filters, but this skill does not use it.
+Vibe Prospecting only. Never Apollo. Do NOT use exclude_key at all (dedup is in-memory, see below).
 
-Make exactly ONE fetch call. Do NOT call export. Do NOT retry on credit ceiling. Run autocomplete once per filter, no more. These extra calls waste credits.
+**How Vibe data works (read this first, it prevents the failure mode).** A fetch-entities call returns a small PREVIEW (about 5 rows) and the data in that preview is MASKED (names and LinkedIn URLs hidden) until you ENRICH. Enrichment is what unmasks the records and provides the authoritative LinkedIn URL. Therefore:
+- Do NOT fetch a large loose set hoping to filter it down. You can only see ~5 preview rows, so a loose fetch wastes the request on rows you cannot inspect.
+- Do NOT call export to "see more rows". Export costs credits and the download needs auth you do not have. Forbidden.
+- Do NOT refetch repeatedly when data looks masked. Masking is normal and is resolved by enrichment, not by refetching. Refetching burns credits and time (this caused a 25-minute, 55-credit failed run).
+- The reliable pattern, proven by the older lead-magnet skill: fetch a TIGHT, well-filtered small set, then ENRICH to unmask. Enrichment gives you real names and LinkedIn URLs in BOTH modes.
 
-**Buyer-title discipline (the lead-quality floor).** The single biggest quality risk is returning the wrong PERSON at the right company (e.g. a Chief Marketing Officer, General Counsel, or Chief People Officer when the prospect sells to owners and CEOs). To prevent this:
+**The fetch must be tight at the filter level (this is the quality lever).** Do not rely on post-fetch filtering, because the preview is masked and small. Get it right in the filter:
 
-1. Read the buyer titles from the context "THE PROSPECT'S ICP" block. These are the ONLY acceptable decision-maker titles for this prospect (e.g. CEO, Founder, Owner, President, Managing Partner).
-2. Translate them into Vibe filters. Use BOTH `job_level` (e.g. founder, c-suite, owner) AND, when the context names specific titles, run autocomplete on `job_title` once and pass the standardized buyer titles. Tightening to buyer titles at fetch time is far better than filtering after.
-3. Over-fetch to allow discarding: DEMO fetch 12, LIVE fetch 20.
+1. Buyer titles only. Read the buyer titles from the context "THE PROSPECT'S ICP" block. Pass them via `job_title` (autocomplete once to standardize). For `job_level`, use ONLY owner-level values that map to decision-makers: founder, owner, president. Do NOT pass bare "c-suite" as a job_level unless the prospect explicitly sells to functional C-suite, because "c-suite" pulls in CFOs, COOs, CMOs, who are NOT buyers for most advisors. Title discipline at fetch time is the whole game.
+2. Company size must respect the context ceiling. Use only the size bands the context lists. Never add larger bands. If the context says SMEs up to 200, do not include 201-500 or larger.
+3. One autocomplete per filter, no more.
 
 ```
-autocomplete linkedin_category once (industries from context)
-autocomplete job_title once (buyer titles from context, if specific titles are listed)
+autocomplete linkedin_category once (industries from context; keep the query short, a few words)
+autocomplete job_title once (buyer titles from context)
 fetch-entities(
   entity_type:"prospects",
-  number_of_results:[DEMO 12 / LIVE 20],
-  filters:{ job_level:[from context], job_title:[autocompleted buyer titles if listed], company_size:[from context], company_country_code:{values:[from context]}, linkedin_category:[autocompleted], events:{values:[from context], last_occurrence:90} }
+  number_of_results:[DEMO 8 / LIVE 12],
+  filters:{ job_title:[autocompleted buyer titles], job_level:[founder, owner, president, NOT bare c-suite unless context says so], company_size:[from context, never above the ceiling], company_country_code:{values:[from context]}, linkedin_category:[autocompleted], events:{values:[from context], last_occurrence:90} }
 )
 ```
 
-**Post-fetch quality filter (discard then backfill).** From the returned set, KEEP a lead only if ALL of these hold:
-- The person's title is a decision-maker buyer title from the context (CEO, Founder, Co-founder, Owner, President, Managing Partner, or the equivalent the context lists). DISCARD non-buyer titles such as CMO, CPO, General Counsel, VP Marketing, HR, unless the context explicitly names that title as a buyer.
-- The company profile fits the context (e.g. if the context says "established revenue-generating businesses, not pre-revenue startups," discard obvious venture-backed early startups that do not fit; if the context says "growth-stage funded startups," keep those).
-- The signal is within the freshness window and is one the context lists.
+**Then ENRICH to unmask (both modes).** Run enrich-prospects-contacts on the returned leads. This unmasks names and LinkedIn URLs and provides contacts.
+- DEMO: enrich with contact_types ["email"] (unmasks identity + LinkedIn URL; email is fine to retrieve, it is simply not displayed on demo cards). This is the cost of a verified demo and it is worth it: the demo is the sales asset and must show real, clickable LinkedIn URLs.
+- LIVE: enrich with contact_types ["email","phone"]. Waterfall: work email > personal > "". Phone where present else "Direct contact not on record".
 
-Rank the survivors: dual-signal first, then by signal strength and recency. Keep the top target count (DEMO 5 / LIVE 10). If after discarding you have fewer than the target, that is acceptable: deliver the real qualified ones and note the count. NEVER pad with off-ICP leads to hit a number. A smaller list of right-fit buyers beats a full list of wrong ones.
+**Post-enrich quality filter (now you can see real data).** KEEP a lead only if ALL hold:
+- Title is a decision-maker buyer title from the context. DISCARD CFO, COO, CMO, CPO, General Counsel, VP-functional unless the context names them as buyers.
+- Company profile fits the context (size within ceiling, right stage, right type).
+- Signal is within the window and is one the context lists.
+Rank survivors: dual-signal first, then signal strength and recency. Keep target count (DEMO 5 / LIVE 10).
 
-- LIVE: do NOT use exclude_key for dedup (Vibe exclude_key does not take a list of LinkedIn URLs, and the tenant-level "prospects" keyword is forbidden because it contaminates all client pools). Instead, dedup IN MEMORY: after the fetch, read the client dedup list and discard any returned lead whose LinkedIn URL is already on it, then keep the freshest qualifying leads up to 10. Over-fetch (20) gives enough margin to drop repeats and still reach 10.
+**If fewer than target qualify:** widen ONE filter ONCE (signal window 90 to 120 days, OR one adjacent industry, OR the next size band still within the ICP ceiling) and refetch ONCE, then enrich the new set. If still short, deliver what qualifies and note the count. A 3-lead right-fit demo beats a 5-lead wrong one, but a single widen-and-retry should usually reach target. NEVER pad with off-ICP leads. NEVER refetch more than once for count reasons.
+
+- LIVE dedup: after enrich, read inputs/prod/[SLUG]/dedup.json (in memory), discard any lead whose LinkedIn URL is already listed, keep freshest up to 10. Never pass to exclude_key.
 - DEMO: no dedup.
 
-The prospect record provides the authoritative LinkedIn URL. Render it AS RETURNED. Store URLs (linkedin and website) WITH the https:// prefix in data.json. If a URL comes back without the scheme (e.g. "senasys.com" or "linkedin.com/in/..."), prepend "https://" so the link is absolute and clickable. The template also normalizes this defensively, but store full URLs anyway. NEVER reconstruct or web-guess a LinkedIn URL. If a prospect has no LinkedIn URL on record, set linkedin to empty and the card simply omits the Profile button.
+The prospect record (post-enrich) provides the authoritative LinkedIn URL. Store URLs (linkedin and website) WITH the https:// prefix in data.json. If a URL lacks the scheme, prepend "https://". NEVER reconstruct or web-guess a LinkedIn URL. If still masked or absent after enrichment, set linkedin to empty and the card omits the Profile button.
 
-Enrichment:
-- DEMO: do NOT enrich. email and phone stay empty strings.
-- LIVE: enrich-prospects-contacts (email, phone) on the kept leads. Waterfall: work email > personal > "". Phone where present else "Direct contact not on record".
-
-If credits exhaust mid-call: use what returned, apply the same quality filter, complete, note the count. Never fabricate, never retry into spend.
+If credits exhaust mid-run: use what enriched successfully, apply the quality filter, complete, note the count. Never fabricate, never thrash.
 
 ---
 
@@ -207,6 +212,7 @@ DEMO also outputs a suggested DM script (no unverified specifics in it).
 8. One write to GitHub: the report file (plus LIVE dedup.json). Never archive working files, never create a branch, never open a PR, never run git.
 
 ## CREDIT DISCIPLINE
-- DEMO: 1 prospect fetch (8 results) + 1 autocomplete, no enrichment. Verified person data, modest cost.
-- LIVE: 1 prospect fetch (15) + 1 enrichment.
-- Never export. Never retry on ceiling.
+- DEMO: 1 tight fetch (8) + 2 autocompletes + 1 enrichment (email only, to unmask). Enrichment is required to get real LinkedIn URLs; a demo without real URLs is broken, so this cost is justified.
+- LIVE: 1 tight fetch (12) + 2 autocompletes + 1 enrichment (email + phone).
+- At most ONE widen-and-refetch if under target count. Never more.
+- NEVER call export (costs credits, download needs auth, forbidden). NEVER refetch to "unmask" (enrichment unmasks, not refetching). NEVER retry on a credit-ceiling or timeout error: use what you have, complete, note the count. The 25-minute, 55-credit Nathan run was caused by export attempts and repeated refetching on masked data. Both are now forbidden.
