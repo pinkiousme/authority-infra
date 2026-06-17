@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Pipeline Pilot · Pipelind</title>
+<link rel="icon" type="image/png" href="https://raw.githubusercontent.com/pinkiousme/authority-infra/main/assets/pipelind-logo-dark.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0A0A12;
+    --surface:#12121E;
+    --surface-2:#16162a;
+    --border:rgba(106,102,163,0.20);
+    --border-strong:rgba(106,102,163,0.40);
+    --purple:#6A66A3;
+    --amber:#FF9900;
+    --green:#019047;
+    --t90:rgba(255,255,255,0.90);
+    --t72:rgba(255,255,255,0.72);
+    --t55:rgba(255,255,255,0.55);
+    --display:'Plus Jakarta Sans',sans-serif;
+    --mono:'Space Mono',monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);
+    color:var(--t90);
+    font-family:var(--display);
+    font-weight:400;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:0 24px}
+
+  /* ambient top glow */
+  .glow{
+    position:fixed;top:-200px;left:50%;transform:translateX(-50%);
+    width:700px;height:500px;border-radius:50%;
+    background:radial-gradient(circle, rgba(106,102,163,0.18), transparent 70%);
+    pointer-events:none;z-index:0;
+  }
+
+  /* nav */
+  nav{position:relative;z-index:2;border-bottom:1px solid var(--border)}
+  .nav-inner{max-width:760px;margin:0 auto;padding:18px 24px;display:flex;align-items:center;gap:10px}
+  .nav-inner img{height:24px;width:auto}
+  .nav-inner .mark{font-family:var(--mono);font-size:13px;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);font-weight:700}
+
+  /* eyebrow label */
+  .eyebrow{
+    font-family:var(--mono);font-size:11px;letter-spacing:0.14em;text-transform:uppercase;
+    color:var(--amber);margin-bottom:18px;display:block;
+  }
+
+  /* hero */
+  header.hero{position:relative;z-index:1;padding:64px 0 48px}
+  header.hero h1{
+    font-weight:800;font-size:42px;line-height:1.12;letter-spacing:-0.02em;color:#fff;
+    margin-bottom:22px;
+  }
+  header.hero h1 .amber{color:var(--amber)}
+  header.hero .sub{font-size:18px;color:var(--t72);max-width:600px}
+  header.hero .sub b{color:var(--t90);font-weight:600}
+
+  section{position:relative;z-index:1;padding:40px 0;border-top:1px solid var(--border)}
+  section h2{font-weight:800;font-size:26px;letter-spacing:-0.01em;color:#fff;margin-bottom:18px;line-height:1.2}
+  section p{color:var(--t72);font-size:16.5px;margin-bottom:16px}
+  section p b{color:var(--t90);font-weight:600}
+
+  /* verify block */
+  .verify{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:30px 28px}
+  .verify .line{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--border);align-items:flex-start}
+  .verify .line:last-child{border-bottom:none;padding-bottom:0}
+  .verify .line:first-child{padding-top:0}
+  .verify .dot{flex-shrink:0;width:7px;height:7px;border-radius:50%;background:var(--amber);margin-top:9px}
+  .verify .line p{margin:0;font-size:16px;color:var(--t90)}
+
+  /* deliverables */
+  .deliv{display:grid;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:16px;overflow:hidden}
+  .deliv .row{background:var(--surface);padding:20px 24px;display:flex;gap:16px;align-items:flex-start}
+  .deliv .row .n{font-family:var(--mono);font-size:12px;color:var(--purple);font-weight:700;flex-shrink:0;width:24px;padding-top:2px}
+  .deliv .row .body strong{display:block;color:#fff;font-weight:700;font-size:16.5px;margin-bottom:3px}
+  .deliv .row .body span{color:var(--t55);font-size:14.5px}
+
+  .price-line{margin-top:24px;text-align:center}
+  .price-line .amt{font-family:var(--display);font-weight:800;font-size:34px;color:#fff}
+  .price-line .amt small{font-size:15px;color:var(--t55);font-weight:500}
+  .price-line .note{font-family:var(--mono);font-size:12px;letter-spacing:0.06em;color:var(--amber);margin-top:6px;text-transform:uppercase}
+
+  /* testimonial */
+  .testi figure{margin:0;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:14px;overflow:hidden}
+  .testi figure img{width:100%;height:auto;display:block;border-radius:8px}
+  .testi figcaption{font-family:var(--mono);font-size:12px;color:var(--t55);letter-spacing:0.04em;margin-top:14px;padding:0 4px;text-transform:none}
+  .testi figcaption b{color:var(--t72)}
+
+  /* guarantee strip */
+  .guar{background:linear-gradient(180deg,var(--surface),var(--surface-2));border:1px solid var(--border-strong);border-radius:16px;padding:28px}
+  .guar h3{font-weight:800;font-size:19px;color:#fff;margin-bottom:14px}
+  .guar ul{list-style:none}
+  .guar li{padding:10px 0 10px 26px;position:relative;color:var(--t90);font-size:16px;border-bottom:1px solid var(--border)}
+  .guar li:last-child{border-bottom:none}
+  .guar li:before{content:"";position:absolute;left:0;top:17px;width:8px;height:8px;border-radius:50%;background:var(--green)}
+  .guar li b{font-weight:600}
+
+  /* CTA buttons */
+  .cta-btn{
+    display:inline-block;background:var(--amber);color:#0A0A12;font-family:var(--display);
+    font-weight:700;font-size:16px;text-decoration:none;padding:16px 32px;border-radius:12px;
+    transition:transform .15s ease, box-shadow .15s ease;border:none;cursor:pointer;
+  }
+  .cta-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,153,0,0.25)}
+  .cta-center{text-align:center;padding-top:8px}
+
+  /* form embed */
+  #pilot-form{scroll-margin-top:20px}
+  .form-shell{background:var(--surface);border:1px solid var(--border-strong);border-radius:16px;padding:10px;overflow:hidden}
+  .form-shell iframe{width:1px;min-width:100%;border:none;display:block;background:transparent}
+  .form-intro{text-align:center;margin-bottom:24px}
+  .form-intro .eyebrow{margin-bottom:12px}
+  .form-intro h2{margin-bottom:10px}
+  .form-intro p{max-width:520px;margin:0 auto}
+
+  /* FAQ */
+  .faq details{background:var(--surface);border:1px solid var(--border);border-radius:12px;margin-bottom:12px;overflow:hidden}
+  .faq summary{padding:18px 22px;cursor:pointer;font-weight:600;color:var(--t90);font-size:16px;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary:after{content:"+";font-family:var(--mono);color:var(--amber);font-size:20px;flex-shrink:0}
+  .faq details[open] summary:after{content:"–"}
+  .faq .ans{padding:0 22px 20px;color:var(--t72);font-size:15.5px}
+  .faq .ans b{color:var(--t90);font-weight:600}
+
+  /* sticky bar */
+  .sticky{
+    position:fixed;bottom:0;left:0;right:0;z-index:50;
+    background:rgba(10,10,18,0.92);backdrop-filter:blur(12px);
+    border-top:1px solid var(--border-strong);
+    padding:12px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;
+    transform:translateY(110%);transition:transform .3s ease;
+  }
+  .sticky.show{transform:translateY(0)}
+  .sticky .label{font-size:14px;color:var(--t72)}
+  .sticky .label b{color:#fff;font-weight:700}
+  .sticky .cta-btn{padding:12px 24px;font-size:15px;white-space:nowrap}
+
+  footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:36px 0 120px;text-align:center}
+  footer .mark{font-family:var(--mono);font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:var(--purple);margin-bottom:10px}
+  footer p{font-size:13px;color:var(--t55);margin:0}
+  footer a{color:var(--t72);text-decoration:none}
+
+  @media (max-width:600px){
+    header.hero{padding:44px 0 36px}
+    header.hero h1{font-size:32px}
+    header.hero .sub{font-size:16.5px}
+    section h2{font-size:22px}
+    .sticky .label{display:none}
+    .sticky{justify-content:center}
+    .sticky .cta-btn{width:100%;text-align:center}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none !important;scroll-behavior:auto !important}
+  }
+</style>
+</head>
+<body>
+<div class="glow" aria-hidden="true"></div>
+
+<nav>
+  <div class="nav-inner">
+    <img src="https://raw.githubusercontent.com/pinkiousme/authority-infra/main/assets/pipelind-logo-dark.png" alt="Pipelind">
+    <span class="mark">Pipelind</span>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <header class="hero">
+    <span class="eyebrow">Pipeline Pilot · 4 Weeks</span>
+    <h1>You have seen five. Here is what <span class="amber">ten a week</span> looks like, running on your profile.</h1>
+    <p class="sub">The report you just opened is one real week. The pilot runs the same system live for four weeks: <b>ten companies every Monday, each one showing a buying signal right now</b>, matched to your offer, with the reason they fit and a connection note ready to send.</p>
+  </header>
+
+  <section>
+    <span class="eyebrow">Why this is not another lead list</span>
+    <h2>Do not trust me. Check the data.</h2>
+    <div class="verify">
+      <div class="line"><span class="dot"></span><p>The companies in your report are real. The funding rounds, leadership changes, and hiring activity are public events you can verify yourself.</p></div>
+      <div class="line"><span class="dot"></span><p>A name and a title is what a scraped list or a cheap agency sells you. This is timing: companies inside the 90-day window where they actually need someone like you.</p></div>
+      <div class="line"><span class="dot"></span><p>The pilot runs that exact system on your profile, ten a week, for four weeks. You are not betting on a promise. You are looking at your own pipeline.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow">What the pilot delivers</span>
+    <h2>Four weeks. Forty matched companies. One link.</h2>
+    <div class="deliv">
+      <div class="row"><span class="n">01</span><div class="body"><strong>10 signal-matched companies every Monday</strong><span>Each one showing an active buying trigger from the last 90 days: funding, leadership change, or department hiring.</span></div></div>
+      <div class="row"><span class="n">02</span><div class="body"><strong>The reason each one fits you</strong><span>Not just who they are. Why they are likely to need your offer right now, in plain language.</span></div></div>
+      <div class="row"><span class="n">03</span><div class="body"><strong>A connection note for every profile</strong><span>Written to reference their specific signal. Ready to send from your own account.</span></div></div>
+      <div class="row"><span class="n">04</span><div class="body"><strong>One private link that refreshes weekly</strong><span>Open the same URL each Monday for four weeks. Fresh companies, no logins, no software to learn.</span></div></div>
+    </div>
+    <div class="price-line">
+      <div class="amt">$97 <small>· one time, four weeks</small></div>
+      <div class="note">Credited to month one if you continue</div>
+    </div>
+    <div class="cta-center" style="padding-top:22px">
+      <a href="#pilot-form" class="cta-btn">Start the Pipeline Pilot</a>
+    </div>
+  </section>
+
+  <section class="testi">
+    <span class="eyebrow">One client, on the record</span>
+    <h2>What it looked like for the first person who ran it.</h2>
+    <p>One client has put this in writing so far. Not a wall of testimonials, one real recommendation from a real profile you can find on LinkedIn.</p>
+    <figure>
+      <img src="https://raw.githubusercontent.com/pinkiousme/authority-infra/main/assets/kam-recommendation.png" alt="LinkedIn recommendation from Kamran Emami, Sales Compensation Leader, who was Saurabh's client">
+      <figcaption><b>Kamran “Kam” Emami</b> · Sales Compensation Leader · left May 2026 on LinkedIn, where this recommendation is public.</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <span class="eyebrow">Your risk, removed</span>
+    <div class="guar">
+      <h3>The pilot is built so you carry no risk.</h3>
+      <ul>
+        <li><b>Filters tuned until they are right.</b> Week one calibrates. If the companies are off, the filters get adjusted and you see the corrected set the next Monday. As many times as it takes.</li>
+        <li><b>14-day refund.</b> If the pilot is not useful to you, full refund inside the first 14 days. No forms, no friction.</li>
+        <li><b>The $97 is not lost if you continue.</b> Move forward with the managed plan and it comes off your first month.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow">After the four weeks</span>
+    <h2>Nothing locks automatically. You decide at the end.</h2>
+    <p>When the pilot finishes, there are three honest paths, and none of them happen without you choosing them:</p>
+    <p><b>Continue managed, monthly.</b> The full system run for you every week, cancel anytime. <b>Keep just the leads for twelve months.</b> A one-time arrangement, automated delivery, lighter touch. <b>Or stop.</b> You keep every report and every company the pilot generated.</p>
+    <p>You will have four weeks of your own pipeline in front of you before any of that comes up. That is the point.</p>
+  </section>
+
+  <section id="pilot-form">
+    <div class="form-intro">
+      <span class="eyebrow">Start here</span>
+      <h2>Tell me who you serve. Start the pilot.</h2>
+      <p>Four quick fields and secure payment, in one step. Your first report goes live within 48 hours, then refreshes every Monday for four weeks.</p>
+    </div>
+    <div class="form-shell">
+      <iframe
+        id="JotFormIFrame-261671365020046"
+        title="Pipeline Pilot Intake"
+        allow="geolocation; microphone; camera; payment"
+        src="https://pci.jotform.com/261671365020046"
+        scrolling="no"
+        style="min-width:100%;max-width:100%;height:900px;border:none;">
+      </iframe>
+    </div>
+  </section>
+
+  <section class="faq">
+    <span class="eyebrow">Before you start</span>
+    <h2>Straight answers.</h2>
+    <details>
+      <summary>Is this automated outreach or a bot?</summary>
+      <div class="ans">No. There is no automation touching LinkedIn. You send every connection request from your own account, on your own time. The system finds the companies and writes the note. <b>You stay in control of your account.</b></div>
+    </details>
+    <details>
+      <summary>Where do the leads come from?</summary>
+      <div class="ans">Licensed B2B company data combined with live business signals: funding rounds, leadership changes, and hiring activity from the last 90 days. <b>Nothing is scraped from LinkedIn.</b> The signals are public events you can confirm independently.</div>
+    </details>
+    <details>
+      <summary>What if the companies are not the right fit?</summary>
+      <div class="ans">Week one is calibration. Geography, company size, industry, and signal type are all adjustable. If the first set is off, the filters get tuned and you see the corrected version the following Monday, <b>as many times as it takes to get it right.</b></div>
+    </details>
+    <details>
+      <summary>What happens when the four weeks end?</summary>
+      <div class="ans">You choose: continue with the full managed service monthly, keep just the weekly leads for twelve months, or stop and keep everything generated. <b>Nothing renews on its own.</b> Pricing for the ongoing options is shared plainly once the pilot is underway.</div>
+    </details>
+    <details>
+      <summary>How fast does it start after I pay?</summary>
+      <div class="ans">Your first report is live within 48 hours at a private link. After that it refreshes every Monday for four weeks. <b>You open the same link each week.</b> No software, no logins, nothing to install.</div>
+    </details>
+  </section>
+
+  <footer>
+    <div class="mark">Pipelind</div>
+    <p>Pipeline intelligence for fractional executives · <a href="mailto:saurabh@pipelind.com">saurabh@pipelind.com</a></p>
+  </footer>
+
+</div>
+
+<div class="sticky" id="stickyBar">
+  <span class="label">Pipeline Pilot · <b>$97 for four weeks</b></span>
+  <a href="#pilot-form" class="cta-btn">Start the Pilot</a>
+</div>
+
+<script>
+  // Sticky CTA bar appears after hero scrolls out, hides when form is in view
+  (function(){
+    var bar = document.getElementById('stickyBar');
+    var form = document.getElementById('pilot-form');
+    var hero = document.querySelector('header.hero');
+    function update(){
+      var heroBottom = hero.getBoundingClientRect().bottom;
+      var formRect = form.getBoundingClientRect();
+      var formVisible = formRect.top < window.innerHeight && formRect.bottom > 0;
+      if(heroBottom < 0 && !formVisible){ bar.classList.add('show'); }
+      else { bar.classList.remove('show'); }
+    }
+    window.addEventListener('scroll', update, {passive:true});
+    window.addEventListener('resize', update, {passive:true});
+    update();
+  })();
+
+  // Jotform iframe auto-resize (official Jotform handler)
+  window.addEventListener('message', function(e){
+    if(typeof e.data === 'object') return;
+    var args = String(e.data).split(":");
+    var iframe = document.getElementById('JotFormIFrame-' + (args[2] || '261671365020046'));
+    if(!iframe) iframe = document.getElementById('JotFormIFrame-261671365020046');
+    if(!iframe) return;
+    if(args[0] === 'setHeight'){
+      iframe.style.height = args[1] + 'px';
+    }
+    if(args[0] === 'scrollIntoView'){
+      iframe.scrollIntoView();
+    }
+  });
+</script>
+</body>
+</html>
