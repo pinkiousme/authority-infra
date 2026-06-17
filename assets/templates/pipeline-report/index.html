@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pipeline Report · Dave Cotter · Kelsor Ventures</title>
+<title>Pipeline Report · __PL_FULLNAME_HTML__ · __PL_FIRM_HTML__</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -299,29 +299,29 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
     </nav>
     <div class="sb-user">
       <div class="sb-avatar">DC</div>
-      <div><div class="sb-uname">Dave Cotter</div><div class="sb-ufirm">Kelsor Ventures</div></div>
+      <div><div class="sb-uname">__PL_FULLNAME_HTML__</div><div class="sb-ufirm">__PL_FIRM_HTML__</div></div>
     </div>
   </aside>
 
   <!-- MAIN -->
   <main class="main">
     <div class="topbar">
-      <span class="tb-week">Week of June 13, 2026</span>
+      <span class="tb-week">Week of __PL_WEEK__</span>
       <div class="tb-right">
         <span class="tb-live"><span class="tb-dot"></span>Updated</span>
       </div>
     </div>
     <div class="content">
-      <div class="test-banner">Test run · Synthetic data · Not for client delivery</div>
+      <!--__PL_TESTBANNER__-->
       <h1 class="page-title" id="pageTitle">Pipeline Engine</h1>
-      <p class="page-sub" id="pageSub">ICP-matched buyer profiles, personalized for Dave Cotter</p>
+      <p class="page-sub" id="pageSub">ICP-matched buyer profiles, personalized for __PL_FULLNAME_HTML__</p>
 
       <!-- VIEWS injected by JS-rendered content below -->
       <div id="viewRoot"></div>
 
       <div class="footer">
-        <div class="foot-brand">Pipelind · Kelsor Ventures</div>
-        <div class="foot-txt">New report every Monday · <a href="mailto:saurabh@pipelind.com">saurabh@pipelind.com</a> · Generated June 13, 2026</div>
+        <div class="foot-brand">Pipelind · __PL_FIRM_HTML__</div>
+        <div class="foot-txt">New report every Monday · <a href="mailto:saurabh@pipelind.com">saurabh@pipelind.com</a> · Generated __PL_GENERATED__</div>
       </div>
     </div>
   </main>
@@ -329,9 +329,9 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 
 <script>
 /* ========== DATA ========== */
-var CLIENT = "Dave";
-var MODE = "DEMO";
-var CALENDLY = "https://calendly.com/saurabh_zentro/30-min";
+var CLIENT = __PL_CLIENT_FIRST__;
+var MODE = __PL_MODE__;
+var CALENDLY = __PL_CALENDLY__;
 var THEMES = {
   violet:{grad:"linear-gradient(135deg,#6D28D9,#4C1D95)",glow:"rgba(124,111,232,0.28)",accent:"#A78BFA",soft:"rgba(124,111,232,0.10)",chip:"#1a1a2e"},
   amber:{grad:"linear-gradient(135deg,#B45309,#78350F)",glow:"rgba(255,165,31,0.24)",accent:"#FFA51F",soft:"rgba(255,165,31,0.10)",chip:"#78350F"},
@@ -339,13 +339,7 @@ var THEMES = {
   blue:{grad:"linear-gradient(135deg,#1D4ED8,#1E3A8A)",glow:"rgba(59,130,246,0.24)",accent:"#60A5FA",soft:"rgba(59,130,246,0.10)",chip:"#1E3A8A"},
   pink:{grad:"linear-gradient(135deg,#BE185D,#831843)",glow:"rgba(236,72,153,0.24)",accent:"#F472B6",soft:"rgba(236,72,153,0.10)",chip:"#831843"}
 };
-var LEADS = [
-  {id:1,theme:"violet",name:"Priya Mehta",initials:"PM",role:"Founder & CEO",company:"Runwai.io",country:"Australia",stage:"Seed",industry:"SaaS",employees:"11",revenue:"$1M-$5M",signalDetail:"Funding + Finance Hiring",days:9,priority:true,linkedin:"https://linkedin.com/in/priya-mehta-runwai",website:"https://runwai.io",email:"priya@runwai.io",phone:"+61 4 1234 5678",whatTheyDo:"AI-powered runway forecasting for early-stage SaaS founders. Automates burn modeling and investor reporting.",recentNews:"Seed extension of $1.9M closed 9 days ago. Two finance roles posted at once.",founderFocus:"Writing about the gap between what founders track and what investors expect in reporting.",teamTrajectory:"From 7 to 11 employees in 90 days. Finance function being built from zero.",whyFit:"Dave built finance functions at exactly this Seed-to-A transition. Priya is building a finance tool while needing one herself, the precise problem Dave solves as a Chartered Accountant who has scaled from chaos to enterprise. His hands-on approach fits a founder who needs the system built, not described.",whyNow:"Dual signal: fresh capital and active finance hiring in the same window. A founder building a financial tool who is simultaneously hiring her own finance function. The irony is the signal.",connNote:"Priya, congrats on the extension. Building a finance function at seed while scaling product is one of the harder sequencing problems. I work with SaaS founders at your stage to get that infrastructure right before it becomes the bottleneck.",emailSubj:"Finance build at Runwai post-round",emailBody:"Noticed the seed extension and the finance hires at Runwai. That combination at 11 people means you are building the financial function from scratch while managing post-round reporting obligations.\n\nWhat I have seen work is getting the financial architecture set before the first finance hire joins, so they inherit a system rather than building one from a blank page. Happy to share what that looks like."},
-  {id:2,theme:"amber",name:"Ryan Mitchell",initials:"RM",role:"Co-Founder & CEO",company:"PulseMetrics Health",country:"United States",stage:"Series A",industry:"Healthtech",employees:"28",revenue:"$5M-$10M",signalDetail:"Series A · $6.8M",days:14,priority:true,linkedin:"https://linkedin.com/in/ryan-mitchell-pulse",website:"https://pulsemetrics.health",email:"ryan@pulsemetrics.health",phone:"+1 415 555 0142",whatTheyDo:"AI patient monitoring for chronic conditions. Real-time vitals analysis with predictive clinical alerts.",recentNews:"Series A of $6.8M closed 14 days ago. Expanding across three US hospital systems.",founderFocus:"Writing about the FDA regulatory pathway for AI diagnostics and the operational burden on small teams.",teamTrajectory:"From 16 to 28 employees in six months. Engineering-heavy. No finance leadership visible.",whyFit:"Healthtech post-Series A is Dave's documented sweet spot, with prior clients Ksana Health and Ieso Digital in the same space. He understands the compliance and board-reporting layer that lands on a clinical founder right after a raise. Ryan has the capital and the gap; Dave has the exact pattern-match.",whyNow:"Series A closed two weeks ago with no finance leadership in place. At 28 employees with hospital partnerships, board reporting and compliance arrive faster than the infrastructure to handle them.",connNote:"Ryan, congrats on the Series A. Post-round at 28 people in Healthtech, the finance and compliance infrastructure usually becomes the first bottleneck not on the product roadmap. Worth connecting.",emailSubj:"Post-Series A finance build · PulseMetrics",emailBody:"Noticed the Series A close at PulseMetrics. At 28 people with clinical partnerships, the finance and compliance build lands all at once: board reporting cadence, healthcare compliance, burn modeling for 18 months.\n\nWhat I have seen work is a fractional layer that builds the financial infrastructure the incoming full-time CFO inherits. Happy to share what that looks like."},
-  {id:3,theme:"teal",name:"Declan Walsh",initials:"DW",role:"Co-Founder & COO",company:"MedStack Solutions",country:"Ireland",stage:"Series A",industry:"Healthtech",employees:"44",revenue:"$5M-$10M",signalDetail:"US Office Opened",days:12,priority:false,linkedin:"https://linkedin.com/in/declan-walsh-medstack",website:"https://medstack.io",email:"declan@medstack.io",phone:"+353 1 234 5678",whatTheyDo:"Healthcare data infrastructure enabling secure interoperability between clinical systems across EU and US.",recentNews:"US office opened in Boston 12 days ago. First US sales hire underway.",founderFocus:"Discussing cross-border healthcare compliance and managing two regulatory frameworks at once.",teamTrajectory:"Expanding internationally. Ireland HQ plus new US presence. Multi-jurisdiction complexity rising.",whyFit:"Dave is Irish-trained (Chartered Accountants Ireland) and US-experienced (PwC, Microsoft). A founder running an Ireland-to-US expansion needs exactly that dual-jurisdiction fluency. This is a near-perfect background overlap that almost no other fractional operator can claim.",whyNow:"A Healthtech company opening a US office from an Irish HQ introduces transfer pricing, US entity setup, and dual-market compliance. The COO is handling this alongside product delivery.",connNote:"Declan, opening a US office from Ireland adds a financial and ops complexity layer most founders underestimate until the first quarter-end. I work with Healthtech leaders at this stage. Worth connecting.",emailSubj:"Cross-border ops at MedStack",emailBody:"Noticed MedStack opened a US office. Ireland to US at Series A introduces transfer pricing, dual-entity compliance, and the overhead of two regulatory environments.\n\nWhat I have seen work is getting the cross-border financial structure right in the first 90 days, before complexity compounds. Happy to share what that build looks like."},
-  {id:4,theme:"blue",name:"Sophie Lau",initials:"SL",role:"Founder & CEO",company:"Clearview SaaS",country:"Canada",stage:"Series B",industry:"B2B SaaS",employees:"61",revenue:"$10M-$25M",signalDetail:"CFO Departure",days:19,priority:false,linkedin:"https://linkedin.com/in/sophie-lau-clearview",website:"https://clearview.io",email:"sophie@clearview.io",phone:"+1 604 555 0188",whatTheyDo:"B2B procurement intelligence platform helping mid-market companies consolidate vendor spend.",recentNews:"CFO departed 19 days ago. Permanent search underway while managing Series B reporting.",founderFocus:"Writing about the talent market for senior finance hires and the cost of an open CFO seat.",teamTrajectory:"Finance function in transition. Gap between departure and permanent hire averages four to six months.",whyFit:"Dave positions fractional work as the bridge between an outgoing CFO and a permanent hire, which is exactly Sophie's situation. At Series B he can hold board-grade reporting steady during the search, then hand a clean system to the permanent CFO. This is his stated specialty, not a stretch.",whyNow:"CFO departure at Series B with 61 employees means board reporting, budget cycles, and capital planning are landing on the CEO. That is the window where fractional CFO engagement converts fastest.",connNote:"Sophie, a CFO departure at Series B with board reporting running means someone is covering that seat without the title. I work with SaaS founders to hold that function steady during the search.",emailSubj:"CFO gap at Clearview",emailBody:"Noticed the CFO transition at Clearview. At Series B with 61 people, the gap between departure and permanent hire runs four to six months. That sits on top of board reporting and budget cycles.\n\nWhat I have seen work is a fractional layer that holds the financial function steady while the search runs. Happy to share what that structure looks like."},
-  {id:5,theme:"pink",name:"Tom Eriksen",initials:"TE",role:"Co-Founder & CEO",company:"HealthBridge Analytics",country:"United Kingdom",stage:"Pre-Series A",industry:"Healthtech",employees:"18",revenue:"$1M-$5M",signalDetail:"4 Roles in 21 Days",days:21,priority:false,linkedin:"https://linkedin.com/in/tom-eriksen-healthbridge",website:"https://healthbridge.co.uk",email:"tom@healthbridge.co.uk",phone:"+44 20 7946 0123",whatTheyDo:"Clinical analytics aggregating patient pathway data for NHS and private providers.",recentNews:"Four operations roles posted in 21 days. Ops build-out ahead of an anticipated Pre-Series A close.",founderFocus:"Writing about NHS procurement cycles and building a sales motion in a long-approval market.",teamTrajectory:"Ops hiring at 18 people signals delivery outpacing management capacity. Pre-raise build.",whyFit:"Dave cleans up financials ahead of a raise, which is precisely where Tom sits. A Healthtech founder structuring ops before a Pre-Series A needs someone who can sequence hires against burn and shape the raise narrative. Dave has done this through 20+ years across finance and operations.",whyNow:"Four operations roles in 21 days at 18 people. Building ops infrastructure ahead of a raise without the financial oversight to sequence those hires against burn.",connNote:"Tom, four ops roles at 18 people pre-raise is a specific decision. The hire sequence and burn positioning interact in ways that shape the raise narrative. Worth connecting.",emailSubj:"Ops sequencing pre-raise · HealthBridge",emailBody:"Noticed four operations roles posted in three weeks. At 18 people pre-raise, that hiring pace changes the burn position before revenue catches up. The ops structure you build now is what investors see when they model the team.\n\nWhat I have seen work is getting the financial model and ops sequencing aligned before the headcount moves. Happy to share what that looks like."}
-];
+var LEADS = __PL_LEADS__;
 
 /* ========== ICONS (inline SVG strings) ========== */
 var IC = {
@@ -420,7 +414,7 @@ function leadCard(L,openByDefault){
   html+='<div class="or-block" style="border:1px solid #0A66C2"><div class="or-head" style="background:rgba(10,102,194,0.12)"><span style="color:#3B9AE8">'+IC.linkedin+'</span><span class="or-head-lbl" style="color:#3B9AE8">LinkedIn Connection Note</span><span class="or-count">'+L.connNote.length+' / 300</span></div><div class="or-body"><button class="copy-btn" style="color:#3B9AE8;border:1px solid #0A66C2" onclick="cp(this,this.getAttribute(\'data-c\'))" data-c="'+esc(L.connNote)+'">'+IC.copy+'Copy</button><div class="or-text">'+esc(L.connNote)+'</div></div></div>';
   html+='<div class="or-block" style="border:1px solid '+t.accent+'55"><div class="or-head" style="background:'+t.soft+'"><span style="color:'+t.accent+'">'+IC.at+'</span><span class="or-head-lbl" style="color:'+t.accent+'">Email Draft</span></div><div class="or-body"><button class="copy-btn" style="color:'+t.accent+';border:1px solid '+t.accent+'55" onclick="cp(this,this.getAttribute(\'data-c\'))" data-c="Subject: '+esc(L.emailSubj)+'\n\n'+esc(L.emailBody)+'">'+IC.copy+'Copy</button><div class="or-subj-lbl">SUBJECT</div><div class="or-subj" style="color:'+t.accent+'">'+esc(L.emailSubj)+'</div><div class="or-text" style="padding-right:0">'+esc(L.emailBody)+'</div></div></div>';
   html+='</div>';
-  html+='<div class="lead-foot">Test data · Illustrative only</div>';
+  html+='<div class="lead-foot">__PL_FOOTER__</div>';
   html+='</div></div>';
   return html;
 }
@@ -486,12 +480,12 @@ function areaSVG(data,w,h){
   return '<svg viewBox="0 0 '+w+' '+h+'" width="100%" height="'+h+'"><defs><linearGradient id="ga" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#22C55E" stop-opacity="0.35"/><stop offset="100%" stop-color="#22C55E" stop-opacity="0"/></linearGradient><linearGradient id="gb" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#FFA51F" stop-opacity="0.30"/><stop offset="100%" stop-color="#FFA51F" stop-opacity="0"/></linearGradient></defs><polygon points="'+area("l")+'" fill="url(#ga)"/><polyline points="'+pts("l")+'" fill="none" stroke="#22C55E" stroke-width="2.5"/><polygon points="'+area("s")+'" fill="url(#gb)"/><polyline points="'+pts("s")+'" fill="none" stroke="#FFA51F" stroke-width="2.5"/></svg>';
 }
 function viewDashboard(){
-  var sig=[{name:"Funding",value:3,color:"#FFA51F"},{name:"Hiring",value:4,color:"#22C55E"},{name:"Leadership",value:1,color:"#7C6FE8"},{name:"Expansion",value:1,color:"#22D3EE"}];
+  var sig=__PL_SIG__;
   var trend=[{w:"W1",s:4,l:8},{w:"W2",s:6,l:10},{w:"W3",s:3,l:7},{w:"W4",s:7,l:12},{w:"W5",s:5,l:9},{w:"W6",s:8,l:11},{w:"W7",s:6,l:10},{w:"W8",s:9,l:14}];
-  var geo=[{c:"US",n:2},{c:"UK",n:1},{c:"Canada",n:1},{c:"Ireland",n:1},{c:"Australia",n:1}];
-  var stage=[{s:"Seed",n:1},{s:"Pre-A",n:1},{s:"Series A",n:2},{s:"Series B",n:1}];
+  var geo=__PL_DB_GEO__;
+  var stage=__PL_DB_STAGE__;
   var h='<div class="stat-grid">';
-  var stats=[{n:"3",l:"Funding Rounds",c:"#FFA51F",chg:"+2",bar:"60%"},{n:"4",l:"Hiring Signals",c:"#22C55E",chg:"+1",bar:"80%"},{n:"1",l:"Leadership Δ",c:"#7C6FE8",chg:"",bar:"20%"},{n:"5",l:"Total Leads",c:"#22D3EE",chg:"+3",bar:"50%"}];
+  var stats=__PL_STATS__;
   stats.forEach(function(s){
     h+='<div class="stat glass"><div class="stat-top" style="background:linear-gradient(90deg,'+s.c+',transparent)"></div><div class="stat-head"><div class="stat-icon" style="background:'+s.c+'1A;border:1px solid '+s.c+'33;color:'+s.c+'">'+IC.sparkle+'</div>'+(s.chg?'<span class="stat-chg">'+s.chg+'</span>':'')+'</div><div class="stat-num" style="color:'+s.c+'">'+s.n+'</div><div class="stat-lbl">'+s.l+'</div><div class="stat-bar"><div class="stat-bar-fill" style="width:'+s.bar+';background:linear-gradient(90deg,'+s.c+','+s.c+'99)"></div></div></div>';
   });
@@ -500,11 +494,11 @@ function viewDashboard(){
   sig.forEach(function(d){h+='<div class="legend-row"><span class="legend-dot" style="background:'+d.color+'"></span><span class="legend-name">'+d.name+'</span><span class="legend-val">'+d.value+'</span></div>';});
   h+='</div></div><div class="chart-card glass"><div class="chart-title">Signal & Lead Trend · 8 Weeks</div>'+areaSVG(trend,560,200)+'<div style="display:flex;gap:16px;margin-top:8px;justify-content:center"><span class="legend-row" style="margin:0"><span style="width:12px;height:2px;background:#FFA51F;display:inline-block;margin-right:6px"></span><span class="legend-name">Signals</span></span><span class="legend-row" style="margin:0"><span style="width:12px;height:2px;background:#22C55E;display:inline-block;margin-right:6px"></span><span class="legend-name">Leads</span></span></div></div></div>';
   h+='<div class="chart-row r2"><div class="chart-card glass"><div class="chart-title">Geographic Distribution</div>'+barsSVG(geo,500,160,"#22D3EE",false)+'</div><div class="chart-card glass"><div class="chart-title">Funding Stage Spread</div>'+barsSVG(stage,500,160,"#7C6FE8",false)+'</div></div>';
-  h+='<div class="glass pulse"><div class="pulse-bar"></div><div class="pulse-inner"><div class="pulse-head"><div class="pulse-ic" style="color:#7C6FE8">'+IC.sparkle+'</div><span class="pulse-lbl">Market Intelligence Pulse</span></div><div class="pulse-txt">Seed and Series A funding activity in Healthtech remains elevated, with three rounds closing in the ICP window this week. Post-round founders are scaling headcount before building the financial infrastructure to manage it. The pattern is consistent: hire fast, build ops later, run into board reporting gaps by month four.</div></div></div>';
+  h+='<div class="glass pulse"><div class="pulse-bar"></div><div class="pulse-inner"><div class="pulse-head"><div class="pulse-ic" style="color:#7C6FE8">'+IC.sparkle+'</div><span class="pulse-lbl">Market Intelligence Pulse</span></div><div class="pulse-txt">__PL_PULSE__</div></div></div>';
   return h;
 }
 function viewSignals(){
-  var types=[{name:"New Funding Round",count:3,color:"#FFA51F",desc:"Companies that closed capital in the last 90 days. Post-round founders need finance infrastructure before board reporting cadence kicks in.",leads:["Priya Mehta · Runwai.io","Ryan Mitchell · PulseMetrics","(dataset) Triomics"]},{name:"Finance / Ops Hiring",count:4,color:"#22C55E",desc:"Companies actively posting finance or operations roles. A founder hiring here already knows they have a structural gap.",leads:["Tom Eriksen · HealthBridge","Priya Mehta · Runwai.io","(dataset) SuperOps","(dataset) Noblesoft"]},{name:"Leadership Change",count:1,color:"#7C6FE8",desc:"CFO or COO departures. The seat is empty and the founder is covering it during a four to six month search.",leads:["Sophie Lau · Clearview SaaS"]},{name:"Market Expansion",count:1,color:"#22D3EE",desc:"New office or new market entry. Multi-jurisdiction financial complexity increasing.",leads:["Declan Walsh · MedStack"]}];
+  var types=__PL_SIGNALS__;
   var h='';
   types.forEach(function(t){
     h+='<div class="glass sig-card" style="border-left:3px solid '+t.color+'"><div class="sig-card-head"><span class="sig-card-name">'+t.name+'</span><span class="sig-card-num" style="color:'+t.color+'">'+t.count+'</span></div><div class="sig-card-desc">'+t.desc+'</div><div class="sig-leads">';
@@ -514,8 +508,8 @@ function viewSignals(){
   return h;
 }
 function viewMarkets(){
-  var geo=[{c:"US",n:2},{c:"UK",n:1},{c:"Canada",n:1},{c:"Ireland",n:1},{c:"Australia",n:1}];
-  var ind=[{name:"Healthtech",value:3,color:"#22C55E"},{name:"B2B SaaS",value:2,color:"#3B82F6"}];
+  var geo=__PL_MK_GEO__;
+  var ind=__PL_MK_IND__;
   var h='<div class="chart-row r2"><div class="chart-card glass"><div class="chart-title">Leads by Country</div>'+barsSVG(geo,440,200,"#22D3EE",true)+'</div><div class="chart-card glass"><div class="chart-title">Industry Split</div><div style="display:flex;justify-content:center;margin-top:10px">'+donutSVG(ind,170)+'</div><div style="display:flex;justify-content:center;gap:20px;margin-top:12px">';
   ind.forEach(function(d){h+='<span class="legend-row" style="margin:0"><span class="legend-dot" style="background:'+d.color+'"></span><span class="legend-name">'+d.name+' ('+d.value+')</span></span>';});
   h+='</div></div></div><div class="glass" style="padding:22px"><div class="chart-title">Coverage Notes</div><div style="font-size:13.5px;color:var(--t65);line-height:1.7">This week\'s pipeline concentrates in the US and spreads across four other Tier 1 English markets. Healthtech leads B2B SaaS three to two, consistent with current funding velocity. All leads fall inside the Seed through Series B band where fractional finance and ops engagement converts fastest.</div></div>';
@@ -543,7 +537,7 @@ function viewSettings(){
 }
 
 /* ========== ROUTER ========== */
-var VIEWS={pipeline:{fn:viewPipeline,title:"Pipeline Engine",sub:"ICP-matched buyer profiles, personalized for Dave Cotter"},dashboard:{fn:viewDashboard,title:"Dashboard Overview",sub:"This week's signal intelligence and market read for Kelsor Ventures"},signals:{fn:viewSignals,title:"Signal Breakdown",sub:"Active buying signals grouped by type"},markets:{fn:viewMarkets,title:"Market Coverage",sub:"Geographic and industry distribution this week"},content:{fn:viewContent,title:"Content Engine",sub:"Voice-matched content from the same market signals"},settings:{fn:viewSettings,title:"ICP Settings",sub:"Your locked targeting configuration"}};
+var VIEWS={pipeline:{fn:viewPipeline,title:"Pipeline Engine",sub:"ICP-matched buyer profiles, personalized for __PL_FULLNAME_JS__"},dashboard:{fn:viewDashboard,title:"Dashboard Overview",sub:"This week's signal intelligence and market read for __PL_FIRM_JS__"},signals:{fn:viewSignals,title:"Signal Breakdown",sub:"Active buying signals grouped by type"},markets:{fn:viewMarkets,title:"Market Coverage",sub:"Geographic and industry distribution this week"},content:{fn:viewContent,title:"Content Engine",sub:"Voice-matched content from the same market signals"},settings:{fn:viewSettings,title:"ICP Settings",sub:"Your locked targeting configuration"}};
 function render(name){
   var v=VIEWS[name];
   document.getElementById('pageTitle').textContent=v.title;
