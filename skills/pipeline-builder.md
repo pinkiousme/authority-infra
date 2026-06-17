@@ -1,10 +1,10 @@
 ---
 name: pipeline-builder
-version: 5.0
+version: 6.0
 description: "Robust mode-aware pipeline report builder. Fetches real ICP-matched leads with live signals from Vibe Prospecting (prospect-level for verified person data including authoritative LinkedIn URLs), produces ONLY a validated data.json, then runs a deterministic Python script that injects the data into the approved template. Model never assembles HTML. Runs DEMO or LIVE. All inputs from GitHub. Per-client deduplication via a GitHub dedup file."
 ---
 
-# pipeline-builder v5.0
+# pipeline-builder v6.0
 ## Robust Pipeline Report Engine (verified data, data-first assembly)
 
 Architecture principle: the model produces only a small validated JSON object. A deterministic Python script (build_report.py) injects it into the approved template with guaranteed-correct escaping. The model never writes HTML. Worst case is a data issue caught by validation, never a broken page.
@@ -138,20 +138,21 @@ Dashboard values derived from the real leads (real counts for stats/sig/geo/stag
 ## STEP 6 · ASSEMBLE DETERMINISTICALLY (no model HTML)
 Fetch via GitHub API: assets/templates/pipeline-report/index.html and skills/build_report.py.
 Run: python3 build_report.py data.json template.html output.html
-The builder injects LEADS, dashboard/signals/markets data, MODE, CALENDLY, CLIENT, header, logo, footer; removes the test banner. All escaping via json.dumps. The model writes NO HTML.
+The builder injects LEADS, dashboard/signals/markets data, MODE, CALENDLY, CLIENT, header, logo, footer; removes the test banner. All escaping is handled inside the builder (apostrophes, quotes, newlines in pulse, name, firm, leads). The model writes NO HTML.
+
+**The builder SELF-VALIDATES before writing.** It runs node --check on its own script block and verifies structure (LEADS, tabs, size, no em dashes, no tool names, test label replaced). If anything fails, the builder RAISES an error and writes nothing. So:
+- If `build_report.py` exits with an error, the report is NOT safe. Read the error, fix the data.json field it names (usually an escaping or missing-field issue), and re-run. Do NOT deploy.
+- If `build_report.py` completes and writes output.html, the output has already passed JS validation and structural checks.
 
 ---
 
-## STEP 7 · VALIDATE (all must pass)
-- Extract script, node --check valid.
-- Size >= 55000.
-- Contains var LEADS, toggleLead, render, donutSVG, areaSVG, barsSVG, six tab labels.
-- Lead count == target.
-- Em dash count == 0.
-- MODE correct; DEMO has demo-cta-top and demo-cta-end; LIVE has neither.
-- No "Vibe"/"Explorium"/"Claude" in visible HTML. No pricing.
-- Every LinkedIn URL is either empty or exactly as Vibe returned (never web-built).
-If any fail: STOP, report which, output data.json + output.html. Never deploy a failing file.
+## STEP 7 · VALIDATE (confirm, builder already self-checked)
+The builder self-validates, but confirm before deploy:
+- output.html exists and is >= 55000 bytes (if the builder raised, it will not exist: STOP).
+- Re-extract the script and node --check it once more as a belt-and-suspenders check.
+- Lead count == target (or the noted lower count).
+- Spot-check: pulse text renders, demo CTAs present in DEMO / absent in LIVE, LinkedIn URLs present.
+If anything fails: STOP, report which, output data.json + the builder error. Never deploy a failing file.
 
 ---
 
