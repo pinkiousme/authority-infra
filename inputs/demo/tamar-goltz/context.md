@@ -3,48 +3,47 @@
 
 PROSPECT_FIRST_NAME: Tamar
 PROSPECT_FULL_NAME: Tamar Goltz
-TITLE: Fractional COO
+TITLE: Fractional COO · Operations and Process Optimization Consultant
 FIRM: Freedom Built Business Solutions
 WEBSITE: Not on record
 LOCATION: United States
-LINKEDIN: https://www.linkedin.com/in/freedombuilt/
+LINKEDIN: https://www.linkedin.com/in/freedombuilt
 
 ## SELECTION FLAGS
 BUYER_PROFILE: operator
 ADVISOR_FUNCTION: operations
 
 ## WHAT THE PROSPECT DOES
-Tamar Goltz is the Founder and Fractional COO of Freedom Built Business Solutions, providing operational diagnostics, process optimization, and implementation support to mid market companies in the $5M to $50M revenue range. She has over 20 years of experience across construction, manufacturing, and logistics, applying Lean and Six Sigma methods to fix broken workflows, build SOPs and KPI systems, and lead ERP and CRM implementations including SAP and Power BI rollouts. Past engagements report improvements such as a 72 percent gain in process performance, a 140 percent increase in output, and roughly 16 million dollars saved within the first year of a process overhaul.
+Fixes operational chaos in established companies. Maps how work actually flows, finds the bottlenecks, aligns departments, and builds internal systems that scale before layering on technology. Twenty-plus years across construction, manufacturing, and logistics, with deep ERP and process-standardization experience (SAP, Lean and Six Sigma). Works with mid-market operating companies in the $5M to $50M revenue range.
 
 ## THE PROSPECT'S ICP (who their buyers are)
-- Buyer titles (decision-makers only): CEO, Owner, Founder, President, Managing Director
+- Buyer titles (decision-makers only): Owner, Founder, President, CEO, Managing Director
 - Partner/secondary titles (not buyers): none
-- Company stage: established and operating, NOT pre-revenue or venture-backed
-- Company size: 11-50, 51-200, 201-500
-- Industries: Construction, Manufacturing, Logistics
-- Geography: US
-- Buyer pain: operational chaos from growth, broken workflows, no clear KPIs or visibility, teams burning out from manual workarounds
+- Company stage: established and operating, NOT pre-revenue, NOT venture-backed startups
+- Company size: 11-50 and 51-200 employees
+- Industries: construction, manufacturing, transportation and logistics, distribution, building products, industrial services
+- Geography: US, CA
+- Buyer pain: growth has outpaced the operating system, so handoffs, accountability, and execution break before headcount or technology can fix them
 
 ## FROZEN VIBE FILTER (routine uses verbatim, no derivation)
-job_title: "chief executive officer", "owner", "founder", "president", "managing director"
-job_level: founder, owner, president
-company_size: 11-50, 51-200, 201-500
-company_country_code: US
-linkedin_category: Construction, Manufacturing, Transportation/Trucking/Railroad, Warehousing
+job_title: ["chief executive officer", "ceo", "owner", "founder", "president", "managing director"]
+job_level: ["founder", "owner", "president"]
+company_size: ["11-50", "51-200"]
+company_country_code: ["US", "CA"]
+linkedin_category: ["construction", "manufacturing", "transportation and logistics", "building materials", "industrial machinery"]
 revenue_floor: $5M
-events: merger_and_acquisitions, leadership_change_operations, hiring_in_operations_department, office_expansion
+events: ["merger_and_acquisitions", "leadership_change_operations", "hiring_in_operations_department", "office_expansion"]
 events_window_days: 90
-exclude_company_keywords: AI, robotics, SaaS, platform, marketplace, -tech, venture, startup
-autocomplete_resolved: false
+exclude_company_keywords: ["AI", "robotics", "SaaS", "platform", "marketplace", "-tech", "venture", "startup"]
+autocomplete_resolved: false   # resolve job_title, linkedin_category, events against Vibe autocomplete on the first real build, then set true
 
 ## RUN CONTROL
 credit_cap: 35
-web_mode: pulse_only
+web_mode: off
 deploy_path: demo/[DATE]/tamar/index.html
 
 ## PROSPECT VOICE (for outreach copy matching)
-- Opens with short, blunt declarative statements before unpacking the idea, e.g. "I fix operational chaos."
-- Builds rhythm with stacked short lines rather than long paragraphs, often a clipped staccato list.
-- Casual rhetorical questions for lighter posts, tying everyday chaos to her operations theme.
-- No em dashes, no exclamation marks in her own writing, direct and matter of fact tone throughout.
-- Example line: "It's clarity, structure, and follow-through."
+- Plain, direct, operational. Short declarative sentences. Diagnoses the problem before naming the fix.
+- Opens with an observation or a problem, not a pitch. Peer tone, occasionally wry and human.
+- Frames work as clarity, structure, and follow-through, not magic or shortcuts.
+- Example line in her style: "Growth causes problems to bubble to the surface. Some are blips. Some are road blocks. Some are landslides that push you in the wrong direction."
