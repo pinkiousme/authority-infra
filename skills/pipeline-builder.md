@@ -104,7 +104,7 @@ LIVE dedup only (after deploy): read inputs/prod/[SLUG]/dedup.json, append deliv
 On failure: output the HTML in the run log. Never fail silently.
 
 ## STEP 9 · OUTPUT SUMMARY
-PIPELINE REPORT COMPLETE · Mode · Person · Firm · Leads N · HOT N · WARM N · Enrichment ON/OFF · web off · Credits approx N · Live URL · Deploy SUCCESS · Validation PASSED. DEMO also outputs a short DM script (no unverified specifics).
+PIPELINE REPORT COMPLETE · Mode · Person · Firm · Leads N · HOT N · WARM N · Enrichment ON/OFF · web off · Credits approx N · Live URL: https://pipelind.com/demo/[DATE]/[firstname]/ (DEMO) or https://pipelind.com/prod/[SLUG]/pipeline/ (LIVE) · Deploy SUCCESS · Validation PASSED. NEVER output a github.com URL as the live URL. The live URL is always the pipelind.com path. DEMO also outputs a short DM script (no unverified specifics).
 
 ## SPEED + COST DISCIPLINE (low reasoning setting safe)
 - NO web search in the default path. This is the single biggest speed and reliability lever.
@@ -119,3 +119,4 @@ PIPELINE REPORT COMPLETE · Mode · Person · Firm · Leads N · HOT N · WARM N
 3. No unverified specifics as fact. No fabricated contacts (DEMO empty, LIVE waterfall).
 4. No tool names or pricing in visible HTML. Zero em dashes, zero exclamation marks.
 5. Model writes JSON, builder writes HTML and fails loud. One write to main (plus LIVE dedup.json). Never branch, PR, git, or archive. Never ask.
+
