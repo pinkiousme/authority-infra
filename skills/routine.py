@@ -249,6 +249,10 @@ def signal_to_plain(signal_str):
         "new_office": "Office expansion",
         "cost_cutting": "Active cost reduction",
         "decrease_in_all_departments": "Org-wide headcount reduction",
+        "new_partnership": "New strategic partnership",
+        "lawsuits_and_legal_issues": "Legal or regulatory matter",
+        "new_product": "New product launch",
+        "new_funding_round": "Recent funding round",
     }
     s = signal_str.strip()
     return mapping.get(s, s.replace("_", " ").title())
@@ -589,13 +593,19 @@ def main():
     credit_cap = run_control["credit_cap"]
     events_window = vibe_filter.get("events_window_days", "90")
 
+    # Verified+emailable owner-level decision-makers are sparse: only ~3% of the
+    # companies that match a news event also have a reachable C-suite email. So the
+    # BUSINESS pool must be heavily oversampled (it is free exploration) to surface
+    # enough verified leads. Only the final email enrich/export costs credits.
+    business_pool = max(200, target_leads * 30)
+
     if MODE == "DEMO":
         # Cheapest reliable path: show-sample unmasks ~5 rows for a flat 5 credits.
         retrieval = "show-sample"
         target_fetch = 8
         projected_cost = 5
     else:
-        # LIVE: export the full enriched set, sized so spend never exceeds the cap.
+        # LIVE: export the verified enriched set, sized so spend never exceeds the cap.
         affordable_rows = max(credit_cap // COST_PER_ROW, 5)
         target_fetch = min(target_leads + 2, affordable_rows)  # +2 buffer for dedup
         projected_cost = COST_PER_ROW * target_fetch
@@ -625,11 +635,12 @@ CLAUDE CODE — VIBE MCP CALLS REQUIRED (do these now, then re-run this script):
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Email-only enrichment. No phone. Budget cap: {credit_cap} credits. Projected spend: ~{projected_cost}.
 
-STEP A — fetch BUSINESSES with the event signals
-  (the events filter ONLY works on entity_type "businesses", never on prospects):
+STEP A — fetch a LARGE pool of BUSINESSES with the event signals
+  (events filter ONLY works on entity_type "businesses"; oversample because verified+
+   emailable decision-makers are sparse — this fetch is free exploration):
   fetch-entities
     entity_type: "businesses"
-    number_of_results: {target_fetch}
+    number_of_results: {business_pool}
     filters:
       company_size: {vibe_filter.get('company_size', '')}
       company_country_code: {vibe_filter.get('company_country_code', '')}
@@ -637,15 +648,16 @@ STEP A — fetch BUSINESSES with the event signals
       events: values=[{vibe_filter.get('events', '')}] last_occurrence={events_window} days
   -> SAVE the businesses_reference_table from the response for STEP B.
 
-STEP B — fetch decision-maker PROSPECTS from those businesses:
+STEP B — fetch decision-maker PROSPECTS from those businesses (also free):
   fetch-entities
     entity_type: "prospects"
     businesses_reference_table: <the table returned by STEP A>
-    number_of_results: {target_fetch}
+    number_of_results: {business_pool}
     filters:
       job_title: {vibe_filter.get('job_title', '')}   (resolve via autocomplete first)
       job_level: {vibe_filter.get('job_level', '')}
-      has_email: true
+  -> drop AI/tech/venture companies (exclude_company_keywords) and any over the size ceiling.
+     Enrich + retrieve only the top {target_fetch} survivors so spend stays within the cap.
 
 STEP C — VERIFY the signals (mandatory — proof links only, no fabrication):
   Run fetch-businesses-events on the businesses_reference_table from STEP A,
