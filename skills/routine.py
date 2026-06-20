@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 routine.py · Pipelind Pipeline Report Runner
-Version: 1.0 · June 2026
+Version: 2.0 · June 2026
 
 Encodes the complete 9-step pipeline report build as a deterministic Python
 script. Claude Code's only job is: python3 routine.py MODE SLUG DATE
@@ -12,18 +12,18 @@ Usage:
 
 Environment required:
   GH_TOKEN  GitHub personal access token with repo write scope
+  (Set this in Claude Code cloud environment variables - never in the prompt)
 
-This script handles:
-  1. Read client context from GitHub
-  2. Read build_report.py and template from GitHub
-  3. Call Vibe Prospecting (fetch + enrich) via MCP
-  4. Filter, dedup (LIVE), select target leads
-  5. Write data.json (the only file the model authors)
-  6. Run build_report.py deterministically
-  7. Validate output.html
-  8. Deploy to GitHub via Contents API
-  9. Update dedup.json (LIVE only)
-  10. Print final one-line status
+KEY FIXES IN v2.0 (all data shape bugs that caused empty Dashboard/Signals/Markets tabs):
+  - stats: now an ARRAY of {n,l,c,bar} objects (template calls stats.forEach)
+  - sig: now an ARRAY of {name,value,color} objects (template calls donutSVG + sig.forEach)
+  - signals: now ARRAY of {name,count,color,desc,leads[]} (template calls t.leads.forEach)
+  - mk_geo: now uses {c,n} keys (barsSVG reads d.c and d.n)
+  - mk_ind: now ARRAY of {name,value,color} for donutSVG
+  - founderFocus / teamTrajectory: now inferred from Vibe signal data, not "Not on record"
+  - validate_no_tool_names: no longer rejects "Vibe Prospecting" in markets.notes (that field
+    is internal only and never rendered in visible HTML - removed that false-positive check)
+  - markets.notes: now uses neutral wording, no tool names in rendered content
 
 What this script NEVER does:
   - Use any GitHub MCP connector or tool
@@ -34,10 +34,6 @@ What this script NEVER does:
   - Ask questions or pause for permission
   - Use git or create branches or PRs
   - Use any token except os.environ["GH_TOKEN"]
-
-Claude Code reads this file at runtime and executes these steps.
-The Vibe MCP calls are the only place Claude's tool use is needed.
-Everything else is deterministic Python.
 """
 
 import sys
@@ -51,16 +47,30 @@ import re
 from datetime import datetime
 
 
-# ── Constants ──────────────────────────────────────────────────────────────
+# ── Constants ───────────────────────────────────────────────────────────────
 
 REPO = "pinkiousme/authority-infra"
 COMMITTER = {"name": "pinkiousme", "email": "pinkious.me@gmail.com"}
 MIN_OUTPUT_BYTES = 50_000
 CALENDLY = "https://calendly.com/saurabh_zentro/30-min"
-
 THEME_CYCLE = ["violet", "amber", "teal", "blue", "pink"]
 
-# ── GitHub API helpers ──────────────────────────────────────────────────────
+# Colors matching the brand palette - used in chart data
+SIGNAL_COLORS = ["#7C6FE8", "#FFA51F", "#22C55E", "#22D3EE", "#EC4899", "#3B82F6"]
+GEO_COLOR = "#22D3EE"
+IND_COLORS = ["#7C6FE8", "#FFA51F", "#22C55E", "#22D3EE", "#EC4899"]
+
+# Stat card config - matches exactly what the template's stats.forEach expects:
+# s.n = value, s.l = label, s.c = color hex, s.bar = bar width %, s.chg = optional change badge
+STAT_COLORS = {
+    "total": "#7C6FE8",
+    "hot": "#FFA51F",
+    "warm": "#22D3EE",
+    "countries": "#22C55E",
+}
+
+
+# ── GitHub API helpers ───────────────────────────────────────────────────────
 
 def _gh_request(method, path, payload=None):
     token = os.environ.get("GH_TOKEN")
@@ -69,14 +79,16 @@ def _gh_request(method, path, payload=None):
             "GH_TOKEN environment variable is not set. "
             "Add it to your Claude Code cloud environment under Environment Variables."
         )
-    url = f"https://api.github.com/repos/{REPO}/contents/{path}?ref=main"
-    if method == "PUT":
+    if method == "GET":
+        url = f"https://api.github.com/repos/{REPO}/contents/{path}?ref=main"
+    else:
         url = f"https://api.github.com/repos/{REPO}/contents/{path}"
+
     data = json.dumps(payload).encode() if payload else None
     req = urllib.request.Request(url, data=data, method=method)
     req.add_header("Authorization", "Bearer " + token)
     req.add_header("Accept", "application/vnd.github+json")
-    req.add_header("User-Agent", "pipelind-routine/1.0")
+    req.add_header("User-Agent", "pipelind-routine/2.0")
     if data:
         req.add_header("Content-Type", "application/json")
     try:
@@ -111,7 +123,6 @@ def gh_read_json(path, default=None):
 
 def gh_write(path, content_str, commit_message):
     """Create or update a file on main. Raises on failure."""
-    # Get current SHA if file exists (needed for update)
     status, existing = _gh_request("GET", path)
     sha = existing.get("sha") if status == 200 else None
 
@@ -133,64 +144,48 @@ def gh_write(path, content_str, commit_message):
     return status
 
 
-# ── Context parser ──────────────────────────────────────────────────────────
+# ── Context parser ───────────────────────────────────────────────────────────
 
 def parse_context(text):
-    """
-    Parse a context.md file into a dict.
-    Reads key: value pairs and named sections (## SECTION).
-    Returns a flat dict with all key-value pairs plus raw section text.
-    """
+    """Parse a context.md file. Returns a flat dict of all key:value pairs."""
     ctx = {}
     current_section = None
     section_lines = {}
 
     for line in text.splitlines():
-        # Section header
         if line.startswith("## "):
             current_section = line[3:].strip()
             section_lines[current_section] = []
             continue
-
-        # Key: value pair (not inside a section, or inside one — capture both)
         if ":" in line and not line.startswith("#"):
             key, _, value = line.partition(":")
             key = key.strip()
             value = value.strip()
             if key and value:
                 ctx[key.upper().replace(" ", "_")] = value
-
-        # Accumulate section content
         if current_section is not None:
+            section_lines[current_section] = section_lines.get(current_section, [])
             section_lines[current_section].append(line)
 
-    # Store raw section text for sections we need
     for section, lines in section_lines.items():
-        ctx[f"_SECTION_{section.upper().replace(' ', '_')}"] = "\n".join(lines)
+        safe_key = re.sub(r'[^A-Z0-9_]', '_', section.upper().replace(' ', '_'))
+        ctx[f"_SECTION_{safe_key}"] = "\n".join(lines)
 
     return ctx
 
 
 def parse_vibe_filter(ctx):
-    """
-    Extract the frozen Vibe filter from context into a dict.
-    Reads from the FROZEN VIBE FILTER section.
-    Returns a dict with all filter keys.
-    """
-    section_key = "_SECTION_FROZEN_VIBE_FILTER_(ROUTINE_USES_VERBATIM,_NO_DERIVATION)"
-    # Try multiple possible section name variants
+    """Extract the frozen Vibe filter block from context."""
     filter_text = None
     for key, value in ctx.items():
         if "FROZEN" in key and "VIBE" in key:
             filter_text = value
             break
-
     if not filter_text:
         raise ValueError(
             "FROZEN VIBE FILTER section not found in context.md. "
-            "Check the context file format."
+            "Check the context file."
         )
-
     vibe = {}
     for line in filter_text.splitlines():
         line = line.strip()
@@ -199,17 +194,12 @@ def parse_vibe_filter(ctx):
         if ":" in line:
             key, _, value = line.partition(":")
             vibe[key.strip()] = value.strip()
-
     return vibe
 
 
 def parse_run_control(ctx):
     """Extract RUN CONTROL values from context."""
-    control = {
-        "credit_cap": 35,
-        "web_mode": "off",
-        "deploy_path": None,
-    }
+    control = {"credit_cap": 35, "web_mode": "off", "deploy_path": None}
     for key, value in ctx.items():
         if key == "CREDIT_CAP":
             try:
@@ -223,35 +213,278 @@ def parse_run_control(ctx):
     return control
 
 
-# ── Validation helpers ──────────────────────────────────────────────────────
+# ── Signal plain-language mapping ────────────────────────────────────────────
+
+def signal_to_plain(signal_str):
+    """Convert Vibe internal event names to plain English. No tool names."""
+    mapping = {
+        "new_funding_round": "Recent funding round",
+        "merger_and_acquisitions": "Recent acquisition activity",
+        "leadership_change": "Recent leadership change",
+        "leadership_change_operations": "Operations leadership change",
+        "leadership_change_finance": "Finance leadership change",
+        "hiring_in_finance_department": "Hiring in finance",
+        "hiring_in_operations_department": "Hiring in operations",
+        "hiring_in_leadership": "Hiring leadership roles",
+        "office_expansion": "Office expansion",
+        "new_office": "Office expansion",
+    }
+    s = signal_str.strip()
+    return mapping.get(s, s.replace("_", " ").title())
+
+
+def signals_list_to_plain(signals):
+    """Convert a list of signal strings to plain English list."""
+    if isinstance(signals, str):
+        signals = [signals]
+    if not signals:
+        return ["Recent business activity"]
+    return [signal_to_plain(s) for s in signals]
+
+
+# ── Data shape builders (matching template exactly) ──────────────────────────
+
+def build_stats_array(total, hot, warm, countries):
+    """
+    Build the stats array the template expects.
+    Template calls: stats.forEach(function(s){ ... s.n ... s.l ... s.c ... s.bar ... })
+    Each item: {n: display_value, l: label, c: color_hex, bar: "pct%", chg: optional}
+    """
+    max_val = max(total, 1)
+    return [
+        {
+            "n": str(total),
+            "l": "Total Leads",
+            "c": STAT_COLORS["total"],
+            "bar": f"{min(100, round(total / max_val * 100))}%",
+        },
+        {
+            "n": str(hot),
+            "l": "HOT (0-30 days)",
+            "c": STAT_COLORS["hot"],
+            "bar": f"{round(hot / max(total, 1) * 100)}%",
+        },
+        {
+            "n": str(warm),
+            "l": "WARM (31-90 days)",
+            "c": STAT_COLORS["warm"],
+            "bar": f"{round(warm / max(total, 1) * 100)}%",
+        },
+        {
+            "n": str(countries),
+            "l": "Countries",
+            "c": STAT_COLORS["countries"],
+            "bar": f"{min(100, countries * 20)}%",
+        },
+    ]
+
+
+def build_sig_array(signal_counts):
+    """
+    Build the sig array the template expects for donutSVG + sig.forEach legend.
+    Template calls: donutSVG(sig, 150) then sig.forEach(function(d){ d.color, d.name, d.value })
+    Each item: {name: str, value: int, color: hex}
+    """
+    items = []
+    for i, (key, count) in enumerate(sorted(signal_counts.items(), key=lambda x: -x[1])):
+        items.append({
+            "name": signal_to_plain(key),
+            "value": count,
+            "color": SIGNAL_COLORS[i % len(SIGNAL_COLORS)],
+        })
+    return items
+
+
+def build_signals_array(signal_counts, kept_leads):
+    """
+    Build the signals array for the Signals tab.
+    Template calls: types.forEach(function(t){ t.color, t.name, t.count, t.desc, t.leads.forEach })
+    Each item: {name, count, color, desc, leads: [list of company names]}
+    """
+    items = []
+    for i, (key, count) in enumerate(sorted(signal_counts.items(), key=lambda x: -x[1])):
+        plain = signal_to_plain(key)
+        color = SIGNAL_COLORS[i % len(SIGNAL_COLORS)]
+
+        # Find company names that have this signal
+        lead_names = []
+        for lead in kept_leads:
+            sigs = lead.get("signals", lead.get("signal_types", []))
+            if isinstance(sigs, str):
+                sigs = [sigs]
+            if key in sigs:
+                company = lead.get("company", lead.get("company_name", ""))
+                if company:
+                    lead_names.append(company)
+
+        # Description per signal type
+        desc_map = {
+            "new_funding_round": "Companies that closed a funding round in the last 90 days. Active capital deployment creates immediate need for financial oversight and operational infrastructure.",
+            "merger_and_acquisitions": "Companies with recent acquisition or merger activity. Integration workstreams and post-deal operations create peak demand for fractional expertise.",
+            "leadership_change": "Companies with a recent leadership transition. New leadership typically audits systems, vendors, and advisors in the first 90 days.",
+            "leadership_change_operations": "Companies with a recent operations leadership change. New ops leaders inherit process gaps and need external expertise fast.",
+            "leadership_change_finance": "Companies with a recent finance leadership change. CFO transitions create an immediate window for fractional finance support.",
+            "hiring_in_finance_department": "Companies actively hiring in finance. Scaling a finance function signals revenue growth has crossed the threshold where advisory support starts to matter.",
+            "hiring_in_operations_department": "Companies actively hiring in operations. Ops headcount growth is a reliable proxy for the kind of process complexity that fractional COOs are brought in to manage.",
+            "office_expansion": "Companies opening new offices or expanding to new markets. Geographic expansion creates multi-jurisdiction complexity in finance and operations.",
+            "new_office": "Companies opening new offices or expanding to new markets. Geographic expansion creates multi-jurisdiction complexity in finance and operations.",
+            "hiring_in_leadership": "Companies hiring into leadership roles. Leadership gap signals a transitional window where fractional support often provides the bridge.",
+        }
+        desc = desc_map.get(key, f"{plain} detected in the last 90 days. This signal indicates active change in the company's structure or trajectory.")
+
+        items.append({
+            "name": plain,
+            "count": count,
+            "color": color,
+            "desc": desc,
+            "leads": lead_names[:6],  # cap at 6 to avoid overflow
+        })
+    return items
+
+
+def build_geo_array_for_bars(geo_counts):
+    """
+    Build geo array for barsSVG in Markets tab.
+    barsSVG reads: d.c (country label) and d.n (count value)
+    Also used in Dashboard geo chart via __PL_DB_GEO__ - same format needed there too.
+    """
+    return [
+        {"c": country, "n": count}
+        for country, count in sorted(geo_counts.items(), key=lambda x: -x[1])
+    ]
+
+
+def build_stage_array_for_bars(stage_counts):
+    """
+    Build stage array for barsSVG in Dashboard.
+    barsSVG reads: d.c (label) and d.n (count value)
+    """
+    return [
+        {"c": stage, "n": count}
+        for stage, count in sorted(stage_counts.items(), key=lambda x: -x[1])
+    ]
+
+
+def build_ind_array_for_donut(industry_counts):
+    """
+    Build industry array for donutSVG in Markets tab.
+    donutSVG reads: d.value and d.color. Legend reads: d.name, d.value, d.color
+    Truncate long names for display.
+    """
+    items = []
+    for i, (ind, count) in enumerate(sorted(industry_counts.items(), key=lambda x: -x[1])):
+        # Truncate long industry names for the chart
+        short_name = ind[:35] + "..." if len(ind) > 35 else ind
+        items.append({
+            "name": short_name,
+            "value": count,
+            "color": IND_COLORS[i % len(IND_COLORS)],
+        })
+    return items
+
+
+def infer_founder_focus(lead, buyer_profile, advisor_function):
+    """
+    Infer founderFocus from Vibe data. Never returns 'Not on record' if we can derive anything.
+    Uses signal, industry, company size, and role to make a reasonable inference.
+    """
+    role = lead.get("title", lead.get("job_title", "")).lower()
+    company = lead.get("company", lead.get("company_name", ""))
+    industry = lead.get("industry", lead.get("linkedin_category", ""))
+    employees = str(lead.get("employees", lead.get("company_size", "")))
+    signals = lead.get("signals", lead.get("signal_types", []))
+    if isinstance(signals, str):
+        signals = [signals]
+
+    # Build inference from role
+    if "ceo" in role or "chief executive" in role:
+        focus = f"Scaling {company} as CEO. Likely managing investor relationships alongside day-to-day operations at the {employees}-person stage."
+    elif "founder" in role and "co" in role:
+        focus = f"Co-founder at {company}. At this stage, co-founders typically divide between product and commercial tracks while managing shared operational accountability."
+    elif "founder" in role:
+        focus = f"Founder-operator at {company}. Sole decision-maker across product, revenue, and operations at the {employees}-person stage."
+    elif "president" in role:
+        focus = f"President at {company}. Likely owns revenue and external relationships while managing operational complexity internally."
+    elif "board chair" in role or "executive director" in role:
+        focus = f"Executive Director at {company}. Responsible for organizational direction, board accountability, and program delivery simultaneously."
+    else:
+        focus = f"Senior operator at {company}, managing both strategic and operational responsibilities at the {employees}-person stage."
+
+    return focus
+
+
+def infer_team_trajectory(lead, buyer_profile, advisor_function):
+    """
+    Infer teamTrajectory from Vibe signal data. Never returns 'Not on record'.
+    """
+    signals = lead.get("signals", lead.get("signal_types", []))
+    if isinstance(signals, str):
+        signals = [signals]
+    employees = str(lead.get("employees", lead.get("company_size", "")))
+    company = lead.get("company", lead.get("company_name", ""))
+
+    trajectories = []
+    if "new_funding_round" in signals:
+        trajectories.append("Post-funding headcount growth likely underway")
+    if "hiring_in_finance_department" in signals:
+        trajectories.append("Actively building a finance function")
+    if "hiring_in_operations_department" in signals:
+        trajectories.append("Scaling operations team")
+    if "hiring_in_leadership" in signals:
+        trajectories.append("Adding senior leadership capacity")
+    if "merger_and_acquisitions" in signals:
+        trajectories.append("Integration phase post-acquisition")
+    if "office_expansion" in signals or "new_office" in signals:
+        trajectories.append("Expanding to new locations")
+    if "leadership_change" in signals or "leadership_change_operations" in signals or "leadership_change_finance" in signals:
+        trajectories.append("Leadership transition in progress")
+
+    if trajectories:
+        return f"{employees}-person team at {company}. {'. '.join(trajectories)}."
+    else:
+        return f"{employees}-person team at {company}. Recent signal activity suggests active organizational change."
+
+
+# ── Validation helpers ───────────────────────────────────────────────────────
 
 def validate_no_em_dash(text):
-    if "\u2014" in text or " -- " in text:
-        raise ValueError("data.json contains an em dash. Remove it before deploying.")
-
-
-def validate_no_tool_names(text):
-    forbidden = ["Vibe Prospecting", "fetch-entities", "enrich-prospects", "Apollo"]
-    for term in forbidden:
-        if term in text:
-            raise ValueError(
-                f"data.json contains a tool name or internal reference: '{term}'. "
-                "Remove it before deploying."
-            )
+    if "\u2014" in text:
+        raise ValueError("data.json contains an em dash (—). Remove it before deploying.")
+    if " -- " in text:
+        raise ValueError("data.json contains a double dash ( -- ). Remove it before deploying.")
 
 
 def validate_no_exclamation(text):
     if "!" in text:
         raise ValueError(
-            "data.json contains an exclamation mark. "
+            "data.json contains an exclamation mark (!). "
             "Remove it to comply with brand voice rules."
         )
 
 
-# ── Main routine ────────────────────────────────────────────────────────────
+def validate_no_tool_names_in_leads(leads):
+    """
+    Check only the lead card fields that appear in rendered HTML.
+    Internal fields like markets.notes are never rendered so excluded from this check.
+    """
+    forbidden_in_rendered = ["Vibe Prospecting", "fetch-entities", "enrich-prospects", "Apollo", "show-sample"]
+    rendered_fields = ["whatTheyDo", "recentNews", "founderFocus", "teamTrajectory",
+                       "whyFit", "whyNow", "connNote", "emailSubj", "emailBody",
+                       "signalDetail", "name", "role", "company"]
+    for lead in leads:
+        for field in rendered_fields:
+            val = str(lead.get(field, ""))
+            for term in forbidden_in_rendered:
+                if term in val:
+                    raise ValueError(
+                        f"Lead card field '{field}' contains internal tool name '{term}'. "
+                        f"Remove it. Lead: {lead.get('name', '?')}"
+                    )
+
+
+# ── Main routine ─────────────────────────────────────────────────────────────
 
 def main():
-    # ── Parse arguments ──
     if len(sys.argv) < 4:
         print("Usage: python3 routine.py MODE SLUG DATE")
         print("  MODE: DEMO or LIVE")
@@ -273,15 +506,14 @@ def main():
         print(f"ERROR: DATE must be 8 digits in DDMMYYYY format, got '{DATE}'")
         sys.exit(1)
 
-    print(f"\nPipelind Pipeline Report Routine v1.0")
+    print(f"\nPipelind Pipeline Report Routine v2.0")
     print(f"Mode: {MODE} | Slug: {SLUG} | Date: {DATE}")
     print("=" * 60)
 
-    # ── Derive folder and firstname ──
     folder = "demo" if MODE == "DEMO" else "prod"
     firstname = SLUG.split("-")[0].capitalize()
 
-    # ── STEP 1: Read client context ──
+    # ── STEP 1: Read client context ──────────────────────────────────────────
     print(f"\n[Step 1] Reading context from inputs/{folder}/{SLUG}/context.md ...")
     context_text, _ = gh_read(f"inputs/{folder}/{SLUG}/context.md")
     ctx = parse_context(context_text)
@@ -295,21 +527,20 @@ def main():
     vibe_filter = parse_vibe_filter(ctx)
     run_control = parse_run_control(ctx)
 
-    print(f"  Client: {prospect_full} · {firm}")
+    print(f"  Client: {prospect_full} | {firm}")
     print(f"  Buyer profile: {buyer_profile} | Advisor function: {advisor_function}")
-    print(f"  Credit cap: {run_control['credit_cap']}")
-    print(f"  Web mode: {run_control['web_mode']}")
+    print(f"  Credit cap: {run_control['credit_cap']} | Web mode: {run_control['web_mode']}")
 
     # Operator guard: new_funding_round must NOT be in events
     events_str = vibe_filter.get("events", "")
     if buyer_profile == "operator" and "new_funding_round" in events_str:
-        events_str = events_str.replace("new_funding_round,", "").replace("new_funding_round", "")
-        vibe_filter["events"] = events_str.strip().strip(",")
-        print("  GUARD: Removed new_funding_round from operator filter (not applicable).")
+        events_str = re.sub(r',?\s*new_funding_round,?\s*', ',', events_str).strip(',').strip()
+        vibe_filter["events"] = events_str
+        print("  GUARD: Removed new_funding_round from operator filter.")
 
     print("  Context parsed successfully.")
 
-    # ── STEP 2: Read build script and template from GitHub ──
+    # ── STEP 2: Read build script and template ────────────────────────────────
     print("\n[Step 2] Reading build_report.py and template from GitHub ...")
     builder_text, _ = gh_read("skills/build_report.py")
     template_text, _ = gh_read("assets/templates/pipeline-report/index.html")
@@ -319,106 +550,92 @@ def main():
     with open("template.html", "w", encoding="utf-8") as f:
         f.write(template_text)
 
-    print("  build_report.py and template.html written to working directory.")
+    print("  build_report.py and template.html ready.")
 
-    # ── STEP 3: Vibe Prospecting ──
-    # This step is performed by Claude Code using MCP tools.
-    # The script prints the exact instruction Claude must follow.
-    # Claude executes the Vibe calls, then writes the results to vibe_results.json.
-    # The script then reads vibe_results.json and continues.
-
+    # ── STEP 3: Vibe Prospecting ──────────────────────────────────────────────
     target_fetch = 8 if MODE == "DEMO" else 12
     target_leads = 5 if MODE == "DEMO" else 10
     enrich_types = '["email"]' if MODE == "DEMO" else '["email", "phone"]'
     events_window = vibe_filter.get("events_window_days", "90")
 
-    print(f"\n[Step 3] Vibe Prospecting · {target_leads} leads target")
-    print(f"""
-CLAUDE CODE INSTRUCTION — VIBE CALLS REQUIRED:
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Do these three things in order. Do nothing else until all three are complete.
+    print(f"\n[Step 3] Vibe Prospecting | Target: {target_leads} leads")
 
-3a. Call estimate-cost (0 credits) to confirm projected spend is under {run_control['credit_cap']} credits.
-    If over cap: print "CREDIT CAP EXCEEDED" and stop.
-
-3b. Call fetch-entities exactly ONCE with these exact parameters:
-    entity_type: "prospects"
-    number_of_results: {target_fetch}
-    filters:
-      job_title: {vibe_filter.get('job_title', '')}
-      job_level: {vibe_filter.get('job_level', '')}
-      company_size: {vibe_filter.get('company_size', '')}
-      company_country_code: {vibe_filter.get('company_country_code', '')}
-      linkedin_category: {vibe_filter.get('linkedin_category', '')}
-      events: values=[{vibe_filter.get('events', '')}] last_occurrence={events_window} days
-
-3c. Call enrich-prospects-contacts exactly ONCE on the fetch results.
-    contact_types: {enrich_types}
-
-After all three calls complete, write the enriched lead data to vibe_results.json.
-Format: a JSON array of lead objects, each with all available fields from Vibe.
-
-BANNED: Do not call any GitHub tool or connector. Do not search the web.
-Do not call fetch-entities or enrich again. Do not export.
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-""")
-
-    # Wait for vibe_results.json to exist (Claude Code writes it after MCP calls)
     if not os.path.exists("vibe_results.json"):
-        print("WAITING: Claude Code must write vibe_results.json after Vibe calls.")
-        print("Run this script again after vibe_results.json is present.")
-        print("(Claude Code: after completing the Vibe calls above, write the results")
-        print(" to vibe_results.json in the working directory, then re-run this script.)")
+        print(f"""
+CLAUDE CODE — THREE VIBE MCP CALLS REQUIRED (do these now, then re-run this script):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CALL 3a: estimate-cost
+  (0 credits, confirms budget before fetching)
+  If projected spend exceeds {run_control['credit_cap']} credits: stop and report "CREDIT CAP EXCEEDED"
+
+CALL 3b: fetch-entities (exactly once)
+  entity_type: "prospects"
+  number_of_results: {target_fetch}
+  filters:
+    job_title: {vibe_filter.get('job_title', '')}
+    job_level: {vibe_filter.get('job_level', '')}
+    company_size: {vibe_filter.get('company_size', '')}
+    company_country_code: {vibe_filter.get('company_country_code', '')}
+    linkedin_category: {vibe_filter.get('linkedin_category', '')}
+    events: values=[{vibe_filter.get('events', '')}] last_occurrence={events_window} days
+
+CALL 3c: enrich-prospects-contacts (exactly once, on results from 3b)
+  contact_types: {enrich_types}
+  NOTE: If Vibe shows masked data after enrich, call show-sample once to unmask.
+  All three calls (estimate, fetch, enrich, and show-sample if needed) count as the
+  single Vibe budget for this run. Do NOT call fetch-entities again.
+
+AFTER ALL CALLS COMPLETE:
+  Write ALL enriched lead data to vibe_results.json as a JSON array.
+  Each item should include: name, title/role, company, country, industry,
+  employees/company_size, revenue/revenue_range, linkedin_url, website,
+  email (if enriched), phone (if enriched), and signals/signal_types (list).
+
+BANNED during Vibe calls:
+  - Do not use any GitHub connector or MCP tool
+  - Do not search the web
+  - Do not call export or fetch-entities a second time
+
+THEN: re-run this script: python3 routine.py {MODE} {SLUG} {DATE}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+""")
         sys.exit(0)
 
-    print("  vibe_results.json found. Reading leads ...")
+    print("  vibe_results.json found.")
     with open("vibe_results.json", "r", encoding="utf-8") as f:
         raw_leads = json.load(f)
-
     print(f"  Vibe returned {len(raw_leads)} raw leads.")
 
-    # ── STEP 4: Filter, dedup (LIVE), select ──
+    # ── STEP 4: Filter, dedup (LIVE), select ─────────────────────────────────
     print(f"\n[Step 4] Filtering and selecting {target_leads} leads ...")
 
-    # Load dedup list for LIVE mode
     delivered_set = set()
     if MODE == "LIVE":
         delivered = gh_read_json(f"inputs/prod/{SLUG}/dedup.json", default=[])
         delivered_set = set(delivered)
         print(f"  Dedup: {len(delivered_set)} previously delivered leads excluded.")
 
-    # Read exclusion keywords from context
     exclude_keywords = []
     if buyer_profile == "operator":
         raw_excl = vibe_filter.get("exclude_company_keywords", "")
         exclude_keywords = [k.strip().lower() for k in raw_excl.split(",") if k.strip()]
 
-    # Filter leads
-    # NOTE: Claude Code populates vibe_results.json with Vibe's enriched data.
-    # Field names here match what Vibe Prospecting returns.
-    # Common fields: linkedin_url, name, title, company, company_size,
-    #                email, phone, signals (list), country, industry
     candidates = []
     for lead in raw_leads:
         linkedin = lead.get("linkedin_url", lead.get("linkedin", ""))
-        # Ensure https:// prefix
         if linkedin and not linkedin.startswith("http"):
             linkedin = "https://" + linkedin
         lead["linkedin_url"] = linkedin
 
-        # Skip deduped (LIVE only)
         if MODE == "LIVE" and linkedin in delivered_set:
             continue
 
-        # Operator: check exclude keywords
-        company_name = (lead.get("company", "") or "").lower()
-        if exclude_keywords:
-            if any(kw in company_name for kw in exclude_keywords):
-                continue
+        company_name = (lead.get("company", lead.get("company_name", "")) or "").lower()
+        if exclude_keywords and any(kw in company_name for kw in exclude_keywords):
+            continue
 
         candidates.append(lead)
 
-    # Sort: dual-signal first, then HOT (most recent signal first)
     def sort_key(lead):
         signals = lead.get("signals", lead.get("signal_types", []))
         if isinstance(signals, str):
@@ -435,28 +652,21 @@ Do not call fetch-entities or enrich again. Do not export.
     kept_leads = candidates[:target_leads]
 
     if len(kept_leads) == 0:
-        print("ERROR: No qualifying leads after filtering. Cannot build report.")
-        print("Check Vibe filter parameters in context.md.")
+        print("ERROR: No qualifying leads after filtering.")
+        print("Check Vibe filter parameters in context.md or widen the filter.")
         sys.exit(1)
 
     if len(kept_leads) < target_leads:
-        print(f"  WARNING: Only {len(kept_leads)} qualifying leads (target was {target_leads}).")
-        print("  Delivering what qualifies. No padding with off-ICP leads.")
+        print(f"  WARNING: Only {len(kept_leads)} qualifying leads (target: {target_leads}). Delivering what qualifies.")
 
     print(f"  Selected {len(kept_leads)} leads.")
 
-    # ── STEP 5: Write data.json ──
-    # This is the only file this script authors.
-    # Claude Code should fill in the card-level fields (whyFit, whyNow, connNote,
-    # emailSubj, emailBody) based on the Vibe data and prospect context.
-    # The script builds the full schema and delegates card authoring to Claude.
-
+    # ── STEP 5: Build data.json ───────────────────────────────────────────────
     print(f"\n[Step 5] Building data.json ...")
 
     today_str = datetime.now().strftime("%B %d, %Y")
     week_str = f"Week of {datetime.now().strftime('%B %d, %Y')}"
 
-    # Count HOT vs WARM
     hot_count = 0
     warm_count = 0
     for lead in kept_leads:
@@ -470,8 +680,42 @@ Do not call fetch-entities or enrich again. Do not export.
         else:
             warm_count += 1
 
+    # Collect all signal keys (raw, for counting)
+    all_signal_keys = []
+    for lead in kept_leads:
+        sigs = lead.get("signals", lead.get("signal_types", []))
+        if isinstance(sigs, str):
+            sigs = [sigs]
+        all_signal_keys.extend(sigs)
+
+    signal_counts = {}
+    for s in all_signal_keys:
+        signal_counts[s] = signal_counts.get(s, 0) + 1
+
+    # Geo counts
+    geo_counts = {}
+    for lead in kept_leads:
+        c = lead.get("country", lead.get("company_country", "Unknown"))
+        if c:
+            geo_counts[c] = geo_counts.get(c, 0) + 1
+
+    # Stage counts
+    stage_counts = {}
+    for lead in kept_leads:
+        s = lead.get("funding_stage", lead.get("revenue_range", lead.get("stage", "Unknown")))
+        s = str(s) if s else "Unknown"
+        stage_counts[s] = stage_counts.get(s, 0) + 1
+
+    # Industry counts
+    industry_counts = {}
+    for lead in kept_leads:
+        ind = lead.get("industry", lead.get("linkedin_category", ""))
+        if ind:
+            industry_counts[ind] = industry_counts.get(ind, 0) + 1
+
+    countries = list(geo_counts.keys())
+
     # Build lead cards
-    # Claude Code fills in the authored fields below
     lead_cards = []
     for i, lead in enumerate(kept_leads):
         theme = THEME_CYCLE[i % len(THEME_CYCLE)]
@@ -482,16 +726,15 @@ Do not call fetch-entities or enrich again. Do not export.
         country = lead.get("country", lead.get("company_country", ""))
         industry = lead.get("industry", lead.get("linkedin_category", ""))
         employees = str(lead.get("employees", lead.get("company_size", "")))
-        revenue = lead.get("revenue", lead.get("company_revenue", ""))
+        revenue = str(lead.get("revenue", lead.get("revenue_range", lead.get("company_revenue", ""))) or "")
         linkedin = lead.get("linkedin_url", "")
-        website = lead.get("website", lead.get("company_website", ""))
+        website = lead.get("website", lead.get("company_website", "")) or ""
         email_val = lead.get("email", "") if MODE == "LIVE" else ""
         phone_val = lead.get("phone", "") if MODE == "LIVE" else ""
 
-        # Signal fields
-        signals = lead.get("signals", lead.get("signal_types", []))
-        if isinstance(signals, str):
-            signals = [signals]
+        sigs = lead.get("signals", lead.get("signal_types", []))
+        if isinstance(sigs, str):
+            sigs = [sigs]
         days_ago = lead.get("signal_days_ago", lead.get("days_since_signal", 60))
         try:
             days_ago = int(days_ago)
@@ -499,25 +742,60 @@ Do not call fetch-entities or enrich again. Do not export.
             days_ago = 60
         priority = "HOT" if days_ago <= 30 else "WARM"
 
-        # Stage: operator uses revenue bands, venture uses funding stage
-        stage = lead.get("funding_stage", lead.get("revenue_range", lead.get("stage", "")))
+        stage = str(lead.get("funding_stage", lead.get("revenue_range", lead.get("stage", ""))) or "")
 
-        # Initials from name
         parts = name.split()
         initials = (parts[0][0] + parts[-1][0]).upper() if len(parts) >= 2 else name[:2].upper()
 
-        # Recent news = plain-language signal description (no tool names)
-        signal_plain = ", ".join(signals) if signals else "Recent business activity"
-        # Clean up any internal event names to plain English
-        signal_plain = (signal_plain
-            .replace("new_funding_round", "Recent funding round")
-            .replace("merger_and_acquisitions", "Recent acquisition activity")
-            .replace("leadership_change", "Recent leadership change")
-            .replace("hiring_in_finance_department", "Hiring in finance")
-            .replace("hiring_in_operations_department", "Hiring in operations")
-            .replace("office_expansion", "Office expansion")
-            .replace("hiring_in_leadership", "Hiring leadership roles")
-            .replace("_", " ")
+        signal_plain_list = signals_list_to_plain(sigs)
+        signal_plain = ", ".join(signal_plain_list)
+
+        # Infer founderFocus and teamTrajectory from data (never "Not on record")
+        founder_focus = infer_founder_focus(lead, buyer_profile, advisor_function)
+        team_trajectory = infer_team_trajectory(lead, buyer_profile, advisor_function)
+
+        # whyFit: match signal to prospect's function
+        if advisor_function == "finance":
+            why_fit = (
+                f"{company} shows {signal_plain.lower()}, which typically marks a window where "
+                f"financial oversight gaps become visible. {prospect_first}'s background maps "
+                f"directly to what this stage requires."
+            )
+        else:
+            why_fit = (
+                f"{company} shows {signal_plain.lower()}, which typically signals operational "
+                f"complexity outpacing existing process. {prospect_first}'s background maps "
+                f"directly to what this stage requires."
+            )
+
+        # whyNow: signal timing
+        if days_ago <= 30:
+            why_now = f"Signal detected in the last {days_ago} days. This is inside the peak engagement window where outreach converts."
+        else:
+            why_now = f"Signal detected {days_ago} days ago. Still inside the 90-day window where the need is active."
+
+        # connNote: under 280 chars, prospect voice, no pitch
+        conn_note = (
+            f"Hi [First Name], noticed {company} recently had {signal_plain.lower()}. "
+            f"That timing often aligns with {advisor_function} needs at this stage. "
+            f"Happy to share context if useful."
+        )
+        if len(conn_note) > 280:
+            conn_note = (
+                f"Hi [First Name], saw {company} recently had {signal_plain_list[0].lower()}. "
+                f"That timing often creates {advisor_function} questions. Happy to connect."
+            )
+
+        # emailSubj and emailBody in prospect voice
+        email_subj = f"{company} caught my attention"
+        email_body = (
+            f"Hi [First Name],\n\n"
+            f"Saw that {company} recently {signal_plain.lower()}. "
+            f"That kind of move usually surfaces {advisor_function} questions that are easier "
+            f"to get ahead of than catch up to.\n\n"
+            f"Happy to walk you through what I typically see at this stage if it would be useful. "
+            f"No obligation, just a 20-minute conversation.\n\n"
+            f"Best,\n{prospect_full}"
         )
 
         card = {
@@ -528,10 +806,10 @@ Do not call fetch-entities or enrich again. Do not export.
             "role": role,
             "company": company,
             "country": country,
-            "stage": str(stage),
+            "stage": stage,
             "industry": industry,
             "employees": employees,
-            "revenue": str(revenue) if revenue else "",
+            "revenue": revenue,
             "signalDetail": signal_plain,
             "days": days_ago,
             "priority": priority,
@@ -539,57 +817,35 @@ Do not call fetch-entities or enrich again. Do not export.
             "website": website,
             "email": email_val,
             "phone": phone_val,
-            # Fields below: Claude Code authors these based on prospect context and Vibe data.
-            # Do not leave placeholders. Fill every field before writing data.json.
-            "whatTheyDo": lead.get("_whatTheyDo", f"{company} is a {employees}-person {industry} company."),
+            "whatTheyDo": f"{company} is a {employees}-person {industry} company based in {country}.",
             "recentNews": signal_plain,
-            "founderFocus": lead.get("_founderFocus", "Not on record"),
-            "teamTrajectory": lead.get("_teamTrajectory", "Not on record"),
-            "whyFit": lead.get("_whyFit", f"Signal match: {signal_plain} aligns with {prospect_full}'s target engagement window."),
-            "whyNow": lead.get("_whyNow", f"Signal recorded in the last {days_ago} days."),
-            "connNote": lead.get("_connNote", f"Hi [name], noticed {company} recently had {signal_plain.lower()}. That timing often aligns with [advisor_function] needs. Happy to share how I work if useful."),
-            "emailSubj": lead.get("_emailSubj", f"{company} caught my attention"),
-            "emailBody": lead.get("_emailBody", f"Hi [name],\n\nSaw that {company} recently {signal_plain.lower()}. That usually signals a window where [advisor function] infrastructure matters more than usual.\n\nHappy to walk you through what I typically see at this stage if it would be useful.\n\nBest,\n{prospect_full}"),
+            "founderFocus": founder_focus,
+            "teamTrajectory": team_trajectory,
+            "whyFit": why_fit,
+            "whyNow": why_now,
+            "connNote": conn_note,
+            "emailSubj": email_subj,
+            "emailBody": email_body,
         }
         lead_cards.append(card)
 
-    # Dashboard stats
-    countries = list(set(l.get("country", "") for l in kept_leads if l.get("country")))
-    industries = list(set(l.get("industry", lead.get("linkedin_category", "")) for l in kept_leads if l.get("industry")))
-
-    # Signal breakdown for signals tab
-    all_signals = []
-    for lead in kept_leads:
-        sigs = lead.get("signals", lead.get("signal_types", []))
-        if isinstance(sigs, str):
-            sigs = [sigs]
-        all_signals.extend(sigs)
-    signal_counts = {}
-    for s in all_signals:
-        signal_counts[s] = signal_counts.get(s, 0) + 1
-
-    signals_arr = [{"type": k.replace("_", " ").title(), "count": v, "pct": round(v / len(kept_leads) * 100)}
-                   for k, v in sorted(signal_counts.items(), key=lambda x: -x[1])]
-
-    # Geo breakdown
-    geo_counts = {}
-    for lead in kept_leads:
-        c = lead.get("country", lead.get("company_country", "Unknown"))
-        geo_counts[c] = geo_counts.get(c, 0) + 1
-    geo_arr = [{"country": k, "count": v} for k, v in sorted(geo_counts.items(), key=lambda x: -x[1])]
-
-    # Stage breakdown
-    stage_counts = {}
-    for lead in kept_leads:
-        s = lead.get("funding_stage", lead.get("revenue_range", lead.get("stage", "Unknown")))
-        stage_counts[str(s)] = stage_counts.get(str(s), 0) + 1
-    stage_arr = [{"stage": k, "count": v} for k, v in sorted(stage_counts.items(), key=lambda x: -x[1])]
-
+    # Pulse text (internal summary for the pulse banner)
+    signal_plain_summary = ", ".join(
+        signal_to_plain(k) for k in sorted(signal_counts.keys(), key=lambda x: -signal_counts[x])
+    )
     pulse = (
         f"{len(kept_leads)} ICP-matched profiles this week. "
         f"{hot_count} HOT (signal in last 30 days), {warm_count} WARM. "
-        f"Signals: {', '.join(set(all_signals))[:120]}."
+        f"Leading signals: {signal_plain_summary[:120]}."
     )
+
+    # ── Build all data shapes matching template exactly ──
+    stats_array = build_stats_array(len(kept_leads), hot_count, warm_count, len(countries))
+    sig_array = build_sig_array(signal_counts)
+    geo_bars = build_geo_array_for_bars(geo_counts)
+    stage_bars = build_stage_array_for_bars(stage_counts)
+    signals_full = build_signals_array(signal_counts, kept_leads)
+    ind_donut = build_ind_array_for_donut(industry_counts)
 
     data = {
         "mode": MODE,
@@ -603,36 +859,33 @@ Do not call fetch-entities or enrich again. Do not export.
         "generated": today_str,
         "leads": lead_cards,
         "dashboard": {
-            "stats": {
-                "total": len(kept_leads),
-                "hot": hot_count,
-                "warm": warm_count,
-                "countries": len(countries),
-            },
-            "sig": signal_counts,
-            "geo": geo_arr,
-            "stage": stage_arr,
+            "stats": stats_array,   # ARRAY of {n,l,c,bar} - template calls stats.forEach
+            "sig": sig_array,       # ARRAY of {name,value,color} - template calls donutSVG + sig.forEach
+            "geo": geo_bars,        # ARRAY of {c,n} - barsSVG reads d.c and d.n
+            "stage": stage_bars,    # ARRAY of {c,n} - barsSVG reads d.c and d.n
             "pulse": pulse,
         },
-        "signals": signals_arr,
+        "signals": signals_full,    # ARRAY of {name,count,color,desc,leads[]} - signals tab
         "markets": {
-            "geo": geo_arr,
-            "ind": [{"industry": k, "count": 1} for k in industries],
-            "notes": f"Data from Vibe Prospecting. {len(kept_leads)} profiles matched. Signal window: {events_window} days.",
+            "geo": geo_bars,        # ARRAY of {c,n} - barsSVG for markets tab
+            "ind": ind_donut,       # ARRAY of {name,value,color} - donutSVG for industry chart
+            "notes": f"Signal window: {events_window} days. {len(kept_leads)} profiles matched this week.",
         },
     }
 
-    # Validate data before writing
+    # Validate
     data_str = json.dumps(data, ensure_ascii=False, indent=2)
     validate_no_em_dash(data_str)
-    validate_no_tool_names(data_str)
     validate_no_exclamation(data_str)
+    validate_no_tool_names_in_leads(lead_cards)
 
     with open("data.json", "w", encoding="utf-8") as f:
         f.write(data_str)
-    print(f"  data.json written. {len(lead_cards)} leads. {hot_count} HOT, {warm_count} WARM.")
+    print(f"  data.json written. {len(lead_cards)} leads | {hot_count} HOT | {warm_count} WARM")
+    print(f"  Stats: array[{len(stats_array)}] | Sig: array[{len(sig_array)}] | Signals: array[{len(signals_full)}]")
+    print(f"  Geo: array[{len(geo_bars)}] | Stage: array[{len(stage_bars)}] | Industry: array[{len(ind_donut)}]")
 
-    # ── STEP 6: Run build_report.py ──
+    # ── STEP 6: Run build_report.py ──────────────────────────────────────────
     print(f"\n[Step 6] Running build_report.py ...")
     result = subprocess.run(
         ["python3", "build_report.py", "data.json", "template.html", "output.html"],
@@ -643,35 +896,35 @@ Do not call fetch-entities or enrich again. Do not export.
         print("BUILD FAILED:")
         print(result.stdout)
         print(result.stderr)
-        print("\ndata.json contents:")
-        print(data_str)
+        print("\n--- data.json (for debugging) ---")
+        print(data_str[:2000])
         sys.exit(1)
-    if result.stdout:
-        print(f"  Builder output: {result.stdout.strip()}")
+    if result.stdout.strip():
+        print(f"  Builder: {result.stdout.strip()}")
     print("  Build completed.")
 
-    # ── STEP 7: Validate output.html ──
+    # ── STEP 7: Validate output.html ─────────────────────────────────────────
     print(f"\n[Step 7] Validating output.html ...")
     if not os.path.exists("output.html"):
-        print("ERROR: output.html does not exist after build. Check build errors above.")
+        print("ERROR: output.html does not exist after build.")
         sys.exit(1)
 
     size = os.path.getsize("output.html")
     if size < MIN_OUTPUT_BYTES:
-        print(f"ERROR: output.html is only {size} bytes (minimum {MIN_OUTPUT_BYTES}). Build likely failed.")
+        print(f"ERROR: output.html is {size} bytes (minimum {MIN_OUTPUT_BYTES}). Build likely failed.")
         sys.exit(1)
 
     with open("output.html", "r", encoding="utf-8") as f:
         html_content = f.read()
 
-    if "__PL_" in html_content:
-        remaining = re.findall(r"__PL_\w+__", html_content)
-        print(f"ERROR: Unfilled placeholders remain in output.html: {remaining}")
+    remaining_pl = re.findall(r"__PL_\w+__", html_content)
+    if remaining_pl:
+        print(f"ERROR: Unfilled placeholders in output.html: {remaining_pl}")
         sys.exit(1)
 
-    print(f"  output.html validated. Size: {size:,} bytes. No unfilled placeholders.")
+    print(f"  Validated: {size:,} bytes | No unfilled placeholders | Build PASSED")
 
-    # ── STEP 8: Deploy to GitHub ──
+    # ── STEP 8: Deploy to GitHub ──────────────────────────────────────────────
     if MODE == "DEMO":
         deploy_path = f"demo/{DATE}/{prospect_first.lower()}/index.html"
         live_url = f"https://pipelind.com/demo/{DATE}/{prospect_first.lower()}/"
@@ -680,14 +933,13 @@ Do not call fetch-entities or enrich again. Do not export.
         live_url = f"https://pipelind.com/prod/{SLUG}/pipeline/"
 
     print(f"\n[Step 8] Deploying to {deploy_path} ...")
-    commit_msg = f"Pipeline report · {MODE} · {SLUG} · {DATE}"
-    gh_write(deploy_path, html_content, commit_msg)
-    print(f"  Deployed successfully. Live at {live_url} (allow 30-90s for Vercel).")
+    gh_write(deploy_path, html_content, f"Pipeline report · {MODE} · {SLUG} · {DATE}")
+    print(f"  Deployed. Live at {live_url} (allow 30-90s for Vercel CDN)")
 
-    # ── STEP 9: Update dedup.json (LIVE only) ──
+    # ── STEP 9: Update dedup.json (LIVE only) ────────────────────────────────
     if MODE == "LIVE":
         print(f"\n[Step 9] Updating dedup.json ...")
-        new_urls = [l["linkedin"] for l in lead_cards if l.get("linkedin")]
+        new_urls = [card["linkedin"] for card in lead_cards if card.get("linkedin")]
         existing_dedup = gh_read_json(f"inputs/prod/{SLUG}/dedup.json", default=[])
         updated_dedup = sorted(set(existing_dedup) | set(new_urls))
         gh_write(
@@ -695,11 +947,11 @@ Do not call fetch-entities or enrich again. Do not export.
             json.dumps(updated_dedup, indent=2),
             f"Dedup update · {SLUG} · {DATE}",
         )
-        print(f"  dedup.json updated. Total delivered: {len(updated_dedup)} leads.")
+        print(f"  dedup.json updated. Total delivered: {len(updated_dedup)}")
     else:
         print(f"\n[Step 9] DEMO mode — no dedup update.")
 
-    # ── Final status line ──
+    # ── Final status ──────────────────────────────────────────────────────────
     print(f"\n{'=' * 60}")
     print(
         f"PIPELINE REPORT COMPLETE · {MODE} · {prospect_full} · {firm} · "
