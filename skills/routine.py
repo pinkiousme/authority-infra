@@ -228,6 +228,8 @@ def signal_to_plain(signal_str):
         "hiring_in_leadership": "Hiring leadership roles",
         "office_expansion": "Office expansion",
         "new_office": "Office expansion",
+        "cost_cutting": "Active cost reduction",
+        "decrease_in_all_departments": "Org-wide headcount reduction",
     }
     s = signal_str.strip()
     return mapping.get(s, s.replace("_", " ").title())
@@ -434,6 +436,10 @@ def infer_team_trajectory(lead, buyer_profile, advisor_function):
         trajectories.append("Adding senior leadership capacity")
     if "merger_and_acquisitions" in signals:
         trajectories.append("Integration phase post-acquisition")
+    if "cost_cutting" in signals:
+        trajectories.append("Active cost reset underway")
+    if "decrease_in_all_departments" in signals:
+        trajectories.append("Org-wide headcount reduction in progress")
     if "office_expansion" in signals or "new_office" in signals:
         trajectories.append("Expanding to new locations")
     if "leadership_change" in signals or "leadership_change_operations" in signals or "leadership_change_finance" in signals:
