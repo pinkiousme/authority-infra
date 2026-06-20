@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 routine.py · Pipelind Pipeline Report Runner
-Version: 2.1 · June 2026
+Version: 2.2 · June 2026
 
 Encodes the complete 9-step pipeline report build as a deterministic Python
 script. Claude Code's only job is: python3 routine.py MODE SLUG DATE
@@ -33,10 +33,20 @@ Vibe Prospecting workflow (email-only, both modes):
   - DEMO retrieves via show-sample (flat 5 credits). LIVE retrieves via
     export-to-csv, sized from credit_cap so spend never exceeds the budget.
 
+VERIFIED-ONLY DATA POLICY (v2.2):
+  - Every delivered lead MUST carry a verifiable public source link (the event's
+    real news/web URL). Leads whose only signal is an unverifiable workforce
+    observation (e.g. decrease_in_all_departments with no link) are dropped.
+  - Signals are verified with fetch-businesses-events; only records with a real
+    data.link survive. The card renders a "Verify this signal" link to that URL.
+  - If nothing is verifiable, the run delivers nothing rather than a fabricated
+    claim. No source link, no lead.
+
 What this script NEVER does:
   - Use any GitHub MCP connector or tool
   - Search the web
   - Enrich phone numbers (email only)
+  - Deploy a lead without a verifiable public source link
   - Exceed the context credit_cap (fetch size is derived from it)
   - Edit template.html
   - Deploy a file under 50,000 bytes
@@ -637,19 +647,32 @@ STEP B — fetch decision-maker PROSPECTS from those businesses:
       job_level: {vibe_filter.get('job_level', '')}
       has_email: true
 
-STEP C — enrich EMAIL only (never phone):
+STEP C — VERIFY the signals (mandatory — proof links only, no fabrication):
+  Run fetch-businesses-events on the businesses_reference_table from STEP A,
+  event_types = your event list, timestamp_from = {events_window} days ago.
+  Each returned event record has data.description, data.title and data.link.
+  KEEP a company ONLY if its event record carries a real public data.link (http...).
+  Companies whose only signal is a headcount/workforce change with NO link
+  (e.g. decrease_in_all_departments) are UNVERIFIABLE — drop them entirely.
+
+STEP D — enrich EMAIL only (never phone) for the surviving, verified companies:
   enrich-prospects  enrichments=["enrich-prospects-contacts"]  contact_types={enrich_types}
 
 {retrieval_block}
 
-AFTER RETRIEVAL — write every lead that has a real email to vibe_results.json (JSON array).
+AFTER RETRIEVAL — write every VERIFIED lead that has a real email to vibe_results.json (JSON array).
   Each item: name, title, company, country, industry, employees, revenue,
-  linkedin_url, website, email, signals (list). Never fabricate a field.
+  linkedin_url, website, email, signals (list),
+  signal_description (the event data.description, stated as plain fact),
+  source (the event data.link, a real public URL — REQUIRED, no link = drop the lead),
+  source_title (the event data.title, e.g. the publication name).
+  Never fabricate a field. A lead with no real source link must NOT be written.
 
 BANNED during Vibe calls:
   - Do not use any GitHub connector or MCP tool
   - Do not search the web
   - Do not enrich phone numbers
+  - Do not write any lead whose signal lacks a verifiable public source link
 
 THEN: re-run this script: python3 routine.py {MODE} {SLUG} {DATE}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -676,6 +699,7 @@ THEN: re-run this script: python3 routine.py {MODE} {SLUG} {DATE}
         exclude_keywords = [k.strip().lower() for k in raw_excl.split(",") if k.strip()]
 
     candidates = []
+    dropped_unverified = 0
     for lead in raw_leads:
         linkedin = lead.get("linkedin_url", lead.get("linkedin", ""))
         if linkedin and not linkedin.startswith("http"):
@@ -689,7 +713,17 @@ THEN: re-run this script: python3 routine.py {MODE} {SLUG} {DATE}
         if exclude_keywords and any(kw in company_name for kw in exclude_keywords):
             continue
 
+        # VERIFIED-ONLY POLICY: a lead may be delivered only if its signal carries a
+        # verifiable public source link. No source => unverifiable => never on the report.
+        src = (lead.get("source", lead.get("source_url", "")) or "").strip()
+        if not src.startswith("http"):
+            dropped_unverified += 1
+            continue
+
         candidates.append(lead)
+
+    if dropped_unverified:
+        print(f"  Verified-only: dropped {dropped_unverified} lead(s) with no verifiable source link.")
 
     def sort_key(lead):
         signals = lead.get("signals", lead.get("signal_types", []))
@@ -707,12 +741,15 @@ THEN: re-run this script: python3 routine.py {MODE} {SLUG} {DATE}
     kept_leads = candidates[:target_leads]
 
     if len(kept_leads) == 0:
-        print("ERROR: No qualifying leads after filtering.")
-        print("Check Vibe filter parameters in context.md or widen the filter.")
+        print("ERROR: No verifiable leads after filtering.")
+        print("Verified-only policy: every delivered lead needs a public source link.")
+        print("Either widen to event types that carry public sources (M&A, funding,")
+        print("partnerships, product launches, lawsuits) or re-run a fresh search.")
+        print("Delivering nothing is correct here: never deploy an unverifiable claim.")
         sys.exit(1)
 
     if len(kept_leads) < target_leads:
-        print(f"  WARNING: Only {len(kept_leads)} qualifying leads (target: {target_leads}). Delivering what qualifies.")
+        print(f"  WARNING: Only {len(kept_leads)} verified leads (target: {target_leads}). Delivering only what is source-backed.")
 
     print(f"  Selected {len(kept_leads)} leads.")
 
@@ -786,6 +823,9 @@ THEN: re-run this script: python3 routine.py {MODE} {SLUG} {DATE}
         website = lead.get("website", lead.get("company_website", "")) or ""
         email_val = lead.get("email", "") if MODE == "LIVE" else ""
         phone_val = lead.get("phone", "") if MODE == "LIVE" else ""
+        source = lead.get("source", lead.get("source_url", "")) or ""
+        source_title = lead.get("source_title", lead.get("sourceTitle", "")) or ""
+        signal_desc = lead.get("signal_description", lead.get("recent_news", "")) or ""
 
         sigs = lead.get("signals", lead.get("signal_types", []))
         if isinstance(sigs, str):
@@ -873,7 +913,7 @@ THEN: re-run this script: python3 routine.py {MODE} {SLUG} {DATE}
             "email": email_val,
             "phone": phone_val,
             "whatTheyDo": f"{company} is a {employees}-person {industry} company based in {country}.",
-            "recentNews": signal_plain,
+            "recentNews": signal_desc or signal_plain,
             "founderFocus": founder_focus,
             "teamTrajectory": team_trajectory,
             "whyFit": why_fit,
@@ -881,6 +921,8 @@ THEN: re-run this script: python3 routine.py {MODE} {SLUG} {DATE}
             "connNote": conn_note,
             "emailSubj": email_subj,
             "emailBody": email_body,
+            "source": source,
+            "sourceTitle": source_title,
         }
         lead_cards.append(card)
 
