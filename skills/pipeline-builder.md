@@ -1,10 +1,10 @@
 ---
 name: pipeline-builder
-version: 8.1
+version: 8.2
 description: "Robust mode-aware pipeline report builder. Runs fully autonomously with no web research in the default path. Reads a frozen context file (schema v3), fetches real ICP-matched leads with live signals from Vibe Prospecting using a deterministic buyer-profile signal matrix, produces ONLY a validated data.json, then runs build_report.py to inject the data into the approved placeholder template. Model never assembles HTML. DEMO or LIVE. Email-only enrichment (no phone). Two-step events fetch (businesses then prospects). Per-client in-memory dedup. No web search unless explicitly opted in per client. Credit-cap-safe by design."
 ---
 
-# pipeline-builder v8.1
+# pipeline-builder v8.2
 ## Robust Pipeline Report Engine (autonomous, web-free default, data-first)
 
 ## AUTONOMY (read first, overrides any default instinct)
@@ -20,6 +20,13 @@ The model produces only a small validated JSON object. build_report.py injects i
 
 ## Data principle
 Every fact on a card comes from the Vibe fetch and enrichment you already ran. LinkedIn URLs, names, titles, signals, and contact come from Vibe. You do NOT browse the web to fill cards in the default path (see Step 3).
+
+## VERIFIED-ONLY DATA POLICY (non-negotiable, overrides convenience)
+Every signal claim on a card MUST carry a verifiable public source link. No link, no lead.
+- After fetching the businesses, call `fetch-businesses-events` and read each event's `data.link`, `data.title`, `data.description`.
+- Keep a company ONLY if its event record has a real public `data.link` (http...). News-backed events (merger_and_acquisitions, new_funding_round, new_partnership, new_product, lawsuits_and_legal_issues, cost_cutting when news-derived) carry links. Pure workforce signals (decrease_in_all_departments and similar) usually have NO link and are UNVERIFIABLE: drop them, never claim them.
+- Each delivered lead carries `signal_description` (the event description as plain fact), `source` (the event link), and `source_title` (the publication). The card renders a "Verify this signal" link to `source`.
+- If nothing is verifiable, deliver nothing and report it. Never deploy a claim a client cannot check. No fabrication, ever.
 
 ## Selection principle
 Which signals and filters to use is frozen in the context file. The routine derives nothing. It reads the two flags and the frozen filter, applies the matrix as a guard, and fetches.
@@ -85,7 +92,8 @@ fetch-entities(entity_type:"prospects", businesses_reference_table:[from 2a],
   number_of_results:[fetch],
   filters:{ job_title, job_level, has_email:true })
 ```
-ENRICH once: enrich-prospects-contacts, contact_types ["email"] (both modes). Then UNMASK by mode: DEMO show-sample, LIVE export-to-csv (limit = fetch). Use only rows that returned a real email.
+VERIFY (mandatory, before enrich): call `fetch-businesses-events` on the businesses_reference_table from 2a, event_types = your event list, timestamp_from = window days ago. Read each record's `data.link`, `data.title`, `data.description`. KEEP only companies whose event has a real public `data.link`. Drop unverifiable companies (e.g. headcount-only `decrease_in_all_departments` with no link) entirely. Then refine 2b to the surviving companies only.
+ENRICH once: enrich-prospects-contacts, contact_types ["email"] (both modes). Then UNMASK by mode: DEMO show-sample, LIVE export-to-csv (limit = fetch). Use only rows that returned a real email AND a verified source link.
 Post-enrich quality filter, keep a lead only if: decision-maker buyer title from context; company fits size/stage/type; if operator, company does NOT match `exclude_company_keywords`; signal is in-window and listed. Rank dual-signal first, then strength and recency. Keep target (DEMO 5 / LIVE 10).
 If short: widen ONE filter ONCE (window 90 to 120 is NOT allowed — Vibe caps last_occurrence at 90; instead add one adjacent industry OR the next size band within ceiling), refetch ONCE, enrich. Still short: deliver what qualifies, note the count. NEVER pad off-ICP. NEVER refetch more than once.
 LIVE dedup: read inputs/prod/[SLUG]/dedup.json in memory, drop already-delivered LinkedIn URLs. Never pass to exclude_key. DEMO: no dedup.
@@ -106,7 +114,7 @@ whyFit: match the verified signal and stage to the prospect's real background. D
 Outreach copy leads with the verified signal category. No unverified specifics as fact. connNote <=280 chars. emailSubj short. emailBody 2-3 short paragraphs, prospect voice, no pitch. Contact: DEMO empty, LIVE email from enrichment (phone always empty). Theme cycles violet, amber, teal, blue, pink.
 
 ## STEP 5 · WRITE data.json (the only thing the model assembles)
-Plain JSON, no HTML. Schema unchanged from v7 (mode, client, calendly, week, generated, leads[27 fields], dashboard{stats,sig,geo,stage,pulse}, signals[], markets{geo,ind,notes}). Operator `stage` may be revenue bands. Confirm it parses.
+Plain JSON, no HTML. Schema from v7 plus three verification fields per lead: `source` (the event's public URL, REQUIRED), `sourceTitle` (publication name), and `recentNews` set to the event's real `data.description` stated as plain fact. A lead with no `source` URL must NOT be written. Operator `stage` may be revenue bands. Confirm it parses.
 
 ## STEP 6 · ASSEMBLE (no model HTML)
 GitHub API fetch assets/templates/pipeline-report/index.html and skills/build_report.py.
@@ -133,7 +141,7 @@ PIPELINE REPORT COMPLETE · Mode · Person · Firm · Leads N · HOT N · WARM N
 - Target: 8 to 12 minutes. If you find yourself searching the web or asking a question, stop that, it is not part of this routine.
 
 ## DATA INTEGRITY (non-negotiable)
-1. No fabricated data. Person and company facts from Vibe. Nothing invented. No web in the default path.
+1. No fabricated data. Person and company facts from Vibe. Nothing invented. No web in the default path. Every signal claim carries a verifiable public source link, or the lead is dropped (see VERIFIED-ONLY DATA POLICY).
 2. LinkedIn URLs Vibe-authoritative or empty. Buyer-title floor on every lead. Operator: funding excluded, revenue_floor enforced, exclude_company_keywords applied.
 3. No unverified specifics as fact. No fabricated contacts (DEMO empty, LIVE email-only from enrichment, phone never).
 4. No tool names or pricing in visible HTML. Zero em dashes, zero exclamation marks.
