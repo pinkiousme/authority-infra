@@ -407,6 +407,8 @@ function leadCard(L,openByDefault){
   html+=tile(IC.focus,t.accent,t.soft,"Founder Focus",L.founderFocus);
   html+=tile(IC.team,t.accent,t.soft,"Team Trajectory",L.teamTrajectory);
   html+='</div></div>';
+  // verifiable source link (proof of the signal) - only rendered when present
+  if(L.source&&L.source.length>0){html+='<a class="src-link" href="'+httpsify(L.source)+'" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;margin:2px 0 10px;font-size:12px;font-weight:600;color:'+t.accent+';text-decoration:underline">'+IC.globe+'Verify this signal: '+esc(L.sourceTitle||"public source")+'</a>';}
   // why now
   html+='<div class="whynow" style="background:'+t.soft+';border-left:3px solid '+t.accent+'"><div class="whynow-lbl" style="color:'+t.accent+'">Why Now · Timing</div><div class="whynow-txt">'+esc(L.whyNow)+'</div></div>';
   // outreach
