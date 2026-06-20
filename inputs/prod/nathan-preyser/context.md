@@ -74,6 +74,6 @@ events_window_days: 90
 number_of_results: 12
 
 ## RUN CONTROL
-credit_cap: 35
+credit_cap: 50
 web_mode: off
 deploy_path: prod/nathan-preyser/pipeline/index.html
