@@ -1,10 +1,10 @@
 ---
 name: pipeline-builder
-version: 8.0
-description: "Robust mode-aware pipeline report builder. Runs fully autonomously with no web research in the default path. Reads a frozen context file (schema v3), fetches real ICP-matched leads with live signals from Vibe Prospecting using a deterministic buyer-profile signal matrix, produces ONLY a validated data.json, then runs build_report.py to inject the data into the approved placeholder template. Model never assembles HTML. DEMO or LIVE. Per-client in-memory dedup. No web search unless explicitly opted in per client. Single fetch, single enrich, single write."
+version: 8.1
+description: "Robust mode-aware pipeline report builder. Runs fully autonomously with no web research in the default path. Reads a frozen context file (schema v3), fetches real ICP-matched leads with live signals from Vibe Prospecting using a deterministic buyer-profile signal matrix, produces ONLY a validated data.json, then runs build_report.py to inject the data into the approved placeholder template. Model never assembles HTML. DEMO or LIVE. Email-only enrichment (no phone). Two-step events fetch (businesses then prospects). Per-client in-memory dedup. No web search unless explicitly opted in per client. Credit-cap-safe by design."
 ---
 
-# pipeline-builder v8.0
+# pipeline-builder v8.1
 ## Robust Pipeline Report Engine (autonomous, web-free default, data-first)
 
 ## AUTONOMY (read first, overrides any default instinct)
@@ -27,24 +27,29 @@ Which signals and filters to use is frozen in the context file. The routine deri
 ---
 
 ## INPUTS (from the routine)
-MODE: DEMO or LIVE · SLUG: lowercase-hyphenated · DATE: today DDMMYYYY · TOKEN: GitHub token
+MODE: DEMO or LIVE · SLUG: lowercase-hyphenated · DATE: today DDMMYYYY
+GitHub auth: read the `GH_TOKEN` environment variable for the Contents API Authorization header. Never expect a token pasted in the prompt, never print it.
 
 ## SELECTION MODEL
 - `BUYER_PROFILE`: `venture` or `operator`. Controls funding inclusion, revenue floor, category discipline.
-- `ADVISOR_FUNCTION`: `finance` or `operations`. Controls which department's hiring and leadership signals are read.
+- `ADVISOR_FUNCTION`: `finance` or `operations`. Controls which department's hiring signals are weighted.
 
-## SIGNAL MATRIX (deterministic guard)
-- venture: include `new_funding_round`, `leadership_change` (function), `hiring_in_[finance|operations]_department`. No revenue floor. Tech categories fine.
-- operator: include `merger_and_acquisitions`, `leadership_change` (function), `hiring_in_[finance|operations]_department`, `office_expansion`. EXCLUDE `new_funding_round` always (guard: drop it if present in context, note the correction). Enforce context `revenue_floor`. Apply context `exclude_company_keywords`.
-- advisor_function overlay: finance to finance signals, operations to operations signals plus office_expansion weighted up.
+## SIGNAL MATRIX (deterministic guard — only valid Vibe event names)
+Vibe has NO `leadership_change` or `office_expansion` event. Use only the valid enum below.
+- venture: include `new_funding_round`, `hiring_in_[finance|operations]_department`. No revenue floor. Tech categories fine.
+- operator: include `merger_and_acquisitions`, `cost_cutting`, `decrease_in_all_departments`, `hiring_in_[finance|operations]_department`. For operations advisors also add `new_office`. EXCLUDE `new_funding_round` always (guard: drop it if present in context, note the correction). Enforce context `revenue_floor`. Apply context `exclude_company_keywords`.
+- advisor_function overlay: finance reads finance hiring; operations reads operations hiring plus `new_office` weighted up.
+- `cost_cutting` + `decrease_in_all_departments` together are the valid proxy for a restructure/turnaround trigger (there is no literal "restructuring" event).
 Do not autocomplete events at run time if `autocomplete_resolved: true`.
 
 ## MODE CONFIG
 | Setting | DEMO | LIVE |
 |---|---|---|
 | Leads | 5 | 10 |
-| Enrichment | email only (to unmask identity + LinkedIn) | email + phone |
-| Email/phone on cards | hidden | shown |
+| Enrichment | email only | email only (no phone, ever) |
+| Email on cards | hidden | shown |
+| Phone on cards | never | never |
+| Unmask method | show-sample (flat 5 credits) | export-to-csv (sized to credit_cap) |
 | CTAs | yes (MODE-driven in template) | no |
 | Deploy path | demo/[DATE]/[firstname]/index.html | prod/[SLUG]/pipeline/index.html |
 | Dedup | no | yes |
@@ -56,22 +61,36 @@ GitHub API (not raw CDN): GET /repos/pinkiousme/authority-infra/contents/inputs/
 Read name/firm/website/location/ICP/voice, the two SELECTION FLAGS, the FROZEN VIBE FILTER block, and the RUN CONTROL block (credit_cap, web_mode, deploy_path).
 If `autocomplete_resolved: true`, treat job_title, linkedin_category, events as final. Do NOT autocomplete. Missing context: STOP, never fabricate.
 
-## STEP 2 · FETCH + ENRICH (one fetch, one enrich)
-Vibe Prospecting only. Never Apollo. Never exclude_key.
-Masking: the fetch preview is masked until enriched. Do NOT fetch large and filter down. Do NOT export. Do NOT refetch to unmask. Enrichment unmasks.
-Credit gate: run `estimate-cost` (0 credits) first. If projected spend exceeds `credit_cap`, STOP and report. Do not fetch.
-Build the fetch from the frozen context filter (no re-derivation). Guard: if BUYER_PROFILE is operator, ensure `new_funding_round` is NOT in events. Buyer titles from context. job_level owner-level only. company_size context bands only. events = frozen list, window = events_window_days (default 90).
+## STEP 2 · FETCH + ENRICH + UNMASK (email only, both modes)
+Vibe Prospecting only. Never Apollo. Never exclude_key. EMAIL ONLY — never enrich phone in either mode.
+
+Cost model (email-only): fetch is free exploration; `estimate-cost` and the enrich preview are free; `show-sample` is a flat 5 credits and returns up to ~5 unmasked rows; `export-to-csv` is ~4 credits per row and returns ALL rows. Pick the unmask method by mode (below). The enrich preview returns MASKED rows — unmask happens at show-sample or export, not at enrich.
+
+Sizing so spend never exceeds `credit_cap` (email-only export ≈ 4 credits/row):
+- DEMO: fetch 8, unmask via show-sample (flat 5 credits, well under cap).
+- LIVE: target 10. affordable_rows = credit_cap // 4. fetch = min(12, affordable_rows). Unmask via export-to-csv with limit = fetch (≈ 4 × fetch credits). At credit_cap 50 this is 12 rows / ~48 credits / up to 10 leads; at credit_cap 35 it auto-shrinks to 8 rows / ~32 credits. Never exceed the cap; if the live estimate is over, lower the limit until it fits. Never abort for budget.
+
+Guard: if BUYER_PROFILE is operator, ensure `new_funding_round` is NOT in events. Buyer titles from context. job_level owner-level only. company_size context bands only. events = frozen list, window = events_window_days (default 90, valid range 30-90).
+
+The events filter ONLY works on `entity_type:"businesses"`, so the fetch is TWO steps:
 ```
-fetch-entities(entity_type:"prospects", number_of_results:[DEMO 8 / LIVE 12],
-  filters:{ job_title, job_level, company_size, company_country_code, linkedin_category,
+# STEP 2a — businesses carrying the signals
+fetch-entities(entity_type:"businesses", number_of_results:[fetch],
+  filters:{ company_size, company_country_code, linkedin_category,
             events:{values:[context], last_occurrence:[window]} })
+# -> keep businesses_reference_table from the response
+
+# STEP 2b — decision-makers at those businesses
+fetch-entities(entity_type:"prospects", businesses_reference_table:[from 2a],
+  number_of_results:[fetch],
+  filters:{ job_title, job_level, has_email:true })
 ```
-ENRICH once: enrich-prospects-contacts. DEMO ["email"], LIVE ["email","phone"].
-Post-enrich quality filter, keep a lead only if: decision-maker buyer title from context; company fits size/stage/type; if operator, revenue meets `revenue_floor` and company does NOT match `exclude_company_keywords`; signal is in-window and listed. Rank dual-signal first, then strength and recency. Keep target (DEMO 5 / LIVE 10).
-If short: widen ONE filter ONCE (window 90 to 120, OR one adjacent industry, OR next size band within ceiling), refetch ONCE, enrich. Still short: deliver what qualifies, note the count. NEVER pad off-ICP. NEVER refetch more than once.
+ENRICH once: enrich-prospects-contacts, contact_types ["email"] (both modes). Then UNMASK by mode: DEMO show-sample, LIVE export-to-csv (limit = fetch). Use only rows that returned a real email.
+Post-enrich quality filter, keep a lead only if: decision-maker buyer title from context; company fits size/stage/type; if operator, company does NOT match `exclude_company_keywords`; signal is in-window and listed. Rank dual-signal first, then strength and recency. Keep target (DEMO 5 / LIVE 10).
+If short: widen ONE filter ONCE (window 90 to 120 is NOT allowed — Vibe caps last_occurrence at 90; instead add one adjacent industry OR the next size band within ceiling), refetch ONCE, enrich. Still short: deliver what qualifies, note the count. NEVER pad off-ICP. NEVER refetch more than once.
 LIVE dedup: read inputs/prod/[SLUG]/dedup.json in memory, drop already-delivered LinkedIn URLs. Never pass to exclude_key. DEMO: no dedup.
-URLs stored WITH https://. Masked or absent after enrich: linkedin empty (card omits Profile button). Never web-guess a URL.
-On ceiling or timeout: use what enriched, filter, complete, note the count. Never retry, never thrash, never fabricate.
+URLs stored WITH https://. Masked or absent after unmask: linkedin empty (card omits Profile button). Never web-guess a URL.
+On ceiling or timeout: use what unmasked, filter, complete, note the count. Never retry, never thrash, never fabricate.
 
 ## STEP 3 · CARD CONTEXT + PULSE (NO WEB by default)
 Default and `web_mode: off` and `web_mode: pulse_only`: do NOT call web_search at all. Do NOT research companies on the web. Derive every card field from the Vibe data you already have:
@@ -84,7 +103,7 @@ Only `web_mode: per_company` (rare, explicit opt-in, LIVE only) permits web sear
 ## STEP 4 · DERIVE FIELDS (from Vibe data only)
 Per lead: signalDetail (Vibe signal category, soft timeframe only if confident), HOT (0-30d) / WARM (31-90d), priority (dual-signal first then HOT by recency; top 2 DEMO / top 3 LIVE).
 whyFit: match the verified signal and stage to the prospect's real background. Derived, never invented. whyNow: the signal and timing, prospect voice.
-Outreach copy leads with the verified signal category. No unverified specifics as fact. connNote <=280 chars. emailSubj short. emailBody 2-3 short paragraphs, prospect voice, no pitch. Contact: DEMO empty, LIVE from enrichment. Theme cycles violet, amber, teal, blue, pink.
+Outreach copy leads with the verified signal category. No unverified specifics as fact. connNote <=280 chars. emailSubj short. emailBody 2-3 short paragraphs, prospect voice, no pitch. Contact: DEMO empty, LIVE email from enrichment (phone always empty). Theme cycles violet, amber, teal, blue, pink.
 
 ## STEP 5 · WRITE data.json (the only thing the model assembles)
 Plain JSON, no HTML. Schema unchanged from v7 (mode, client, calendly, week, generated, leads[27 fields], dashboard{stats,sig,geo,stage,pulse}, signals[], markets{geo,ind,notes}). Operator `stage` may be revenue bands. Confirm it parses.
@@ -109,14 +128,14 @@ PIPELINE REPORT COMPLETE · Mode · Person · Firm · Leads N · HOT N · WARM N
 ## SPEED + COST DISCIPLINE (low reasoning setting safe)
 - NO web search in the default path. This is the single biggest speed and reliability lever.
 - One fetch. One enrich. No autocomplete when resolved. No exploration. No template probing. One write.
-- estimate-cost gate before fetch, capped by credit_cap. Enrich only survivors.
-- At most one widen-and-refetch if under count. Never export. Never retry on ceiling or timeout.
+- estimate-cost gate before fetch, capped by credit_cap. Email-only enrichment. Size LIVE export to the cap so it can never overspend.
+- Unmask cheaply: DEMO uses show-sample (flat 5 credits); LIVE uses export-to-csv sized to credit_cap. At most one widen-and-refetch if under count. Never retry on ceiling or timeout.
 - Target: 8 to 12 minutes. If you find yourself searching the web or asking a question, stop that, it is not part of this routine.
 
 ## DATA INTEGRITY (non-negotiable)
 1. No fabricated data. Person and company facts from Vibe. Nothing invented. No web in the default path.
 2. LinkedIn URLs Vibe-authoritative or empty. Buyer-title floor on every lead. Operator: funding excluded, revenue_floor enforced, exclude_company_keywords applied.
-3. No unverified specifics as fact. No fabricated contacts (DEMO empty, LIVE waterfall).
+3. No unverified specifics as fact. No fabricated contacts (DEMO empty, LIVE email-only from enrichment, phone never).
 4. No tool names or pricing in visible HTML. Zero em dashes, zero exclamation marks.
 5. Model writes JSON, builder writes HTML and fails loud. One write to main (plus LIVE dedup.json). Never branch, PR, git, or archive. Never ask.
 
