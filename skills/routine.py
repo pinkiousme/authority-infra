@@ -33,20 +33,22 @@ Vibe Prospecting workflow (email-only, both modes):
   - DEMO retrieves via show-sample (flat 5 credits). LIVE retrieves via
     export-to-csv, sized from credit_cap so spend never exceeds the budget.
 
-VERIFIED-ONLY DATA POLICY (v2.2):
-  - Every delivered lead MUST carry a verifiable public source link (the event's
-    real news/web URL). Leads whose only signal is an unverifiable workforce
-    observation (e.g. decrease_in_all_departments with no link) are dropped.
-  - Signals are verified with fetch-businesses-events; only records with a real
-    data.link survive. The card renders a "Verify this signal" link to that URL.
-  - If nothing is verifiable, the run delivers nothing rather than a fabricated
-    claim. No source link, no lead.
+TIERED TRUST DATA POLICY (v2.2):
+  - Prioritise Tier 1 leads: the signal has a real public source link (news/web URL,
+    from fetch-businesses-events data.link). The card renders a clickable
+    "Verify this signal" link.
+  - Backfill with Tier 2 only when Tier 1 is short: a genuine detected signal with
+    no public article, but with structured evidence (signal_proof: event type, date,
+    and specifics such as a court/case, headcount change, or partner). The card
+    renders that evidence inline as "Signal evidence" instead of a link.
+  - Drop any lead with NEITHER a source link NOR signal_proof. Never fabricate.
+  - Tier 1 always ranks above Tier 2. Same logic for DEMO and LIVE.
 
 What this script NEVER does:
   - Use any GitHub MCP connector or tool
   - Search the web
   - Enrich phone numbers (email only)
-  - Deploy a lead without a verifiable public source link
+  - Deploy a lead with no provenance (neither a source link nor signal evidence)
   - Exceed the context credit_cap (fetch size is derived from it)
   - Edit template.html
   - Deploy a file under 50,000 bytes
@@ -659,32 +661,39 @@ STEP B — fetch decision-maker PROSPECTS from those businesses (also free):
   -> drop AI/tech/venture companies (exclude_company_keywords) and any over the size ceiling.
      Enrich + retrieve only the top {target_fetch} survivors so spend stays within the cap.
 
-STEP C — VERIFY the signals (mandatory — proof links only, no fabrication):
+STEP C — VERIFY the signals (mandatory — real provenance only, never fabricate):
   Run fetch-businesses-events on the businesses_reference_table from STEP A,
   event_types = your event list, timestamp_from = {events_window} days ago.
-  Each returned event record has data.description, data.title and data.link.
-  KEEP a company ONLY if its event record carries a real public data.link (http...).
-  Companies whose only signal is a headcount/workforce change with NO link
-  (e.g. decrease_in_all_departments) are UNVERIFIABLE — drop them entirely.
+  Each record has data.description, data.title, data.link, and type-specific
+  fields (court/case, partner_company, department_change, etc.).
+  Classify each company into a TRUST TIER:
+   - Tier 1 (preferred): the event has a real public data.link (http...). Keep the link.
+   - Tier 2 (fallback, high-intent): a genuine detected event with NO usable public
+     link, but real structured detail. Build a short signal_proof string from that
+     detail (event type + date + specifics, noting it is a detected business signal).
+   - Drop a company only if it has neither a link nor any structured detail.
 
-STEP D — enrich EMAIL only (never phone) for the surviving, verified companies:
+STEP D — enrich EMAIL only (never phone) for the surviving companies:
   enrich-prospects  enrichments=["enrich-prospects-contacts"]  contact_types={enrich_types}
 
 {retrieval_block}
 
-AFTER RETRIEVAL — write every VERIFIED lead that has a real email to vibe_results.json (JSON array).
+AFTER RETRIEVAL — write every lead that has a real email to vibe_results.json (JSON array),
+  Tier 1 first, then Tier 2 only to backfill toward {target_leads}.
   Each item: name, title, company, country, industry, employees, revenue,
-  linkedin_url, website, email, signals (list),
-  signal_description (the event data.description, stated as plain fact),
-  source (the event data.link, a real public URL — REQUIRED, no link = drop the lead),
-  source_title (the event data.title, e.g. the publication name).
-  Never fabricate a field. A lead with no real source link must NOT be written.
+  linkedin_url, website, email, signals (list), signal_days_ago,
+  signal_description (the event detail, stated as plain fact),
+  AND provenance — at least ONE of:
+    source       (Tier 1: the event data.link, a real public URL) + source_title, OR
+    signal_proof (Tier 2: the structured detection evidence, e.g.
+                  "Detected signal: legal matter, NSW Supreme Court [case], recorded 14 Apr 2026").
+  A lead with NEITHER source nor signal_proof must NOT be written. Never invent a URL.
 
 BANNED during Vibe calls:
   - Do not use any GitHub connector or MCP tool
-  - Do not search the web
+  - Do not search the web (except to confirm a real public source URL you will cite)
   - Do not enrich phone numbers
-  - Do not write any lead whose signal lacks a verifiable public source link
+  - Do not write any lead with no provenance (no link and no signal evidence)
 
 THEN: re-run this script: python3 routine.py {MODE} {SLUG} {DATE}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -725,17 +734,28 @@ THEN: re-run this script: python3 routine.py {MODE} {SLUG} {DATE}
         if exclude_keywords and any(kw in company_name for kw in exclude_keywords):
             continue
 
-        # VERIFIED-ONLY POLICY: a lead may be delivered only if its signal carries a
-        # verifiable public source link. No source => unverifiable => never on the report.
+        # TIERED TRUST POLICY (prioritise verified-source leads, never fabricate):
+        #   Tier 1 = signal has a public source link (http...). Clickable proof.
+        #   Tier 2 = no public article, but a real detected signal with structured
+        #            evidence (signal_proof). Shown as on-card evidence, transparently.
+        #   Drop only leads with NEITHER a source link NOR signal_proof.
+        # Tier 1 always ranks above Tier 2; Tier 2 backfills only if Tier 1 is short.
         src = (lead.get("source", lead.get("source_url", "")) or "").strip()
-        if not src.startswith("http"):
+        proof = (lead.get("signal_proof", lead.get("signalProof",
+                 lead.get("evidence", ""))) or "").strip()
+        has_source = src.startswith("http")
+        has_proof = bool(proof)
+        if not (has_source or has_proof):
             dropped_unverified += 1
             continue
-
+        lead["_tier"] = 0 if has_source else 1
         candidates.append(lead)
 
     if dropped_unverified:
-        print(f"  Verified-only: dropped {dropped_unverified} lead(s) with no verifiable source link.")
+        print(f"  Trust policy: dropped {dropped_unverified} lead(s) with neither a source link nor signal evidence.")
+    tier1 = sum(1 for c in candidates if c.get("_tier") == 0)
+    tier2 = len(candidates) - tier1
+    print(f"  Candidates: {tier1} verified-source (Tier 1), {tier2} evidence-only (Tier 2).")
 
     def sort_key(lead):
         signals = lead.get("signals", lead.get("signal_types", []))
@@ -747,14 +767,15 @@ THEN: re-run this script: python3 routine.py {MODE} {SLUG} {DATE}
             days_ago = int(days_ago)
         except (TypeError, ValueError):
             days_ago = 999
-        return (-dual, days_ago)
+        tier = lead.get("_tier", 1)  # 0 = verified source first, 1 = evidence-only
+        return (tier, -dual, days_ago)
 
     candidates.sort(key=sort_key)
     kept_leads = candidates[:target_leads]
 
     if len(kept_leads) == 0:
         print("ERROR: No verifiable leads after filtering.")
-        print("Verified-only policy: every delivered lead needs a public source link.")
+        print("Trust policy: every delivered lead needs a public source link OR signal evidence.")
         print("Either widen to event types that carry public sources (M&A, funding,")
         print("partnerships, product launches, lawsuits) or re-run a fresh search.")
         print("Delivering nothing is correct here: never deploy an unverifiable claim.")
@@ -838,6 +859,7 @@ THEN: re-run this script: python3 routine.py {MODE} {SLUG} {DATE}
         source = lead.get("source", lead.get("source_url", "")) or ""
         source_title = lead.get("source_title", lead.get("sourceTitle", "")) or ""
         signal_desc = lead.get("signal_description", lead.get("recent_news", "")) or ""
+        signal_proof = lead.get("signal_proof", lead.get("signalProof", lead.get("evidence", ""))) or ""
 
         sigs = lead.get("signals", lead.get("signal_types", []))
         if isinstance(sigs, str):
@@ -935,6 +957,7 @@ THEN: re-run this script: python3 routine.py {MODE} {SLUG} {DATE}
             "emailBody": email_body,
             "source": source,
             "sourceTitle": source_title,
+            "signalProof": signal_proof,
         }
         lead_cards.append(card)
 
