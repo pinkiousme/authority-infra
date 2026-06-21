@@ -21,12 +21,15 @@ The model produces only a small validated JSON object. build_report.py injects i
 ## Data principle
 Every fact on a card comes from the Vibe fetch and enrichment you already ran. LinkedIn URLs, names, titles, signals, and contact come from Vibe. You do NOT browse the web to fill cards in the default path (see Step 3).
 
-## VERIFIED-ONLY DATA POLICY (non-negotiable, overrides convenience)
-Every signal claim on a card MUST carry a verifiable public source link. No link, no lead.
-- After fetching the businesses, call `fetch-businesses-events` and read each event's `data.link`, `data.title`, `data.description`.
-- Keep a company ONLY if its event record has a real public `data.link` (http...). News-backed events (merger_and_acquisitions, new_funding_round, new_partnership, new_product, lawsuits_and_legal_issues, cost_cutting when news-derived) carry links. Pure workforce signals (decrease_in_all_departments and similar) usually have NO link and are UNVERIFIABLE: drop them, never claim them.
-- Each delivered lead carries `signal_description` (the event description as plain fact), `source` (the event link), and `source_title` (the publication). The card renders a "Verify this signal" link to `source`.
-- If nothing is verifiable, deliver nothing and report it. Never deploy a claim a client cannot check. No fabrication, ever.
+## TIERED TRUST DATA POLICY (non-negotiable, overrides convenience)
+Every signal on a card MUST show real provenance. Prioritise public-source leads; never fabricate.
+- After fetching the businesses, call `fetch-businesses-events` and read each event's `data.link`, `data.title`, `data.description`, and type-specific fields (court/case, partner_company, department_change, etc.).
+- Classify each company into a trust tier:
+  - **Tier 1 (preferred):** the event has a real public `data.link` (http...). News-backed events (merger_and_acquisitions, new_funding_round, new_partnership, new_product, lawsuits_and_legal_issues, cost_cutting when news-derived) usually carry links. The card renders a clickable "Verify this signal" link to `source`.
+  - **Tier 2 (fallback, high-intent):** a genuine detected event with no usable public link but real structured detail (e.g. a headcount change with a date, or a court/case). Build a short `signal_proof` string from that detail (event type + date + specifics, noting it is a detected business signal). The card renders that evidence inline as "Signal evidence" instead of a link.
+  - **Drop** a company only if it has neither a link nor any structured detail.
+- Order: Tier 1 first; add Tier 2 only to backfill toward the lead target. Same logic for DEMO and LIVE.
+- Each lead carries `signal_description` (plain fact) plus provenance: `source`+`sourceTitle` (Tier 1) OR `signalProof` (Tier 2). Never invent a URL. A lead with neither must not be delivered.
 
 ## Selection principle
 Which signals and filters to use is frozen in the context file. The routine derives nothing. It reads the two flags and the frozen filter, applies the matrix as a guard, and fetches.
@@ -116,7 +119,7 @@ whyFit: match the verified signal and stage to the prospect's real background. D
 Outreach copy leads with the verified signal category. No unverified specifics as fact. connNote <=280 chars. emailSubj short. emailBody 2-3 short paragraphs, prospect voice, no pitch. Contact: DEMO empty, LIVE email from enrichment (phone always empty). Theme cycles violet, amber, teal, blue, pink.
 
 ## STEP 5 · WRITE data.json (the only thing the model assembles)
-Plain JSON, no HTML. Schema from v7 plus three verification fields per lead: `source` (the event's public URL, REQUIRED), `sourceTitle` (publication name), and `recentNews` set to the event's real `data.description` stated as plain fact. A lead with no `source` URL must NOT be written. Operator `stage` may be revenue bands. Confirm it parses.
+Plain JSON, no HTML. Schema from v7 plus provenance fields per lead: `recentNews` set to the event's real `data.description` (plain fact), and at least ONE of: `source` (Tier 1 public URL) + `sourceTitle`, OR `signalProof` (Tier 2 structured evidence). A lead with neither must NOT be written; never invent a URL. Order Tier 1 before Tier 2. Operator `stage` may be revenue bands. Confirm it parses.
 
 ## STEP 6 · ASSEMBLE (no model HTML)
 GitHub API fetch assets/templates/pipeline-report/index.html and skills/build_report.py.
