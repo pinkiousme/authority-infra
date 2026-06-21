@@ -601,6 +601,14 @@ def main():
     # enough verified leads. Only the final email enrich/export costs credits.
     business_pool = max(200, target_leads * 30)
 
+    # Headroom fallback (LIVE fills target_leads cards): if the tight ICP filter is
+    # short, broaden size then sector. Configurable per client in context.md.
+    broaden_size = vibe_filter.get("broaden_size", "501-1000, 1001-5000")
+    broaden_categories = vibe_filter.get("broaden_categories", "")
+    broaden_sector_text = broaden_categories or (
+        "the adjacent sectors the client credibly serves "
+        "(e.g. manufacturing, logistics, professional services, hospitality)")
+
     if MODE == "DEMO":
         # Cheapest reliable path: show-sample unmasks ~5 rows for a flat 5 credits.
         retrieval = "show-sample"
@@ -677,6 +685,18 @@ STEP D — enrich EMAIL only (never phone) for the surviving companies:
   enrich-prospects  enrichments=["enrich-prospects-contacts"]  contact_types={enrich_types}
 
 {retrieval_block}
+
+STEP E — FILL THE REPORT IF SHORT (only if you have fewer than {target_leads} deliverable leads):
+  Quality first: the tight filter above is the primary pass. ONLY if it yields fewer
+  than {target_leads} leads (Tier 1 + Tier 2, after dedup) do you broaden, repeating
+  A-D to backfill the gap in this order, and stopping the MOMENT you reach {target_leads}:
+    Round 1 - broaden SIZE: add company_size bands [{broaden_size}] (keep sectors + events).
+    Round 2 - broaden SECTOR: also add linkedin_category [{broaden_sector_text}].
+  Every broadened lead still needs provenance (source link or signal_proof) and a real
+  email, still excludes AI/tech/venture, ranks Tier 1 above Tier 2, and dedups against
+  earlier rounds and dedup.json. Enrich/export only the incremental rows you keep so you
+  never exceed the {credit_cap}-credit cap. If even the broadened pool runs out, deliver
+  what qualifies - never fabricate or pad to hit the number.
 
 AFTER RETRIEVAL — write every lead that has a real email to vibe_results.json (JSON array),
   Tier 1 first, then Tier 2 only to backfill toward {target_leads}.
