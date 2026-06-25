@@ -73,6 +73,8 @@ revenue_range: up to $250M AUD
 events: merger_and_acquisitions, cost_cutting, lawsuits_and_legal_issues, new_partnership
 events_window_days: 90
 number_of_results: 12
+broaden_size: 501-1000, 1001-5000
+broaden_categories: manufacturing, wholesale, logistics and supply chain, food and beverage services, professional services, facilities services, transportation, warehousing
 
 ## RUN CONTROL
 credit_cap: 50
