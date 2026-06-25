@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+vibe_results.json
+data.json
+output.html
+deploy_manifest.json
+build_report.py
+template.html
