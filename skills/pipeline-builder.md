@@ -73,9 +73,11 @@ Vibe Prospecting only. Never Apollo. Never exclude_key. EMAIL ONLY — never enr
 
 Cost model (email-only): fetch is free exploration; `estimate-cost` and the enrich preview are free; `show-sample` is a flat 5 credits and returns up to ~5 unmasked rows; `export-to-csv` is ~4 credits per row and returns ALL rows. Pick the unmask method by mode (below). The enrich preview returns MASKED rows — unmask happens at show-sample or export, not at enrich.
 
+OVERSAMPLE (critical): only ~3% of companies matching a news event also have a reachable owner-level email, so the BUSINESS fetch must be large (number_of_results 200-400 — it is free exploration). Verify events, drop AI/tech/venture and over-ceiling companies, then enrich + retrieve only the survivors up to the cap. A small business fetch yields almost no verified leads.
 Sizing so spend never exceeds `credit_cap` (email-only export ≈ 4 credits/row):
-- DEMO: fetch 8, unmask via show-sample (flat 5 credits, well under cap).
-- LIVE: target 10. affordable_rows = credit_cap // 4. fetch = min(12, affordable_rows). Unmask via export-to-csv with limit = fetch (≈ 4 × fetch credits). At credit_cap 50 this is 12 rows / ~48 credits / up to 10 leads; at credit_cap 35 it auto-shrinks to 8 rows / ~32 credits. Never exceed the cap; if the live estimate is over, lower the limit until it fits. Never abort for budget.
+- DEMO: oversample businesses, unmask the top survivors via show-sample (flat 5 credits, well under cap).
+- LIVE: target 10. affordable_rows = credit_cap // 4. enrich/export = min(12, affordable_rows) survivors. Unmask via export-to-csv with limit = that count (≈ 4 credits each). At credit_cap 50 this is up to 12 rows / ~48 credits / up to 10 leads; at credit_cap 35 it auto-shrinks to 8 rows / ~32 credits. Never exceed the cap; if the live estimate is over, lower the limit until it fits. Never abort for budget.
+- Reality: a narrow ICP may yield fewer than 10 verified leads in a week. Deliver what is genuinely verified and report the count. Never pad with unverified leads to hit a number.
 
 Guard: if BUYER_PROFILE is operator, ensure `new_funding_round` is NOT in events. Buyer titles from context. job_level owner-level only. company_size context bands only. events = frozen list, window = events_window_days (default 90, valid range 30-90).
 
