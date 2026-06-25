@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 routine.py · Pipelind Pipeline Report Runner
-Version: 2.0 · June 2026
+Version: 2.1 · June 2026
 
 Encodes the complete 9-step pipeline report build as a deterministic Python
 script. Claude Code's only job is: python3 routine.py MODE SLUG DATE
@@ -25,10 +25,19 @@ KEY FIXES IN v2.0 (all data shape bugs that caused empty Dashboard/Signals/Marke
     is internal only and never rendered in visible HTML - removed that false-positive check)
   - markets.notes: now uses neutral wording, no tool names in rendered content
 
+Vibe Prospecting workflow (email-only, both modes):
+  - Signals (events) are business-level, so the fetch is a two-step:
+    1. fetch-entities entity_type "businesses" with the events filter
+    2. fetch-entities entity_type "prospects" using that businesses_reference_table
+  - Enrich EMAIL only (no phone, ever) via enrich-prospects-contacts.
+  - DEMO retrieves via show-sample (flat 5 credits). LIVE retrieves via
+    export-to-csv, sized from credit_cap so spend never exceeds the budget.
+
 What this script NEVER does:
   - Use any GitHub MCP connector or tool
   - Search the web
-  - Call Vibe more than once (one fetch, one enrich)
+  - Enrich phone numbers (email only)
+  - Exceed the context credit_cap (fetch size is derived from it)
   - Edit template.html
   - Deploy a file under 50,000 bytes
   - Ask questions or pause for permission
@@ -512,7 +521,7 @@ def main():
         print(f"ERROR: DATE must be 8 digits in DDMMYYYY format, got '{DATE}'")
         sys.exit(1)
 
-    print(f"\nPipelind Pipeline Report Routine v2.0")
+    print(f"\nPipelind Pipeline Report Routine v2.1")
     print(f"Mode: {MODE} | Slug: {SLUG} | Date: {DATE}")
     print("=" * 60)
 
@@ -559,48 +568,88 @@ def main():
     print("  build_report.py and template.html ready.")
 
     # ── STEP 3: Vibe Prospecting ──────────────────────────────────────────────
-    target_fetch = 8 if MODE == "DEMO" else 12
+    # Email-only enrichment for BOTH DEMO and LIVE (phone is never enriched).
+    # Cost model (email-only):
+    #   show-sample   = flat 5 credits, returns up to ~5 unmasked rows   (DEMO path)
+    #   export-to-csv = ~4 credits/row (2 fetch + 2 email enrich), returns ALL rows (LIVE path)
+    # The fetch size is derived from the credit cap so a run can NEVER exceed budget.
+    COST_PER_ROW = 4
     target_leads = 5 if MODE == "DEMO" else 10
-    enrich_types = '["email"]' if MODE == "DEMO" else '["email", "phone"]'
+    enrich_types = '["email"]'  # email only, both modes — no phone
+    credit_cap = run_control["credit_cap"]
     events_window = vibe_filter.get("events_window_days", "90")
 
-    print(f"\n[Step 3] Vibe Prospecting | Target: {target_leads} leads")
+    if MODE == "DEMO":
+        # Cheapest reliable path: show-sample unmasks ~5 rows for a flat 5 credits.
+        retrieval = "show-sample"
+        target_fetch = 8
+        projected_cost = 5
+    else:
+        # LIVE: export the full enriched set, sized so spend never exceeds the cap.
+        affordable_rows = max(credit_cap // COST_PER_ROW, 5)
+        target_fetch = min(target_leads + 2, affordable_rows)  # +2 buffer for dedup
+        projected_cost = COST_PER_ROW * target_fetch
+        retrieval = "export-to-csv"
+
+    print(f"\n[Step 3] Vibe Prospecting | Target: {target_leads} leads | "
+          f"Retrieval: {retrieval} | Projected: ~{projected_cost}/{credit_cap} credits")
 
     if not os.path.exists("vibe_results.json"):
+        if retrieval == "show-sample":
+            retrieval_block = (
+                "STEP D — unmask the rows (cheapest path):\n"
+                "  show-sample  (flat 5 credits, returns the unmasked rows)\n"
+                "  Use the rows it returns. Do NOT call export-to-csv in DEMO mode."
+            )
+        else:
+            retrieval_block = (
+                f"STEP D — retrieve the full enriched set:\n"
+                f"  export-to-csv  limit={target_fetch}  (~{projected_cost} credits)\n"
+                f"  Download the CSV and read every row. This stays within the "
+                f"{credit_cap}-credit cap.\n"
+                f"  If the live cost estimate ever exceeds {credit_cap}, lower limit until it fits."
+            )
+
         print(f"""
-CLAUDE CODE — THREE VIBE MCP CALLS REQUIRED (do these now, then re-run this script):
+CLAUDE CODE — VIBE MCP CALLS REQUIRED (do these now, then re-run this script):
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-CALL 3a: estimate-cost
-  (0 credits, confirms budget before fetching)
-  If projected spend exceeds {run_control['credit_cap']} credits: stop and report "CREDIT CAP EXCEEDED"
+Email-only enrichment. No phone. Budget cap: {credit_cap} credits. Projected spend: ~{projected_cost}.
 
-CALL 3b: fetch-entities (exactly once)
-  entity_type: "prospects"
-  number_of_results: {target_fetch}
-  filters:
-    job_title: {vibe_filter.get('job_title', '')}
-    job_level: {vibe_filter.get('job_level', '')}
-    company_size: {vibe_filter.get('company_size', '')}
-    company_country_code: {vibe_filter.get('company_country_code', '')}
-    linkedin_category: {vibe_filter.get('linkedin_category', '')}
-    events: values=[{vibe_filter.get('events', '')}] last_occurrence={events_window} days
+STEP A — fetch BUSINESSES with the event signals
+  (the events filter ONLY works on entity_type "businesses", never on prospects):
+  fetch-entities
+    entity_type: "businesses"
+    number_of_results: {target_fetch}
+    filters:
+      company_size: {vibe_filter.get('company_size', '')}
+      company_country_code: {vibe_filter.get('company_country_code', '')}
+      linkedin_category: {vibe_filter.get('linkedin_category', '')}   (resolve via autocomplete first)
+      events: values=[{vibe_filter.get('events', '')}] last_occurrence={events_window} days
+  -> SAVE the businesses_reference_table from the response for STEP B.
 
-CALL 3c: enrich-prospects-contacts (exactly once, on results from 3b)
-  contact_types: {enrich_types}
-  NOTE: If Vibe shows masked data after enrich, call show-sample once to unmask.
-  All three calls (estimate, fetch, enrich, and show-sample if needed) count as the
-  single Vibe budget for this run. Do NOT call fetch-entities again.
+STEP B — fetch decision-maker PROSPECTS from those businesses:
+  fetch-entities
+    entity_type: "prospects"
+    businesses_reference_table: <the table returned by STEP A>
+    number_of_results: {target_fetch}
+    filters:
+      job_title: {vibe_filter.get('job_title', '')}   (resolve via autocomplete first)
+      job_level: {vibe_filter.get('job_level', '')}
+      has_email: true
 
-AFTER ALL CALLS COMPLETE:
-  Write ALL enriched lead data to vibe_results.json as a JSON array.
-  Each item should include: name, title/role, company, country, industry,
-  employees/company_size, revenue/revenue_range, linkedin_url, website,
-  email (if enriched), phone (if enriched), and signals/signal_types (list).
+STEP C — enrich EMAIL only (never phone):
+  enrich-prospects  enrichments=["enrich-prospects-contacts"]  contact_types={enrich_types}
+
+{retrieval_block}
+
+AFTER RETRIEVAL — write every lead that has a real email to vibe_results.json (JSON array).
+  Each item: name, title, company, country, industry, employees, revenue,
+  linkedin_url, website, email, signals (list). Never fabricate a field.
 
 BANNED during Vibe calls:
   - Do not use any GitHub connector or MCP tool
   - Do not search the web
-  - Do not call export or fetch-entities a second time
+  - Do not enrich phone numbers
 
 THEN: re-run this script: python3 routine.py {MODE} {SLUG} {DATE}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
