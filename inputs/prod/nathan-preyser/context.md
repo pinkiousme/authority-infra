@@ -12,6 +12,10 @@ LINKEDIN: https://www.linkedin.com/in/nathan-preyser
 DEPLOY_PATH: prod/nathan-preyser/pipeline/index.html
 DEPLOY_URL: https://pipelind.com/prod/nathan-preyser/pipeline
 
+## SELECTION FLAGS
+BUYER_PROFILE: operator
+ADVISOR_FUNCTION: finance
+
 ## WHAT THE CLIENT DOES
 Nathan is the founder of Strategin Advisory, working as a Fractional CFO and Advisor for SMEs and not-for-profits across Australia and New Zealand. He has 35+ years of experience as a CFO, COO, GM Procurement and NFP board chair across ASX-listed corporates, mid-market businesses and national not-for-profits. His track record spans M&A due diligence and integration, cashflow turnaround, governance uplift (including NDIS Act, Disability Discrimination Act and Quality & Safeguards compliance), ERP and WMS optimisation, and operational transformation. Notable work includes COO/CFO at Fight Cancer Foundation and lead M&A advisor on the merger that formed the $360M Possability/Lifestyle Solutions group. He holds an FCPA (Fellow CPA) and Certified Professional Business Advisor credential, with a Bachelor of Business (Accounting) and Masters of Marketing from Monash University.
 
@@ -58,12 +62,18 @@ Nathan's buyers are not posting "we need a fractional CFO" on LinkedIn. They are
 Dedup file: inputs/prod/nathan-preyser/dedup.json
 Append delivered LinkedIn URLs to this file after every weekly run. Never deliver the same lead twice.
 
-## VIBE FILTER DERIVATION (for the skill)
+## FROZEN VIBE FILTER (routine uses verbatim, no derivation)
+job_title: "chief executive officer", "founder", "owner", "managing director", "executive director", "board chair"
 job_level: founder, owner, president, c-suite
-job_title: chief executive officer, ceo, founder, owner, managing director, executive director, board chair
 company_size: 11-50, 51-200, 201-500
 company_country_code: AU, NZ
-revenue_range: up to $250M
-linkedin_category: Retail, Building Materials, Hospitals and Health Care, Individual and Family Services, Disability Services, Health Wellness and Fitness, Medical and Diagnostic Laboratories, Non-profit Organization Management
+linkedin_category: retail, building materials, hospitals and health care, individual and family services, disability services, health wellness and fitness, medical and diagnostic laboratories, non-profit organization management
+revenue_range: up to $250M AUD
 events: merger_and_acquisitions, restructuring, cost_cutting, hiring_in_finance_department
+events_window_days: 90
 number_of_results: 12
+
+## RUN CONTROL
+credit_cap: 35
+web_mode: off
+deploy_path: prod/nathan-preyser/pipeline/index.html
