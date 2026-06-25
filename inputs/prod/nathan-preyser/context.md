@@ -39,13 +39,14 @@ His core delivery areas, in order of relevance to his buyers:
 - Buyer pain: Founders and boards facing a cashflow crisis, turnaround pressure, M&A complexity, or governance gap that requires experienced fractional CFO or COO leadership, without yet justifying a full-time hire. Specifically: businesses under stress, restructuring, post-merger integration, or navigating NDIS/DDA compliance obligations
 
 ## BUYING SIGNALS THAT INDICATE ACTIVE NEED
+VERIFIED-ONLY: every signal below is a news/web event that carries a public source link, so each delivered lead can be verified by the buyer. Workforce-only signals (e.g. headcount decreases) are deliberately excluded because they have no public source to cite.
 Primary signals (run these first):
-- merger_and_acquisitions: businesses undergoing M&A, due diligence, post-merger integration or business combination need experienced fractional CFO leadership. Directly matches Nathan's M&A background including the $360M Possability/LSS merger
-- cost_cutting: active cost cutting signals cashflow stress and a stabilisation need. Directly matches his core offer of turnaround and stabilisation with 90-180 day outcomes
-- decrease_in_all_departments: org-wide headcount reduction is the clearest available proxy for an active restructure. Vibe Prospecting has no literal "restructuring" event type, so this and cost_cutting together stand in for that trigger
+- merger_and_acquisitions: businesses undergoing M&A, due diligence, post-merger integration or business combination need experienced fractional CFO leadership. Directly matches Nathan's M&A background including the $360M Possability/LSS merger. Carries public sources
+- cost_cutting: publicly reported cost cutting signals cashflow stress and a stabilisation need. Directly matches his turnaround and stabilisation offer. Carries public sources
 
 Secondary signals (use only if primary signals return fewer than 10 leads after dedup):
-- hiring_in_finance_department: finance function being built out or restructured signals a governance or leadership gap
+- lawsuits_and_legal_issues: publicly reported legal or regulatory issues signal a governance, risk or audit-readiness gap, matching Nathan's governance and board-reporting strength
+- new_partnership: a publicly announced major partnership often surfaces integration, margin and finance questions Nathan is positioned to advise on
 
 ## PERSONALIZATION ANCHOR (why this fits the client)
 Nathan's buyers are not posting "we need a fractional CFO" on LinkedIn. They are identifiable by what they are doing operationally: mergers, restructures, cost resets. Pipelind surfaces companies in those active windows so Nathan can reach them before the need is fully defined and a full-time hire is being considered. Every lead card should open with the company's situation (the signal), not with a description of Nathan's services.
@@ -69,7 +70,7 @@ company_size: 11-50, 51-200, 201-500
 company_country_code: AU, NZ
 linkedin_category: retail, building materials, hospitals and health care, individual and family services, disability services, health wellness and fitness, medical and diagnostic laboratories, non-profit organization management
 revenue_range: up to $250M AUD
-events: merger_and_acquisitions, cost_cutting, decrease_in_all_departments, hiring_in_finance_department
+events: merger_and_acquisitions, cost_cutting, lawsuits_and_legal_issues, new_partnership
 events_window_days: 90
 number_of_results: 12
 
