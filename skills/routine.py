@@ -11,8 +11,11 @@ Usage:
   python3 routine.py LIVE anthony-perez 20062026
 
 Environment required:
-  GH_TOKEN  GitHub personal access token with repo write scope
-  (Set this in Claude Code cloud environment variables - never in the prompt)
+  NONE. This script needs no token and no secret.
+  - All READS come from the local clone (the repo is cloned fresh every run).
+  - All WRITES are built locally and deployed to `main` by Claude Code through
+    the connected GitHub App (MCP) - the only sanctioned GitHub path in cloud
+    Routines. The script never calls api.github.com and never holds a token.
 
 KEY FIXES IN v2.0 (all data shape bugs that caused empty Dashboard/Signals/Markets tabs):
   - stats: now an ARRAY of {n,l,c,bar} objects (template calls stats.forEach)
@@ -45,7 +48,8 @@ TIERED TRUST DATA POLICY (v2.2):
   - Tier 1 always ranks above Tier 2. Same logic for DEMO and LIVE.
 
 What this script NEVER does:
-  - Use any GitHub MCP connector or tool
+  - Call api.github.com directly or hold a GitHub token (blocked by session
+    policy; the connected GitHub App is the only sanctioned write path)
   - Search the web
   - Enrich phone numbers (email only)
   - Deploy a lead with no provenance (neither a source link nor signal evidence)
@@ -53,8 +57,6 @@ What this script NEVER does:
   - Edit template.html
   - Deploy a file under 50,000 bytes
   - Ask questions or pause for permission
-  - Use git or create branches or PRs
-  - Use any token except os.environ["GH_TOKEN"]
 """
 
 import sys
@@ -91,54 +93,48 @@ STAT_COLORS = {
 }
 
 
-# ── GitHub API helpers ───────────────────────────────────────────────────────
+# ── Repo I/O helpers ─────────────────────────────────────────────────────────
+# This routine runs inside a fresh clone of the repo. All READS come from the
+# local working tree (no network, no token). All WRITES are staged locally and
+# handed to Claude Code, which deploys them to `main` through the connected
+# GitHub App (MCP) - the only sanctioned GitHub path in cloud Routines. The
+# script itself never calls api.github.com and never holds a token.
 
-def _gh_request(method, path, payload=None):
-    # Primary: env var (local Claude Code or CI).
-    # Fallback: deploy key assembled at runtime from parts — cloud Routines does
-    # not reliably expose env vars to Python subprocesses.
-    _k = ["EP7e8mdjyjVLIAvuz6WMY", "GzkfwHDDL2zTLc5"]
-    _DEPLOY_KEY = "ghp_" + "".join(_k)
-    token = os.environ.get("GH_TOKEN") or _DEPLOY_KEY
-    if not token:
-        raise RuntimeError(
-            "GH_TOKEN environment variable is not set and no embedded key found."
-        )
-    if method == "GET":
-        url = f"https://api.github.com/repos/{REPO}/contents/{path}?ref=main"
-    else:
-        url = f"https://api.github.com/repos/{REPO}/contents/{path}"
+REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-    data = json.dumps(payload).encode() if payload else None
-    req = urllib.request.Request(url, data=data, method=method)
-    req.add_header("Authorization", "Bearer " + token)
-    req.add_header("Accept", "application/vnd.github+json")
-    req.add_header("User-Agent", "pipelind-routine/2.0")
-    if data:
-        req.add_header("Content-Type", "application/json")
-    try:
-        resp = urllib.request.urlopen(req)
-        return resp.status, json.load(resp)
-    except urllib.error.HTTPError as e:
-        try:
-            return e.code, json.load(e)
-        except Exception:
-            return e.code, {"message": str(e)}
+# Files staged for deployment, drained into deploy_manifest.json at the end.
+_DEPLOY_ACTIONS = []
+
+
+def _local_path(path):
+    return os.path.join(REPO_ROOT, path)
 
 
 def gh_read(path):
-    """Read a file from main. Returns (text, sha). Raises FileNotFoundError if missing."""
-    status, body = _gh_request("GET", path)
-    if status != 200:
-        raise FileNotFoundError(
-            f"GitHub read failed for {path}: HTTP {status} {body.get('message', '')}"
+    """Read a file from the local clone. Returns (text, None).
+    Falls back to origin/main via git (no HTTP API) if the file is not in the
+    working tree. Raises FileNotFoundError if it exists in neither place."""
+    local = _local_path(path)
+    if os.path.isfile(local):
+        with open(local, "r", encoding="utf-8") as f:
+            return f.read(), None
+    try:
+        out = subprocess.run(
+            ["git", "-C", REPO_ROOT, "show", f"origin/main:{path}"],
+            capture_output=True, text=True,
         )
-    text = base64.b64decode(body["content"]).decode("utf-8")
-    return text, body["sha"]
+        if out.returncode == 0:
+            return out.stdout, None
+    except Exception:
+        pass
+    raise FileNotFoundError(
+        f"'{path}' not found in the working tree ({local}) or on origin/main. "
+        f"Make sure it is committed and the clone is up to date."
+    )
 
 
 def gh_read_json(path, default=None):
-    """Read a JSON file from main. Returns default if file does not exist."""
+    """Read a JSON file from the local clone. Returns default if it does not exist."""
     try:
         text, _ = gh_read(path)
         return json.loads(text)
@@ -146,27 +142,22 @@ def gh_read_json(path, default=None):
         return default if default is not None else []
 
 
-def gh_write(path, content_str, commit_message):
-    """Create or update a file on main. Raises on failure."""
-    status, existing = _gh_request("GET", path)
-    sha = existing.get("sha") if status == 200 else None
-
-    payload = {
+def queue_deploy(path, content_str, commit_message):
+    """Stage a file for deployment to `main`.
+    Writes the content into the local repo tree (so Claude can read it back and
+    push it through the GitHub App / MCP) and records the action in the deploy
+    manifest. Returns the local path written."""
+    local = _local_path(path)
+    os.makedirs(os.path.dirname(local), exist_ok=True)
+    with open(local, "w", encoding="utf-8") as f:
+        f.write(content_str)
+    _DEPLOY_ACTIONS.append({
+        "repo_path": path,
+        "local_path": local,
         "message": commit_message,
-        "content": base64.b64encode(content_str.encode("utf-8")).decode(),
-        "branch": "main",
-        "committer": COMMITTER,
-        "author": COMMITTER,
-    }
-    if sha:
-        payload["sha"] = sha
-
-    status, body = _gh_request("PUT", path, payload)
-    if status not in (200, 201):
-        raise RuntimeError(
-            f"GitHub write failed for {path}: HTTP {status} {body.get('message', '')}"
-        )
-    return status
+        "bytes": len(content_str.encode("utf-8")),
+    })
+    return local
 
 
 # ── Context parser ───────────────────────────────────────────────────────────
@@ -576,7 +567,7 @@ def main():
     print("  Context parsed successfully.")
 
     # ── STEP 2: Read build script and template ────────────────────────────────
-    print("\n[Step 2] Reading build_report.py and template from GitHub ...")
+    print("\n[Step 2] Reading build_report.py and template from local clone ...")
     builder_text, _ = gh_read("skills/build_report.py")
     template_text, _ = gh_read("assets/templates/pipeline-report/index.html")
 
@@ -1088,9 +1079,10 @@ THEN: re-run this script: python3 routine.py {MODE} {SLUG} {DATE}
         deploy_path = f"prod/{SLUG}/pipeline/index.html"
         live_url = f"https://pipelind.com/prod/{SLUG}/pipeline/"
 
-    print(f"\n[Step 8] Deploying to {deploy_path} ...")
-    gh_write(deploy_path, html_content, f"Pipeline report · {MODE} · {SLUG} · {DATE}")
-    print(f"  Deployed. Live at {live_url} (allow 30-90s for Vercel CDN)")
+    print(f"\n[Step 8] Staging deploy to {deploy_path} ...")
+    queue_deploy(deploy_path, html_content, f"Pipeline report · {MODE} · {SLUG} · {DATE}")
+    print(f"  Staged {len(html_content.encode('utf-8')):,} bytes for {deploy_path}")
+    print(f"  Will be live at {live_url} (allow 30-90s for Vercel CDN after deploy)")
 
     # ── STEP 9: Update dedup.json (LIVE only) ────────────────────────────────
     if MODE == "LIVE":
@@ -1098,23 +1090,43 @@ THEN: re-run this script: python3 routine.py {MODE} {SLUG} {DATE}
         new_urls = [card["linkedin"] for card in lead_cards if card.get("linkedin")]
         existing_dedup = gh_read_json(f"inputs/prod/{SLUG}/dedup.json", default=[])
         updated_dedup = sorted(set(existing_dedup) | set(new_urls))
-        gh_write(
+        queue_deploy(
             f"inputs/prod/{SLUG}/dedup.json",
             json.dumps(updated_dedup, indent=2),
             f"Dedup update · {SLUG} · {DATE}",
         )
-        print(f"  dedup.json updated. Total delivered: {len(updated_dedup)}")
+        print(f"  dedup.json staged. Total delivered: {len(updated_dedup)}")
     else:
         print(f"\n[Step 9] DEMO mode — no dedup update.")
+
+    # ── Emit deploy manifest for Claude to push via the GitHub App (MCP) ──────
+    manifest_path = os.path.join(os.getcwd(), "deploy_manifest.json")
+    with open(manifest_path, "w", encoding="utf-8") as f:
+        json.dump(_DEPLOY_ACTIONS, f, indent=2)
 
     # ── Final status ──────────────────────────────────────────────────────────
     print(f"\n{'=' * 60}")
     print(
-        f"PIPELINE REPORT COMPLETE · {MODE} · {prospect_full} · {firm} · "
-        f"Leads {len(kept_leads)} · HOT {hot_count} · WARM {warm_count} · "
-        f"Live URL: {live_url} · Deploy SUCCESS"
+        f"BUILD COMPLETE · {MODE} · {prospect_full} · {firm} · "
+        f"Leads {len(kept_leads)} · HOT {hot_count} · WARM {warm_count}"
     )
-    print(f"{'=' * 60}\n")
+    print(f"{'=' * 60}")
+    print(f"""
+CLAUDE CODE - DEPLOY THESE FILES TO main VIA THE GITHUB APP (MCP):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+The build is done and validated. {len(_DEPLOY_ACTIONS)} file(s) are written into the
+working tree and listed in deploy_manifest.json (repo_path, local_path, message).
+Push each one to branch main using the GitHub MCP connector
+(mcp__github__create_or_update_file, or push_files for a single commit):
+""")
+    for a in _DEPLOY_ACTIONS:
+        print(f"  - {a['repo_path']}  ({a['bytes']:,} bytes)  msg: {a['message']}")
+    print(f"""
+Read each file's contents back from its local_path. Do NOT call api.github.com
+directly (blocked by session policy) and do NOT use a token. After the push the
+report is live at: {live_url}  (allow 30-90s for the Vercel CDN)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+""")
 
 
 if __name__ == "__main__":

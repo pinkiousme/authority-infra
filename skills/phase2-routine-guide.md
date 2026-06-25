@@ -63,22 +63,24 @@ INPUTS:
 MODE: DEMO
 SLUG: dave-cotter
 DATE: 14062026
-TOKEN: PASTE_GITHUB_TOKEN_HERE
 
-Follow the skill exactly:
-1. Read the context file from inputs/demo/[SLUG]/context.md
-2. Fetch 5 real ICP-matched leads from Vibe Prospecting with live signals (last 90 days). No enrichment in DEMO mode.
-3. Run one web search per lead for company intelligence.
-4. Derive signal classification, priority ranking, why-fit, why-now, connection notes, email drafts, and the market pulse from real data only.
-5. Fetch the approved template, inject the real leads, remove the test banner, keep the conversion CTA and Content tab (DEMO mode), show LinkedIn + website only (no email/phone in DEMO).
-6. Validate the script parses and there are zero em dashes and zero exclamation marks.
-7. Deploy to demo/[DATE]/[firstname]/index.html in pinkiousme/authority-infra via the GitHub Contents API.
-8. Output the live URL and a suggested DM script.
+NO TOKEN. GitHub access goes through the connected GitHub App, never a pasted
+token. Run: python3 skills/routine.py DEMO [SLUG] [DATE]
+
+Follow the script exactly:
+1. The script reads the context file from inputs/demo/[SLUG]/context.md (local clone).
+2. When it prints the VIBE block, do the Vibe Prospecting MCP calls it lists,
+   write the results to vibe_results.json, then re-run the same command.
+3. The script builds and validates the report, then prints a DEPLOY block and a
+   deploy_manifest.json. Deploy each listed file to branch main using the GitHub
+   App (mcp__github__create_or_update_file or push_files). Do NOT use a token or
+   call api.github.com directly - the session policy blocks that path.
+4. Output the live URL and a suggested DM script.
 
 Before each run, update SLUG to the prospect's folder name and DATE to today in DDMMYYYY.
 ```
 
-Settings: Frequency = Manual / Run on demand (not scheduled). Connectors = Vibe Prospecting. Replace PASTE_GITHUB_TOKEN_HERE with your token.
+Settings: Frequency = Manual / Run on demand (not scheduled). Connectors = Vibe Prospecting, GitHub. No token needed.
 
 ---
 
@@ -96,23 +98,25 @@ INPUTS:
 MODE: LIVE
 SLUG: [clientname]
 DATE: [auto today DDMMYYYY]
-TOKEN: PASTE_GITHUB_TOKEN_HERE
 
-Follow the skill exactly:
-1. Read the context file from inputs/prod/[SLUG]/context.md
-2. Fetch 15 leads from Vibe, dedup against the client Google Sheet, keep 10 clean leads with live signals.
-3. Run enrich-prospects-contacts on the 10 leads (email + phone).
-4. Run one web search per lead for company intelligence.
-5. Derive all per-lead fields and the market pulse from real data only.
-6. Fetch the approved template, inject the real leads, remove the test banner, remove the conversion CTA (LIVE mode), show email + phone on cards.
-7. Validate, then deploy to prod/[SLUG]/pipeline/index.html.
-8. Append the 10 delivered LinkedIn URLs to the client dedup sheet.
-9. Output the live URL.
+NO TOKEN. GitHub access goes through the connected GitHub App, never a pasted
+token. Run: python3 skills/routine.py LIVE [SLUG] [DATE]
+
+Follow the script exactly:
+1. The script reads inputs/prod/[SLUG]/context.md and dedup.json from the local clone.
+2. When it prints the VIBE block, do the Vibe Prospecting MCP calls it lists
+   (email-only enrichment, dedup against dedup.json), write the results to
+   vibe_results.json, then re-run the same command.
+3. The script builds and validates the report and stages both the report and the
+   updated dedup.json in deploy_manifest.json. Deploy each listed file to branch
+   main using the GitHub App (mcp__github__create_or_update_file or push_files).
+   Do NOT use a token or call api.github.com directly.
+4. Output the live URL.
 
 Run every Monday at 8:00 AM client local time.
 ```
 
-Settings: Frequency = Weekly, Monday. Connectors = Vibe Prospecting, Google Drive (for dedup sheet).
+Settings: Frequency = Weekly, Monday. Connectors = Vibe Prospecting, GitHub. No token needed.
 
 ---
 
