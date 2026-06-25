@@ -1,5 +1,6 @@
 # Prospect Context · Nathan Preyser
 # Mode input file for pipeline-builder skill
+# Updated: June 2026 · v2 (prospect-confirmed filters)
 
 PROSPECT_FIRST_NAME: Nathan
 PROSPECT_FULL_NAME: Nathan Preyser
@@ -10,34 +11,52 @@ LOCATION: Greater Melbourne Area, Australia
 LINKEDIN: https://www.linkedin.com/in/nathan-preyser
 
 ## WHAT THE PROSPECT DOES
-Nathan is the founder of Strategin Advisory, working as a Fractional CFO and Advisor for SMEs and not for profits, with 35+ years of experience as a CFO, COO, GM Procurement and NFP board chair across ASX listed corporates, SMEs and national not for profits. His track record includes M&A due diligence and integration, cashflow turnaround, governance uplift and operational transformation, including COO/CFO at Fight Cancer Foundation and lead M&A advisor on the merger that formed the 360M dollar Possability/Lifestyle Solutions group. He holds an FCPA (Fellow CPA) and Certified Professional Business Advisor credential, with a Bachelor of Business (Accounting) and Masters of Marketing from Monash University.
+Nathan is the founder of Strategin Advisory, working as a Fractional CFO and Advisor for SMEs and not-for-profits across Australia and New Zealand. He has 35+ years of experience as a CFO, COO, GM Procurement and NFP board chair across ASX-listed corporates, mid-market businesses and national not-for-profits. His track record spans M&A due diligence and integration, cashflow turnaround, governance uplift (including NDIS Act, Disability Discrimination Act and Quality & Safeguards compliance), ERP and WMS optimisation, and operational transformation. Notable work includes COO/CFO at Fight Cancer Foundation and lead M&A advisor on the merger that formed the $360M Possability/Lifestyle Solutions group. He holds an FCPA (Fellow CPA) and Certified Professional Business Advisor credential, with a Bachelor of Business (Accounting) and Masters of Marketing from Monash University.
+
+His core delivery areas, in order of relevance to his buyers:
+- Turnaround and stabilisation (90-180 day outcomes)
+- Cashflow recovery and cost reset
+- Governance uplift (Disability Discrimination Act, NDIS Act, Quality & Safeguards Commission)
+- ERP and WMS optimisation and process redesign
+- Growth strategy, pricing, and margin expansion
+- Board reporting, risk management, and audit readiness
+- Leadership coaching and capability building
 
 ## THE PROSPECT'S ICP (who their buyers are)
-- Buyer titles (decision-makers only): CEO, Founder, Owner, President, Managing Director, Executive Director (NFP equivalent), Board Chair, Board Member
-- Partner/secondary titles (not buyers): None specified by the prospect
-- Company stage: Established, operating businesses, NOT pre-revenue or early-stage startups. Founder-led SMEs through to mid-market businesses, including mature not for profits
-- Company size: Employee count not specified by the prospect. Revenue ceiling stated directly: founder-led SMEs up to 100M AUD, mid-market businesses up to 250M AUD
-- Industries: Retail, Distribution and Wholesale, FMCG and Consumer Goods, Ecommerce, Healthcare, Accommodation and Hospitality, Disability Services, Property, Building Materials, Not for Profit. Prospect confirmed sector is flexible, ranging from retail to NFP
-- Geography: Australia and New Zealand primary, open to other geographies for the right engagement
-- Buyer pain: Founders and boards lack the dedicated finance and governance leadership needed to bring clarity, control cashflow and execute a scalable growth or turnaround plan, without yet needing a full time CFO or COO hire
+- Buyer titles: CEO, Founder, Owner, Managing Director, Executive Director, Board Chair, Board Member
+- Company size: Revenue up to $250M AUD. Employee count: 11-50 (small) through to 201-500 (mid-market). No startups. Established operating businesses only
+- Industries (confirmed by prospect, priority order):
+  1. Retail and Building Materials
+  2. Health (hospitals, allied health, medical services, healthcare providers)
+  3. Disability Services (NDIS providers, disability care, supported accommodation)
+- Geography: Australia primary. New Zealand secondary
+- Buyer pain: Founders and boards facing a cashflow crisis, turnaround pressure, M&A complexity, or governance gap that requires experienced fractional CFO or COO leadership, without yet justifying a full-time hire. Specifically: businesses under stress, restructuring, post-merger integration, or navigating NDIS/DDA compliance obligations
 
 ## BUYING SIGNALS THAT INDICATE ACTIVE NEED
-- merger_and_acquisitions: businesses undergoing M&A need experienced finance leadership for due diligence, integration planning and post merger governance, directly matching Nathan's M&A and business integration background
-- cost_cutting: active cost cutting signals cashflow stress or a stabilisation need, matching his core offer of fixing cashflow and leading business turnarounds
-- hiring_in_finance_department: a finance function being built out or restructured signals a governance or leadership gap that a fractional CFO is positioned to fill or oversee
-- increase_in_operations_department: scaling operational headcount, especially across multiple sites, signals a founder-led business hitting the growth complexity inflection point his content addresses, where financial and operational discipline becomes the bottleneck
+Confirmed by prospect. Two primary signal categories only:
+- merger_and_acquisitions: businesses undergoing M&A, due diligence, post-merger integration or business combination need experienced fractional CFO leadership. Directly matches Nathan's M&A background including the $360M Possability/LSS merger
+- restructuring: active restructure or cost-cutting signals cashflow stress, a stabilisation need, or a governance gap. Directly matches his core offer of turnaround and stabilisation with 90-180 day outcomes
+
+Secondary signals (use if primary signals return fewer than 10 leads):
+- hiring_in_finance_department: finance function being built out or restructured signals a governance or leadership gap
+- cost_cutting: active cost cutting matches his cashflow recovery and cost reset offer
+
+## PERSONALIZATION ANCHOR (why Pipelind fits Nathan specifically)
+Nathan's buyers are not posting "we need a fractional CFO" on LinkedIn. They are identifiable by what they are doing operationally: mergers, restructures, cost resets. Pipelind surfaces companies in those active windows so Nathan can reach them before the need is fully defined and a full-time hire is being considered.
 
 ## PROSPECT VOICE (for outreach copy matching)
-- Calm, structured, advisory tone backed by decades of experience and credentials (35+ years, FCPA)
-- Breaks problems into clear staged frameworks (for example Stabilise, Clarify, Execute) and numbered content series rather than abstract advice
-- Speaks to founders and boards as a peer and partner, not a vendor pitching a service
-- Declarative, professional sentence style. No exclamation marks, no hype language. Pairs warmth ("a steady hand") with commercial precision ("commercial mindset", "deliver results quickly and sustainably")
-- Example line in his own style, drawn from his post titles: "Why good businesses stall, and what founders must understand before they can scale"
+- Calm, structured, advisory tone. Decades of experience, credentials-backed. Never hypes outcomes
+- Uses staged frameworks (Stabilise, Clarify, Execute) and numbered content series
+- Speaks to founders and boards as a peer and partner, not as a vendor
+- Declarative professional sentences. No exclamation marks. Pairs warmth with commercial precision
+- Representative line in his style: "Why good businesses stall, and what founders must understand before they can scale"
+- Connection notes should lead with the company situation (the signal), not with a pitch for Nathan's services
 
 ## VIBE FILTER DERIVATION (for the skill)
-job_level: founder, owner, president
-job_title: chief executive officer, founder, owner, president, managing director, executive director
-company_size: 11-50, 51-200
+job_level: founder, owner, president, c-suite
+job_title: chief executive officer, ceo, founder, owner, managing director, executive director, board chair
+company_size: 11-50, 51-200, 201-500
 company_country_code: AU, NZ
-linkedin_category: Retail, Wholesale, Non-profit Organization Management, Hospitality, Individual and Family Services, Real Estate, Building Materials, Food and Beverages, Consumer Goods
-events: merger_and_acquisitions, cost_cutting, hiring_in_finance_department, increase_in_operations_department
+revenue_range: up to $250M
+linkedin_category: Retail, Building Materials, Hospitals and Health Care, Individual and Family Services, Disability Services, Health Wellness and Fitness, Medical and Diagnostic Laboratories, Non-profit Organization Management
+events: merger_and_acquisitions, restructuring, cost_cutting, hiring_in_finance_department
