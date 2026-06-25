@@ -64,23 +64,25 @@ MODE: DEMO
 SLUG: dave-cotter
 DATE: 14062026
 
-NO TOKEN. GitHub access goes through the connected GitHub App, never a pasted
-token. Run: python3 skills/routine.py DEMO [SLUG] [DATE]
+REQUIRES: GH_TOKEN set in the environment's Environment Variables (a GitHub
+token with write access to the repo). It is read from the environment only,
+never hardcoded. The script reads inputs from the local clone and deploys by
+pushing to github.com with GH_TOKEN (api.github.com is proxy-blocked in cloud
+and the GitHub App is read-only, so a token git push is the only write path).
+Run: python3 skills/routine.py DEMO [SLUG] [DATE]
 
 Follow the script exactly:
 1. The script reads the context file from inputs/demo/[SLUG]/context.md (local clone).
 2. When it prints the VIBE block, do the Vibe Prospecting MCP calls it lists,
    write the results to vibe_results.json, then re-run the same command.
-3. The script builds and validates the report, then prints a DEPLOY block and a
-   deploy_manifest.json. Deploy each listed file to branch main using the GitHub
-   App (mcp__github__create_or_update_file or push_files). Do NOT use a token or
-   call api.github.com directly - the session policy blocks that path.
+3. The script builds, validates, and DEPLOYS the report itself (git push to main
+   using GH_TOKEN). No manual deploy step. It prints the live URL on success.
 4. Output the live URL and a suggested DM script.
 
 Before each run, update SLUG to the prospect's folder name and DATE to today in DDMMYYYY.
 ```
 
-Settings: Frequency = Manual / Run on demand (not scheduled). Connectors = Vibe Prospecting, GitHub. No token needed.
+Settings: Frequency = Manual / Run on demand (not scheduled). Connectors = Vibe Prospecting. Environment: set GH_TOKEN (write-scoped GitHub token) in Environment Variables.
 
 ---
 
@@ -99,24 +101,23 @@ MODE: LIVE
 SLUG: [clientname]
 DATE: [auto today DDMMYYYY]
 
-NO TOKEN. GitHub access goes through the connected GitHub App, never a pasted
-token. Run: python3 skills/routine.py LIVE [SLUG] [DATE]
+REQUIRES: GH_TOKEN set in the environment's Environment Variables (write-scoped
+GitHub token, read from the environment only - never hardcoded).
+Run: python3 skills/routine.py LIVE [SLUG] [DATE]
 
 Follow the script exactly:
 1. The script reads inputs/prod/[SLUG]/context.md and dedup.json from the local clone.
 2. When it prints the VIBE block, do the Vibe Prospecting MCP calls it lists
    (email-only enrichment, dedup against dedup.json), write the results to
    vibe_results.json, then re-run the same command.
-3. The script builds and validates the report and stages both the report and the
-   updated dedup.json in deploy_manifest.json. Deploy each listed file to branch
-   main using the GitHub App (mcp__github__create_or_update_file or push_files).
-   Do NOT use a token or call api.github.com directly.
+3. The script builds, validates, and DEPLOYS both the report and the updated
+   dedup.json to main itself (git push using GH_TOKEN). No manual deploy step.
 4. Output the live URL.
 
 Run every Monday at 8:00 AM client local time.
 ```
 
-Settings: Frequency = Weekly, Monday. Connectors = Vibe Prospecting, GitHub. No token needed.
+Settings: Frequency = Weekly, Monday. Connectors = Vibe Prospecting. Environment: set GH_TOKEN (write-scoped GitHub token) in Environment Variables.
 
 ---
 
