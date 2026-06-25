@@ -1,4 +1,4 @@
-# Phase 2 · Pipeline Builder · Routine Instructions and Run Guide
+# Phase 2 - Pipeline Builder - Routine Instructions and Run Guide
 
 The complete system runs from GitHub. One skill, two modes. Demo runs manually on demand. Live runs on a weekly schedule. Same engine.
 
@@ -8,16 +8,16 @@ The complete system runs from GitHub. One skill, two modes. Demo runs manually o
 
 ```
 authority-infra/
-├── assets/
-│   ├── templates/pipeline-report/index.html   ← approved template
-│   └── pipelind-logo-dark.png                  ← logo (used in reports)
-├── skills/
-│   └── pipeline-builder.md                     ← the mode-aware skill
-├── inputs/
-│   ├── demo/[firstname-lastname]/context.md    ← prospect context (DEMO)
-│   └── prod/[clientname]/context.md            ← client context (LIVE)
-├── demo/[DDMMYYYY]/[firstname]/index.html       ← deployed demo reports
-└── prod/[clientname]/pipeline/index.html        ← deployed live reports
+--- assets/
+-   --- templates/pipeline-report/index.html   - approved template
+-   --- pipelind-logo-dark.png                  - logo (used in reports)
+--- skills/
+-   --- pipeline-builder.md                     - the mode-aware skill
+--- inputs/
+-   --- demo/[firstname-lastname]/context.md    - prospect context (DEMO)
+-   --- prod/[clientname]/context.md            - client context (LIVE)
+--- demo/[DDMMYYYY]/[firstname]/index.html       - deployed demo reports
+--- prod/[clientname]/pipeline/index.html        - deployed live reports
 ```
 
 ---
@@ -26,21 +26,21 @@ authority-infra/
 
 When a prospect comments LEAD:
 
-### Step 1 · Build their context file (one quick step)
+### Step 1 - Build their context file (one quick step)
 Open a normal Claude chat. Attach their LinkedIn profile PDF. Say:
 "Build a context.md for this prospect using the pipeline-builder format. Extract name, title, firm, website, location, their ICP, buying signals, voice rules, and Vibe filter derivation."
 
 Claude returns a context.md. (This replaces the unreliable PDF-in-routine approach. A text file is tiny, always readable, never breaks.)
 
-### Step 2 · Push the context file to GitHub
+### Step 2 - Push the context file to GitHub
 Put it at: `inputs/demo/[firstname-lastname]/context.md`
 (e.g. `inputs/demo/dave-cotter/context.md`)
 Drag-drop into the GitHub web UI, or ask Claude in that same chat to push it via the API.
 
-### Step 3 · Run the DEMO routine
+### Step 3 - Run the DEMO routine
 Go to claude.ai/code/routines. Use the saved "Pipeline Builder DEMO" routine (set up once, see below). Update the SLUG and DATE values, then click Run now.
 
-### Step 4 · Send the DM
+### Step 4 - Send the DM
 The routine outputs the live URL and a suggested DM script. Report goes live at:
 `pipelind.com/demo/[DDMMYYYY]/[firstname]`
 Copy the URL into your DM. Done.
@@ -86,7 +86,7 @@ Settings: Frequency = Manual / Run on demand (not scheduled). Connectors = Vibe 
 
 ## LIVE ROUTINE PROMPT (paste into claude.ai/code/routines, once you have a client)
 
-Routine name: Pipeline Builder LIVE · [Client]
+Routine name: Pipeline Builder LIVE - [Client]
 
 ```
 Run the pipeline-builder skill in LIVE mode.

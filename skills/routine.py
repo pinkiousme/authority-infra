@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-routine.py · Pipelind Pipeline Report Runner
-Version: 2.2 · June 2026
+routine.py - Pipelind Pipeline Report Runner
+Version: 2.2 - June 2026
 
 Encodes the complete 9-step pipeline report build as a deterministic Python
 script. Claude Code's only job is: python3 routine.py MODE SLUG DATE
@@ -70,7 +70,7 @@ import re
 from datetime import datetime
 
 
-# ── Constants ───────────────────────────────────────────────────────────────
+# -- Constants ---------------------------------------------------------------
 
 REPO = "pinkiousme/authority-infra"
 COMMITTER = {"name": "pinkiousme", "email": "pinkious.me@gmail.com"}
@@ -93,7 +93,7 @@ STAT_COLORS = {
 }
 
 
-# ── Repo I/O helpers ─────────────────────────────────────────────────────────
+# -- Repo I/O helpers ---------------------------------------------------------
 # This routine runs inside a fresh clone of the repo. All READS come from the
 # local working tree (no network, no token). All WRITES are staged locally and
 # handed to Claude Code, which deploys them to `main` through the connected
@@ -160,7 +160,7 @@ def queue_deploy(path, content_str, commit_message):
     return local
 
 
-# ── Context parser ───────────────────────────────────────────────────────────
+# -- Context parser -----------------------------------------------------------
 
 def parse_context(text):
     """Parse a context.md file. Returns a flat dict of all key:value pairs."""
@@ -229,7 +229,7 @@ def parse_run_control(ctx):
     return control
 
 
-# ── Signal plain-language mapping ────────────────────────────────────────────
+# -- Signal plain-language mapping --------------------------------------------
 
 def signal_to_plain(signal_str):
     """Convert Vibe internal event names to plain English. No tool names."""
@@ -264,7 +264,7 @@ def signals_list_to_plain(signals):
     return [signal_to_plain(s) for s in signals]
 
 
-# ── Data shape builders (matching template exactly) ──────────────────────────
+# -- Data shape builders (matching template exactly) --------------------------
 
 def build_stats_array(total, hot, warm, countries):
     """
@@ -471,11 +471,11 @@ def infer_team_trajectory(lead, buyer_profile, advisor_function):
         return f"{employees}-person team at {company}. Recent signal activity suggests active organizational change."
 
 
-# ── Validation helpers ───────────────────────────────────────────────────────
+# -- Validation helpers -------------------------------------------------------
 
 def validate_no_em_dash(text):
     if "\u2014" in text:
-        raise ValueError("data.json contains an em dash (—). Remove it before deploying.")
+        raise ValueError("data.json contains an em dash (-). Remove it before deploying.")
     if " -- " in text:
         raise ValueError("data.json contains a double dash ( -- ). Remove it before deploying.")
 
@@ -508,7 +508,7 @@ def validate_no_tool_names_in_leads(leads):
                     )
 
 
-# ── Main routine ─────────────────────────────────────────────────────────────
+# -- Main routine -------------------------------------------------------------
 
 def main():
     if len(sys.argv) < 4:
@@ -539,7 +539,7 @@ def main():
     folder = "demo" if MODE == "DEMO" else "prod"
     firstname = SLUG.split("-")[0].capitalize()
 
-    # ── STEP 1: Read client context ──────────────────────────────────────────
+    # -- STEP 1: Read client context ------------------------------------------
     print(f"\n[Step 1] Reading context from inputs/{folder}/{SLUG}/context.md ...")
     context_text, _ = gh_read(f"inputs/{folder}/{SLUG}/context.md")
     ctx = parse_context(context_text)
@@ -566,7 +566,7 @@ def main():
 
     print("  Context parsed successfully.")
 
-    # ── STEP 2: Read build script and template ────────────────────────────────
+    # -- STEP 2: Read build script and template --------------------------------
     print("\n[Step 2] Reading build_report.py and template from local clone ...")
     builder_text, _ = gh_read("skills/build_report.py")
     template_text, _ = gh_read("assets/templates/pipeline-report/index.html")
@@ -578,7 +578,7 @@ def main():
 
     print("  build_report.py and template.html ready.")
 
-    # ── STEP 3: Vibe Prospecting ──────────────────────────────────────────────
+    # -- STEP 3: Vibe Prospecting ----------------------------------------------
     # Email-only enrichment for BOTH DEMO and LIVE (phone is never enriched).
     # Cost model (email-only):
     #   show-sample   = flat 5 credits, returns up to ~5 unmasked rows   (DEMO path)
@@ -586,7 +586,7 @@ def main():
     # The fetch size is derived from the credit cap so a run can NEVER exceed budget.
     COST_PER_ROW = 4
     target_leads = 5 if MODE == "DEMO" else 10
-    enrich_types = '["email"]'  # email only, both modes — no phone
+    enrich_types = '["email"]'  # email only, both modes - no phone
     credit_cap = run_control["credit_cap"]
     events_window = vibe_filter.get("events_window_days", "90")
 
@@ -622,13 +622,13 @@ def main():
     if not os.path.exists("vibe_results.json"):
         if retrieval == "show-sample":
             retrieval_block = (
-                "STEP D — unmask the rows (cheapest path):\n"
+                "STEP D - unmask the rows (cheapest path):\n"
                 "  show-sample  (flat 5 credits, returns the unmasked rows)\n"
                 "  Use the rows it returns. Do NOT call export-to-csv in DEMO mode."
             )
         else:
             retrieval_block = (
-                f"STEP D — retrieve the full enriched set:\n"
+                f"STEP D - retrieve the full enriched set:\n"
                 f"  export-to-csv  limit={target_fetch}  (~{projected_cost} credits)\n"
                 f"  Download the CSV and read every row. This stays within the "
                 f"{credit_cap}-credit cap.\n"
@@ -636,13 +636,13 @@ def main():
             )
 
         print(f"""
-CLAUDE CODE — VIBE MCP CALLS REQUIRED (do these now, then re-run this script):
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CLAUDE CODE - VIBE MCP CALLS REQUIRED (do these now, then re-run this script):
+=============================================================
 Email-only enrichment. No phone. Budget cap: {credit_cap} credits. Projected spend: ~{projected_cost}.
 
-STEP A — fetch a LARGE pool of BUSINESSES with the event signals
+STEP A - fetch a LARGE pool of BUSINESSES with the event signals
   (events filter ONLY works on entity_type "businesses"; oversample because verified+
-   emailable decision-makers are sparse — this fetch is free exploration):
+   emailable decision-makers are sparse - this fetch is free exploration):
   fetch-entities
     entity_type: "businesses"
     number_of_results: {business_pool}
@@ -653,7 +653,7 @@ STEP A — fetch a LARGE pool of BUSINESSES with the event signals
       events: values=[{vibe_filter.get('events', '')}] last_occurrence={events_window} days
   -> SAVE the businesses_reference_table from the response for STEP B.
 
-STEP B — fetch decision-maker PROSPECTS from those businesses (also free):
+STEP B - fetch decision-maker PROSPECTS from those businesses (also free):
   fetch-entities
     entity_type: "prospects"
     businesses_reference_table: <the table returned by STEP A>
@@ -664,7 +664,7 @@ STEP B — fetch decision-maker PROSPECTS from those businesses (also free):
   -> drop AI/tech/venture companies (exclude_company_keywords) and any over the size ceiling.
      Enrich + retrieve only the top {target_fetch} survivors so spend stays within the cap.
 
-STEP C — VERIFY the signals (mandatory — real provenance only, never fabricate):
+STEP C - VERIFY the signals (mandatory - real provenance only, never fabricate):
   Run fetch-businesses-events on the businesses_reference_table from STEP A,
   event_types = your event list, timestamp_from = {events_window} days ago.
   Each record has data.description, data.title, data.link, and type-specific
@@ -676,12 +676,12 @@ STEP C — VERIFY the signals (mandatory — real provenance only, never fabrica
      detail (event type + date + specifics, noting it is a detected business signal).
    - Drop a company only if it has neither a link nor any structured detail.
 
-STEP D — enrich EMAIL only (never phone) for the surviving companies:
+STEP D - enrich EMAIL only (never phone) for the surviving companies:
   enrich-prospects  enrichments=["enrich-prospects-contacts"]  contact_types={enrich_types}
 
 {retrieval_block}
 
-STEP E — FILL THE REPORT IF SHORT (only if you have fewer than {target_leads} deliverable leads):
+STEP E - FILL THE REPORT IF SHORT (only if you have fewer than {target_leads} deliverable leads):
   Quality first: the tight filter above is the primary pass. ONLY if it yields fewer
   than {target_leads} leads (Tier 1 + Tier 2, after dedup) do you broaden, repeating
   A-D to backfill the gap in this order, and stopping the MOMENT you reach {target_leads}:
@@ -693,12 +693,12 @@ STEP E — FILL THE REPORT IF SHORT (only if you have fewer than {target_leads} 
   never exceed the {credit_cap}-credit cap. If even the broadened pool runs out, deliver
   what qualifies - never fabricate or pad to hit the number.
 
-AFTER RETRIEVAL — write every lead that has a real email to vibe_results.json (JSON array),
+AFTER RETRIEVAL - write every lead that has a real email to vibe_results.json (JSON array),
   Tier 1 first, then Tier 2 only to backfill toward {target_leads}.
   Each item: name, title, company, country, industry, employees, revenue,
   linkedin_url, website, email, signals (list), signal_days_ago,
   signal_description (the event detail, stated as plain fact),
-  AND provenance — at least ONE of:
+  AND provenance - at least ONE of:
     source       (Tier 1: the event data.link, a real public URL) + source_title, OR
     signal_proof (Tier 2: the structured detection evidence, e.g.
                   "Detected signal: legal matter, NSW Supreme Court [case], recorded 14 Apr 2026").
@@ -711,7 +711,7 @@ BANNED during Vibe calls:
   - Do not write any lead with no provenance (no link and no signal evidence)
 
 THEN: re-run this script: python3 routine.py {MODE} {SLUG} {DATE}
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+=============================================================
 """)
         sys.exit(0)
 
@@ -720,7 +720,7 @@ THEN: re-run this script: python3 routine.py {MODE} {SLUG} {DATE}
         raw_leads = json.load(f)
     print(f"  Vibe returned {len(raw_leads)} raw leads.")
 
-    # ── STEP 4: Filter, dedup (LIVE), select ─────────────────────────────────
+    # -- STEP 4: Filter, dedup (LIVE), select ---------------------------------
     print(f"\n[Step 4] Filtering and selecting {target_leads} leads ...")
 
     delivered_set = set()
@@ -801,7 +801,7 @@ THEN: re-run this script: python3 routine.py {MODE} {SLUG} {DATE}
 
     print(f"  Selected {len(kept_leads)} leads.")
 
-    # ── STEP 5: Build data.json ───────────────────────────────────────────────
+    # -- STEP 5: Build data.json -----------------------------------------------
     print(f"\n[Step 5] Building data.json ...")
 
     today_str = datetime.now().strftime("%B %d, %Y")
@@ -986,7 +986,7 @@ THEN: re-run this script: python3 routine.py {MODE} {SLUG} {DATE}
         f"Leading signals: {signal_plain_summary[:120]}."
     )
 
-    # ── Build all data shapes matching template exactly ──
+    # -- Build all data shapes matching template exactly --
     stats_array = build_stats_array(len(kept_leads), hot_count, warm_count, len(countries))
     sig_array = build_sig_array(signal_counts)
     geo_bars = build_geo_array_for_bars(geo_counts)
@@ -1032,7 +1032,7 @@ THEN: re-run this script: python3 routine.py {MODE} {SLUG} {DATE}
     print(f"  Stats: array[{len(stats_array)}] | Sig: array[{len(sig_array)}] | Signals: array[{len(signals_full)}]")
     print(f"  Geo: array[{len(geo_bars)}] | Stage: array[{len(stage_bars)}] | Industry: array[{len(ind_donut)}]")
 
-    # ── STEP 6: Run build_report.py ──────────────────────────────────────────
+    # -- STEP 6: Run build_report.py ------------------------------------------
     print(f"\n[Step 6] Running build_report.py ...")
     result = subprocess.run(
         ["python3", "build_report.py", "data.json", "template.html", "output.html"],
@@ -1050,7 +1050,7 @@ THEN: re-run this script: python3 routine.py {MODE} {SLUG} {DATE}
         print(f"  Builder: {result.stdout.strip()}")
     print("  Build completed.")
 
-    # ── STEP 7: Validate output.html ─────────────────────────────────────────
+    # -- STEP 7: Validate output.html -----------------------------------------
     print(f"\n[Step 7] Validating output.html ...")
     if not os.path.exists("output.html"):
         print("ERROR: output.html does not exist after build.")
@@ -1071,7 +1071,7 @@ THEN: re-run this script: python3 routine.py {MODE} {SLUG} {DATE}
 
     print(f"  Validated: {size:,} bytes | No unfilled placeholders | Build PASSED")
 
-    # ── STEP 8: Deploy to GitHub ──────────────────────────────────────────────
+    # -- STEP 8: Deploy to GitHub ----------------------------------------------
     if MODE == "DEMO":
         deploy_path = f"demo/{DATE}/{prospect_first.lower()}/index.html"
         live_url = f"https://pipelind.com/demo/{DATE}/{prospect_first.lower()}/"
@@ -1080,11 +1080,11 @@ THEN: re-run this script: python3 routine.py {MODE} {SLUG} {DATE}
         live_url = f"https://pipelind.com/prod/{SLUG}/pipeline/"
 
     print(f"\n[Step 8] Staging deploy to {deploy_path} ...")
-    queue_deploy(deploy_path, html_content, f"Pipeline report · {MODE} · {SLUG} · {DATE}")
+    queue_deploy(deploy_path, html_content, f"Pipeline report - {MODE} - {SLUG} - {DATE}")
     print(f"  Staged {len(html_content.encode('utf-8')):,} bytes for {deploy_path}")
     print(f"  Will be live at {live_url} (allow 30-90s for Vercel CDN after deploy)")
 
-    # ── STEP 9: Update dedup.json (LIVE only) ────────────────────────────────
+    # -- STEP 9: Update dedup.json (LIVE only) --------------------------------
     if MODE == "LIVE":
         print(f"\n[Step 9] Updating dedup.json ...")
         new_urls = [card["linkedin"] for card in lead_cards if card.get("linkedin")]
@@ -1093,27 +1093,27 @@ THEN: re-run this script: python3 routine.py {MODE} {SLUG} {DATE}
         queue_deploy(
             f"inputs/prod/{SLUG}/dedup.json",
             json.dumps(updated_dedup, indent=2),
-            f"Dedup update · {SLUG} · {DATE}",
+            f"Dedup update - {SLUG} - {DATE}",
         )
         print(f"  dedup.json staged. Total delivered: {len(updated_dedup)}")
     else:
-        print(f"\n[Step 9] DEMO mode — no dedup update.")
+        print(f"\n[Step 9] DEMO mode - no dedup update.")
 
-    # ── Emit deploy manifest for Claude to push via the GitHub App (MCP) ──────
+    # -- Emit deploy manifest for Claude to push via the GitHub App (MCP) ------
     manifest_path = os.path.join(os.getcwd(), "deploy_manifest.json")
     with open(manifest_path, "w", encoding="utf-8") as f:
         json.dump(_DEPLOY_ACTIONS, f, indent=2)
 
-    # ── Final status ──────────────────────────────────────────────────────────
+    # -- Final status ----------------------------------------------------------
     print(f"\n{'=' * 60}")
     print(
-        f"BUILD COMPLETE · {MODE} · {prospect_full} · {firm} · "
-        f"Leads {len(kept_leads)} · HOT {hot_count} · WARM {warm_count}"
+        f"BUILD COMPLETE - {MODE} - {prospect_full} - {firm} - "
+        f"Leads {len(kept_leads)} - HOT {hot_count} - WARM {warm_count}"
     )
     print(f"{'=' * 60}")
     print(f"""
 CLAUDE CODE - DEPLOY THESE FILES TO main VIA THE GITHUB APP (MCP):
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+=============================================================
 The build is done and validated. {len(_DEPLOY_ACTIONS)} file(s) are written into the
 working tree and listed in deploy_manifest.json (repo_path, local_path, message).
 Push each one to branch main using the GitHub MCP connector
@@ -1125,7 +1125,7 @@ Push each one to branch main using the GitHub MCP connector
 Read each file's contents back from its local_path. Do NOT call api.github.com
 directly (blocked by session policy) and do NOT use a token. After the push the
 report is live at: {live_url}  (allow 30-90s for the Vercel CDN)
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+=============================================================
 """)
 
 
