@@ -1,17 +1,17 @@
 # Prospect Context · Nathan Preyser
-# Mode input file for pipeline-builder skill
-# Updated: June 2026 · v2 (prospect-confirmed filters)
+# Mode input file for pipeline-builder skill · DEMO mode
+# Updated: June 2026 · v3 (call-confirmed filters · Melbourne-first · verified signals only)
 
 PROSPECT_FIRST_NAME: Nathan
 PROSPECT_FULL_NAME: Nathan Preyser
 TITLE: Fractional CFO & Advisor, Founder of Strategin Advisory
 FIRM: Strategin Advisory
-WEBSITE: Not on record
+WEBSITE: strateginadvisory.com
 LOCATION: Greater Melbourne Area, Australia
 LINKEDIN: https://www.linkedin.com/in/nathan-preyser
 
 ## WHAT THE PROSPECT DOES
-Nathan is the founder of Strategin Advisory, working as a Fractional CFO and Advisor for SMEs and not-for-profits across Australia and New Zealand. He has 35+ years of experience as a CFO, COO, GM Procurement and NFP board chair across ASX-listed corporates, mid-market businesses and national not-for-profits. His track record spans M&A due diligence and integration, cashflow turnaround, governance uplift (including NDIS Act, Disability Discrimination Act and Quality & Safeguards compliance), ERP and WMS optimisation, and operational transformation. Notable work includes COO/CFO at Fight Cancer Foundation and lead M&A advisor on the merger that formed the $360M Possability/Lifestyle Solutions group. He holds an FCPA (Fellow CPA) and Certified Professional Business Advisor credential, with a Bachelor of Business (Accounting) and Masters of Marketing from Monash University.
+Nathan is the founder of Strategin Advisory, working as a Fractional CFO and Advisor for SMEs and not-for-profits across Australia. He has 35+ years of experience as a CFO, COO, GM Procurement and NFP board chair across ASX-listed corporates, mid-market businesses and national not-for-profits. His track record spans M&A due diligence and integration, cashflow turnaround, governance uplift (including NDIS Act, Disability Discrimination Act and Quality & Safeguards compliance), ERP and WMS optimisation, and operational transformation. Notable work includes COO/CFO at Fight Cancer Foundation and lead M&A advisor on the merger that formed the $360M Possability/Lifestyle Solutions group. He holds an FCPA (Fellow CPA) and Certified Professional Business Advisor credential, with a Bachelor of Business (Accounting) and Masters of Marketing from Monash University.
 
 His core delivery areas, in order of relevance to his buyers:
 - Turnaround and stabilisation (90-180 day outcomes)
@@ -24,25 +24,29 @@ His core delivery areas, in order of relevance to his buyers:
 
 ## THE PROSPECT'S ICP (who their buyers are)
 - Buyer titles: CEO, Founder, Owner, Managing Director, Executive Director, Board Chair, Board Member
-- Company size: Revenue up to $250M AUD. Employee count: 11-50 (small) through to 201-500 (mid-market). No startups. Established operating businesses only
-- Industries (confirmed by prospect, priority order):
-  1. Retail and Building Materials
-  2. Health (hospitals, allied health, medical services, healthcare providers)
-  3. Disability Services (NDIS providers, disability care, supported accommodation)
-- Geography: Australia primary. New Zealand secondary
-- Buyer pain: Founders and boards facing a cashflow crisis, turnaround pressure, M&A complexity, or governance gap that requires experienced fractional CFO or COO leadership, without yet justifying a full-time hire. Specifically: businesses under stress, restructuring, post-merger integration, or navigating NDIS/DDA compliance obligations
+- Company size: 10 to 200 employees. Revenue $1M to $200M AUD. No startups. Established operating businesses only. (Rationale confirmed by prospect: salary-to-revenue ratio means 200 employees implies ~$60M+ revenue; upper bound of $200M keeps target inside SME/mid-market band before major consulting firms take over)
+- Industries (confirmed by prospect on 26 June 2026 call, priority order):
+  1. Healthcare: aged care, allied health, disability services (NDIS providers, supported accommodation), hospitals, private hospitals, community health services
+  2. Non-for-profits and Social Enterprises: charities, community services, YMCA and similar, universities operating social programs
+  3. Retail and Family Business: retail, manufacturing, service-based family businesses
+  4. Local Government and Councils: local councils and shire councils in Melbourne metro and surrounds
+- Geography: Melbourne, Australia ONLY. (Prospect confirmed: start in Melbourne, validate, then go national, then international. Do not include NZ or other states in DEMO builds until explicitly confirmed)
+- Buyer pain: Founders, boards, and executive directors facing a cashflow crisis, turnaround pressure, M&A complexity, or governance gap that requires experienced fractional CFO or COO leadership, without yet justifying a full-time hire. Specifically: businesses under stress, restructuring, post-merger integration, or navigating NDIS/DDA compliance obligations
 
 ## BUYING SIGNALS THAT INDICATE ACTIVE NEED
-Confirmed by prospect. Two primary signal categories only:
-- merger_and_acquisitions: businesses undergoing M&A, due diligence, post-merger integration or business combination need experienced fractional CFO leadership. Directly matches Nathan's M&A background including the $360M Possability/LSS merger
-- restructuring: active restructure or cost-cutting signals cashflow stress, a stabilisation need, or a governance gap. Directly matches his core offer of turnaround and stabilisation with 90-180 day outcomes
+VERIFIED-ONLY RULE (mandatory, confirmed by prospect on 26 June 2026 call): Every lead delivered MUST have a publicly verifiable signal. If no public source link exists for the signal, exclude the lead. Do not include leads where the signal is workforce-only or AI-inferred without a cited public source. Nathan will check every company. Three unverifiable leads in the previous report caused a trust breakdown.
 
-Secondary signals (use if primary signals return fewer than 10 leads):
-- hiring_in_finance_department: finance function being built out or restructured signals a governance or leadership gap
-- cost_cutting: active cost cutting matches his cashflow recovery and cost reset offer
+Primary signals:
+- merger_and_acquisitions: businesses undergoing M&A, due diligence, post-merger integration or business combination. Directly matches Nathan's M&A background including the $360M Possability/LSS merger. Must have a public announcement or news source
+- restructuring: active restructure signals cashflow stress or governance gap. Directly matches his turnaround and stabilisation offer. Must have a public announcement or news source
+- cost_cutting: publicly reported cost cutting matches his cashflow recovery and cost reset offer. Must have a public news article or announcement
+
+Secondary signals (use only if primary signals return fewer than 5 leads for a 5-lead DEMO):
+- lawsuits_and_legal_issues: publicly reported legal or regulatory issues signal a governance, risk or audit-readiness gap
+- new_partnership: publicly announced major partnership that surfaces integration or finance questions
 
 ## PERSONALIZATION ANCHOR (why Pipelind fits Nathan specifically)
-Nathan's buyers are not posting "we need a fractional CFO" on LinkedIn. They are identifiable by what they are doing operationally: mergers, restructures, cost resets. Pipelind surfaces companies in those active windows so Nathan can reach them before the need is fully defined and a full-time hire is being considered.
+Nathan's buyers are not posting "we need a fractional CFO" on LinkedIn. They are identifiable by what they are doing operationally: mergers, restructures, cost resets. Pipelind surfaces Melbourne-based companies in those active windows so Nathan can reach them before the need is fully defined. Every lead card must open with the company's situation (the signal and the public source), not with a description of Nathan's services.
 
 ## PROSPECT VOICE (for outreach copy matching)
 - Calm, structured, advisory tone. Decades of experience, credentials-backed. Never hypes outcomes
@@ -55,8 +59,11 @@ Nathan's buyers are not posting "we need a fractional CFO" on LinkedIn. They are
 ## VIBE FILTER DERIVATION (for the skill)
 job_level: founder, owner, president, c-suite
 job_title: chief executive officer, ceo, founder, owner, managing director, executive director, board chair
-company_size: 11-50, 51-200, 201-500
-company_country_code: AU, NZ
-revenue_range: up to $250M
-linkedin_category: Retail, Building Materials, Hospitals and Health Care, Individual and Family Services, Disability Services, Health Wellness and Fitness, Medical and Diagnostic Laboratories, Non-profit Organization Management
-events: merger_and_acquisitions, restructuring, cost_cutting, hiring_in_finance_department
+company_size: 11-50, 51-200
+company_country_code: AU
+city: Melbourne
+revenue_range: $1M to $200M AUD
+linkedin_category: hospitals and health care, individual and family services, disability services, health wellness and fitness, medical and diagnostic laboratories, non-profit organization management, civic and social organizations, retail, consumer goods, manufacturing, government administration
+events: merger_and_acquisitions, restructuring, cost_cutting, lawsuits_and_legal_issues
+events_window_days: 90
+number_of_results: 7
