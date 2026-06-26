@@ -1,6 +1,6 @@
 # Client Context · Nathan Preyser
 # Mode input file for pipeline-builder skill · LIVE mode
-# Updated: June 2026 · v3 (call-confirmed filters · Melbourne-first · verified signals only)
+# Updated: June 2026 · v4 (geography expanded: AU primary, NZ + US secondary · verified signals · Melbourne-first preference)
 
 PROSPECT_FIRST_NAME: Nathan
 PROSPECT_FULL_NAME: Nathan Preyser
@@ -30,36 +30,40 @@ His core delivery areas, in order of relevance to his buyers:
 
 ## THE CLIENT'S ICP (who their buyers are)
 - Buyer titles: CEO, Founder, Owner, Managing Director, Executive Director, Board Chair, Board Member
-- Company size: 10 to 200 employees. Revenue $1M to $200M AUD. No startups. Established operating businesses only. (Rationale confirmed by client: salary-to-revenue ratio means 200 employees implies ~$60M+ revenue; upper bound of $200M keeps target inside SME/mid-market band before major consulting firms take over)
-- Industries (confirmed by client on 26 June 2026 call, priority order):
+- Company size: 10 to 200 employees. Revenue $1M to $200M AUD. No startups. Established operating businesses only.
+- Industries (confirmed by client, priority order):
   1. Healthcare: aged care, allied health, disability services (NDIS providers, supported accommodation), hospitals, private hospitals, community health services
   2. Non-for-profits and Social Enterprises: charities, community services, YMCA and similar, universities operating social programs
   3. Retail and Family Business: retail, manufacturing, service-based family businesses
-  4. Local Government and Councils: local councils and shire councils in Melbourne metro and surrounds
-- Geography: Melbourne, Australia ONLY for the validation phase. (Client confirmed 26 June 2026: start Melbourne, validate 2-3 weeks, then expand nationally, then internationally. Do not expand geography until client explicitly confirms validation is complete)
+  4. Local Government and Councils: local councils and shire councils
+- Geography priority order:
+  1. Australia (primary — prioritise AU leads, Melbourne preferred within AU)
+  2. New Zealand (secondary — include if AU pool insufficient to fill 10 live leads after dedup)
+  3. United States (tertiary — include if AU + NZ pool still insufficient after dedup)
+  Note: Nathan confirmed on 26 June 2026 he is open to NZ and US expansion. Run AU first, fill with NZ then US only as needed.
 - Buyer pain: Founders, boards, and executive directors facing a cashflow crisis, turnaround pressure, M&A complexity, or governance gap that requires experienced fractional CFO or COO leadership, without yet justifying a full-time hire
 
 ## BUYING SIGNALS THAT INDICATE ACTIVE NEED
-VERIFIED-ONLY RULE (mandatory, confirmed by client on 26 June 2026 call): Every lead delivered MUST have a publicly verifiable signal with a cited source link. If no public source exists for the signal, exclude the lead entirely. Do not include leads where the signal is workforce-only or AI-inferred without a cited public source. Client will independently verify every company before outreach.
+VERIFIED-ONLY RULE: Every lead delivered must have a publicly verifiable signal with a cited source link. If no public source exists for the signal, exclude the lead. Workforce-only signals with no public article or announcement are excluded. Nathan will independently verify every company.
 
 Primary signals:
 - merger_and_acquisitions: businesses undergoing M&A, due diligence, post-merger integration or business combination. Must have a public announcement or news source
 - restructuring: active restructure signals cashflow stress or governance gap. Must have a public announcement or news source
 - cost_cutting: publicly reported cost cutting matches his cashflow recovery offer. Must have a public news article
 
-Secondary signals (use only if primary signals return fewer than 10 leads after dedup):
+Secondary signals (use if primary signals return fewer than 10 leads after dedup):
 - lawsuits_and_legal_issues: publicly reported legal or regulatory issues signal a governance, risk or audit-readiness gap
-- new_partnership: publicly announced major partnership that surfaces integration or finance questions
+- new_partnership: publicly announced major partnership that surfaces integration or finance questions (exclude partnership announcements with no operational finance implication)
 
 ## PERSONALIZATION ANCHOR (why this fits the client)
-Nathan's buyers are not posting "we need a fractional CFO" on LinkedIn. They are identifiable by what they are doing operationally: mergers, restructures, cost resets. Pipelind surfaces Melbourne-based companies in those active windows so Nathan can reach them before the need is fully defined. Every lead card must open with the company's situation (the signal and the public source link), not with a description of Nathan's services.
+Nathan's buyers are not posting "we need a fractional CFO" on LinkedIn. They are identifiable by what they are doing operationally: mergers, restructures, cost resets. Pipelind surfaces companies in those active windows so Nathan can reach them before the need is fully defined. Every lead card must open with the company's situation (the signal and the public source link), not with a description of Nathan's services.
 
 ## CLIENT VOICE (for connection notes and outreach copy)
 - Calm, structured, advisory tone. Decades of experience, credentials-backed. Never hypes outcomes
 - Uses staged frameworks (Stabilise, Clarify, Execute) and numbered content series
 - Speaks to founders and boards as a peer and partner, not as a vendor
 - Declarative professional sentences. No exclamation marks. Pairs warmth with commercial precision
-- Representative line in his style: "Why good businesses stall, and what founders must understand before they can scale"
+- Representative line: "Why good businesses stall, and what founders must understand before they can scale"
 - Connection notes should lead with the company situation (the signal), not with a pitch for Nathan's services
 
 ## DEDUP REFERENCE
@@ -70,16 +74,21 @@ Append delivered LinkedIn URLs to this file after every weekly run. Never delive
 job_title: "chief executive officer", "ceo", "founder", "owner", "managing director", "executive director", "board chair"
 job_level: founder, owner, president, c-suite
 company_size: 11-50, 51-200
-company_country_code: AU
-city: Melbourne
-revenue_range: $1M to $200M AUD
+company_country_code: AU, NZ, US
+revenue_range: $1M to $200M
 linkedin_category: hospitals and health care, individual and family services, disability services, health wellness and fitness, medical and diagnostic laboratories, non-profit organization management, civic and social organizations, retail, consumer goods, manufacturing, government administration
-events: merger_and_acquisitions, restructuring, cost_cutting, lawsuits_and_legal_issues
+events: merger_and_acquisitions, restructuring, cost_cutting, lawsuits_and_legal_issues, new_partnership
 events_window_days: 90
-number_of_results: 12
+number_of_results: 15
+
+## GEOGRAPHY RUN ORDER
+Step 1: Run with company_country_code: AU only. If 10+ verified leads found (before dedup), proceed to dedup and deliver.
+Step 2: If AU returns fewer than 10 verified leads after dedup, add NZ to the country filter and re-run.
+Step 3: If AU + NZ still returns fewer than 10 verified leads after dedup, add US and re-run.
+Deliver the best 10 verified leads across whichever geography pool produced them, sorted AU first, NZ second, US third.
 
 ## RUN CONTROL
 credit_cap: 50
 web_mode: off
 deploy_path: prod/nathan-preyser/pipeline/index.html
-geography_phase: validation (Melbourne only — do not expand until client confirms)
+geography_phase: expanded (AU primary, NZ secondary, US tertiary — updated June 2026 after Melbourne-only pool returned zero verified leads)
