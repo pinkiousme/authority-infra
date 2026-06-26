@@ -60,8 +60,12 @@ def build(data_path, template_path, output_path):
     tpl = repl(tpl, "__PL_MK_GEO__", js(mk["geo"]))
     tpl = repl(tpl, "__PL_MK_IND__", js(mk["ind"]))
 
-    # ---- pulse: inside a single-quoted JS string ----
+    # ---- ICP settings: data-driven from the client's context (JS value) ----
+    tpl = repl(tpl, "__PL_ICP__", js(D.get("icp", [])))
+
+    # ---- strings inside single-quoted JS string literals ----
     tpl = repl(tpl, "__PL_PULSE__", esc_js(db["pulse"]))
+    tpl = repl(tpl, "__PL_MK_NOTES__", esc_js(mk.get("notes", "")))
 
     # ---- scalar JS vars: token sits unquoted, inject a full JSON literal ----
     tpl = repl(tpl, "__PL_MODE__", js(mode))
@@ -152,6 +156,13 @@ def validate_output(tpl, D):
     for seed in ['Dave Cotter', 'Kelsor Ventures', '{c:"US",n:2}', 'Test data \u00b7 Illustrative only']:
         if seed in tpl:
             errors.append("Seed identifier leaked: " + seed)
+
+    # 7. hardcoded generic/tech ICP copy must never reappear (ICP + coverage notes
+    #    are data-driven now; these strings would mean a template regression).
+    for phrase in ['Healthtech', 'B2B SaaS', 'Seed through Series B',
+                   'Co-Founder, CEO, Founder, COO']:
+        if phrase in tpl:
+            errors.append("Hardcoded generic-ICP copy leaked (must be data-driven): " + phrase)
 
     return errors
 

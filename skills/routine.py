@@ -351,6 +351,68 @@ def signals_list_to_plain(signals):
     return [signal_to_plain(s) for s in signals]
 
 
+# -- ICP settings (data-driven, never hardcoded in the template) --------------
+
+_TITLE_EXPAND = {
+    "chief executive officer": "CEO",
+    "chief operating officer": "COO",
+    "chief financial officer": "CFO",
+    "chief operations officer": "COO",
+}
+
+
+def _pretty_list(csv, expand=False):
+    """Turn a comma string from the frozen filter into a clean display string."""
+    out = []
+    for part in str(csv or "").split(","):
+        p = part.strip()
+        if not p:
+            continue
+        if expand and p.lower() in _TITLE_EXPAND:
+            out.append(_TITLE_EXPAND[p.lower()])
+        else:
+            out.append(p.title() if p.islower() else p)
+    return ", ".join(out)
+
+
+def build_icp_settings(vibe_filter, events_window):
+    """Build the ICP Settings rows from the client's frozen filter so the report
+    shows THIS client's real targeting, never a hardcoded generic ICP.
+    Returns a list of [label, value] pairs the template renders."""
+    titles = _pretty_list(vibe_filter.get("job_title", ""), expand=True)
+    industries = _pretty_list(vibe_filter.get("linkedin_category", ""))
+    geo = (vibe_filter.get("company_country_code", "") or "").upper()
+    size = (vibe_filter.get("company_size", "") or "").strip()
+    revenue = (vibe_filter.get("revenue_floor", "") or "").strip()
+    events = [e.strip() for e in str(vibe_filter.get("events", "")).split(",") if e.strip()]
+    signal_types = ", ".join(signal_to_plain(e) for e in events)
+    return [
+        ["Target Titles", titles or "Not set"],
+        ["Industries", industries or "Not set"],
+        ["Geography", geo or "Not set"],
+        ["Company Size", (size + " employees") if size else "Not set"],
+        ["Revenue Band", (revenue + " and up") if revenue else "Not set"],
+        ["Signal Types", signal_types or "Not set"],
+        ["Signal Window", f"0-30 days HOT / 31-{events_window} days WARM"],
+    ]
+
+
+def build_coverage_notes(kept_leads, geo_counts, industry_counts, events_window):
+    """Data-driven Markets coverage notes (never hardcoded SaaS/venture copy)."""
+    n = len(kept_leads)
+    countries = sorted(geo_counts, key=lambda c: -geo_counts[c])
+    geo_phrase = countries[0] if len(countries) == 1 else (
+        ", ".join(countries[:-1]) + " and " + countries[-1]) if countries else "the target market"
+    top_inds = sorted(industry_counts, key=lambda i: -industry_counts[i])[:3]
+    ind_phrase = "; ".join(top_inds) if top_inds else "the target sectors"
+    return (
+        f"This week's pipeline covers {n} verified profile{'s' if n != 1 else ''} "
+        f"in {geo_phrase}, concentrated in {ind_phrase}. Every profile carries a "
+        f"detected operating signal inside the {events_window}-day window, ranked "
+        f"by recency and signal strength."
+    )
+
+
 # -- Data shape builders (matching template exactly) --------------------------
 
 def build_stats_array(total, hot, warm, countries):
@@ -844,11 +906,22 @@ AFTER RETRIEVAL - write every lead that has a real email to vibe_results.json (J
                   "Detected signal: legal matter, NSW Supreme Court [case], recorded 14 Apr 2026").
   A lead with NEITHER source nor signal_proof must NOT be written. Never invent a URL.
 
+SOURCE OF TRUTH (no fabrication, ever):
+  EVERY lead written to vibe_results.json MUST come from an unmasked Vibe row
+  (show-sample in DEMO, export in LIVE). The name, title, company, employees,
+  revenue, industry, signals, signal dates and linkedin_url must be the values
+  Vibe returned for that exact row. Do NOT add a company or person from memory,
+  prior knowledge, or the web. Do NOT invent or "improve" any field. If a real
+  row is not available, deliver fewer leads - never pad with invented ones.
+  (The build enforces this: it drops any lead without a real personal /in/
+  profile and without provenance, so fabricated/placeholder leads will not ship.)
+
 BANNED during Vibe calls:
   - Do not use any GitHub connector or MCP tool
   - Do not search the web (except to confirm a real public source URL you will cite)
   - Do not enrich phone numbers
   - Do not write any lead with no provenance (no link and no signal evidence)
+  - Do not write any lead that did not come from a real unmasked Vibe row
 
 THEN: re-run this script: python3 routine.py {MODE} {SLUG} {DATE}
 =============================================================
@@ -1164,8 +1237,10 @@ THEN: re-run this script: python3 routine.py {MODE} {SLUG} {DATE}
         "markets": {
             "geo": geo_bars,        # ARRAY of {c,n} - barsSVG for markets tab
             "ind": ind_donut,       # ARRAY of {name,value,color} - donutSVG for industry chart
-            "notes": f"Signal window: {events_window} days. {len(kept_leads)} profiles matched this week.",
+            "notes": build_coverage_notes(kept_leads, geo_counts, industry_counts, events_window),
         },
+        # ICP Settings tab - built from THIS client's frozen filter, not hardcoded
+        "icp": build_icp_settings(vibe_filter, events_window),
     }
 
     # Validate
