@@ -560,6 +560,50 @@ def infer_team_trajectory(lead, buyer_profile, advisor_function):
 
 # -- Validation helpers -------------------------------------------------------
 
+def normalize_personal_linkedin(raw):
+    """Return a canonical personal LinkedIn profile URL, or '' if the value is
+    not a real personal profile.
+
+    A lead is a decision-maker, so the only acceptable LinkedIn is their personal
+    profile: linkedin.com/in/<slug>. Company pages (linkedin.com/company/...),
+    school/showcase pages, search/feed URLs, masked placeholders, or a bare name
+    are all rejected (return ''), so the report never links a person to the wrong
+    page. This is what prevents the 'company page instead of the person' bug.
+    """
+    if not raw:
+        return ""
+    url = str(raw).strip()
+    if not url:
+        return ""
+    if not url.startswith("http"):
+        url = "https://" + url.lstrip("/")
+    m = re.match(
+        r'^https?://([a-z0-9-]+\.)?linkedin\.com/in/([A-Za-z0-9_%\-\.]+)/?',
+        url, re.I,
+    )
+    if not m:
+        return ""
+    slug = m.group(2).strip(".-")
+    if not slug or slug.lower() in ("unknown", "masked", "n-a", "na", "none", "null"):
+        return ""
+    return f"https://www.linkedin.com/in/{slug}"
+
+
+def validate_linkedin_in_leads(lead_cards):
+    """Belt-and-suspenders: every deployed lead must carry a personal /in/ profile.
+    Raises if any card slipped through with a non-personal or empty LinkedIn."""
+    bad = []
+    for c in lead_cards:
+        li = c.get("linkedin", "")
+        if not normalize_personal_linkedin(li):
+            bad.append(f"{c.get('name', '?')} -> {li or '(empty)'}")
+    if bad:
+        raise ValueError(
+            "These deployed leads do not have a valid personal LinkedIn profile "
+            "(linkedin.com/in/...): " + "; ".join(bad)
+        )
+
+
 def validate_no_em_dash(text):
     if "\u2014" in text:
         raise ValueError("data.json contains an em dash (-). Remove it before deploying.")
@@ -780,10 +824,19 @@ STEP E - FILL THE REPORT IF SHORT (only if you have fewer than {target_leads} de
   never exceed the {credit_cap}-credit cap. If even the broadened pool runs out, deliver
   what qualifies - never fabricate or pad to hit the number.
 
+LINKEDIN URL RULE (mandatory - this is the prospect's personal profile):
+  linkedin_url MUST be the DECISION-MAKER's personal profile from the unmasked
+  prospect row (prospect_linkedin), i.e. linkedin.com/in/<slug>. NEVER put the
+  company page (linkedin.com/company/...) or a guessed/constructed URL there.
+  If show-sample/export does not return a personal /in/ profile for a prospect,
+  leave linkedin_url empty - the build will drop that lead rather than link the
+  wrong page. Do not fabricate or infer a profile URL.
+
 AFTER RETRIEVAL - write every lead that has a real email to vibe_results.json (JSON array),
   Tier 1 first, then Tier 2 only to backfill toward {target_leads}.
   Each item: name, title, company, country, industry, employees, revenue,
-  linkedin_url, website, email, signals (list), signal_days_ago,
+  linkedin_url (the personal linkedin.com/in/ profile - see LINKEDIN URL RULE),
+  website, email, signals (list), signal_days_ago,
   signal_description (the event detail, stated as plain fact),
   AND provenance - at least ONE of:
     source       (Tier 1: the event data.link, a real public URL) + source_title, OR
@@ -823,11 +876,17 @@ THEN: re-run this script: python3 routine.py {MODE} {SLUG} {DATE}
 
     candidates = []
     dropped_unverified = 0
+    dropped_bad_linkedin = 0
     for lead in raw_leads:
-        linkedin = lead.get("linkedin_url", lead.get("linkedin", ""))
-        if linkedin and not linkedin.startswith("http"):
-            linkedin = "https://" + linkedin
+        # A lead must have a REAL personal LinkedIn profile (linkedin.com/in/...).
+        # Company pages / masked / malformed values are rejected so the report
+        # never links a decision-maker to the wrong page.
+        linkedin = normalize_personal_linkedin(
+            lead.get("linkedin_url", lead.get("linkedin", "")))
         lead["linkedin_url"] = linkedin
+        if not linkedin:
+            dropped_bad_linkedin += 1
+            continue
 
         if MODE == "LIVE" and linkedin in delivered_set:
             continue
@@ -853,6 +912,8 @@ THEN: re-run this script: python3 routine.py {MODE} {SLUG} {DATE}
         lead["_tier"] = 0 if has_source else 1
         candidates.append(lead)
 
+    if dropped_bad_linkedin:
+        print(f"  LinkedIn policy: dropped {dropped_bad_linkedin} lead(s) without a valid personal profile (linkedin.com/in/...).")
     if dropped_unverified:
         print(f"  Trust policy: dropped {dropped_unverified} lead(s) with neither a source link nor signal evidence.")
     tier1 = sum(1 for c in candidates if c.get("_tier") == 0)
@@ -1112,6 +1173,7 @@ THEN: re-run this script: python3 routine.py {MODE} {SLUG} {DATE}
     validate_no_em_dash(data_str)
     validate_no_exclamation(data_str)
     validate_no_tool_names_in_leads(lead_cards)
+    validate_linkedin_in_leads(lead_cards)
 
     with open("data.json", "w", encoding="utf-8") as f:
         f.write(data_str)
