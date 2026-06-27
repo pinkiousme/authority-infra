@@ -703,6 +703,34 @@ def validate_no_tool_names_in_leads(leads):
 
 # -- Main routine -------------------------------------------------------------
 
+def _clean_field(s):
+    """Sanitize a raw Vibe text fragment so it can never introduce a brand-rule
+    violation (em dash or exclamation) into the report. Em dash -> comma-space,
+    en dash -> hyphen, exclamation -> period. Returns a stripped string. This is
+    belt-and-suspenders: the data.json validators remain in place as a backstop."""
+    s = str(s or "")
+    s = s.replace("\u2014", ", ").replace("\u2013", "-").replace("!", ".")
+    s = re.sub(r"\s+", " ", s)        # collapse any double spaces created above
+    s = re.sub(r"\s+([.,])", r"\1", s)  # no space before punctuation
+    return s.strip()
+
+
+def _join_sentences(*parts):
+    """Join non-empty fragments into clean sentences, each ending in a period.
+    Fragments must not contain em dashes or exclamation marks (caller controls
+    content). Empty/whitespace fragments are skipped. Safe with zero extra
+    fields present (returns just the first fragment)."""
+    out = []
+    for p in parts:
+        s = str(p or "").strip()
+        if not s:
+            continue
+        if not s.endswith((".", "?")):
+            s = s + "."
+        out.append(s)
+    return " ".join(out)
+
+
 def main():
     if len(sys.argv) < 4:
         print("Usage: python3 routine.py MODE SLUG DATE")
@@ -855,6 +883,8 @@ STEP B - fetch decision-maker PROSPECTS from those businesses (also free):
       job_title: {vibe_filter.get('job_title', '')}   (resolve via autocomplete first)
       job_level: {vibe_filter.get('job_level', '')}
   -> drop AI/tech/venture companies (exclude_company_keywords) and any over the size ceiling.
+     Do NOT pre-filter on has_email here. Keep every decision-maker that fits ICP +
+     signal; email availability is decided AFTER enrichment (see WRITE step below).
      Enrich + retrieve only the top {target_fetch} survivors so spend stays within the cap.
 
 STEP C - VERIFY the signals (mandatory - real provenance only, never fabricate):
@@ -865,9 +895,21 @@ STEP C - VERIFY the signals (mandatory - real provenance only, never fabricate):
   Classify each company into a TRUST TIER:
    - Tier 1 (preferred): the event has a real public data.link (http...). Keep the link.
    - Tier 2 (fallback, high-intent): a genuine detected event with NO usable public
-     link, but real structured detail. Build a short signal_proof string from that
-     detail (event type + date + specifics, noting it is a detected business signal).
+     link, but real structured detail. Build a RICH signal_proof string using EVERY
+     type-specific field the event returns, not just the event type and date:
+       * hiring events  -> the specific roles/titles posted and the department
+         (e.g. "Detected signal: 3 finance roles posted (Controller, FP&A Analyst,
+          AP Specialist), recorded May 2026").
+       * M&A events     -> the partner_company (the other party) and direction
+         (e.g. "Detected signal: acquisition of Northwind Logistics, recorded Apr 2026").
+       * legal events   -> court/case identifiers.
+       * cost/headcount -> the department and the magnitude/date.
+     State it as a detected business signal. Use ONLY fields Vibe returned. Never invent.
    - Drop a company only if it has neither a link nor any structured detail.
+
+  ALSO capture, when the event/company data provides them (optional, used to enrich the
+  card, never fabricated): funding_amount and lead_investor (funding events),
+  hired_roles (hiring events), headcount_growth_6m (workforce data), founded_year.
 
 STEP D - enrich EMAIL only (never phone) for the surviving companies:
   enrich-prospects  enrichments=["enrich-prospects-contacts"]  contact_types={enrich_types}
@@ -894,16 +936,26 @@ LINKEDIN URL RULE (mandatory - this is the prospect's personal profile):
   leave linkedin_url empty - the build will drop that lead rather than link the
   wrong page. Do not fabricate or infer a profile URL.
 
-AFTER RETRIEVAL - write every lead that has a real email to vibe_results.json (JSON array),
-  Tier 1 first, then Tier 2 only to backfill toward {target_leads}.
+AFTER RETRIEVAL - write leads to vibe_results.json (JSON array). A lead does NOT
+  need an email to be written. Order the array so the strongest leads come first:
+    GROUP A (write first): has a real enriched email + a verified signal + a personal
+      linkedin.com/in/ profile. These get the full card (email shown in LIVE).
+    GROUP B (write next, to backfill toward {target_leads}): NO email returned, but
+      still has a verified signal + a personal linkedin.com/in/ profile. Set "email": ""
+      and add "has_email": false. The card hides the email but keeps the LinkedIn
+      connection note as the outreach path. Use Group B only to reach the target.
+  Within each group, Tier 1 (public source link) before Tier 2 (signal evidence).
   Each item: name, title, company, country, industry, employees, revenue,
   linkedin_url (the personal linkedin.com/in/ profile - see LINKEDIN URL RULE),
-  website, email, signals (list), signal_days_ago,
+  website, email (or "" for Group B), signals (list), signal_days_ago,
   signal_description (the event detail, stated as plain fact),
   AND provenance - at least ONE of:
     source       (Tier 1: the event data.link, a real public URL) + source_title, OR
     signal_proof (Tier 2: the structured detection evidence, e.g.
                   "Detected signal: legal matter, NSW Supreme Court [case], recorded 14 Apr 2026").
+  OPTIONAL enrichment fields when Vibe provided them (never fabricate, omit if absent):
+    funding_amount (e.g. "$8M"), lead_investor, hired_roles (e.g. "Controller, FP&A Analyst"),
+    headcount_growth_6m (e.g. "22%"), founded_year (e.g. "2019").
   A lead with NEITHER source nor signal_proof must NOT be written. Never invent a URL.
 
 SOURCE OF TRUTH (no fabrication, ever):
@@ -922,6 +974,8 @@ BANNED during Vibe calls:
   - Do not enrich phone numbers
   - Do not write any lead with no provenance (no link and no signal evidence)
   - Do not write any lead that did not come from a real unmasked Vibe row
+  - Do NOT discard a verified, ICP-fit lead solely because it has no email; write it
+    as Group B (email "") instead, up to the lead target
 
 THEN: re-run this script: python3 routine.py {MODE} {SLUG} {DATE}
 =============================================================
@@ -1097,6 +1151,14 @@ THEN: re-run this script: python3 routine.py {MODE} {SLUG} {DATE}
         signal_desc = lead.get("signal_description", lead.get("recent_news", "")) or ""
         signal_proof = lead.get("signal_proof", lead.get("signalProof", lead.get("evidence", ""))) or ""
 
+        # --- OPTIONAL enrichment fields (folded into existing rendered fields below).
+        #     All are optional: absent fields default to empty and change nothing. ---
+        funding_amount = _clean_field(lead.get("funding_amount", ""))
+        lead_investor = _clean_field(lead.get("lead_investor", lead.get("investor", "")))
+        hired_roles = _clean_field(lead.get("hired_roles", ""))
+        headcount_growth_6m = _clean_field(lead.get("headcount_growth_6m", lead.get("headcount_growth", "")))
+        founded_year = _clean_field(lead.get("founded_year", ""))
+
         sigs = lead.get("signals", lead.get("signal_types", []))
         if isinstance(sigs, str):
             sigs = [sigs]
@@ -1182,10 +1244,21 @@ THEN: re-run this script: python3 routine.py {MODE} {SLUG} {DATE}
             "website": website,
             "email": email_val,
             "phone": phone_val,
-            "whatTheyDo": f"{company} is a {employees}-person {industry} company based in {country}.",
-            "recentNews": signal_desc or signal_plain,
+            "whatTheyDo": _join_sentences(
+                f"{company} is a {employees}-person {industry} company based in {country}",
+                (f"Operating since {founded_year}" if founded_year else ""),
+            ),
+            "recentNews": _join_sentences(
+                (signal_desc or signal_plain),
+                (f"Round size {funding_amount}" if funding_amount else ""),
+                (f"Lead investor {lead_investor}" if lead_investor else ""),
+                (f"Roles posted: {hired_roles}" if hired_roles else ""),
+            ),
             "founderFocus": founder_focus,
-            "teamTrajectory": team_trajectory,
+            "teamTrajectory": _join_sentences(
+                team_trajectory,
+                (f"Headcount up {headcount_growth_6m} over the last 6 months" if headcount_growth_6m else ""),
+            ),
             "whyFit": why_fit,
             "whyNow": why_now,
             "connNote": conn_note,
