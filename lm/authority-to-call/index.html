@@ -3,7 +3,25 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Authority-to-Calls Pipeline Score</title>
+<title>The Authority-to-Calls Pipeline Score | Pipelind</title>
+<meta name="description" content="Answer 6 questions and get your personalized Pipeline Score across Create, Distribute, Capture, and Convert — plus the full system, copy-paste templates, a DM script, and a 30-day plan. Free, takes 90 seconds.">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.pipelind.com/lm/authority-to-call">
+<meta property="og:title" content="Find Out Where Your Content Is Actually Losing You Clients">
+<meta property="og:description" content="Free 90-second scorecard: your personalized Pipeline Score, the full system, copy-paste templates, a DM script, and a 30-day plan built around your weakest stage.">
+<meta property="og:image" content="https://www.pipelind.com/lm/authority-to-call/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Find Out Where Your Content Is Actually Losing You Clients">
+<meta name="twitter:description" content="Free 90-second scorecard: your Pipeline Score, the system, templates, DM script, and a 30-day plan.">
+<meta name="twitter:image" content="https://www.pipelind.com/lm/authority-to-call/og-image.png">
+
+<link rel="icon" type="image/png" href="/lm/authority-to-call/favicon.png">
+<link rel="canonical" href="https://www.pipelind.com/lm/authority-to-call">
+<meta name="robots" content="index, follow">
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&family=Montserrat:wght@300;400;600;700;800&display=swap');
 
@@ -186,6 +204,28 @@
   }
   [data-screen] { display: none; }
   [data-screen].active { display: block; animation: fadeIn 0.3s ease; }
+
+  .save-pdf-btn {
+    background: transparent; border: 1px solid var(--purple); color: var(--purple);
+    font-family: 'Roboto Mono', monospace; font-size: 11px; letter-spacing: 1px;
+    padding: 8px 16px; border-radius: 6px; cursor: pointer; text-transform: uppercase;
+  }
+  .save-pdf-btn:hover { background: rgba(106,102,163,0.12); }
+  .field-error { color: #ff5c5c; font-size: 12px; margin-top: 6px; display: none; }
+  .field.invalid input { border-color: #ff5c5c; }
+  .field.invalid .field-error { display: block; }
+  .option[tabindex]:focus-visible { outline: 2px solid var(--orange); outline-offset: 2px; }
+
+  @media print {
+    body { background: #fff !important; padding: 0; }
+    .stage { max-width: 100%; }
+    .card { background: #fff !important; border: none; padding: 10px; }
+    .card::before { display: none; }
+    * { color: #111 !important; box-shadow: none !important; }
+    .btn, .save-pdf-btn, .copy-btn, .footnote, .cta-block, #backToQuizLink { display: none !important; }
+    .bar-track, .progress-track { background: #ddd !important; }
+    .block, .tpl, .callout, .gate-preview { border: 1px solid #ccc !important; background: #fafafa !important; }
+  }
 </style>
 </head>
 <body>
@@ -248,21 +288,25 @@
         <input type="text" id="fName" placeholder="Jane">
       </div>
       <div class="field" style="margin-bottom:20px;">
-        <label>Email — we'll also send you the report so you don't lose it</label>
+        <label>Email — your report unlocks below and stays on this page</label>
         <input type="email" id="fEmail" placeholder="jane@company.com">
       </div>
-      <button class="btn full" onclick="unlockReport()">Open My Pipeline Score
+      <button class="btn full" id="unlockBtn" onclick="unlockReport()">Open My Pipeline Score
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg>
       </button>
       <p class="footnote" style="text-align:center;">No spam. Your email gets this report and nothing you didn't ask for.</p>
+      <p class="footnote" style="text-align:center;"><button class="back-link" id="backToQuizLink" onclick="backToQuizFromGate()">&larr; Change my answers</button></p>
     </div>
 
     <!-- REPORT -->
     <div data-screen="report">
       <div class="pb-header">
-        <div class="kicker">Your Authority-to-Calls Pipeline Score</div>
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:16px; flex-wrap:wrap;">
+          <div class="kicker">Your Authority-to-Calls Pipeline Score</div>
+          <button class="save-pdf-btn" onclick="window.print()">Save as PDF</button>
+        </div>
         <div class="pb-title" id="pbGreeting">Your Pipeline Score</div>
-        <div class="pb-sub">Built from your answers. Every template below is ready to use today — copy, fill the <span style="color:var(--orange)">[orange blanks]</span>, publish.</div>
+        <div class="pb-sub">Built from your answers. Every template below is ready to use today — copy, fill the <span style="color:var(--orange)">[orange blanks]</span>, publish. Bookmark this page or hit <b>Save as PDF</b> above to keep it.</div>
       </div>
 
       <div class="section-label"><span class="snum">01</span> Your Pipeline Score</div>
@@ -395,13 +439,15 @@ Happy to walk you through how I'd approach it for your content specifically. No 
       <div class="cta-block">
         <h3>Want this whole pipeline installed for you, once?</h3>
         <p>Everything above works if you run it yourself, every month, for as long as you keep publishing. The honest catch: it's real time on top of actually making the content. The Authority-to-Calls Engine is a 30-day, one-time install, built directly in your own LinkedIn presence and workspace, so you own and run the whole pipeline yourself after handoff, not a subscription you keep paying for.</p>
+        <p style="font-size:13px; color:var(--text-dim); margin-top:-8px; margin-bottom:22px;">This is for you if you're already producing long-form content and your score above shows the leak is downstream of Create — Distribute, Capture, or Convert.</p>
         <a class="btn" href="https://calendly.com/saurabh_zentro/30-min" target="_blank" rel="noopener">Book a 30-Minute Install Review
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg>
         </a>
         <p class="footnote">You leave with a plan either way — that rule applies to this call too.</p>
+        <p class="footnote">Solo-built, capped at 4–5 installs at a time — no bigger team behind it.</p>
       </div>
 
-      <p class="disclaimer">This report is yours to use freely. Your Pipeline Score in section 01 is calculated directly from your answers using the stage weights shown there.</p>
+      <p class="disclaimer">Built by Saurabh — this scorecard is my own Capture stage, and the message you'd get after booking is my own Convert stage, so you're already seeing the system work.<br>This report is yours to use freely. Your Pipeline Score in section 01 is calculated directly from your answers using the stage weights shown there.</p>
     </div>
 
   </div>
@@ -425,17 +471,52 @@ const QUESTIONS = [
 
 let current = 0;
 let answers = {};
+const STORAGE_KEY = 'pipelind_authority_quiz_state_v1';
 
-function startQuiz(){ goTo('quiz'); renderQuestion(); }
+function track(eventName, data){
+  try {
+    if (window.va) window.va('event', { name: eventName, ...(data||{}) });
+    console.log('[track]', eventName, data || {});
+  } catch(e) {}
+}
+
+function saveProgress(){
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ current, answers })); } catch(e) {}
+}
+function loadProgress(){
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return false;
+    const parsed = JSON.parse(raw);
+    if (parsed && typeof parsed.current === 'number' && parsed.answers){
+      current = parsed.current; answers = parsed.answers; return true;
+    }
+  } catch(e) {}
+  return false;
+}
+function clearProgress(){ try { localStorage.removeItem(STORAGE_KEY); } catch(e) {} }
+
+function startQuiz(){ track('quiz_start'); goTo('quiz'); renderQuestion(); }
+
+function resumeIfAvailable(){
+  if (loadProgress() && current > 0 && current < QUESTIONS.length){
+    goTo('quiz');
+    renderQuestion();
+  }
+}
+document.addEventListener('DOMContentLoaded', resumeIfAvailable);
 function goTo(screen){
   document.querySelectorAll('[data-screen]').forEach(el => el.classList.remove('active'));
   document.querySelector(`[data-screen="${screen}"]`).classList.add('active');
   window.scrollTo({top:0, behavior:'smooth'});
 }
 
+const PROGRESS_FLOOR = 12; // endowed progress: Q1 already shows visible movement
+
 function renderQuestion(){
   const q = QUESTIONS[current];
-  document.getElementById('progressFill').style.width = `${(current/QUESTIONS.length)*100}%`;
+  const pct = PROGRESS_FLOOR + (current / QUESTIONS.length) * (100 - PROGRESS_FLOOR);
+  document.getElementById('progressFill').style.width = `${pct}%`;
   document.getElementById('qIndex').textContent = `QUESTION ${current+1} OF ${QUESTIONS.length}`;
   document.getElementById('qTitle').textContent = q.title;
   document.getElementById('qWhy').textContent = q.why;
@@ -444,11 +525,15 @@ function renderQuestion(){
   q.options.forEach(o => {
     const div = document.createElement('div');
     div.className = 'option';
+    div.setAttribute('role', 'button');
+    div.setAttribute('tabindex', '0');
     div.innerHTML = `<span>${o.label}</span><span class="arrow">&rarr;</span>`;
     div.onclick = () => selectOption(q.key, o.value);
+    div.onkeydown = (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectOption(q.key, o.value); } };
     opts.appendChild(div);
   });
   document.getElementById('backBtn').style.visibility = current === 0 ? 'hidden' : 'visible';
+  saveProgress();
 }
 
 function selectOption(key, value){
@@ -467,6 +552,12 @@ function prevQuestion(){
   if (current > 0){ current--; renderQuestion(); }
 }
 
+function backToQuizFromGate(){
+  current = QUESTIONS.length - 1;
+  goTo('quiz');
+  renderQuestion();
+}
+
 function scoreOf(){
   const s = { create:0, distribute:0, capture:0, convert:0 };
   s.create = answers.volume === 'high' ? 25 : answers.volume === 'mid' ? 18 : 10;
@@ -481,11 +572,12 @@ function scoreOf(){
 function buildReport(){
   const s = scoreOf();
   const total = s.create + s.distribute + s.capture + s.convert;
-  const name = 'there';
-  document.getElementById('gateHint').textContent = `Your total: ${total}/100.`;
+  document.getElementById('gateHint').textContent =
+    `Your total: ${total}/100. The breakdown below shows exactly where the other ${100-total} points went.`;
   goTo('gate');
   window._scores = s;
   window._total = total;
+  track('gate_shown', { total });
 }
 
 function weakestStage(s){
@@ -494,16 +586,41 @@ function weakestStage(s){
   return entries[0][0];
 }
 
+function setFieldError(fieldId, message){
+  const field = document.getElementById(fieldId).closest('.field');
+  let err = field.querySelector('.field-error');
+  if (!err){ err = document.createElement('div'); err.className = 'field-error'; field.appendChild(err); }
+  if (message){ field.classList.add('invalid'); err.textContent = message; }
+  else { field.classList.remove('invalid'); }
+}
+
+let isSubmitting = false;
+
 async function unlockReport(){
+  if (isSubmitting) return;
   const name = document.getElementById('fName').value.trim();
   const email = document.getElementById('fEmail').value.trim();
-  if (!name || !email || !email.includes('@')) { alert('Please enter your name and a valid email.'); return; }
+  let valid = true;
+  if (!name){ setFieldError('fName', 'Please enter your first name.'); valid = false; } else { setFieldError('fName', null); }
+  if (!email || !email.includes('@') || !email.includes('.')){ setFieldError('fEmail', 'Please enter a valid email address.'); valid = false; } else { setFieldError('fEmail', null); }
+  if (!valid) return;
+
+  isSubmitting = true;
+  const submitBtn = document.getElementById('unlockBtn');
+  const originalLabel = submitBtn.innerHTML;
+  submitBtn.disabled = true;
+  submitBtn.style.opacity = '0.6';
+  submitBtn.style.cursor = 'not-allowed';
+  submitBtn.innerHTML = 'Opening…';
+
+  track('gate_passed');
+  clearProgress();
   try {
     await fetch('https://api.web3forms.com/submit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
       body: JSON.stringify({
-        access_key: 'REPLACE_WITH_WEB3FORMS_KEY',
+        access_key: '54e4bfc3-4b35-49a5-979f-988a9ac22fa2',
         name, email,
         message: `Authority-to-Calls Pipeline Score lead. Answers: ${JSON.stringify(answers)}. Score: ${JSON.stringify(window._scores)}. Total: ${window._total}.`,
         source: 'authority-to-calls-pipeline-score',
@@ -539,7 +656,7 @@ function renderDeliverable(name){
     `Method: Create and Distribute are scored from your publishing volume and format. Capture is scored from whether each piece has a specific hand-raising mechanism, plus a bonus if you already run a live tool. Convert is scored from whether replies enter a set message sequence. Your weakest stage right now: ${weak}.`;
 
   document.getElementById('benchmarkCallout').innerHTML =
-    `<b>Why the Capture stage matters most:</b> scored, interactive assessments are currently averaging around 38.5% conversion in B2B professional services, well above a static PDF or generic freebie. If your Capture score above is low, that's the fastest stage to fix.`;
+    `<b>Why the Capture stage matters most:</b> ScoreApp's 2026 benchmark across 22,000 quiz funnels found B2B professional services averaging 38.5% conversion on scored, interactive assessments — well above a static PDF or generic freebie. If your Capture score above is low, that's the fastest stage to fix.`;
 
   const planContainer = document.getElementById('planBlock');
   const focusCopy = {
@@ -588,5 +705,6 @@ function fallbackCopy(text, done){
   document.body.removeChild(ta);
 }
 </script>
+<script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>
