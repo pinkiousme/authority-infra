@@ -3,20 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Fractional Pipeline Audit | Pipelind</title>
-<meta name="description" content="Answer 6 questions and get your personalized Fractional Pipeline Score across Create, Distribute, Capture, and Convert — plus the full system, copy-paste templates, a DM script, and a 30-day plan. Built for fractional CFOs and COOs. Free, takes 90 seconds.">
+<title>The Business Health Scorecard | Pipelind</title>
+<meta name="description" content="Answer 6 questions and get your personalized Business Health Score across pipeline horizon, referral concentration, capture, visibility cadence, and systemization, plus copy-paste positioning templates, a comment-to-call script, and a 30-day plan. Built for fractional CFOs and COOs. Free, takes 90 seconds.">
 
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://www.pipelind.com/lm/authority-to-call">
-<meta property="og:title" content="Find Out Where Your Fractional Practice Is Actually Losing You Clients">
-<meta property="og:description" content="Free 90-second audit for fractional CFOs and COOs: your personalized Pipeline Score, the full system, copy-paste templates, a DM script, and a 30-day plan built around your weakest stage.">
+<meta property="og:title" content="See Exactly Why Your Pipeline Runs Feast to Famine">
+<meta property="og:description" content="Free 90-second scorecard for fractional CFOs and COOs: your Business Health Score, the gap map, copy-paste templates, a comment-to-call script, and a 30-day plan built around your weakest category.">
 <meta property="og:image" content="https://www.pipelind.com/lm/authority-to-call/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Find Out Where Your Fractional Practice Is Actually Losing You Clients">
-<meta name="twitter:description" content="Free 90-second audit for fractional CFOs and COOs: your Pipeline Score, the system, templates, DM script, and a 30-day plan.">
+<meta name="twitter:title" content="See Exactly Why Your Pipeline Runs Feast to Famine">
+<meta name="twitter:description" content="Free 90-second scorecard for fractional CFOs and COOs: your Business Health Score, the gap map, templates, script, and a 30-day plan.">
 <meta name="twitter:image" content="https://www.pipelind.com/lm/authority-to-call/og-image.png">
 
 <link rel="icon" type="image/png" href="/lm/authority-to-call/favicon.png">
@@ -113,13 +113,17 @@
   .gate-item:last-child { margin-bottom: 0; }
   .gate-item .n { font-family: 'Roboto Mono', monospace; color: var(--orange); font-size: 12px; font-weight: 700; margin-top: 2px; }
   .gate-item b { color: var(--white); }
+  .gate-hint { font-size: 13px; color: var(--orange-light); margin-bottom: 20px; }
 
   .field { margin-bottom: 14px; }
   .field label { display: block; font-size: 12px; color: var(--text-dim); letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 6px; font-family: 'Roboto Mono', monospace; }
-  .field input { width: 100%; background: var(--panel-2); border: 1px solid var(--hairline); border-radius: 6px; padding: 14px 16px; color: var(--white); font-size: 15px; font-family: 'Montserrat', sans-serif; }
+  .field input {
+    width: 100%; background: var(--panel-2); border: 1px solid var(--hairline); border-radius: 6px;
+    padding: 14px 16px; color: var(--white); font-size: 15px; font-family: 'Montserrat', sans-serif;
+  }
   .field input:focus { outline: none; border-color: var(--orange); }
 
-  /* Deliverable */
+  /* Report */
   .pb-header { margin-bottom: 36px; }
   .pb-title { font-size: 27px; font-weight: 800; margin-bottom: 6px; }
   .pb-sub { color: var(--text-dim); font-size: 13.5px; line-height: 1.6; }
@@ -137,31 +141,32 @@
   .block p { font-size: 14px; color: var(--text-mid); line-height: 1.6; }
   .block p b { color: var(--white); }
 
-  /* Score panel: donut + stage bars */
-  .score-panel { display: flex; gap: 30px; flex-wrap: wrap; align-items: center; background: var(--panel-2); border: 1px solid var(--hairline); border-radius: 8px; padding: 26px 24px; margin-bottom: 10px; }
-  .donut-wrap { text-align: center; flex-shrink: 0; }
-  .donut-num { font-size: 30px; font-weight: 800; }
-  .donut-sub { font-family: 'Roboto Mono', monospace; font-size: 10px; letter-spacing: 1px; color: var(--text-dim); text-transform: uppercase; margin-top: 2px; }
-  .stage-bars { flex: 1; min-width: 220px; display: flex; flex-direction: column; gap: 12px; }
-  .stage-row .sr-top { display: flex; justify-content: space-between; font-size: 12.5px; margin-bottom: 5px; }
-  .stage-row .sr-name { color: var(--text-mid); }
-  .stage-row .sr-val { font-family: 'Roboto Mono', monospace; color: var(--orange); }
-  .bar-track { width: 100%; height: 7px; background: var(--grey-dark); border-radius: 4px; overflow: hidden; }
-  .bar-fill { height: 100%; border-radius: 4px; width: 0%; transition: width 1s cubic-bezier(.16,1,.3,1); }
-  .bar-fill.orange { background: var(--orange); }
-  .bar-fill.purple { background: var(--purple); }
-  .score-note { font-size: 11.5px; color: var(--text-dim); line-height: 1.6; margin: 12px 2px 0; }
+  /* Score donut + gap strip */
+  .score-row { display: flex; gap: 30px; align-items: center; flex-wrap: wrap; background: var(--panel-2); border: 1px solid var(--hairline); border-radius: 8px; padding: 26px 24px; margin-bottom: 10px; }
+  .donut-wrap { position: relative; width: 120px; height: 120px; flex-shrink: 0; }
+  .donut-wrap svg { transform: rotate(-90deg); }
+  .donut-num { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .donut-num .dn { font-size: 26px; font-weight: 800; color: var(--white); line-height: 1; }
+  .donut-num .dl { font-family: 'Roboto Mono', monospace; font-size: 9px; color: var(--text-dim); letter-spacing: 1px; margin-top: 2px; }
+  .score-band { font-size: 17px; font-weight: 700; margin-bottom: 6px; }
+  .score-desc { font-size: 13.5px; color: var(--text-mid); line-height: 1.55; }
+
+  .gap-strip { display: flex; gap: 20px; flex-wrap: wrap; background: var(--panel-2); border: 1px solid var(--hairline); border-radius: 8px; padding: 22px 24px; margin-bottom: 6px; }
+  .gap-item { min-width: 110px; }
+  .gap-item .gv { font-size: 22px; font-weight: 800; color: var(--orange); line-height: 1.05; }
+  .gap-item .gl { font-size: 10.5px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.4px; font-family: 'Roboto Mono', monospace; margin-top: 4px; line-height: 1.4; }
+  .gap-note { font-size: 11.5px; color: var(--text-dim); line-height: 1.6; margin: 10px 2px 0; }
 
   /* Pipeline diagram */
   .pipe { display: flex; flex-direction: column; gap: 0; margin-top: 6px; }
   .pipe-src { background: rgba(106,102,163,0.12); border: 1px solid var(--purple-dark); border-radius: 8px; padding: 16px 18px; font-size: 14px; text-align: center; }
   .pipe-src b { color: var(--orange-light); }
   .pipe-arrow { text-align: center; color: var(--orange); font-size: 18px; padding: 6px 0; font-family: 'Roboto Mono', monospace; }
-  .pipe-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; }
+  .pipe-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; }
   .pipe-cell { background: var(--panel-2); border: 1px solid var(--hairline); border-radius: 8px; padding: 14px 12px; text-align: center; }
   .pipe-cell .pc-icon { color: var(--orange); font-family: 'Roboto Mono', monospace; font-size: 11px; letter-spacing: 1px; margin-bottom: 6px; }
-  .pipe-cell .pc-name { font-size: 12.5px; font-weight: 600; margin-bottom: 4px; }
-  .pipe-cell .pc-time { font-size: 10.5px; color: var(--text-dim); font-family: 'Roboto Mono', monospace; }
+  .pipe-cell .pc-name { font-size: 12.5px; font-weight: 600; margin-bottom: 4px; line-height: 1.3; }
+  .pipe-cell .pc-time { font-size: 10.5px; color: var(--text-dim); font-family: 'Roboto Mono', monospace; line-height: 1.4; }
 
   .step { display: flex; gap: 16px; margin-bottom: 14px; }
   .step-n { font-family: 'Roboto Mono', monospace; font-weight: 700; font-size: 13px; color: var(--orange); border: 1px solid var(--orange-dark); border-radius: 6px; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; background: rgba(255,153,0,0.06); }
@@ -193,39 +198,19 @@
 
   .cta-block { text-align: center; padding: 36px 24px; margin-top: 44px; background: linear-gradient(180deg, rgba(255,153,0,0.08), rgba(255,153,0,0.02)); border: 1px solid rgba(255,153,0,0.25); border-radius: 10px; }
   .cta-block h3 { font-size: 21px; margin-bottom: 10px; }
-  .cta-block p { color: var(--text-mid); font-size: 14px; margin-bottom: 22px; max-width: 460px; margin-left: auto; margin-right: auto; line-height: 1.6; }
+  .cta-block p { color: var(--text-mid); font-size: 14px; margin-bottom: 22px; max-width: 480px; margin-left: auto; margin-right: auto; line-height: 1.6; }
 
   .disclaimer { font-size: 11px; color: var(--text-dim); text-align: center; margin-top: 24px; line-height: 1.6; }
 
   @media (max-width: 620px) {
     .card { padding: 32px 20px; }
     h1 { font-size: 26px; }
-    .score-panel { flex-direction: column; align-items: flex-start; }
+    .gap-strip { gap: 16px; }
+    .gap-item .gv { font-size: 20px; }
+    .score-row { padding: 22px 18px; gap: 18px; }
   }
   [data-screen] { display: none; }
   [data-screen].active { display: block; animation: fadeIn 0.3s ease; }
-
-  .save-pdf-btn {
-    background: transparent; border: 1px solid var(--purple); color: var(--purple);
-    font-family: 'Roboto Mono', monospace; font-size: 11px; letter-spacing: 1px;
-    padding: 8px 16px; border-radius: 6px; cursor: pointer; text-transform: uppercase;
-  }
-  .save-pdf-btn:hover { background: rgba(106,102,163,0.12); }
-  .field-error { color: #ff5c5c; font-size: 12px; margin-top: 6px; display: none; }
-  .field.invalid input { border-color: #ff5c5c; }
-  .field.invalid .field-error { display: block; }
-  .option[tabindex]:focus-visible { outline: 2px solid var(--orange); outline-offset: 2px; }
-
-  @media print {
-    body { background: #fff !important; padding: 0; }
-    .stage { max-width: 100%; }
-    .card { background: #fff !important; border: none; padding: 10px; }
-    .card::before { display: none; }
-    * { color: #111 !important; box-shadow: none !important; }
-    .btn, .save-pdf-btn, .copy-btn, .footnote, .cta-block, #backToQuizLink { display: none !important; }
-    .bar-track, .progress-track { background: #ddd !important; }
-    .block, .tpl, .callout, .gate-preview { border: 1px solid #ccc !important; background: #fafafa !important; }
-  }
 </style>
 </head>
 <body>
@@ -235,20 +220,19 @@
 
     <!-- LANDING -->
     <div data-screen="landing" class="active">
-      <div class="kicker">For Fractional CFOs &amp; COOs · Free · Takes 90 Seconds</div>
-      <h1>Find out where your expertise is<br><span class="accent">actually losing you clients.</span></h1>
-      <p class="sub">Answer 6 questions about how you currently turn your expertise into new client conversations. You'll get your personalized Fractional Pipeline Score across all four stages, the exact system fractional CFOs and COOs use to turn one piece of content into booked calls, copy-paste templates, a comment-to-call DM script, and a 30-day plan built around your weakest stage.</p>
+      <div class="kicker">Free · Scored in 90 seconds · Built on your answers</div>
+      <h1>See exactly why your pipeline runs<br><span class="accent">feast to famine, not month to month.</span></h1>
+      <p class="sub">Answer 6 questions about how your fractional CFO or COO practice actually finds clients today. You'll get a scored Business Health breakdown, the specific gaps behind your number, copy-paste positioning templates, a comment-to-call script, and a 30-day plan sized to your time.</p>
       <div class="promise-list">
-        <div class="promise"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg><span><b>Your Fractional Pipeline Score</b> — scored across Create, Distribute, Capture, and Convert</span></div>
-        <div class="promise"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg><span><b>The full pipeline system</b> — how one piece of content becomes a booked call, stage by stage, built for fractional CFOs and COOs</span></div>
-        <div class="promise"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg><span><b>Copy-paste templates</b> — a Handraiser post and a full newsletter structure, fill-in-the-blank</span></div>
-        <div class="promise"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg><span><b>The comment-to-call DM script</b> — word for word, no pitch-slapping</span></div>
-        <div class="promise"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg><span><b>Your 30-day plan</b> — sequenced around your specific weakest stage</span></div>
+        <div class="promise"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg><span><b>Your Business Health Score</b>, out of 100, broken down across 5 categories with the method shown</span></div>
+        <div class="promise"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg><span><b>3 copy-paste templates</b>, headline, About opener, and a handraiser post, framed for your role</span></div>
+        <div class="promise"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg><span><b>A 3-message comment-to-call script</b>, word for word, with judgment rules</span></div>
+        <div class="promise"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg><span><b>Your 30-day plan</b>, sequenced to your weakest category and your actual time budget</span></div>
       </div>
-      <button class="btn" onclick="startQuiz()">Get My Pipeline Score
+      <button class="btn" onclick="startQuiz()">Score My Practice
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg>
       </button>
-      <p class="footnote">Everything below is usable the moment you get it. No fluff, no teaser PDF.</p>
+      <p class="footnote">Everything below the score is usable today. Nothing essential is held back for a call.</p>
     </div>
 
     <!-- QUIZ -->
@@ -265,97 +249,107 @@
     <div data-screen="calculating">
       <div class="calc-wrap">
         <div class="spinner"></div>
-        <div class="calc-line" style="animation-delay:0.1s">Scoring your Create, Distribute, Capture, and Convert stages…</div>
-        <div class="calc-line" style="animation-delay:0.6s">Finding your weakest stage…</div>
-        <div class="calc-line" style="animation-delay:1.1s">Sequencing your 30-day plan around it…</div>
+        <div class="calc-line" style="animation-delay:0.1s">Scoring your pipeline horizon and referral concentration…</div>
+        <div class="calc-line" style="animation-delay:0.6s">Mapping your gaps against the 5-category model…</div>
+        <div class="calc-line" style="animation-delay:1.1s">Building your templates and 30-day plan…</div>
       </div>
     </div>
 
     <!-- GATE -->
     <div data-screen="gate">
-      <div class="kicker">Your Fractional Pipeline Score is ready</div>
-      <h1 style="font-size:26px; margin-bottom:10px;">Your score and full breakdown are built.<br><span class="accent" id="gateHint"></span></h1>
+      <div class="kicker">Your scorecard is ready</div>
+      <h1 style="font-size:28px;">Your Business Health Score is calculated.<br><span class="accent" id="gateHint">Enter your details to open it.</span></h1>
       <div class="gate-preview">
-        <div class="gate-preview-title">Inside your personalized report</div>
-        <div class="gate-item"><span class="n">01</span><span><b>Your Fractional Pipeline Score</b> — the breakdown across all four stages, with the method shown</span></div>
-        <div class="gate-item"><span class="n">02</span><span><b>The Authority-to-Calls Pipeline</b> — the exact system, stage by stage</span></div>
-        <div class="gate-item"><span class="n">03</span><span><b>2 copy-paste templates</b> — Handraiser post + full newsletter structure</span></div>
-        <div class="gate-item"><span class="n">04</span><span><b>The comment-to-call DM script</b> — the 3-message sequence, word for word</span></div>
-        <div class="gate-item"><span class="n">05</span><span><b>Your 30-day plan</b> — sequenced around your weakest stage, plus a free tool stack</span></div>
+        <div class="gate-preview-title">What's inside</div>
+        <div class="gate-item"><span class="n">01</span><span><b>Your Business Health Score</b>, out of 100 with the 5-category breakdown</span></div>
+        <div class="gate-item"><span class="n">02</span><span><b>The gap map</b>, why practices at your score run feast to famine</span></div>
+        <div class="gate-item"><span class="n">03</span><span><b>3 copy-paste templates</b>, framed for your role</span></div>
+        <div class="gate-item"><span class="n">04</span><span><b>The comment-to-call script</b>, 3 messages, word for word</span></div>
+        <div class="gate-item"><span class="n">05</span><span><b>Your 30-day plan</b>, sequenced to your weakest category</span></div>
       </div>
       <div class="field">
-        <label>First Name</label>
-        <input type="text" id="fName" placeholder="Jane">
+        <label>Name</label>
+        <input type="text" id="fName" placeholder="Jane Smith">
       </div>
       <div class="field" style="margin-bottom:20px;">
-        <label>Email — your report unlocks below and stays on this page</label>
-        <input type="email" id="fEmail" placeholder="jane@company.com">
+        <label>Email, we'll also send you the scorecard so you don't lose it</label>
+        <input type="email" id="fEmail" placeholder="jane@fractionalcfo.com">
       </div>
-      <button class="btn full" id="unlockBtn" onclick="unlockReport()">Open My Pipeline Score
+      <button class="btn full" onclick="unlockReport()">Open My Scorecard
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg>
       </button>
-      <p class="footnote" style="text-align:center;">No spam. Your email gets this report and nothing you didn't ask for.</p>
-      <p class="footnote" style="text-align:center;"><button class="back-link" id="backToQuizLink" onclick="backToQuizFromGate()">&larr; Change my answers</button></p>
+      <p class="footnote" style="text-align:center;">No spam. Your email gets this scorecard and nothing you didn't ask for.</p>
     </div>
 
     <!-- REPORT -->
     <div data-screen="report">
       <div class="pb-header">
-        <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:16px; flex-wrap:wrap;">
-          <div class="kicker">Your Fractional Pipeline Score</div>
-          <button class="save-pdf-btn" onclick="window.print()">Save as PDF</button>
-        </div>
-        <div class="pb-title" id="pbGreeting">Your Pipeline Score</div>
-        <div class="pb-sub">Built from your answers. Every template below is ready to use today — copy, fill the <span style="color:var(--orange)">[orange blanks]</span>, publish. Bookmark this page or hit <b>Save as PDF</b> above to keep it.</div>
+        <div class="kicker">Your Business Health Scorecard</div>
+        <div class="pb-title" id="pbGreeting">Your scorecard</div>
+        <div class="pb-sub" id="pbSub">Built from your answers. Every template below is ready to use today, copy, fill the <span style="color:var(--orange)">[orange blanks]</span>, publish.</div>
       </div>
 
-      <div class="section-label"><span class="snum">01</span> Your Fractional Pipeline Score</div>
-      <div class="score-panel">
+      <div class="section-label"><span class="snum">01</span> Your Business Health Score</div>
+      <div class="score-row">
         <div class="donut-wrap">
-          <svg width="110" height="110" viewBox="0 0 120 120">
-            <circle cx="60" cy="60" r="50" fill="none" stroke="var(--grey-dark)" stroke-width="14"/>
-            <circle id="ring" cx="60" cy="60" r="50" fill="none" stroke="var(--orange)" stroke-width="14"
-              stroke-dasharray="314" stroke-dashoffset="314" stroke-linecap="round" transform="rotate(-90 60 60)"/>
-            <text x="60" y="66" text-anchor="middle" font-family="Montserrat" font-weight="800" font-size="26" fill="#fff" id="ringNum">0</text>
+          <svg width="120" height="120" viewBox="0 0 120 120">
+            <circle cx="60" cy="60" r="50" fill="none" stroke="#2E2E36" stroke-width="14"/>
+            <circle id="ring" cx="60" cy="60" r="50" fill="none" stroke="#FF9900" stroke-width="14" stroke-dasharray="314" stroke-dashoffset="314" stroke-linecap="round"/>
           </svg>
-          <div class="donut-sub">/ 100 total</div>
+          <div class="donut-num"><div class="dn" id="scoreNum">—</div><div class="dl">OUT OF 100</div></div>
         </div>
-        <div class="stage-bars">
-          <div class="stage-row"><div class="sr-top"><span class="sr-name">Create</span><span class="sr-val" id="valCreate">0/25</span></div><div class="bar-track"><div class="bar-fill orange" id="barCreate"></div></div></div>
-          <div class="stage-row"><div class="sr-top"><span class="sr-name">Distribute</span><span class="sr-val" id="valDistribute">0/25</span></div><div class="bar-track"><div class="bar-fill purple" id="barDistribute"></div></div></div>
-          <div class="stage-row"><div class="sr-top"><span class="sr-name">Capture</span><span class="sr-val" id="valCapture">0/25</span></div><div class="bar-track"><div class="bar-fill orange" id="barCapture"></div></div></div>
-          <div class="stage-row"><div class="sr-top"><span class="sr-name">Convert</span><span class="sr-val" id="valConvert">0/25</span></div><div class="bar-track"><div class="bar-fill purple" id="barConvert"></div></div></div>
+        <div style="flex:1; min-width:200px;">
+          <div class="score-band" id="scoreBand">—</div>
+          <div class="score-desc" id="scoreDesc">—</div>
         </div>
       </div>
-      <p class="score-note" id="scoreNote"></p>
-      <div class="callout" id="benchmarkCallout"></div>
+      <div class="gap-strip" id="gapStrip"></div>
+      <p class="gap-note" id="gapNote">Methodology: 5 categories, each scored 5 to 20 based on your answer, summed to a total out of 100. The referral-concentration category is scored in reverse, the higher the share of clients from referral only, the lower the score, since that concentration is what makes a pipeline fragile.</p>
 
-      <div class="section-label"><span class="snum">02</span> The Authority-to-Calls Pipeline</div>
+      <div class="section-label"><span class="snum">02</span> Why this score runs feast to famine</div>
       <div class="block" style="margin-bottom:18px;">
         <div class="pipe">
-          <div class="pipe-src"><b>ONE</b> long-form piece (client breakdown · webinar · workshop · call)</div>
+          <div class="pipe-src"><b>A referral-only pipeline</b> looks fine until referrals slow down, then there's no second channel to fall back on</div>
           <div class="pipe-arrow">&darr;&nbsp;&darr;&nbsp;&darr;&nbsp;&darr;</div>
           <div class="pipe-grid">
-            <div class="pipe-cell"><div class="pc-icon">CREATE</div><div class="pc-name">Newsletter issue</div><div class="pc-time">~45 min</div></div>
-            <div class="pipe-cell"><div class="pc-icon">DISTRIBUTE</div><div class="pc-name">Google index + subscriber push</div><div class="pc-time">automatic</div></div>
-            <div class="pipe-cell"><div class="pc-icon">CAPTURE</div><div class="pc-name">Handraiser post / live tool</div><div class="pc-time">~15 min</div></div>
-            <div class="pipe-cell"><div class="pc-icon">CONVERT</div><div class="pc-name">DM sequence &rarr; booked call</div><div class="pc-time">~10 min</div></div>
+            <div class="pipe-cell"><div class="pc-icon">01</div><div class="pc-name">No search visibility</div><div class="pc-time">prospects can't find you between referrals</div></div>
+            <div class="pipe-cell"><div class="pc-icon">02</div><div class="pc-name">No capture mechanism</div><div class="pc-time">interest that does show up has nowhere to land</div></div>
+            <div class="pipe-cell"><div class="pc-icon">03</div><div class="pc-name">No compounding</div><div class="pc-time">every engagement starts the search over from zero</div></div>
+            <div class="pipe-cell"><div class="pc-icon">04</div><div class="pc-name">Feast or famine</div><div class="pc-time">booked and idle months, never steady</div></div>
           </div>
         </div>
       </div>
-      <div class="step"><div class="step-n">1</div><div class="step-body"><b>Create.</b> Get a transcript of your long-form piece and pull one newsletter issue from it. Written both to be found (SEO structure, keywords) and to convert a reader into a reply — the same piece does both jobs.</div></div>
-      <div class="step"><div class="step-n">2</div><div class="step-body"><b>Distribute.</b> Publish it as a LinkedIn Newsletter issue, not a standalone article. A newsletter issue is technically an article with a distribution layer added: same Google indexing, plus a guaranteed push to every subscriber's inbox and notifications. Publishing both separately just doubles the work for the same reader benefit.</div></div>
-      <div class="step"><div class="step-n">3</div><div class="step-body"><b>Capture.</b> Every piece needs one specific mechanism for someone to raise their hand — a Handraiser post with a comment-to-DM mechanic, or a live scored tool they complete on their own. A soft "let me know what you think" is not a mechanism.</div></div>
-      <div class="step"><div class="step-n">4</div><div class="step-body"><b>Convert.</b> Whoever raises their hand enters a specific message sequence, not an ad-hoc reply. This is the stage most fractional CFOs and COOs skip entirely, and it's usually the single biggest point of loss in the whole pipeline.</div></div>
+      <div class="step"><div class="step-n">1</div><div class="step-body"><b>Your lowest-scoring category is your priority.</b> <span id="priorityLine"></span> Fix that one first, the other four move faster once it's addressed.</div></div>
+      <div class="step"><div class="step-n">2</div><div class="step-body"><b>Positioning comes before visibility.</b> If your headline and About section read like a resume, more posting just gets more of the wrong attention. Section 03 fixes the positioning layer first.</div></div>
+      <div class="step"><div class="step-n">3</div><div class="step-body"><b>Visibility without capture is wasted reach.</b> A handraiser post only works if you have a script ready for the people who respond. Section 04 is that script.</div></div>
+      <div class="step"><div class="step-n">4</div><div class="step-body"><b>Consistency compounds, one-off posts don't.</b> Your 30-day plan in section 05 is sized to the time you actually have, not a generic calendar.</div></div>
 
-      <div class="section-label"><span class="snum">03</span> Copy-paste templates</div>
+      <div class="section-label"><span class="snum">03</span> Your copy-paste templates</div>
 
       <div class="tpl">
         <div class="tpl-head">
-          <div><div class="tpl-name">The Handraiser Post</div><div class="tpl-tag">Capture stage</div></div>
+          <div><div class="tpl-name">The Positioning Headline</div><div class="tpl-tag" id="tag1">Framed for your role</div></div>
           <button class="copy-btn" onclick="copyTpl(this,'tpl1')">COPY</button>
         </div>
-        <div class="tpl-body" id="tpl1">I put together <span class="blank">[the specific asset: score, checklist, template]</span> that <span class="blank">[the exact outcome it gives them]</span>.
+        <div class="tpl-body" id="tpl1"></div>
+        <div class="tpl-note">Why it works: a resume-style headline (job title, past employer) gets skipped. A pain-to-outcome headline gets a profile visit. Update this before you touch posting frequency, it changes what every future visit converts into.</div>
+      </div>
+
+      <div class="tpl">
+        <div class="tpl-head">
+          <div><div class="tpl-name">The About Section Opener</div><div class="tpl-tag" id="tag2">First 3 lines, before "see more"</div></div>
+          <button class="copy-btn" onclick="copyTpl(this,'tpl2')">COPY</button>
+        </div>
+        <div class="tpl-body" id="tpl2"></div>
+        <div class="tpl-note">Why it works: opening on the reader's pain, not your bio, is what earns the click to "see more." Your credentials still belong in the About section, just after this opener, not instead of it.</div>
+      </div>
+
+      <div class="tpl">
+        <div class="tpl-head">
+          <div><div class="tpl-name">The Handraiser Post</div><div class="tpl-tag">Lead generation, run once every 2 to 3 weeks</div></div>
+          <button class="copy-btn" onclick="copyTpl(this,'tpl3')">COPY</button>
+        </div>
+        <div class="tpl-body" id="tpl3">I put together <span class="blank">[a specific checklist, template, or breakdown]</span> that <span class="blank">[the exact outcome it delivers]</span>.
 
 It covers:
 
@@ -367,344 +361,344 @@ It's free.
 
 Comment "<span class="blank">[ONE WORD]</span>" and I'll send it over.
 
-(Must be a connection so I can DM you — feel free to connect first.)</div>
-        <div class="tpl-note">Why it works: the comment mechanic turns passive reach into a DM conversation, which is where the Convert stage actually starts. Every commenter enters the DM script in section 04.</div>
+(Must be a connection so I can message you, feel free to connect first.)</div>
+        <div class="tpl-note">Why it works: the comment mechanic turns passive reach into a DM conversation, which is where fractional engagements actually start. Every commenter enters the script in section 04.</div>
       </div>
 
+      <div class="section-label"><span class="snum">04</span> The comment-to-call script</div>
+      <div class="block" style="margin-bottom:16px;">
+        <p>When someone comments on your Handraiser post, this 3-message sequence delivers the asset, starts a real conversation, and earns the call without pitch-slapping. Send message 1 immediately, message 2 only after they reply, message 3 only if their reply shows the pain.</p>
+      </div>
       <div class="tpl">
         <div class="tpl-head">
-          <div><div class="tpl-name">The Newsletter Issue Structure</div><div class="tpl-tag">Create + Distribute stage</div></div>
-          <button class="copy-btn" onclick="copyTpl(this,'tpl2')">COPY</button>
+          <div><div class="tpl-name">Message 1, deliver, then one question</div><div class="tpl-tag">Send immediately</div></div>
+          <button class="copy-btn" onclick="copyTpl(this,'dm1')">COPY</button>
         </div>
-        <div class="tpl-body" id="tpl2">TITLE: <span class="blank">[Number or How-to]</span> + <span class="blank">[specific outcome]</span> + <span class="blank">[for whom]</span>
+        <div class="tpl-body" id="dm1">Hey <span class="blank">[name]</span>, here's the <span class="blank">[asset]</span> you asked for: <span class="blank">[link]</span>
 
-HOOK (2-3 sentences):
-Open with the moment of pain from your source content, the thing
-your audience is doing right now that's costing them. No warm-up.
-
-SECTION 1 — The real problem:
-<span class="blank">[Reframe what they think the problem is vs. what it actually is,
-pulled from your own transcript.]</span>
-
-SECTION 2 — The shift:
-<span class="blank">[The core insight from your content, in your own phrasing.]</span>
-
-SECTION 3 — How to apply it:
-<span class="blank">[3-5 concrete steps, short lines, each starting with a verb.]</span>
-
-CLOSER (declarative, not a question):
-<span class="blank">[One sentence on what changes when they do this.]</span>
-<span class="blank">[One clear next step.]</span></div>
-        <div class="tpl-note">Publish this as a Newsletter issue, not a standalone Article — one piece, both the indexing and the inbox-push benefit.</div>
-      </div>
-
-      <div class="section-label"><span class="snum">04</span> The comment-to-call DM script</div>
-      <div class="block" style="margin-bottom:16px;">
-        <p>When someone comments on your Handraiser post, this 3-message sequence delivers the asset, starts a real conversation, and earns the call, without pitch-slapping. Send message 1 immediately, message 2 only after they reply, message 3 only if their reply shows real pain.</p>
+Quick question while I have you: are you <span class="blank">[situation A, e.g. "already tracking this yourself"]</span> or <span class="blank">[situation B, e.g. "just starting to look into it"]</span>?</div>
+        <div class="tpl-note">The either/or question gets far more replies than "let me know if you have questions," because it costs nothing to answer.</div>
       </div>
       <div class="tpl">
-        <div class="tpl-head"><div><div class="tpl-name">Message 1 — Deliver, then one question</div><div class="tpl-tag">Send immediately</div></div><button class="copy-btn" onclick="copyTpl(this,'dm1')">COPY</button></div>
-        <div class="tpl-body" id="dm1">Hey <span class="blank">[name]</span> — here's the <span class="blank">[asset]</span> you asked for: <span class="blank">[link]</span>
-
-Quick question while I have you: what made you grab this one — are you <span class="blank">[situation A]</span> or <span class="blank">[situation B]</span>?</div>
-        <div class="tpl-note">An either/or question earns far more replies than "let me know if you have questions" because it's effortless to answer.</div>
-      </div>
-      <div class="tpl">
-        <div class="tpl-head"><div><div class="tpl-name">Message 2 — Give value on their answer</div><div class="tpl-tag">Send after they reply</div></div><button class="copy-btn" onclick="copyTpl(this,'dm2')">COPY</button></div>
-        <div class="tpl-body" id="dm2">That makes sense. The thing I see most <span class="blank">[people in their situation]</span> hit is <span class="blank">[the specific obstacle]</span> — <span class="blank">[one genuinely useful tip, 1-2 sentences, no pitch]</span>.
+        <div class="tpl-head">
+          <div><div class="tpl-name">Message 2, give value on their answer</div><div class="tpl-tag">Send after they reply</div></div>
+          <button class="copy-btn" onclick="copyTpl(this,'dm2')">COPY</button>
+        </div>
+        <div class="tpl-body" id="dm2">That makes sense. The thing I see most often at that stage is <span class="blank">[the specific obstacle]</span>, <span class="blank">[one genuinely useful tip, 1 to 2 sentences, no pitch]</span>.
 
 Out of curiosity, what's your current process for <span class="blank">[the relevant task]</span>?</div>
-        <div class="tpl-note">You're diagnosing, not selling. Their answer tells you whether they're a real prospect.</div>
+        <div class="tpl-note">You're diagnosing, not selling. Their answer here tells you whether they're a real prospect before you ask for anything.</div>
       </div>
       <div class="tpl">
-        <div class="tpl-head"><div><div class="tpl-name">Message 3 — The earned ask</div><div class="tpl-tag">Only if their reply shows the pain</div></div><button class="copy-btn" onclick="copyTpl(this,'dm3')">COPY</button></div>
-        <div class="tpl-body" id="dm3">Got it — that's exactly the pattern I work on with <span class="blank">[your ICP]</span>.
+        <div class="tpl-head">
+          <div><div class="tpl-name">Message 3, the earned ask</div><div class="tpl-tag">Only if their reply shows the pain</div></div>
+          <button class="copy-btn" onclick="copyTpl(this,'dm3')">COPY</button>
+        </div>
+        <div class="tpl-body" id="dm3">Got it, that's exactly the pattern I work on with <span class="blank">[your ICP]</span>.
 
-Happy to walk you through how I'd approach it for your content specifically. No charge, no deck, 30 minutes, you leave with a plan either way: <span class="blank">[your booking link]</span></div>
-        <div class="tpl-note">"You leave with a plan either way" removes the risk of saying yes. If message 2 showed no real pain, don't send this one.</div>
+Happy to walk through how I'd approach it for your situation specifically. No charge, no deck, 30 minutes, you leave with a plan either way: <span class="blank">[your booking link]</span></div>
+        <div class="tpl-note">"You leave with a plan either way" removes the risk of saying yes. If message 2 showed no real pain, skip this and stay helpful.</div>
       </div>
 
       <div class="section-label"><span class="snum">05</span> Your 30-day plan</div>
       <div class="block" style="margin-bottom:18px;" id="planBlock"></div>
 
-      <div class="block">
-        <h4>The free tool stack</h4>
-        <p style="margin-bottom:10px;">Everything above runs on free tools:</p>
-        <div class="task">Transcripts — YouTube's built-in transcript, or notta.ai / riverside.fm for uploaded recordings</div>
-        <div class="task">Newsletter setup — LinkedIn's native Newsletter feature (one-time setup: name, description, cadence)</div>
-        <div class="task">Graphics — Canva free tier for the cover image</div>
-        <div class="task">Scheduling — LinkedIn's native scheduler in the post composer</div>
-      </div>
-
       <div class="cta-block">
-        <h3>Want the Business Health Scorecard and the whole pipeline installed for you, once?</h3>
-        <p>Everything above works if you run it yourself, every month, for as long as you keep publishing. The honest catch: it's real time on top of actually doing your CFO or COO work. The Authority-to-Calls Engine is a 30-day, one-time install: your Business Health Scorecard goes live on Day 7, or it's free, your DM Engine and Radar System go live on Day 14, and you own and run the whole pipeline yourself after handoff, not a subscription you keep paying for.</p>
-        <p style="font-size:13px; color:var(--text-dim); margin-top:-8px; margin-bottom:22px;">This is for you if you're a fractional CFO or COO with a real, priced offer and real client results. You're just invisible right now.</p>
-        <a class="btn" href="https://calendly.com/saurabh_zentro/30-min" target="_blank" rel="noopener">Book a 30-Minute Install Review
+        <h3>Want this run for you, live in 7 days</h3>
+        <p>Everything above works if you run it consistently. The honest catch is time, staying consistent with positioning, posting, and outreach on top of client work is what actually falls off. That consistency is what the Authority-to-Calls Engine installs directly into your own Claude workspace over a 30-day build, so it keeps running after handoff.</p>
+        <a class="btn" href="https://calendly.com/saurabh_zentro/30-min" target="_blank" rel="noopener">Book a 30-Minute Practice Audit
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg>
         </a>
-        <p class="footnote">You leave with a plan either way — that rule applies to this call too.</p>
-        <p class="footnote">Solo-built, capped at 4–5 installs at a time — no bigger team behind it.</p>
+        <p class="footnote">You leave with a plan either way, that rule applies to this call too.</p>
       </div>
 
-      <p class="disclaimer">Built by Saurabh — this audit is my own Capture stage, and the message you'd get after booking is my own Convert stage, so you're already seeing the system work.<br>This report is yours to use freely. Your Fractional Pipeline Score in section 01 is calculated directly from your answers using the stage weights shown there.</p>
+      <p class="disclaimer">This scorecard is yours to use freely. Your score and category breakdown in section 01 are calculated directly from your answers using the method shown, nothing is estimated or invented.</p>
     </div>
 
   </div>
 </div>
 
 <script>
-const QUESTIONS = [
-  { key: 'volume', title: 'How often do you publish real expertise content — case breakdowns, LinkedIn posts, calls, or workshops?', why: 'This sets how much raw material your pipeline has to work with in the first place.',
-    options: [ {label:'0-1 a month (mostly word of mouth right now)', value:'low'}, {label:'2-3 a month (a steady rhythm)', value:'mid'}, {label:'4+ a month (weekly or more)', value:'high'} ] },
-  { key: 'distribute', title: "When you publish, does it go out as a LinkedIn Newsletter issue, or just a standalone post or video link?", why: 'A Newsletter issue carries a Google-indexing layer AND a guaranteed inbox push to subscribers. A standalone post or link only gets reach in the moment.',
-    options: [ {label:'Newsletter issue', value:'newsletter'}, {label:'Standalone post or video link only', value:'standalone'}, {label:"I don't publish long-form text at all", value:'none'} ] },
-  { key: 'capture', title: 'Does each piece end with a specific mechanism for a fractional CFO or COO prospect to raise their hand, or just a soft close?', why: 'This is the single biggest lever in whether views ever turn into a conversation.',
-    options: [ {label:'Yes, a specific mechanism every time', value:'yes'}, {label:'Sometimes, informally', value:'sometimes'}, {label:"No, I don't ask for anything", value:'no'} ] },
-  { key: 'tool', title: 'Do you have a live, interactive tool your audience can complete on their own (a health check, quiz, or diagnostic)?', why: 'Scored, interactive assessments are currently one of the highest-converting lead capture formats in B2B professional services.',
-    options: [ {label:'Yes, I have one live', value:'yes'}, {label:'No, not yet', value:'no'} ] },
-  { key: 'convert', title: 'When someone does comment or DM you, what actually happens next?', why: 'This decides whether interest turns into a booked call or quietly goes nowhere.',
-    options: [ {label:'I run a specific message sequence', value:'sequence'}, {label:'I reply case by case, no set process', value:'adhoc'}, {label:'Honestly, often nothing follows up', value:'none'} ] },
-  { key: 'bottleneck', title: "What's the actual bottleneck right now?", why: 'This decides which stage your 30-day plan tackles first.',
-    options: [ {label:'Producing content consistently', value:'produce'}, {label:'Getting views to comment or reply', value:'capture'}, {label:'Turning replies into booked calls', value:'convert'} ] }
-];
-
-let current = 0;
-let answers = {};
-const STORAGE_KEY = 'pipelind_authority_quiz_state_v1';
-
-function track(eventName, data){
-  try {
-    if (window.va) window.va('event', { name: eventName, ...(data||{}) });
-    console.log('[track]', eventName, data || {});
-  } catch(e) {}
-}
-
-function saveProgress(){
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ current, answers })); } catch(e) {}
-}
-function loadProgress(){
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return false;
-    const parsed = JSON.parse(raw);
-    if (parsed && typeof parsed.current === 'number' && parsed.answers){
-      current = parsed.current; answers = parsed.answers; return true;
+  const QUESTIONS = [
+    {
+      key: 'role',
+      title: "Which best describes you?",
+      why: "This sets the language used across your whole scorecard.",
+      options: [
+        { label: "Fractional CFO / Interim CFO", value: "cfo" },
+        { label: "Fractional COO / Interim COO", value: "coo" }
+      ]
+    },
+    {
+      key: 'horizon',
+      title: "How many months out is your next paid engagement confirmed or highly likely?",
+      why: "This is your pipeline horizon, the first category in your score.",
+      options: [
+        { label: "Nothing booked beyond right now", value: 0 },
+        { label: "About 1 month out", value: 1 },
+        { label: "2 to 3 months out", value: 2 },
+        { label: "4 or more months out", value: 3 }
+      ]
+    },
+    {
+      key: 'referral',
+      title: "What share of your clients over the last 12 months came only through referral, no other channel?",
+      why: "The higher this share, the more fragile your pipeline, this category is scored in reverse.",
+      options: [
+        { label: "Under 25%", value: 0 },
+        { label: "25% to 50%", value: 1 },
+        { label: "50% to 75%", value: 2 },
+        { label: "Over 75%", value: 3 }
+      ]
+    },
+    {
+      key: 'capture',
+      title: "When someone lands on your LinkedIn profile or website today, is there any way for them to raise a hand?",
+      why: "This is your inbound capture infrastructure.",
+      options: [
+        { label: "Nothing specific", value: 0 },
+        { label: "Just a generic contact form", value: 1 },
+        { label: "A booking link only", value: 2 },
+        { label: "A lead magnet or clear opt-in path", value: 3 }
+      ]
+    },
+    {
+      key: 'cadence',
+      title: "How often do you publish anything substantial on LinkedIn?",
+      why: "This is your visibility cadence, the category most people underrate.",
+      options: [
+        { label: "Never", value: 0 },
+        { label: "A few times a year", value: 1 },
+        { label: "About monthly", value: 2 },
+        { label: "Weekly or more", value: 3 }
+      ]
+    },
+    {
+      key: 'system',
+      title: "Is your own business development process documented and repeatable, or does it live in your head?",
+      why: "This is your systemization category.",
+      options: [
+        { label: "Fully in my head", value: 0 },
+        { label: "Some notes, nothing formal", value: 1 },
+        { label: "A loose but real system", value: 2 },
+        { label: "Documented and repeatable", value: 3 }
+      ]
+    },
+    {
+      key: 'time',
+      title: "How much time can you realistically give to fixing this each week?",
+      why: "Your 30-day plan will be sized to fit it.",
+      options: [
+        { label: "Under 1 hour", value: "low" },
+        { label: "1 to 3 hours", value: "mid" },
+        { label: "3+ hours", value: "high" }
+      ]
     }
-  } catch(e) {}
-  return false;
-}
-function clearProgress(){ try { localStorage.removeItem(STORAGE_KEY); } catch(e) {} }
+  ];
 
-function startQuiz(){ track('quiz_start'); goTo('quiz'); renderQuestion(); }
+  const ROLE = {
+    cfo: {
+      dims: ["Revenue Forecast Horizon", "Client Acquisition Cost Structure", "Inbound Capture Infrastructure", "Market Visibility Cadence", "Recurring Revenue Infrastructure"],
+      icp: "fractional CFOs",
+      headline: `Fractional CFO for <span class="blank">[your ICP, e.g. "Series A to C SaaS founders"]</span>
 
-function resumeIfAvailable(){
-  if (loadProgress() && current > 0 && current < QUESTIONS.length){
+Turning <span class="blank">[the financial pain, e.g. "runway guesswork"]</span> into <span class="blank">[the outcome, e.g. "an 18-month cash plan you can defend to your board"]</span>
+
+<span class="blank">[N]</span> finance functions built from scratch, or a one-line credibility marker in your own numbers</span>`,
+      about: `Most founders bring me in after the spreadsheet has already broken.
+
+I'd rather fix <span class="blank">[the specific financial gap you keep seeing, e.g. "burn rate that nobody can explain in a board meeting"]</span> before it costs a raise or a runway.
+
+Over <span class="blank">[N years / N engagements]</span>, here's the pattern I keep solving for <span class="blank">[your ICP]</span>: <span class="blank">[one sentence on the recurring gap]</span></span>`
+    },
+    coo: {
+      dims: ["Engagement Pipeline Horizon", "New Engagement Sourcing Mix", "Intake System Maturity", "Authority Signal Consistency", "Process Documentation Coverage"],
+      icp: "fractional COOs",
+      headline: `Fractional COO for <span class="blank">[your ICP, e.g. "10 to 50 person agencies scaling past founder-led ops"]</span>
+
+Turning <span class="blank">[the operational pain, e.g. "founder-dependent chaos"]</span> into <span class="blank">[the outcome, e.g. "a team that runs without you in the room"]</span>
+
+<span class="blank">[N]</span> operating systems built from scratch, or a one-line credibility marker in your own numbers</span>`,
+      about: `Most founders bring me in after growth has already outrun the team's process.
+
+I'd rather fix <span class="blank">[the specific operational gap you keep seeing, e.g. "no one owns the handoff between sales and delivery"]</span> before it costs a client.
+
+Over <span class="blank">[N years / N engagements]</span>, here's the pattern I keep solving for <span class="blank">[your ICP]</span>: <span class="blank">[one sentence on the recurring gap]</span></span>`
+    }
+  };
+
+  const BAND = [
+    { min: 80, label: "Strong Foundation, Ready to Scale Visibility", desc: "Your fundamentals are in place. The gap is almost always cadence and capture, not positioning. Section 03 and 05 will feel like fine-tuning, not a rebuild." },
+    { min: 60, label: "Solid but Fragile, One Slow Quarter From a Gap", desc: "You have real pieces working, but at least one category is thin enough that a slow referral month becomes a slow revenue month. Fix the lowest category first." },
+    { min: 40, label: "Reactive Pipeline, the Visibility Gap Is Costing You Deals", desc: "You're likely relying on relationships built years ago. New prospects who don't already know you have almost no way to find or evaluate you today." },
+    { min: 0, label: "High-Risk Practice, Fully Dependent on Word of Mouth", desc: "Right now your entire pipeline sits on other people remembering to mention your name. That's not a marketing problem, it's a business continuity risk." }
+  ];
+
+  const answers = {};
+  let currentQ = 0;
+
+  function goTo(screen) {
+    document.querySelectorAll('[data-screen]').forEach(el => el.classList.remove('active'));
+    document.querySelector(`[data-screen="${screen}"]`).classList.add('active');
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  }
+
+  function startQuiz() { currentQ = 0; renderQuestion(); }
+
+  function renderQuestion() {
     goTo('quiz');
-    renderQuestion();
-  }
-}
-document.addEventListener('DOMContentLoaded', resumeIfAvailable);
-function goTo(screen){
-  document.querySelectorAll('[data-screen]').forEach(el => el.classList.remove('active'));
-  document.querySelector(`[data-screen="${screen}"]`).classList.add('active');
-  window.scrollTo({top:0, behavior:'smooth'});
-}
-
-const PROGRESS_FLOOR = 12; // endowed progress: Q1 already shows visible movement
-
-function renderQuestion(){
-  const q = QUESTIONS[current];
-  const pct = PROGRESS_FLOOR + (current / QUESTIONS.length) * (100 - PROGRESS_FLOOR);
-  document.getElementById('progressFill').style.width = `${pct}%`;
-  document.getElementById('qIndex').textContent = `QUESTION ${current+1} OF ${QUESTIONS.length}`;
-  document.getElementById('qTitle').textContent = q.title;
-  document.getElementById('qWhy').textContent = q.why;
-  const opts = document.getElementById('qOptions');
-  opts.innerHTML = '';
-  q.options.forEach(o => {
-    const div = document.createElement('div');
-    div.className = 'option';
-    div.setAttribute('role', 'button');
-    div.setAttribute('tabindex', '0');
-    div.innerHTML = `<span>${o.label}</span><span class="arrow">&rarr;</span>`;
-    div.onclick = () => selectOption(q.key, o.value);
-    div.onkeydown = (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectOption(q.key, o.value); } };
-    opts.appendChild(div);
-  });
-  document.getElementById('backBtn').style.visibility = current === 0 ? 'hidden' : 'visible';
-  saveProgress();
-}
-
-function selectOption(key, value){
-  answers[key] = value;
-  if (current < QUESTIONS.length - 1){
-    current++;
-    renderQuestion();
-  } else {
-    document.getElementById('progressFill').style.width = '100%';
-    goTo('calculating');
-    setTimeout(buildReport, 1800);
-  }
-}
-
-function prevQuestion(){
-  if (current > 0){ current--; renderQuestion(); }
-}
-
-function backToQuizFromGate(){
-  current = QUESTIONS.length - 1;
-  goTo('quiz');
-  renderQuestion();
-}
-
-function scoreOf(){
-  const s = { create:0, distribute:0, capture:0, convert:0 };
-  s.create = answers.volume === 'high' ? 25 : answers.volume === 'mid' ? 18 : 10;
-  s.distribute = answers.distribute === 'newsletter' ? 25 : answers.distribute === 'standalone' ? 12 : 0;
-  let cap = answers.capture === 'yes' ? 18 : answers.capture === 'sometimes' ? 8 : 0;
-  if (answers.tool === 'yes') cap = Math.min(25, cap + 7);
-  s.capture = cap;
-  s.convert = answers.convert === 'sequence' ? 25 : answers.convert === 'adhoc' ? 12 : 0;
-  return s;
-}
-
-function buildReport(){
-  const s = scoreOf();
-  const total = s.create + s.distribute + s.capture + s.convert;
-  document.getElementById('gateHint').textContent =
-    `Your total: ${total}/100. The breakdown below shows exactly where the other ${100-total} points went.`;
-  goTo('gate');
-  window._scores = s;
-  window._total = total;
-  track('gate_shown', { total });
-}
-
-function weakestStage(s){
-  const entries = [['Create', s.create], ['Distribute', s.distribute], ['Capture', s.capture], ['Convert', s.convert]];
-  entries.sort((a,b) => a[1] - b[1]);
-  return entries[0][0];
-}
-
-function setFieldError(fieldId, message){
-  const field = document.getElementById(fieldId).closest('.field');
-  let err = field.querySelector('.field-error');
-  if (!err){ err = document.createElement('div'); err.className = 'field-error'; field.appendChild(err); }
-  if (message){ field.classList.add('invalid'); err.textContent = message; }
-  else { field.classList.remove('invalid'); }
-}
-
-let isSubmitting = false;
-
-async function unlockReport(){
-  if (isSubmitting) return;
-  const name = document.getElementById('fName').value.trim();
-  const email = document.getElementById('fEmail').value.trim();
-  let valid = true;
-  if (!name){ setFieldError('fName', 'Please enter your first name.'); valid = false; } else { setFieldError('fName', null); }
-  if (!email || !email.includes('@') || !email.includes('.')){ setFieldError('fEmail', 'Please enter a valid email address.'); valid = false; } else { setFieldError('fEmail', null); }
-  if (!valid) return;
-
-  isSubmitting = true;
-  const submitBtn = document.getElementById('unlockBtn');
-  const originalLabel = submitBtn.innerHTML;
-  submitBtn.disabled = true;
-  submitBtn.style.opacity = '0.6';
-  submitBtn.style.cursor = 'not-allowed';
-  submitBtn.innerHTML = 'Opening…';
-
-  track('gate_passed');
-  clearProgress();
-  try {
-    await fetch('https://api.web3forms.com/submit', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-      body: JSON.stringify({
-        access_key: '54e4bfc3-4b35-49a5-979f-988a9ac22fa2',
-        name, email,
-        message: `Fractional Pipeline Audit lead. Answers: ${JSON.stringify(answers)}. Score: ${JSON.stringify(window._scores)}. Total: ${window._total}.`,
-        source: 'fractional-pipeline-audit',
-        client: 'authority-engine'
-      })
+    const q = QUESTIONS[currentQ];
+    document.getElementById('qIndex').textContent = `QUESTION ${currentQ + 1} OF ${QUESTIONS.length}`;
+    document.getElementById('qTitle').textContent = q.title;
+    document.getElementById('qWhy').textContent = q.why;
+    document.getElementById('progressFill').style.width = `${(currentQ / QUESTIONS.length) * 100}%`;
+    document.getElementById('backBtn').style.visibility = currentQ === 0 ? 'hidden' : 'visible';
+    const optWrap = document.getElementById('qOptions');
+    optWrap.innerHTML = '';
+    q.options.forEach(opt => {
+      const div = document.createElement('div');
+      div.className = 'option' + (answers[q.key] === opt.value ? ' selected' : '');
+      div.innerHTML = `<span>${opt.label}</span><span class="arrow">&rarr;</span>`;
+      div.onclick = () => {
+        answers[q.key] = opt.value;
+        currentQ++;
+        if (currentQ >= QUESTIONS.length) { buildReport(); } else { renderQuestion(); }
+      };
+      optWrap.appendChild(div);
     });
-  } catch(e) { console.warn('Capture failed, revealing anyway.', e); }
-  renderDeliverable(name);
-}
+  }
 
-function renderDeliverable(name){
-  const s = window._scores;
-  const total = window._total;
-  goTo('report');
-  document.getElementById('pbGreeting').textContent = `${name}'s Pipeline Score: ${total}/100`;
+  function prevQuestion() { if (currentQ > 0) { currentQ--; renderQuestion(); } }
 
-  setTimeout(() => {
-    const circumference = 314;
-    document.getElementById('ring').style.strokeDashoffset = circumference - (total/100)*circumference;
-    document.getElementById('ringNum').textContent = total;
-    document.getElementById('barCreate').style.width = `${(s.create/25)*100}%`;
-    document.getElementById('barDistribute').style.width = `${(s.distribute/25)*100}%`;
-    document.getElementById('barCapture').style.width = `${(s.capture/25)*100}%`;
-    document.getElementById('barConvert').style.width = `${(s.convert/25)*100}%`;
-    document.getElementById('valCreate').textContent = `${s.create}/25`;
-    document.getElementById('valDistribute').textContent = `${s.distribute}/25`;
-    document.getElementById('valCapture').textContent = `${s.capture}/25`;
-    document.getElementById('valConvert').textContent = `${s.convert}/25`;
-  }, 100);
+  const PTS = [5, 10, 15, 20];
+  let calc = {};
 
-  const weak = weakestStage(s);
-  document.getElementById('scoreNote').textContent =
-    `Method: Create and Distribute are scored from your publishing volume and format. Capture is scored from whether each piece has a specific hand-raising mechanism, plus a bonus if you already run a live tool. Convert is scored from whether replies enter a set message sequence. Your weakest stage right now: ${weak}.`;
+  function buildReport() {
+    goTo('calculating');
+    setTimeout(() => {
+      const horizonPts = PTS[answers.horizon];
+      const referralPts = PTS[3 - answers.referral];
+      const capturePts = PTS[answers.capture];
+      const cadencePts = PTS[answers.cadence];
+      const systemPts = PTS[answers.system];
+      const dimPts = [horizonPts, referralPts, capturePts, cadencePts, systemPts];
+      const total = dimPts.reduce((a, b) => a + b, 0);
+      const band = BAND.find(b => total >= b.min);
+      const dims = ROLE[answers.role].dims;
+      let minIdx = 0;
+      for (let i = 1; i < dimPts.length; i++) if (dimPts[i] < dimPts[minIdx]) minIdx = i;
+      calc = { total, band, dimPts, dims, priorityDim: dims[minIdx] };
+      document.getElementById('gateHint').textContent = `Your score: ${total}/100, ${band.label}.`;
+      goTo('gate');
+    }, 1800);
+  }
 
-  document.getElementById('benchmarkCallout').innerHTML =
-    `<b>Why the Capture stage matters most:</b> it's the stage most fractional CFOs and COOs skip entirely. A soft close doesn't survive being one of a dozen things a reader saw today — it needs a specific mechanism to earn a reply. If your Capture score above is low, that's the fastest stage to fix.`;
+  async function unlockReport() {
+    const name = document.getElementById('fName').value.trim();
+    const email = document.getElementById('fEmail').value.trim();
+    if (!name || !email || !email.includes('@')) {
+      alert('Please enter your name and a valid email to open your scorecard.');
+      return;
+    }
+    try {
+      await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          access_key: '54e4bfc3-4b35-49a5-979f-988a9ac22fa2',
+          name: name,
+          email: email,
+          message: `Business Health Scorecard lead. Role: ${answers.role}. Score: ${calc.total}/100. Band: ${calc.band.label}. Answers: ${JSON.stringify(answers)}.`,
+          source: 'business-health-scorecard',
+          client: 'saurabh-own-lead-magnet'
+        })
+      });
+    } catch (e) { console.warn('Lead capture failed, continuing.', e); }
+    renderReport(name);
+  }
 
-  const planContainer = document.getElementById('planBlock');
-  const focusCopy = {
-    'Create': 'Get one long-form piece out this month, even imperfectly. Nothing downstream works without raw material.',
-    'Distribute': 'Set up a LinkedIn Newsletter (one-time, 10 minutes) and publish your next piece as an issue, not a standalone post.',
-    'Capture': 'Add one specific hand-raising mechanism to your next post: the Handraiser template in section 03, or a live scored tool.',
-    'Convert': 'Write out your 3-message DM sequence once (section 04) and use it verbatim on the next 5 people who comment.'
-  };
-  const bottleneckNote = {
-    produce: 'You flagged production as the bottleneck, so Week 1 below is weighted toward just getting the piece out.',
-    capture: 'You flagged getting replies as the bottleneck, so Week 2 below is weighted toward the hand-raising mechanism.',
-    convert: 'You flagged turning replies into calls as the bottleneck, so Week 3 below is weighted toward the DM sequence.'
-  };
-  planContainer.innerHTML = `
-    <div class="week">
-      <div class="week-head"><span class="wk">WEEK 1</span><span class="wt">Fix ${weak}</span></div>
-      <div class="task">${focusCopy[weak]}</div>
-      <div class="task">${bottleneckNote[answers.bottleneck] || ''}</div>
-    </div>
-    <div class="week">
-      <div class="week-head"><span class="wk">WEEK 2</span><span class="wt">Publish + capture</span></div>
-      <div class="task">Turn this month's piece into a Newsletter issue using the structure in section 03.</div>
-      <div class="task">Post a Handraiser version of the same piece with the comment-to-DM mechanic.</div>
-    </div>
-    <div class="week">
-      <div class="week-head"><span class="wk">WEEK 3</span><span class="wt">Run the DM sequence</span></div>
-      <div class="task">Use the 3-message script in section 04 on every commenter, in order, without skipping message 2.</div>
-    </div>
-    <div class="week">
-      <div class="week-head"><span class="wk">WEEK 4</span><span class="wt">Review your score</span></div>
-      <div class="task">Re-run this Pipeline Score. If your weakest stage moved up, repeat the same focus one more cycle before adding a second stage.</div>
-    </div>
-  `;
-}
+  function renderReport(name) {
+    const role = ROLE[answers.role];
+    document.getElementById('pbGreeting').textContent = `${name.split(' ')[0]}, here's your Business Health Scorecard`;
+    document.getElementById('pbSub').innerHTML = `Built from your answers as a ${answers.role === 'cfo' ? 'Fractional CFO' : 'Fractional COO'}. Every template below is ready to use today, copy, fill the <span style="color:var(--orange)">[orange blanks]</span>, publish.`;
 
-function copyTpl(btn, id){
-  const text = document.getElementById(id).innerText;
-  const done = () => { btn.textContent = 'COPIED'; btn.classList.add('copied'); setTimeout(() => { btn.textContent = 'COPY'; btn.classList.remove('copied'); }, 1800); };
-  if (navigator.clipboard?.writeText) navigator.clipboard.writeText(text).then(done).catch(() => fallbackCopy(text, done));
-  else fallbackCopy(text, done);
-}
-function fallbackCopy(text, done){
-  const ta = document.createElement('textarea'); ta.value = text;
-  document.body.appendChild(ta); ta.select();
-  try { document.execCommand('copy'); done(); } catch(e) {}
-  document.body.removeChild(ta);
-}
+    // 01 score
+    document.getElementById('scoreNum').textContent = calc.total;
+    document.getElementById('scoreBand').textContent = calc.band.label;
+    document.getElementById('scoreDesc').textContent = calc.band.desc;
+    const ring = document.getElementById('ring');
+    setTimeout(() => { ring.style.transition = 'stroke-dashoffset 1s cubic-bezier(.16,1,.3,1)'; ring.style.strokeDashoffset = 314 - (calc.total / 100) * 314; }, 100);
+
+    let stripHtml = '';
+    calc.dims.forEach((d, i) => {
+      stripHtml += `<div class="gap-item"><div class="gv">${calc.dimPts[i]}/20</div><div class="gl">${d}</div></div>`;
+    });
+    document.getElementById('gapStrip').innerHTML = stripHtml;
+
+    document.getElementById('priorityLine').textContent = `For you, that's ${calc.priorityDim}.`;
+
+    // 03 templates
+    document.getElementById('tag1').textContent = answers.role === 'cfo' ? 'Financial-health framing' : 'Operational-health framing';
+    document.getElementById('tag2').textContent = 'First 3 lines, before "see more"';
+    document.getElementById('tpl1').innerHTML = role.headline;
+    document.getElementById('tpl2').innerHTML = role.about;
+
+    // 05 plan
+    const priority = calc.priorityDim;
+    const timeNote = {
+      low: `Your time budget is under 1 hour/week, run only the positioning fix in week 1 and the Handraiser post in week 3, skip the rest until you have more room.`,
+      mid: `Your 1 to 3 hours/week fits this plan as written. Batch the drafting into one sitting each week.`,
+      high: `With 3+ hours/week, run the plan as written and add a second Handraiser post in week 4 to test cadence.`
+    }[answers.time];
+
+    const plan = [
+      { wk: 'WEEK 1', wt: `Fix the priority gap: ${priority}`, tasks: [
+        `Rewrite your headline and About opener using the templates in section 03`,
+        `If your priority gap is capture, add a booking link or simple opt-in to your profile and website this week`
+      ]},
+      { wk: 'WEEK 2', wt: 'Publish your first authority post', tasks: [
+        `Post one substantive piece, an opinion or a teaching breakdown, in your updated voice`,
+        `Reply to every comment within a few hours, that's what actually earns reach`
+      ]},
+      { wk: 'WEEK 3', wt: 'Run the Handraiser', tasks: [
+        `Post the Handraiser template from section 03`,
+        `Every commenter gets message 1 from the script in section 04, same day`
+      ]},
+      { wk: 'WEEK 4', wt: 'Follow through and review', tasks: [
+        `Send message 2 and 3 to anyone who replied, using the judgment rules in section 04`,
+        `Re-score yourself against the 5 categories, note which one moved`
+      ]}
+    ];
+
+    let planHtml = plan.map(w => `
+      <div class="week">
+        <div class="week-head"><span class="wk">${w.wk}</span><span class="wt">${w.wt}</span></div>
+        ${w.tasks.map(t => `<div class="task">${t}</div>`).join('')}
+      </div>`).join('');
+    planHtml += `<div class="callout"><b>Sized to your time:</b> ${timeNote}</div>`;
+    document.getElementById('planBlock').innerHTML = planHtml;
+
+    goTo('report');
+  }
+
+  function copyTpl(btn, id) {
+    const text = document.getElementById(id).innerText;
+    const done = () => {
+      btn.textContent = 'COPIED';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'COPY'; btn.classList.remove('copied'); }, 1800);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done).catch(() => fallbackCopy(text, done));
+    } else { fallbackCopy(text, done); }
+  }
+  function fallbackCopy(text, done) {
+    const ta = document.createElement('textarea');
+    ta.value = text; document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); done(); } catch(e) {}
+    document.body.removeChild(ta);
+  }
 </script>
-<script defer src="/_vercel/insights/script.js"></script>
+
 </body>
 </html>
