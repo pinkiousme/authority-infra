@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pipelind · Mandate Pipeline Readiness Diagnostic for Executive Search Consultants</title>
-<meta name="description" content="7 questions. A personalised score across 5 mandate-pipeline dimensions. A prioritised 30-day action plan. Built for boutique and independent executive search consultants. No email required.">
+<title>Pipelind · Pipeline Readiness Diagnostic for Fractional CFOs and COOs</title>
+<meta name="description" content="7 questions. A personalised score across 5 dimensions. A prioritised 30-day action plan. Built for fractional CFOs and COOs. No email required.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,700;1,800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -206,8 +206,8 @@ h1 em{font-style:normal;color:var(--or);}
 <div id="screen-intro">
   <div class="hero fade-in">
     <div class="eyebrow">5-Minute Diagnostic</div>
-    <h1>Find Out How Early You're <em>Catching Your Next Mandate.</em></h1>
-    <p class="hero-sub">7 questions. A personalised score across 5 mandate-pipeline dimensions. A prioritised 30-day action plan. Built for boutique and independent executive search consultants. No email required.</p>
+    <h1>Find Out Exactly What Your LinkedIn<br>Is <em>Costing You in Pipeline.</em></h1>
+    <p class="hero-sub">7 questions. A personalised score across 5 dimensions. A prioritised 30-day action plan. Built for fractional CFOs and COOs. No email required.</p>
     <div class="hero-meta">
       <span>No email</span><span>No signup</span><span>Instant report</span><span>Free</span>
     </div>
@@ -252,10 +252,10 @@ h1 em{font-style:normal;color:var(--or);}
 <div id="screen-generating">
   <div class="gen-orb">&#9889;</div>
   <div class="gen-title">Building your report...</div>
-  <div class="gen-sub">Analysing answers across 5 mandate-pipeline dimensions</div>
+  <div class="gen-sub">Analysing answers across 5 pipeline dimensions</div>
   <div class="gen-steps">
-    <div class="gen-step active" id="gs-1"><div class="gen-dot"></div>Scoring network-to-mandate targeting</div>
-    <div class="gen-step" id="gs-2"><div class="gen-dot"></div>Evaluating mandate-timing alignment</div>
+    <div class="gen-step active" id="gs-1"><div class="gen-dot"></div>Scoring audience composition</div>
+    <div class="gen-step" id="gs-2"><div class="gen-dot"></div>Evaluating content-pipeline alignment</div>
     <div class="gen-step" id="gs-3"><div class="gen-dot"></div>Checking profile conversion layer</div>
     <div class="gen-step" id="gs-4"><div class="gen-dot"></div>Assessing outreach consistency</div>
     <div class="gen-step" id="gs-5"><div class="gen-dot"></div>Calculating response infrastructure</div>
@@ -269,66 +269,66 @@ h1 em{font-style:normal;color:var(--or);}
 var userName='',currentQ=0,answers={};
 
 var Qs=[
-  {id:'network',dim:'Dimension 1 \u00b7 Network-to-Mandate Targeting',
-   text:'Who makes up most of your current LinkedIn network?',
+  {id:'audience',dim:'Dimension 1 \u00b7 Audience Composition',
+   text:'How were most of your current LinkedIn connections built?',
    hint:'Think about the last 20 connection requests you sent or accepted.',
    type:'opts',
    opts:[
-     {l:'Mostly candidates, recruiters, and former placements',s:'The people who can hand you a mandate are outnumbered by the people who can\u2019t',v:1},
-     {l:'A mix \u2014 some decision-makers, but mostly candidates and peers',s:'Some right people, but they are still a minority in your feed',v:2},
-     {l:'Actively building with CEOs, CHROs, and boards who could authorise a search',s:'Your network is aligned with who actually hands out mandates',v:4}
+     {l:'Mostly from a previous corporate career',s:'Former colleagues and peers who will not hire a fractional CFO or COO',v:1},
+     {l:'Mixed \u2014 some from my fractional practice, mostly older connections',s:'Some right people, but they are outnumbered',v:2},
+     {l:'Actively building with founders and CEOs who need fractional support',s:'My network is aligned with who I serve now',v:4}
    ]},
-  {id:'firstmover',dim:'Dimension 2 \u00b7 Mandate-Timing Alignment',
-   text:'In the last 90 days, how many mandate conversations started because you reached out first, before the company had publicly posted the search?',
-   hint:'Not conversations that started after a job posting went live or a recruiter tipped you off. Ones where you were early.',
+  {id:'inbound',dim:'Dimension 2 \u00b7 Content-Pipeline Alignment',
+   text:'In the last 30 days, how many inbound conversations started with a potential buyer?',
+   hint:'Not peers, recruiters, or former colleagues. Founders or CEOs who could hire a fractional CFO or COO.',
    type:'opts',
    opts:[
-     {l:'Zero',s:'Every mandate is still arriving secondhand, after other firms already know',v:1},
-     {l:'1 to 2 conversations',s:'A trickle of early signal, not enough to rely on',v:2},
-     {l:'3 to 5 conversations',s:'Real timing advantage some of the time, but not yet a system',v:3},
-     {l:'6 or more',s:'You are consistently first to the door',v:4}
+     {l:'Zero',s:'LinkedIn is silent on the pipeline side',v:1},
+     {l:'1 to 2 conversations',s:'A trickle, not enough to be reliable',v:2},
+     {l:'3 to 5 conversations',s:'Some signal, but not yet a system',v:3},
+     {l:'6 or more',s:'Pipeline conversations are happening consistently',v:4}
    ]},
-  {id:'signalcheck',dim:'Dimension 2 \u00b7 Mandate-Timing Alignment',
-   text:'How consistently do you check for the events that actually trigger a new search, funding rounds, ownership changes, or a hiring buildout at companies in your patch?',
-   hint:'Be honest. This separates a timing gap from a network gap.',
+  {id:'freq',dim:'Dimension 2 \u00b7 Content-Pipeline Alignment',
+   text:'How consistently have you posted on LinkedIn in the last 90 days?',
+   hint:'Be honest. This helps separate a content gap from an audience gap.',
    type:'opts',
    opts:[
-     {l:'Rarely or never \u2014 I hear about it when someone tells me',s:'No system is watching the market for you',v:1},
-     {l:'Occasionally, when something crosses my feed or a contact mentions it',s:'Some effort, but it stops and starts',v:2},
-     {l:'Weekly or more, as a fixed routine',s:'Consistent enough that timing becomes a real edge',v:3}
+     {l:'Rarely or not at all',s:'LinkedIn presence has been quiet',v:1},
+     {l:'1 to 2 times per week, inconsistently',s:'Some effort, but stops and starts',v:2},
+     {l:'3 or more times per week, fairly consistently',s:'Consistent enough to measure results',v:3}
    ]},
   {id:'profile',dim:'Dimension 3 \u00b7 Profile Conversion Layer',
-   text:'When a CEO or CHRO looks you up after hearing your name, what happens?',
-   hint:'Your profile is where a warm introduction either turns into a scoping call or goes quiet. Most search consultants have a resume where a landing page should be.',
+   text:'When a founder lands on your LinkedIn profile after seeing a post, what happens?',
+   hint:'Your profile is where content converts. Most fractional executives have a resume where a landing page should be.',
    type:'opts',
    opts:[
-     {l:'They see my work history and past placements. Essentially a resume.',s:'No clear next step for someone who could hand you a mandate',v:1},
-     {l:'My headline and About section explain what I do, but there is no clear next step',s:'Better framing, but still no conversion path',v:2},
-     {l:'My profile speaks directly to the mandates I take on, with a clear next step',s:'Built to convert a warm intro, not just look credible',v:4}
+     {l:'They see my work history. Essentially a resume.',s:'No clear next step for a potential client',v:1},
+     {l:'My headline and About section describe what I do, but no clear next step',s:'Better framing, but still no conversion path',v:2},
+     {l:'My profile speaks directly to my ideal client with a clear next step',s:'Optimised for conversion, not just visibility',v:4}
    ]},
   {id:'outreach',dim:'Dimension 4 \u00b7 Outreach Consistency',
-   text:'How are you currently reaching the specific decision-makers at companies showing a hiring or funding signal?',
-   hint:'Most search consultants skip this entirely and wait for the phone to ring instead. It is the lever almost nobody is pulling.',
+   text:'How are you currently adding right-fit connections to your LinkedIn network?',
+   hint:'Most fractional executives skip this entirely. It is the most important lever most people are not pulling.',
    type:'opts',
    opts:[
-     {l:'I am not. I wait for referrals or inbound calls.',s:'No systematic way of reaching the person who could authorise a search',v:1},
-     {l:'Occasionally, when a signal happens to cross my desk',s:'Sporadic, not systematic',v:2},
-     {l:'I have a weekly routine for reaching out to the decision-maker at signalled companies',s:'Consistently reaching the person who can actually hand you the mandate',v:4}
+     {l:'I am not. The network grows organically if it grows at all.',s:'No systematic audience-building in place',v:1},
+     {l:'Occasionally, when I think of it or see someone relevant',s:'Sporadic, not systematic',v:2},
+     {l:'I have a weekly routine for sending targeted connection requests to founders and CEOs',s:'Consistently adding right-fit buyers to my network',v:4}
    ]},
   {id:'response',dim:'Dimension 5 \u00b7 Response Infrastructure',
-   text:'When a warm introduction, referral, or LinkedIn engagement turns into interest, what happens next?',
-   hint:'Every one of these is the opening of a mandate conversation, or it goes quiet.',
+   text:'When someone comments on a post or sends a keyword DM, what do you do?',
+   hint:'Every engagement is the opening of a pipeline conversation, or it dies in the thread.',
    type:'opts',
    opts:[
-     {l:'I reply when I can. No consistent follow-up.',s:'Interest is going cold before it becomes a scoping call',v:1},
-     {l:'I follow up but improvise the message every time',s:'Good instincts, no system',v:2},
-     {l:'I have a scripted sequence for turning interest into a scoping call',s:'Every signal of interest has a tested next move',v:4}
+     {l:'Say thanks or nothing. No system for replies.',s:'Pipeline conversations are dying before they start',v:1},
+     {l:'Reply thoughtfully but improvise every time',s:'Good instincts, no system',v:2},
+     {l:'I have scripts and a clear sequence for turning engagement into booked calls',s:'Every engagement has a tested next move',v:4}
    ]},
   {id:'about',dim:'About Your Practice',
-   text:'In one sentence, what kind of searches do you run for your clients?',
-   hint:'Be specific about function, level, and sector. This calibrates your action plan and appears in your report.',
+   text:'In one sentence, describe what you do for your clients.',
+   hint:'Be specific. This calibrates your action plan to your context and appears in your report.',
    type:'text',
-   placeholder:'e.g. I run retained VP and C-suite searches for PE-backed industrials companies...'}
+   placeholder:'e.g. I help Series A and B founders build their finance function as a fractional CFO...'}
 ];
 
 window.addEventListener('DOMContentLoaded',function(){
@@ -427,95 +427,95 @@ function generate(){
   },delay);
 }
 
-function dNetwork(){
-  var a=answers['network']||1;
-  var s={1:4,2:11,4:20}[a]||4;
+function dAudience(){
+  var a=answers['audience']||1;
+  var s={1:4,2:10,4:18}[a]||4;
   var ins={
-    1:'Most of your connections are candidates, recruiters, and past placements. Every post and every update you share reaches people who cannot hand you a mandate, not the CEOs and CHROs who can. This is the most common reason a strong search track record still produces a quiet pipeline.',
-    2:'Your network is mixed. Some real decision-makers exist in it, but they are outnumbered. Most of what you share still reaches people who will never authorise a search.',
-    4:'Your network is aligned with who actually hands out mandates. CEOs, CHROs, and boards are already in your feed. This is the right foundation to compound on.'
+    1:'Most of your connections are from a previous corporate career. Every post you publish reaches former colleagues, not the founders and CEOs who hire fractional CFOs and COOs. This is the most common reason LinkedIn effort produces no pipeline.',
+    2:'Your network is mixed. Some right-fit buyers exist but they are outnumbered. Every post reaches more people who will never hire a fractional executive than people who might.',
+    4:'Your audience is aligned with who you serve. Posts reach founders and CEOs who could become clients. This is the right foundation to compound on.'
   };
   var fix={
-    1:'Send 10 targeted connection requests per week to CEOs and CHROs at companies showing an active hiring or funding signal. A personalised note under 280 characters, referencing the specific signal, changes the composition of your network within 6 months.',
-    2:'Move from sporadic to systematic. 10 targeted requests per week, aimed only at decision-makers at signalled companies, steadily raises the share of your network that could actually hand you a mandate.',
-    4:'The foundation is solid. Focus on tightening which signals you connect on and maintaining weekly volume so the compounding continues.'
+    1:'Send 10 targeted connection requests per week to founders and CEOs showing active hiring or funding signals. Include a personalised note under 280 characters. This single change transforms the audience composition over 6 months.',
+    2:'Increase weekly outreach from sporadic to systematic. 10 targeted requests per week adds 40 right-fit buyers to your feed every month. Compounded over 6 months: 240 founders and CEOs receiving every post.',
+    4:'Audience foundation is solid. Focus on tightening the ICP profile of new connections and maintaining weekly volume to accelerate compounding.'
   };
-  return{name:'Network-to-Mandate Targeting',score:s,insight:ins[a]||ins[1],fix:fix[a]||fix[1],
-    actionWhat:'Build a weekly connection ritual targeting decision-makers at signalled companies',
-    actionWhy:'Your current network is the primary reason mandate conversations are not starting. No amount of signal detection fixes a distribution problem.',
-    actionTime:'20 min every Monday',actionResult:'A steadily growing share of your network who could actually authorise a search'};
+  return{name:'Audience Composition',score:s,insight:ins[a]||ins[1],fix:fix[a]||fix[1],
+    actionWhat:'Build a weekly connection outreach ritual targeting founders and CEOs',
+    actionWhy:'Your current audience is the primary reason pipeline conversations are not happening. No amount of better content fixes a distribution problem.',
+    actionTime:'20 min every Monday',actionResult:'40 right-fit buyers added to your network per month'};
 }
-function dTiming(){
-  var fm=answers['firstmover']||1,sc=answers['signalcheck']||1;
-  var raw=fm+sc;
-  var s=raw<=2?4:raw<=4?9:raw<=5?15:20;
+function dContent(){
+  var inb=answers['inbound']||1,freq=answers['freq']||1;
+  var raw=inb+freq;
+  var s=raw<=2?4:raw<=4?8:raw<=5?14:18;
   var ins;
-  if(sc===1&&fm===1)ins='No routine is watching the market, so every mandate is still arriving secondhand, after another search firm already has the head start. Even a weekly signal check can put you ahead of that within 30 days.';
-  else if(sc>=2&&fm<=1)ins='You are checking for signals but not yet turning that into first-mover conversations. Awareness without a timely outreach step still lets the mandate go to whoever calls first.';
-  else if(sc>=2&&fm===2)ins='Real timing advantage is starting to show up. The conversations that are happening early confirm the mechanism works. The gap is in how consistently signals get acted on the same week they appear.';
-  else ins='You are consistently early to the door. Timing is working in your favour. The opportunity now is tightening how fast a signal turns into a first outreach message.';
-  return{name:'Mandate-Timing Alignment',score:s,insight:ins,
-    fix:'The moment a target company shows a funding round, ownership change, or a hiring buildout, reach out to the specific decision-maker that week, not the month after. Reference the actual event in the first line. Not a general introduction.',
-    actionWhat:'Reach out to the decision-maker the same week a signal appears, every time',
-    actionWhy:'A real signal loses almost all of its value after a few weeks. Acting late on the right signal produces the same result as never seeing it.',
-    actionTime:'30 min per week',actionResult:'Conversations that start because you called first, not because a job posting went public'};
+  if(freq===1&&inb===1)ins='No content means no signal. Even 3 posts per week reaching the right founders and CEOs can start conversations within 30 days.';
+  else if(freq>=2&&inb<=1)ins='You are posting but not generating pipeline conversations. Consistent content with zero buyer inbound means the audience receiving your content is not the right one. The problem is distribution, not the posts themselves.';
+  else if(freq>=2&&inb===2)ins='Some signal is present. The conversations starting confirm your content can work. The gap is in how many right-fit founders and CEOs are actually seeing it.';
+  else ins='Content is producing pipeline conversations. The system is working. The opportunity is in converting more of that engagement into discovery calls.';
+  return{name:'Content-Pipeline Alignment',score:s,insight:ins,
+    fix:'Lead every post with a problem your buyer is experiencing right now. The first line should name something a founder or CEO at your ideal stage thinks about daily. Not a general business observation.',
+    actionWhat:'Reframe posts to lead with the specific pain your ICP buyer is living right now',
+    actionWhy:'Posts that name the right pipeline problem stop the right buyer. Posts about general business topics stop everyone and convert no one.',
+    actionTime:'30 min per week',actionResult:'Comments and DMs from potential clients, not content peers'};
 }
 function dProfile(){
   var a=answers['profile']||1;
-  var s={1:4,2:11,4:20}[a]||4;
+  var s={1:4,2:10,4:18}[a]||4;
   var ins={
-    1:'Your profile is a resume. When a CEO or CHRO arrives after hearing your name, they see past placements and no clear picture of what you take on now or what to do next. The mandate conversation dies at the profile visit.',
-    2:'Your profile describes what you do but does not drive action. One rewrite of the headline and About section could meaningfully change how many warm intros turn into a scoping call.',
-    4:'Your profile is working as a landing page. A decision-maker who looks you up lands on a clear positioning statement and a specific next step.'
+    1:'Your profile is a resume. When a founder arrives from a post, they see work history and no clear picture of who you help or what to do next. The pipeline conversation dies at the profile visit.',
+    2:'Your profile describes what you do but does not drive action. One rewrite of the headline and About section could meaningfully change your inbound rate.',
+    4:'Your profile is working as a landing page. Visitors from your content land on a clear positioning statement and a specific next step.'
   };
   var fix={
-    1:'Rewrite your headline to name the functions and level you search for, the kind of company you serve, and the outcome clients get. Close your About section with a specific next step, a conversation, a diagnostic, or a clear resource.',
-    2:'Add a clear next step at the end of your About section. Every profile visit that ends without one is a mandate conversation that never opens.',
-    4:'Make sure your Featured section links to your strongest proof point or a recent post that has drawn engagement from decision-makers in your target market.'
+    1:'Rewrite your headline to name your ideal client, the problem you solve, and the outcome you produce. Close your About section with a specific next step: a free sample, a 30-minute call, or a clear resource.',
+    2:'Add a clear call to action at the end of your About section. Every profile visit without a next step is a missed pipeline conversation.',
+    4:'Ensure your Featured section links to your best lead magnet or a recent post that has driven engagement from founders and CEOs in your ICP.'
   };
   return{name:'Profile Conversion Layer',score:s,insight:ins[a]||ins[1],fix:fix[a]||fix[1],
     actionWhat:'Rewrite your LinkedIn headline and About section for conversion',
-    actionWhy:'A warm introduction sends someone to your profile. If the profile does not convert that visit, the introduction loses its value at the final step.',
-    actionTime:'45 min one-time',actionResult:'Warm intros that turn into a scoping call instead of going quiet'};
+    actionWhy:'Content drives traffic to your profile. If the profile does not convert that traffic, every post loses its pipeline return at the final step.',
+    actionTime:'45 min one-time',actionResult:'Inbound DMs from post viewers who recognise your positioning'};
 }
 function dOutreach(){
   var a=answers['outreach']||1;
-  var s={1:3,2:9,4:20}[a]||3;
+  var s={1:3,2:8,4:18}[a]||3;
   var ins={
-    1:'Waiting for referrals or inbound calls means your pipeline depends entirely on who happens to think of you this month. Reaching the actual decision-maker at a signalled company is the lever most search consultants never pull.',
-    2:'Sporadic outreach produces sporadic mandates. Making this a weekly ritual changes how many decision-makers hear from you before another search firm does.',
-    4:'You have a consistent outreach system. The variable to optimise next is how tightly your targeting matches companies actually showing a live signal.'
+    1:'Your audience is growing organically, which in practice means it is not growing with founders and CEOs who need a fractional CFO or COO. The pipeline math changes when outreach becomes a weekly ritual.',
+    2:'Sporadic outreach produces sporadic results. Making this a weekly ritual changes the audience composition over 3 to 6 months.',
+    4:'You have a consistent outreach system. The quality of who you are connecting with, and whether they carry active buying signals, is the variable to optimise next.'
   };
   return{name:'Outreach Consistency',score:s,insight:ins[a]||ins[1],
-    fix:'Set a Monday morning ritual: reach out to the decision-maker at every company that showed a funding, ownership-change, or hiring-buildout signal that week. Each note references the specific event. Under 280 characters. Peer tone. No pitch. 20 minutes total.',
-    actionWhat:'Establish a weekly outreach ritual to decision-makers at signalled companies',
-    actionWhy:'Without systematic outreach, even a perfect signal never turns into a conversation, because nobody reached the person who could act on it.',
-    actionTime:'20 min every Monday',actionResult:'A repeatable weekly motion instead of a pipeline that depends on who happens to call'};
+    fix:'Set a Monday morning ritual: 10 targeted connection requests to founders and CEOs showing active signals, funding rounds, or leadership changes. Each note references something specific. Under 280 characters. Peer tone. No pitch. 20 minutes total.',
+    actionWhat:'Establish a weekly connection outreach ritual on Monday mornings',
+    actionWhy:'Without systematic outreach, your audience never fills with founders and CEOs who would actually hire you.',
+    actionTime:'20 min every Monday',actionResult:'40 right-fit buyers added per month, 240 in 6 months'};
 }
 function dResponse(){
   var a=answers['response']||1;
-  var s={1:4,2:11,4:20}[a]||4;
+  var s={1:4,2:10,4:18}[a]||4;
   var ins={
-    1:'Mandate conversations are dying in the thread. Every warm introduction, referral, and LinkedIn reply is the opening of a potential search engagement. Without a system to advance those conversations, they close permanently.',
-    2:'Good instincts but no system means inconsistent results. The interest that converts is the interest where follow-through is fast and purposeful, not improvised.',
-    4:'You have a system for converting interest into conversations. The opportunity is in the quality of the sequence and whether each reply moves toward a booked scoping call.'
+    1:'Pipeline conversations are dying in the thread. Every comment on a post and every keyword DM is the opening of a potential client relationship. Without a system to advance those conversations, they close permanently.',
+    2:'Good instincts but no system means inconsistent results. The conversations that convert are the ones where follow-through is fast and purposeful.',
+    4:'You have a system for converting engagement into conversations. The opportunity is in the quality of the scripts and whether each response moves toward a booked discovery call.'
   };
   return{name:'Response Infrastructure',score:s,insight:ins[a]||ins[1],
-    fix:'Write 3 reply sequences for your most common situations: a warm referral, a comment on your content, and a direct signal-based reply. Each one should acknowledge the context, add one specific insight, and open one clear next step toward a scoping call.',
-    actionWhat:'Write 3 response sequences for referrals, comments, and signal-based outreach replies',
-    actionWhy:'Interest without a next move is a mandate conversation that closes permanently. A sequence makes the right move automatic instead of improvised.',
-    actionTime:'1 hour one-time',actionResult:'Every sign of interest becomes a scoping call instead of a dead end'};
+    fix:'Write 3 reply scripts for your most common comment types: agreement, question, and buying signal. Each script should acknowledge the comment, add one insight they did not have before, and open one specific door.',
+    actionWhat:'Write 3 comment reply scripts and 2 DM keyword flows',
+    actionWhy:'A comment without a next move is a pipeline conversation that closes permanently. Scripts make the right move automatic.',
+    actionTime:'1 hour one-time',actionResult:'Every engagement becomes a conversation instead of a dead end'};
 }
 
 function buildReport(){
-  var d1=dNetwork(),d2=dTiming(),d3=dProfile(),d4=dOutreach(),d5=dResponse();
+  var d1=dAudience(),d2=dContent(),d3=dProfile(),d4=dOutreach(),d5=dResponse();
   var total=d1.score+d2.score+d3.score+d4.score+d5.score;
   var band,bc,msg;
-  if(total<40){band='Critical Gap';bc='bc';msg='Your mandate pipeline is currently disconnected from any system. The foundations are not yet in place. The fix is structural, not strategic. You do not need more networking, you need the right signals reaching you first.';}
-  else if(total<60){band='Developing';bc='bd';msg='You have some pieces in place, but signal detection and outreach are not yet running together. The specific gaps below are fixable within 30 days with the right sequence.';}
-  else if(total<80){band='Building';bc='bb';msg='Your system is working but not yet compounding. You are reaching some of the right decision-makers, but your timing advantage is not yet showing up in mandate volume. Two specific fixes will close the gap.';}
-  else{band='Strong Foundation';bc='bs';msg='You have a solid base. Mandate conversations are starting early. The opportunity now is to compound what is working and remove the remaining friction points.';}
-  var rfn=answers['network']===4?60:answers['network']===2?25:8;
+  if(total<40){band='Critical Gap';bc='bc';msg='Your LinkedIn is currently disconnected from your pipeline. The foundations are not yet in place. The fix is structural, not strategic. You do not need better ideas or more posts. You need the right systems running.';}
+  else if(total<60){band='Developing';bc='bd';msg='You have some pieces in place but the two engines are not running together. The specific gaps below are fixable within 30 days with the right sequence.';}
+  else if(total<80){band='Building';bc='bb';msg='Your system is working but not yet compounding. You are visible to some of the right founders and CEOs, but the pipeline conversation rate is not reflecting the effort. Two specific fixes will close the gap.';}
+  else{band='Strong Foundation';bc='bs';msg='You have a solid base. Pipeline conversations are happening. The opportunity now is to compound what is working and remove the remaining friction points.';}
+  var rfn=answers['audience']===4?400:answers['audience']===2?150:60;
   var dims=[d1,d2,d3,d4,d5];
   var actions=dims.slice().sort(function(a,b){return a.score-b.score;}).slice(0,3);
   var about=answers['about']||'help clients achieve their goals';
@@ -523,7 +523,7 @@ function buildReport(){
   var h='';
 
   h+='<div class="report-header fade-in">';
-  h+='<div class="report-for">Mandate Pipeline Readiness Report \u00b7 prepared for</div>';
+  h+='<div class="report-for">Pipeline Readiness Report \u00b7 prepared for</div>';
   h+='<div class="report-name">'+userName+'</div>';
   h+='<div class="report-date">'+today+' \u00b7 Pipelind</div>';
   h+='<div class="score-wrap"><div class="score-circle"><div class="score-num" id="anim-score" style="color:'+col(total)+'">0</div><div class="score-lbl">Out of 100</div></div></div>';
@@ -531,7 +531,7 @@ function buildReport(){
   h+='<p class="score-interp">'+msg+'</p>';
   h+='</div>';
 
-  h+='<div class="r-section fade-in"><div class="r-eyebrow">Your Score Breakdown</div><div class="r-title">5 Mandate Pipeline Dimensions</div>';
+  h+='<div class="r-section fade-in"><div class="r-eyebrow">Your Score Breakdown</div><div class="r-title">5 Pipeline Dimensions</div>';
   dims.forEach(function(d){
     var pct=(d.score/20)*100;
     var dc=d.score<=8?'var(--rd)':d.score<=14?'var(--or)':'var(--gr)';
@@ -546,15 +546,15 @@ function buildReport(){
   h+='</div>';
 
   h+='<div class="r-section fade-in"><div class="math-section">';
-  h+='<div class="r-eyebrow">The Compounding Network Math</div>';
-  h+='<div class="r-title" style="margin-bottom:8px;">What building the right network looks like for '+userName+'</div>';
-  h+='<p style="font-size:13px;color:var(--w8);line-height:1.6;">You '+about.toLowerCase()+'. The decision-makers who could hand you that mandate are not yet in your network in force. Here is a conservative, illustrative picture of what changes with a consistent weekly targeting routine.</p>';
+  h+='<div class="r-eyebrow">The Compounding Audience Math</div>';
+  h+='<div class="r-title" style="margin-bottom:8px;">What building the right audience looks like for '+userName+'</div>';
+  h+='<p style="font-size:13px;color:var(--w8);line-height:1.6;">You '+about.toLowerCase()+'. The founders and CEOs who most need that work are not yet in your LinkedIn feed. Here is what changes when a systematic weekly outreach system runs alongside your content.</p>';
   h+='<div class="math-grid">';
-  h+='<div class="math-cell"><div class="math-num" style="color:var(--rd);">'+rfn+'</div><div class="math-lbl">Decision-makers now</div><div class="math-sub">Estimated from your current network composition</div></div>';
-  h+='<div class="math-cell"><div class="math-num" style="color:var(--or);">'+(rfn+65)+'</div><div class="math-lbl">After 3 months</div><div class="math-sub">At 5 targeted decision-makers added per week</div></div>';
-  h+='<div class="math-cell" style="border-color:rgba(16,185,129,.3);background:rgba(16,185,129,.04);"><div class="math-num" style="color:var(--gr);">'+(rfn+130)+'</div><div class="math-lbl">After 6 months</div><div class="math-sub">Same pace, compounded</div></div>';
+  h+='<div class="math-cell"><div class="math-num" style="color:var(--rd);">'+rfn+'</div><div class="math-lbl">Right-fit buyers now</div><div class="math-sub">Estimated from your current audience composition</div></div>';
+  h+='<div class="math-cell"><div class="math-num" style="color:var(--or);">'+(rfn+120)+'</div><div class="math-lbl">After 3 months</div><div class="math-sub">Plus 40 ICP-matched buyer profiles per month</div></div>';
+  h+='<div class="math-cell" style="border-color:rgba(16,185,129,.3);background:rgba(16,185,129,.04);"><div class="math-num" style="color:var(--gr);">'+(rfn+240)+'</div><div class="math-lbl">After 6 months</div><div class="math-sub">Right-fit buyers receiving every post you publish</div></div>';
   h+='</div>';
-  h+='<p style="font-size:12px;color:var(--w4);margin-top:14px;text-align:center;font-family:var(--mono);">Illustrative math at a conservative, self-directed pace of 5 per week. Not a guaranteed delivery volume.</p>';
+  h+='<p style="font-size:12px;color:var(--w4);margin-top:14px;text-align:center;font-family:var(--mono);">Every post at month 6 reaches '+(rfn+240)+' potential clients instead of '+rfn+'.</p>';
   h+='</div></div>';
 
   h+='<div class="r-section fade-in"><div class="r-eyebrow">Based on Your Lowest Scores</div><div class="r-title">Your Prioritised 30-Day Action Plan</div>';
@@ -571,10 +571,10 @@ function buildReport(){
 
   h+='<div class="cta-section fade-in">';
   h+='<div class="r-eyebrow" style="margin-bottom:12px;">The Done-For-You Solution</div>';
-  h+='<div class="cta-title">See Your Mandate Pipeline System Built, Before You Pay Anything</div>';
-  h+='<p class="cta-body">This diagnostic shows where the gaps are. Pipelind installs the full mandate-signal system directly inside your own Claude account, connected to your own data source, and builds your first live pipeline report with you. You only pay once you have seen the results and approved them.</p>';
+  h+='<div class="cta-title">See Exactly What the Full Pipeline System Delivers Every Monday</div>';
+  h+='<p class="cta-body">This diagnostic shows the gaps. The Pipelind system closes all five permanently: 40 ICP-matched buyer profiles flagged by active hiring and funding signals, plus 18 pieces of content in your voice, delivered to your inbox every Monday. 30 minutes of your time per week.</p>';
   h+='<a href="https://calendly.com/saurabh_zentro/30-min" target="_blank" class="btn-cta">Book Your Pipeline Walkthrough</a><br>';
-  h+='<a href="https://pipelind.com/" target="_blank" class="btn-sec">See how the system works first \u2197</a>';
+  h+='<a href="https://pipelind.com/" target="_blank" class="btn-sec">See exactly what ships every Monday first \u2197</a>';
   h+='</div>';
   h+='<div class="report-actions"><button class="btn-action" onclick="printReport()">Save as PDF</button><button class="btn-action" onclick="shareLinkedIn()">Share on LinkedIn</button><button class="btn-action" onclick="resetAll()">Retake</button></div>';
   h+='<div class="report-footer"><p>Pipelind \u00b7 <a href="https://pipelind.com/">pipelind.com</a> \u00b7 Saurabh M.</p></div>';
