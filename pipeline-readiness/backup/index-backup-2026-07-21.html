@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pipelind · Mandate Pipeline Readiness Diagnostic for Executive Search Consultants</title>
-<meta name="description" content="7 questions. A personalised score across 5 mandate-pipeline dimensions. A prioritised 30-day action plan. Built for boutique and independent executive search consultants. Free, takes 5 minutes.">
+<meta name="description" content="7 questions. A personalised score across 5 mandate-pipeline dimensions. A prioritised 30-day action plan. Built for boutique and independent executive search consultants. No email required.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,700;1,800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -91,25 +91,6 @@ h1 em{font-style:normal;color:var(--or);}
 .gen-step.active .gen-dot{background:var(--or);animation:blink .8s ease-in-out infinite alternate;}
 .gen-step.done .gen-dot{background:var(--gr);}
 @keyframes blink{from{opacity:.4;}to{opacity:1;}}
-#screen-gate{display:none;}
-.gate-card{background:var(--bg2);border:1px solid var(--border2);border-radius:20px;padding:32px 36px;margin-bottom:24px;position:relative;overflow:hidden;}
-.gate-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--pu),var(--or),transparent);opacity:.7;}
-.gate-teaser{font-family:var(--mono);font-size:12px;color:var(--or);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;}
-.gate-title{font-family:var(--dsp);font-size:24px;font-weight:800;margin-bottom:20px;letter-spacing:-.02em;}
-.gate-list{background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:20px 22px;margin-bottom:26px;}
-.gate-list-lbl{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--pulight);margin-bottom:14px;}
-.gate-item{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--w8);margin-bottom:10px;line-height:1.5;}
-.gate-item:last-child{margin-bottom:0;}
-.gate-item .n{font-family:var(--mono);color:var(--or);font-size:11px;font-weight:700;margin-top:2px;flex-shrink:0;}
-.gate-item b{color:var(--w1);}
-.gate-field{margin-bottom:16px;}
-.gate-field label{display:block;font-family:var(--mono);font-size:11px;color:var(--w4);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;}
-.gate-field input{width:100%;background:var(--bg3);border:1.5px solid rgba(255,255,255,.1);border-radius:12px;padding:14px 18px;font-family:var(--dsp);font-size:15px;color:var(--w1);outline:none;transition:border-color .18s;}
-.gate-field input:focus{border-color:rgba(106,102,163,.5);}
-.gate-field input::placeholder{color:var(--w4);}
-.btn-unlock{width:100%;background:var(--pu);border:none;color:#fff;font-family:var(--dsp);font-size:15px;font-weight:700;padding:15px 28px;border-radius:12px;cursor:pointer;transition:all .18s;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:6px;}
-.btn-unlock:hover{opacity:.88;transform:translateY(-1px);}
-.gate-footnote{text-align:center;font-size:12px;color:var(--w4);margin-top:16px;line-height:1.5;}
 #screen-report{display:none;}
 .report-header{text-align:center;padding:48px 0 40px;border-bottom:1px solid var(--border);margin-bottom:40px;}
 .report-for{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--w4);margin-bottom:8px;}
@@ -226,9 +207,9 @@ h1 em{font-style:normal;color:var(--or);}
   <div class="hero fade-in">
     <div class="eyebrow">5-Minute Diagnostic</div>
     <h1>Find Out How Early You're <em>Catching Your Next Mandate.</em></h1>
-    <p class="hero-sub">7 questions. A personalised score across 5 mandate-pipeline dimensions. A prioritised 30-day action plan. Built for boutique and independent executive search consultants.</p>
+    <p class="hero-sub">7 questions. A personalised score across 5 mandate-pipeline dimensions. A prioritised 30-day action plan. Built for boutique and independent executive search consultants. No email required.</p>
     <div class="hero-meta">
-      <span>5 minutes</span><span>Personalised report</span><span>Free</span>
+      <span>No email</span><span>No signup</span><span>Instant report</span><span>Free</span>
     </div>
   </div>
   <div class="name-card">
@@ -281,42 +262,11 @@ h1 em{font-style:normal;color:var(--or);}
   </div>
 </div>
 
-<div id="screen-gate">
-  <div class="gate-card fade-in">
-    <div class="gate-teaser" id="gate-teaser">Your score is calculated.</div>
-    <div class="gate-title">Enter your details to open your full report.</div>
-    <div class="gate-list">
-      <div class="gate-list-lbl">What's inside</div>
-      <div class="gate-item"><span class="n">01</span><span>Your <b>score out of 100</b> with the full 5-dimension breakdown</span></div>
-      <div class="gate-item"><span class="n">02</span><span>The <b>compounding network math</b> for your specific answers</span></div>
-      <div class="gate-item"><span class="n">03</span><span>Your <b>prioritised 30-day action plan</b>, sequenced by impact</span></div>
-    </div>
-    <div class="gate-field">
-      <label for="gate-name">Name</label>
-      <input type="text" id="gate-name" placeholder="e.g. Sarah" autocomplete="given-name">
-    </div>
-    <div class="gate-field">
-      <label for="gate-email">Email, we'll also send you the report so you don't lose it</label>
-      <input type="email" id="gate-email" placeholder="sarah@yoursearchfirm.com" autocomplete="email">
-    </div>
-    <div class="gate-field" style="margin-bottom:8px;">
-      <label for="gate-linkedin">LinkedIn handle</label>
-      <input type="text" id="gate-linkedin" placeholder="e.g. sarah-chen-search">
-    </div>
-    <button class="btn-unlock" id="btn-unlock" onclick="unlockReport()">
-      Open My Report
-      <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-    </button>
-    <div id="gate-error" style="color:#F87171;font-size:13px;margin-top:12px;display:none;text-align:center;">Please enter your name, email, and LinkedIn handle to open your report.</div>
-    <p class="gate-footnote">No spam. Your details unlock this report and nothing else.</p>
-  </div>
-</div>
-
 <div id="screen-report"></div>
 
 </div>
 <script>
-var userName='',currentQ=0,answers={},teaserCalc=null;
+var userName='',currentQ=0,answers={};
 
 var Qs=[
   {id:'network',dim:'Dimension 1 \u00b7 Network-to-Mandate Targeting',
@@ -470,62 +420,11 @@ function generate(){
     document.getElementById(steps[steps.length-1]).className='gen-step done';
     setTimeout(function(){
       document.getElementById('screen-generating').style.display='none';
-      showGate();
+      buildReport();
+      document.getElementById('screen-report').style.display='block';
       window.scrollTo(0,0);
     },500);
   },delay);
-}
-
-function computeTeaser(){
-  var d1=dNetwork(),d2=dTiming(),d3=dProfile(),d4=dOutreach(),d5=dResponse();
-  var total=d1.score+d2.score+d3.score+d4.score+d5.score;
-  var band;
-  if(total<40)band='Critical Gap';
-  else if(total<60)band='Developing';
-  else if(total<80)band='Building';
-  else band='Strong Foundation';
-  return {total:total,band:band};
-}
-
-function showGate(){
-  teaserCalc=computeTeaser();
-  document.getElementById('gate-teaser').textContent='Your score: '+teaserCalc.total+'/100, '+teaserCalc.band+'.';
-  document.getElementById('gate-name').value=userName;
-  document.getElementById('screen-gate').style.display='block';
-}
-
-async function unlockReport(){
-  var name=document.getElementById('gate-name').value.trim();
-  var email=document.getElementById('gate-email').value.trim();
-  var linkedinRaw=document.getElementById('gate-linkedin').value.trim();
-  var err=document.getElementById('gate-error');
-  if(!name||!email||!email.includes('@')||!linkedinRaw){
-    err.style.display='block';
-    return;
-  }
-  err.style.display='none';
-  userName=name.charAt(0).toUpperCase()+name.slice(1);
-  var handle=linkedinRaw.replace(/^https?:\/\/(www\.)?linkedin\.com\/in\//i,'').replace(/^@/,'').replace(/^in\//i,'').replace(/\/$/,'').trim();
-  var linkedinUrl='linkedin.com/in/'+handle;
-  try{
-    await fetch('https://api.web3forms.com/submit',{
-      method:'POST',
-      headers:{'Content-Type':'application/json',Accept:'application/json'},
-      body:JSON.stringify({
-        access_key:'54e4bfc3-4b35-49a5-979f-988a9ac22fa2',
-        name:userName,
-        email:email,
-        linkedin:linkedinUrl,
-        message:'Mandate Pipeline Readiness Diagnostic lead. Score: '+teaserCalc.total+'/100. Band: '+teaserCalc.band+'. LinkedIn: '+linkedinUrl+'. Answers: '+JSON.stringify(answers)+'.',
-        source:'pipeline-readiness-diagnostic',
-        client:'saurabh-own-lead-magnet'
-      })
-    });
-  }catch(e){console.warn('Lead capture failed, continuing.',e);}
-  document.getElementById('screen-gate').style.display='none';
-  buildReport();
-  document.getElementById('screen-report').style.display='block';
-  window.scrollTo(0,0);
 }
 
 function dNetwork(){
@@ -706,14 +605,10 @@ function shareLinkedIn(){
   window.open('https://www.linkedin.com/sharing/share-offsite/?url='+encodeURIComponent('https://www.pipelind.com/pipeline-readiness'),'_blank');
 }
 function resetAll(){
-  answers={};currentQ=0;teaserCalc=null;
+  answers={};currentQ=0;
   document.getElementById('screen-report').style.display='none';
-  document.getElementById('screen-gate').style.display='none';
   document.getElementById('screen-intro').style.display='block';
   document.getElementById('name-input').value='';
-  document.getElementById('gate-email').value='';
-  document.getElementById('gate-linkedin').value='';
-  document.getElementById('gate-error').style.display='none';
   window.scrollTo(0,0);
 }
 </script>
