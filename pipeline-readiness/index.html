@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pipelind &middot; Mandate Pipeline Readiness Diagnostic for Fractional Executives</title>
-<meta name="description" content="7 questions. A personalised score across 5 mandate-pipeline dimensions. A prioritised 30-day action plan. Built for independent, solo-practice fractional executives, every function. Free, takes 5 minutes.">
+<title>Pipelind &middot; Engagement Pipeline Readiness Diagnostic for Fractional Executives</title>
+<meta name="description" content="7 questions. A personalised score across 5 engagement-pipeline dimensions. A prioritised 30-day action plan. Built for independent, solo-practice fractional executives, every function. Free, takes 5 minutes.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,700;1,800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -225,8 +225,8 @@ h1 em{font-style:normal;color:var(--or);}
 <div id="screen-intro">
   <div class="hero fade-in">
     <div class="eyebrow">5-Minute Diagnostic</div>
-    <h1>Find Out How Early You're <em>Catching Your Next Mandate.</em></h1>
-    <p class="hero-sub">7 questions. A personalised score across 5 mandate-pipeline dimensions. A prioritised 30-day action plan. Built for independent, solo-practice fractional executives, every function.</p>
+    <h1>Find Out How Early You're <em>Catching Your Next Engagement.</em></h1>
+    <p class="hero-sub">7 questions. A personalised score across 5 engagement-pipeline dimensions. A prioritised 30-day action plan. Built for independent, solo-practice fractional executives, every function.</p>
     <div class="hero-meta">
       <span>5 minutes</span><span>Personalised report</span><span>Free</span>
     </div>
@@ -271,10 +271,10 @@ h1 em{font-style:normal;color:var(--or);}
 <div id="screen-generating">
   <div class="gen-orb">&#9889;</div>
   <div class="gen-title">Building your report...</div>
-  <div class="gen-sub">Analysing answers across 5 mandate-pipeline dimensions</div>
+  <div class="gen-sub">Analysing answers across 5 engagement-pipeline dimensions</div>
   <div class="gen-steps">
-    <div class="gen-step active" id="gs-1"><div class="gen-dot"></div>Scoring network-to-mandate targeting</div>
-    <div class="gen-step" id="gs-2"><div class="gen-dot"></div>Evaluating mandate-timing alignment</div>
+    <div class="gen-step active" id="gs-1"><div class="gen-dot"></div>Scoring network-to-engagement targeting</div>
+    <div class="gen-step" id="gs-2"><div class="gen-dot"></div>Evaluating engagement-timing alignment</div>
     <div class="gen-step" id="gs-3"><div class="gen-dot"></div>Checking profile conversion layer</div>
     <div class="gen-step" id="gs-4"><div class="gen-dot"></div>Assessing outreach consistency</div>
     <div class="gen-step" id="gs-5"><div class="gen-dot"></div>Calculating response infrastructure</div>
@@ -319,26 +319,26 @@ h1 em{font-style:normal;color:var(--or);}
 var userName='',currentQ=0,answers={},teaserCalc=null;
 
 var Qs=[
-  {id:'network',dim:'Dimension 1 \u00b7 Network-to-Mandate Targeting',
+  {id:'network',dim:'Dimension 1 \u00b7 Network-to-Engagement Targeting',
    text:'Who makes up most of your current LinkedIn network?',
    hint:'Think about the last 20 connection requests you sent or accepted.',
    type:'opts',
    opts:[
-     {l:'Mostly other fractional executives, peers, and former full-time colleagues',s:'The people who can hand you a mandate are outnumbered by the people who can\u2019t',v:1},
+     {l:'Mostly other fractional executives, peers, and former full-time colleagues',s:'The people who can hand you an engagement are outnumbered by the people who can\u2019t',v:1},
      {l:'A mix \u2014 some decision-makers, but mostly peers and former colleagues',s:'Some right people, but they are still a minority in your feed',v:2},
-     {l:'Actively building with CEOs, founders, and boards who could bring in fractional leadership',s:'Your network is aligned with who actually hands out mandates',v:4}
+     {l:'Actively building with CEOs, founders, and boards who could bring in fractional leadership',s:'Your network is aligned with who actually hands out engagements',v:4}
    ]},
-  {id:'firstmover',dim:'Dimension 2 \u00b7 Mandate-Timing Alignment',
-   text:'In the last 90 days, how many mandate conversations started because you reached out first, before another fractional executive already had the seat?',
+  {id:'firstmover',dim:'Dimension 2 \u00b7 Engagement-Timing Alignment',
+   text:'In the last 90 days, how many engagement conversations started because you reached out first, before another fractional executive already had the seat?',
    hint:'Not conversations that started after a job posting went live or a referral tipped you off. Ones where you were early.',
    type:'opts',
    opts:[
-     {l:'Zero',s:'Every mandate is still arriving secondhand, after other firms already know',v:1},
+     {l:'Zero',s:'Every engagement is still arriving secondhand, after other firms already know',v:1},
      {l:'1 to 2 conversations',s:'A trickle of early signal, not enough to rely on',v:2},
      {l:'3 to 5 conversations',s:'Real timing advantage some of the time, but not yet a system',v:3},
      {l:'6 or more',s:'You are consistently first to the door',v:4}
    ]},
-  {id:'signalcheck',dim:'Dimension 2 \u00b7 Mandate-Timing Alignment',
+  {id:'signalcheck',dim:'Dimension 2 \u00b7 Engagement-Timing Alignment',
    text:'How consistently do you check for the events that actually trigger a company needing fractional leadership, funding rounds, ownership changes, a stalled full-time search, or a hiring buildout in your function?',
    hint:'Be honest. This separates a timing gap from a network gap.',
    type:'opts',
@@ -352,9 +352,9 @@ var Qs=[
    hint:'Your profile is where a warm introduction either turns into a scoping call or goes quiet. Most fractional executives have a resume where a retained-executive landing page should be.',
    type:'opts',
    opts:[
-     {l:'They see my career history and past full-time roles. Essentially a resume.',s:'No clear next step for someone who could hand you a mandate',v:1},
+     {l:'They see my career history and past full-time roles. Essentially a resume.',s:'No clear next step for someone who could hand you an engagement',v:1},
      {l:'My headline and About section explain what I do, but there is no clear next step',s:'Better framing, but still no conversion path',v:2},
-     {l:'My profile speaks directly to the mandates I take on, with a clear next step',s:'Built to convert a warm intro, not just look credible',v:4}
+     {l:'My profile speaks directly to the engagements I take on, with a clear next step',s:'Built to convert a warm intro, not just look credible',v:4}
    ]},
   {id:'outreach',dim:'Dimension 4 \u00b7 Outreach Consistency',
    text:'How are you currently reaching the specific decision-makers at companies showing a hiring or funding signal?',
@@ -363,11 +363,11 @@ var Qs=[
    opts:[
      {l:'I am not. I wait for referrals or inbound calls.',s:'No systematic way of reaching the person who could authorise a search',v:1},
      {l:'Occasionally, when a signal happens to cross my desk',s:'Sporadic, not systematic',v:2},
-     {l:'I have a weekly routine for reaching out to the decision-maker at signalled companies',s:'Consistently reaching the person who can actually hand you the mandate',v:4}
+     {l:'I have a weekly routine for reaching out to the decision-maker at signalled companies',s:'Consistently reaching the person who can actually hand you the engagement',v:4}
    ]},
   {id:'response',dim:'Dimension 5 \u00b7 Response Infrastructure',
    text:'When a warm introduction, referral, or LinkedIn engagement turns into interest, what happens next?',
-   hint:'Every one of these is the opening of a mandate conversation, or it goes quiet.',
+   hint:'Every one of these is the opening of an engagement conversation, or it goes quiet.',
    type:'opts',
    opts:[
      {l:'I reply when I can. No consistent follow-up.',s:'Interest is going cold before it becomes a scoping call',v:1},
@@ -516,7 +516,7 @@ async function unlockReport(){
         name:userName,
         email:email,
         linkedin:linkedinUrl,
-        message:'Mandate Pipeline Readiness Diagnostic lead. Score: '+teaserCalc.total+'/100. Band: '+teaserCalc.band+'. LinkedIn: '+linkedinUrl+'. Answers: '+JSON.stringify(answers)+'.',
+        message:'Engagement Pipeline Readiness Diagnostic lead. Score: '+teaserCalc.total+'/100. Band: '+teaserCalc.band+'. LinkedIn: '+linkedinUrl+'. Answers: '+JSON.stringify(answers)+'.',
         source:'pipeline-readiness-diagnostic',
         client:'saurabh-own-lead-magnet'
       })
@@ -532,18 +532,18 @@ function dNetwork(){
   var a=answers['network']||1;
   var s={1:4,2:11,4:20}[a]||4;
   var ins={
-    1:'Most of your connections are other fractional executives, peers, and former full-time colleagues. Every post and every update you share reaches people who cannot hand you a mandate, not the CEOs and founders who can. This is the most common reason a strong practice still produces a quiet pipeline.',
+    1:'Most of your connections are other fractional executives, peers, and former full-time colleagues. Every post and every update you share reaches people who cannot hand you an engagement, not the CEOs and founders who can. This is the most common reason a strong practice still produces a quiet pipeline.',
     2:'Your network is mixed. Some real decision-makers exist in it, but they are outnumbered. Most of what you share still reaches people who will never bring in fractional leadership.',
-    4:'Your network is aligned with who actually hands out mandates. CEOs, founders, and boards are already in your feed. This is the right foundation to compound on.'
+    4:'Your network is aligned with who actually hands out engagements. CEOs, founders, and boards are already in your feed. This is the right foundation to compound on.'
   };
   var fix={
     1:'Send 10 targeted connection requests per week to CEOs and founders at companies showing an active hiring or funding signal. A personalised note under 280 characters, referencing the specific signal, changes the composition of your network within 6 months.',
-    2:'Move from sporadic to systematic. 10 targeted requests per week, aimed only at decision-makers at signalled companies, steadily raises the share of your network that could actually hand you a mandate.',
+    2:'Move from sporadic to systematic. 10 targeted requests per week, aimed only at decision-makers at signalled companies, steadily raises the share of your network that could actually hand you an engagement.',
     4:'The foundation is solid. Focus on tightening which signals you connect on and maintaining weekly volume so the compounding continues.'
   };
-  return{name:'Network-to-Mandate Targeting',score:s,insight:ins[a]||ins[1],fix:fix[a]||fix[1],
+  return{name:'Network-to-Engagement Targeting',score:s,insight:ins[a]||ins[1],fix:fix[a]||fix[1],
     actionWhat:'Build a weekly connection ritual targeting decision-makers at signalled companies',
-    actionWhy:'Your current network is the primary reason mandate conversations are not starting. No amount of signal detection fixes a distribution problem.',
+    actionWhy:'Your current network is the primary reason engagement conversations are not starting. No amount of signal detection fixes a distribution problem.',
     actionTime:'20 min every Monday',actionResult:'A steadily growing share of your network who could actually authorise a search'};
 }
 function dTiming(){
@@ -551,11 +551,11 @@ function dTiming(){
   var raw=fm+sc;
   var s=raw<=2?4:raw<=4?9:raw<=5?15:20;
   var ins;
-  if(sc===1&&fm===1)ins='No routine is watching the market, so every mandate is still arriving secondhand, after another fractional executive already has the head start. Even a weekly signal check can put you ahead of that within 30 days.';
-  else if(sc>=2&&fm<=1)ins='You are checking for signals but not yet turning that into first-mover conversations. Awareness without a timely outreach step still lets the mandate go to whoever calls first.';
+  if(sc===1&&fm===1)ins='No routine is watching the market, so every engagement is still arriving secondhand, after another fractional executive already has the head start. Even a weekly signal check can put you ahead of that within 30 days.';
+  else if(sc>=2&&fm<=1)ins='You are checking for signals but not yet turning that into first-mover conversations. Awareness without a timely outreach step still lets the engagement go to whoever calls first.';
   else if(sc>=2&&fm===2)ins='Real timing advantage is starting to show up. The conversations that are happening early confirm the mechanism works. The gap is in how consistently signals get acted on the same week they appear.';
   else ins='You are consistently early to the door. Timing is working in your favour. The opportunity now is tightening how fast a signal turns into a first outreach message.';
-  return{name:'Mandate-Timing Alignment',score:s,insight:ins,
+  return{name:'Engagement-Timing Alignment',score:s,insight:ins,
     fix:'The moment a target company shows a funding round, ownership change, or a hiring buildout, reach out to the specific decision-maker that week, not the month after. Reference the actual event in the first line. Not a general introduction.',
     actionWhat:'Reach out to the decision-maker the same week a signal appears, every time',
     actionWhy:'A real signal loses almost all of its value after a few weeks. Acting late on the right signal produces the same result as never seeing it.',
@@ -565,13 +565,13 @@ function dProfile(){
   var a=answers['profile']||1;
   var s={1:4,2:11,4:20}[a]||4;
   var ins={
-    1:'Your profile is a resume. When a CEO or founder arrives after hearing your name, they see past full-time roles and no clear picture of what you take on now or what to do next. The mandate conversation dies at the profile visit.',
+    1:'Your profile is a resume. When a CEO or founder arrives after hearing your name, they see past full-time roles and no clear picture of what you take on now or what to do next. The engagement conversation dies at the profile visit.',
     2:'Your profile describes what you do but does not drive action. One rewrite of the headline and About section could meaningfully change how many warm intros turn into a scoping call.',
     4:'Your profile is working as a landing page. A decision-maker who looks you up lands on a clear positioning statement and a specific next step.'
   };
   var fix={
     1:'Rewrite your headline to name the functions and level you search for, the kind of company you serve, and the outcome clients get. Close your About section with a specific next step, a conversation, a diagnostic, or a clear resource.',
-    2:'Add a clear next step at the end of your About section. Every profile visit that ends without one is a mandate conversation that never opens.',
+    2:'Add a clear next step at the end of your About section. Every profile visit that ends without one is an engagement conversation that never opens.',
     4:'Make sure your Featured section links to your strongest proof point or a recent post that has drawn engagement from decision-makers in your target market.'
   };
   return{name:'Profile Conversion Layer',score:s,insight:ins[a]||ins[1],fix:fix[a]||fix[1],
@@ -584,7 +584,7 @@ function dOutreach(){
   var s={1:3,2:9,4:20}[a]||3;
   var ins={
     1:'Waiting for referrals or inbound calls means your pipeline depends entirely on who happens to think of you this month. Reaching the actual decision-maker at a signalled company is the lever most fractional executives never pull.',
-    2:'Sporadic outreach produces sporadic mandates. Making this a weekly ritual changes how many decision-makers hear from you before another fractional executive does.',
+    2:'Sporadic outreach produces sporadic engagements. Making this a weekly ritual changes how many decision-makers hear from you before another fractional executive does.',
     4:'You have a consistent outreach system. The variable to optimise next is how tightly your targeting matches companies actually showing a live signal.'
   };
   return{name:'Outreach Consistency',score:s,insight:ins[a]||ins[1],
@@ -597,14 +597,14 @@ function dResponse(){
   var a=answers['response']||1;
   var s={1:4,2:11,4:20}[a]||4;
   var ins={
-    1:'Mandate conversations are dying in the thread. Every warm introduction, referral, and LinkedIn reply is the opening of a potential search engagement. Without a system to advance those conversations, they close permanently.',
+    1:'Engagement conversations are dying in the thread. Every warm introduction, referral, and LinkedIn reply is the opening of a potential search engagement. Without a system to advance those conversations, they close permanently.',
     2:'Good instincts but no system means inconsistent results. The interest that converts is the interest where follow-through is fast and purposeful, not improvised.',
     4:'You have a system for converting interest into conversations. The opportunity is in the quality of the sequence and whether each reply moves toward a booked scoping call.'
   };
   return{name:'Response Infrastructure',score:s,insight:ins[a]||ins[1],
     fix:'Write 3 reply sequences for your most common situations: a warm referral, a comment on your content, and a direct signal-based reply. Each one should acknowledge the context, add one specific insight, and open one clear next step toward a scoping call.',
     actionWhat:'Write 3 response sequences for referrals, comments, and signal-based outreach replies',
-    actionWhy:'Interest without a next move is a mandate conversation that closes permanently. A sequence makes the right move automatic instead of improvised.',
+    actionWhy:'Interest without a next move is an engagement conversation that closes permanently. A sequence makes the right move automatic instead of improvised.',
     actionTime:'1 hour one-time',actionResult:'Every sign of interest becomes a scoping call instead of a dead end'};
 }
 
@@ -612,10 +612,10 @@ function buildReport(){
   var d1=dNetwork(),d2=dTiming(),d3=dProfile(),d4=dOutreach(),d5=dResponse();
   var total=d1.score+d2.score+d3.score+d4.score+d5.score;
   var band,bc,msg;
-  if(total<40){band='Critical Gap';bc='bc';msg='Your mandate pipeline is currently disconnected from any system. The foundations are not yet in place. The fix is structural, not strategic. You do not need more networking, you need the right signals reaching you first.';}
+  if(total<40){band='Critical Gap';bc='bc';msg='Your engagement pipeline is currently disconnected from any system. The foundations are not yet in place. The fix is structural, not strategic. You do not need more networking, you need the right signals reaching you first.';}
   else if(total<60){band='Developing';bc='bd';msg='You have some pieces in place, but signal detection and outreach are not yet running together. The specific gaps below are fixable within 30 days with the right sequence.';}
-  else if(total<80){band='Building';bc='bb';msg='Your system is working but not yet compounding. You are reaching some of the right decision-makers, but your timing advantage is not yet showing up in mandate volume. Two specific fixes will close the gap.';}
-  else{band='Strong Foundation';bc='bs';msg='You have a solid base. Mandate conversations are starting early. The opportunity now is to compound what is working and remove the remaining friction points.';}
+  else if(total<80){band='Building';bc='bb';msg='Your system is working but not yet compounding. You are reaching some of the right decision-makers, but your timing advantage is not yet showing up in engagement volume. Two specific fixes will close the gap.';}
+  else{band='Strong Foundation';bc='bs';msg='You have a solid base. Engagement conversations are starting early. The opportunity now is to compound what is working and remove the remaining friction points.';}
   var rfn=answers['network']===4?60:answers['network']===2?25:8;
   var dims=[d1,d2,d3,d4,d5];
   var actions=dims.slice().sort(function(a,b){return a.score-b.score;}).slice(0,3);
@@ -624,7 +624,7 @@ function buildReport(){
   var h='';
 
   h+='<div class="report-header fade-in">';
-  h+='<div class="report-for">Mandate Pipeline Readiness Report \u00b7 prepared for</div>';
+  h+='<div class="report-for">Engagement Pipeline Readiness Report \u00b7 prepared for</div>';
   h+='<div class="report-name">'+userName+'</div>';
   h+='<div class="report-date">'+today+' \u00b7 Pipelind</div>';
   h+='<div class="score-wrap"><div class="score-circle"><div class="score-num" id="anim-score" style="color:'+col(total)+'">0</div><div class="score-lbl">Out of 100</div></div></div>';
@@ -632,7 +632,7 @@ function buildReport(){
   h+='<p class="score-interp">'+msg+'</p>';
   h+='</div>';
 
-  h+='<div class="r-section fade-in"><div class="r-eyebrow">Your Score Breakdown</div><div class="r-title">5 Mandate Pipeline Dimensions</div>';
+  h+='<div class="r-section fade-in"><div class="r-eyebrow">Your Score Breakdown</div><div class="r-title">5 Engagement Pipeline Dimensions</div>';
   dims.forEach(function(d){
     var pct=(d.score/20)*100;
     var dc=d.score<=8?'var(--rd)':d.score<=14?'var(--or)':'var(--gr)';
@@ -649,7 +649,7 @@ function buildReport(){
   h+='<div class="r-section fade-in"><div class="math-section">';
   h+='<div class="r-eyebrow">The Compounding Network Math</div>';
   h+='<div class="r-title" style="margin-bottom:8px;">What building the right network looks like for '+userName+'</div>';
-  h+='<p style="font-size:13px;color:var(--w8);line-height:1.6;">You '+about.toLowerCase()+'. The decision-makers who could hand you that mandate are not yet in your network in force. Here is a conservative, illustrative picture of what changes with a consistent weekly targeting routine.</p>';
+  h+='<p style="font-size:13px;color:var(--w8);line-height:1.6;">You '+about.toLowerCase()+'. The decision-makers who could hand you that engagement are not yet in your network in force. Here is a conservative, illustrative picture of what changes with a consistent weekly targeting routine.</p>';
   h+='<div class="math-grid">';
   h+='<div class="math-cell"><div class="math-num" style="color:var(--rd);">'+rfn+'</div><div class="math-lbl">Decision-makers now</div><div class="math-sub">Estimated from your current network composition</div></div>';
   h+='<div class="math-cell"><div class="math-num" style="color:var(--or);">'+(rfn+65)+'</div><div class="math-lbl">After 3 months</div><div class="math-sub">At 5 targeted decision-makers added per week</div></div>';
@@ -672,8 +672,8 @@ function buildReport(){
 
   h+='<div class="cta-section fade-in">';
   h+='<div class="r-eyebrow" style="margin-bottom:12px;">The Done-For-You Solution</div>';
-  h+='<div class="cta-title">See Your Mandate Pipeline System Built, Before You Pay Anything</div>';
-  h+='<p class="cta-body">This diagnostic shows where the gaps are. Pipelind installs the full mandate-signal system directly inside your own Claude account, connected to your own data source, and builds your first live pipeline report with you. You only pay once you have seen the results and approved them.</p>';
+  h+='<div class="cta-title">See Your Engagement Pipeline System Built, Before You Pay Anything</div>';
+  h+='<p class="cta-body">This diagnostic shows where the gaps are. Pipelind installs the full engagement-signal system directly inside your own Claude account, connected to your own data source, and builds your first live pipeline report with you. You only pay once you have seen the results and approved them.</p>';
   h+='<a href="https://calendly.com/saurabh_zentro/30-min" target="_blank" class="btn-cta">Book Your Pipeline Walkthrough</a><br>';
   h+='<a href="https://pipelind.com/" target="_blank" class="btn-sec">See how the system works first \u2197</a>';
   h+='</div>';
