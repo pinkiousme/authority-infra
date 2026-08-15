@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pipelind &middot; Engagement Pipeline Readiness Diagnostic for Fractional Executives</title>
-<meta name="description" content="7 questions. A personalised score across 5 engagement-pipeline dimensions. A prioritised 30-day action plan. Built for independent, solo-practice fractional executives, every function. Free, takes 5 minutes.">
+<title>Pipelind &middot; Client-Readiness Diagnostic for Fractional Executives &amp; Executive Coaches</title>
+<meta name="description" content="7 questions. A personalised score across 5 pipeline dimensions. A prioritised 30-day action plan. Built for independent fractional executives and executive coaches. Free, takes 5 minutes.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,700;1,800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -32,6 +32,14 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .logo{display:flex;align-items:center;gap:10px;font-family:var(--dsp);font-size:15px;font-weight:700;text-decoration:none;color:var(--w1);}
 .logo-icon{width:40px;height:40px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .badge{font-family:var(--mono);font-size:10px;background:rgba(106,102,163,.15);border:1px solid rgba(106,102,163,.3);color:var(--pulight);padding:4px 12px;border-radius:20px;text-transform:uppercase;letter-spacing:.08em;}
+.niche-toggle-wrap{display:flex;justify-content:center;margin-bottom:28px;}
+.niche-toggle{display:inline-flex;background:var(--bg2);border:1px solid var(--border2);border-radius:999px;padding:3px;gap:3px;}
+.nt-btn{font-family:var(--dsp);font-size:12.5px;font-weight:600;padding:8px 16px;border-radius:999px;border:none;background:transparent;color:var(--w6);cursor:pointer;transition:background .2s,color .2s;white-space:nowrap;}
+.nt-btn:hover{color:var(--w1);}
+.nt-btn.active{color:#06060E;}
+.nt-btn[data-niche-btn="fractional"].active{background:var(--or);}
+.nt-btn[data-niche-btn="coach"].active{background:var(--pu);color:#fff;}
+@media(max-width:480px){.nt-btn{font-size:11px;padding:7px 12px;}}
 .hero{margin-bottom:48px;text-align:center;}
 .eyebrow{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--or);margin-bottom:20px;display:inline-block;}
 h1{font-family:var(--dsp);font-size:clamp(28px,5vw,44px);font-weight:800;line-height:1.1;margin-bottom:20px;letter-spacing:-.03em;}
@@ -223,10 +231,16 @@ h1 em{font-style:normal;color:var(--or);}
 </div>
 
 <div id="screen-intro">
+  <div class="niche-toggle-wrap">
+    <div class="niche-toggle" role="group" aria-label="Choose your practice">
+      <button type="button" class="nt-btn" data-niche-btn="fractional" onclick="setNiche('fractional')">For Fractional Executives</button>
+      <button type="button" class="nt-btn" data-niche-btn="coach" onclick="setNiche('coach')">For Executive Coaches</button>
+    </div>
+  </div>
   <div class="hero fade-in">
     <div class="eyebrow">5-Minute Diagnostic</div>
-    <h1>Find Out How Early You're <em>Catching Your Next Engagement.</em></h1>
-    <p class="hero-sub">7 questions. A personalised score across 5 engagement-pipeline dimensions. A prioritised 30-day action plan. Built for independent, solo-practice fractional executives, every function.</p>
+    <h1 id="intro-h1">Find Out How Early You're <em>Catching Your Next Engagement.</em></h1>
+    <p class="hero-sub" id="intro-sub">7 questions. A personalised score across 5 engagement-pipeline dimensions. A prioritised 30-day action plan. Built for independent, solo-practice fractional executives, every function.</p>
     <div class="hero-meta">
       <span>5 minutes</span><span>Personalised report</span><span>Free</span>
     </div>
@@ -271,13 +285,13 @@ h1 em{font-style:normal;color:var(--or);}
 <div id="screen-generating">
   <div class="gen-orb">&#9889;</div>
   <div class="gen-title">Building your report...</div>
-  <div class="gen-sub">Analysing answers across 5 engagement-pipeline dimensions</div>
+  <div class="gen-sub" id="gen-sub">Analysing answers across 5 engagement-pipeline dimensions</div>
   <div class="gen-steps">
-    <div class="gen-step active" id="gs-1"><div class="gen-dot"></div>Scoring network-to-engagement targeting</div>
-    <div class="gen-step" id="gs-2"><div class="gen-dot"></div>Evaluating engagement-timing alignment</div>
-    <div class="gen-step" id="gs-3"><div class="gen-dot"></div>Checking profile conversion layer</div>
-    <div class="gen-step" id="gs-4"><div class="gen-dot"></div>Assessing outreach consistency</div>
-    <div class="gen-step" id="gs-5"><div class="gen-dot"></div>Calculating response infrastructure</div>
+    <div class="gen-step active" id="gs-1"><div class="gen-dot"></div><span id="gs-1-txt">Scoring network-to-engagement targeting</span></div>
+    <div class="gen-step" id="gs-2"><div class="gen-dot"></div><span id="gs-2-txt">Evaluating engagement-timing alignment</span></div>
+    <div class="gen-step" id="gs-3"><div class="gen-dot"></div><span id="gs-3-txt">Checking profile conversion layer</span></div>
+    <div class="gen-step" id="gs-4"><div class="gen-dot"></div><span id="gs-4-txt">Assessing outreach consistency</span></div>
+    <div class="gen-step" id="gs-5"><div class="gen-dot"></div><span id="gs-5-txt">Calculating response infrastructure</span></div>
   </div>
 </div>
 
@@ -317,8 +331,10 @@ h1 em{font-style:normal;color:var(--or);}
 </div>
 <script>
 var userName='',currentQ=0,answers={},teaserCalc=null;
+var niche='fractional';
 
-var Qs=[
+var QUESTION_BANK={
+fractional:[
   {id:'network',dim:'Dimension 1 \u00b7 Network-to-Engagement Targeting',
    text:'Who makes up most of your current LinkedIn network?',
    hint:'Think about the last 20 connection requests you sent or accepted.',
@@ -379,7 +395,113 @@ var Qs=[
    hint:'Be specific about function, level, and sector. This calibrates your action plan and appears in your report.',
    type:'text',
    placeholder:'e.g. I take on fractional CFO engagements for Series A/B SaaS companies...'}
-];
+],
+coach:[
+  {id:'network',dim:'Dimension 1 \u00b7 Network-to-Client Targeting',
+   text:'Who makes up most of your current LinkedIn network?',
+   hint:'Think about the last 20 connection requests you sent or accepted.',
+   type:'opts',
+   opts:[
+     {l:'Mostly other coaches, peers, and people from your own past corporate role',s:'The people who could become clients are outnumbered by the people who can\u2019t',v:1},
+     {l:'A mix \u2014 some senior leaders, but mostly peers and former colleagues',s:'Some right people, but they are still a minority in your feed',v:2},
+     {l:'Actively building with VPs, C-suite, and senior leaders who could become clients',s:'Your network is aligned with who actually becomes a client',v:4}
+   ]},
+  {id:'firstmover',dim:'Dimension 2 \u00b7 Coaching-Timing Alignment',
+   text:'In the last 90 days, how many coaching conversations started because you reached out first, before the person had already found someone else?',
+   hint:'Not conversations that started after someone posted looking for a coach. Ones where you were early.',
+   type:'opts',
+   opts:[
+     {l:'Zero',s:'Every conversation is still arriving secondhand, after the person already went looking',v:1},
+     {l:'1 to 2 conversations',s:'A trickle of early signal, not enough to rely on',v:2},
+     {l:'3 to 5 conversations',s:'Real timing advantage some of the time, but not yet a system',v:3},
+     {l:'6 or more',s:'You are consistently first to the conversation',v:4}
+   ]},
+  {id:'signalcheck',dim:'Dimension 2 \u00b7 Coaching-Timing Alignment',
+   text:'How consistently do you check for the events that actually signal someone is ready for coaching, a new leadership title, a team reshuffle, a first-time people-management role?',
+   hint:'Be honest. This separates a timing gap from a network gap.',
+   type:'opts',
+   opts:[
+     {l:'Rarely or never \u2014 I hear about it when someone tells me',s:'No system is watching LinkedIn for you',v:1},
+     {l:'Occasionally, when something crosses my feed or a contact mentions it',s:'Some effort, but it stops and starts',v:2},
+     {l:'Weekly or more, as a fixed routine',s:'Consistent enough that timing becomes a real edge',v:3}
+   ]},
+  {id:'profile',dim:'Dimension 3 \u00b7 Profile Conversion Layer',
+   text:'When a senior leader looks you up after hearing your name, what happens?',
+   hint:'Your profile is where a warm introduction either turns into a discovery call or goes quiet. Most coaches have a resume where a client-ready landing page should be.',
+   type:'opts',
+   opts:[
+     {l:'They see my career history and past full-time roles. Essentially a resume.',s:'No clear next step for someone who could become a client',v:1},
+     {l:'My headline and About section explain what I do, but there is no clear next step',s:'Better framing, but still no conversion path',v:2},
+     {l:'My profile speaks directly to the leaders I coach, with a clear next step',s:'Built to convert a warm intro, not just look credible',v:4}
+   ]},
+  {id:'outreach',dim:'Dimension 4 \u00b7 Outreach Consistency',
+   text:'How are you currently reaching the specific people showing a coaching-readiness signal?',
+   hint:'Most coaches skip this entirely and wait for referrals instead. It is the lever almost nobody is pulling.',
+   type:'opts',
+   opts:[
+     {l:'I am not. I wait for referrals or inbound interest.',s:'No systematic way of reaching someone who is actually ready',v:1},
+     {l:'Occasionally, when a signal happens to cross my desk',s:'Sporadic, not systematic',v:2},
+     {l:'I have a weekly routine for reaching out to people showing a real signal',s:'Consistently reaching the person who is actually ready to talk',v:4}
+   ]},
+  {id:'response',dim:'Dimension 5 \u00b7 Response Infrastructure',
+   text:'When a warm introduction, referral, or LinkedIn engagement turns into interest, what happens next?',
+   hint:'Every one of these is the opening of a coaching conversation, or it goes quiet.',
+   type:'opts',
+   opts:[
+     {l:'I reply when I can. No consistent follow-up.',s:'Interest is going cold before it becomes a discovery call',v:1},
+     {l:'I follow up but improvise the message every time',s:'Good instincts, no system',v:2},
+     {l:'I have a scripted sequence for turning interest into a discovery call',s:'Every signal of interest has a tested next move',v:4}
+   ]},
+  {id:'about',dim:'About Your Practice',
+   text:'In one sentence, what kind of coaching engagements do you take on for your clients?',
+   hint:'Be specific about level, function, and sector. This calibrates your action plan and appears in your report.',
+   type:'text',
+   placeholder:'e.g. I coach VP and C-suite leaders at Series B/D tech companies...'}
+]
+};
+
+function applyNicheIntro(n){
+  niche=n;
+  document.querySelectorAll('.nt-btn').forEach(function(b){
+    b.classList.toggle('active', b.dataset.nicheBtn===n);
+  });
+  if(n==='coach'){
+    document.getElementById('intro-h1').innerHTML='Find Out How Ready You Are <em>To Find Your Next Client.</em>';
+    document.getElementById('intro-sub').textContent='7 questions. A personalised score across 5 client-pipeline dimensions. A prioritised 30-day action plan. Built for independent executive coaches, coaching senior leaders.';
+    document.getElementById('gen-sub').textContent='Analysing answers across 5 client-pipeline dimensions';
+    document.getElementById('gs-1-txt').textContent='Scoring network-to-client targeting';
+    document.getElementById('gs-2-txt').textContent='Evaluating coaching-timing alignment';
+    document.getElementById('gs-3-txt').textContent='Checking profile conversion layer';
+    document.getElementById('gs-4-txt').textContent='Assessing outreach consistency';
+    document.getElementById('gs-5-txt').textContent='Calculating response infrastructure';
+  } else {
+    document.getElementById('intro-h1').innerHTML='Find Out How Early You\'re <em>Catching Your Next Engagement.</em>';
+    document.getElementById('intro-sub').textContent='7 questions. A personalised score across 5 engagement-pipeline dimensions. A prioritised 30-day action plan. Built for independent, solo-practice fractional executives, every function.';
+    document.getElementById('gen-sub').textContent='Analysing answers across 5 engagement-pipeline dimensions';
+    document.getElementById('gs-1-txt').textContent='Scoring network-to-engagement targeting';
+    document.getElementById('gs-2-txt').textContent='Evaluating engagement-timing alignment';
+    document.getElementById('gs-3-txt').textContent='Checking profile conversion layer';
+    document.getElementById('gs-4-txt').textContent='Assessing outreach consistency';
+    document.getElementById('gs-5-txt').textContent='Calculating response infrastructure';
+  }
+}
+function setNiche(n){
+  applyNicheIntro(n);
+  try{
+    var url=new URL(window.location.href);
+    url.searchParams.set('for', n);
+    window.history.replaceState({},'',url);
+  }catch(e){}
+}
+(function initNicheIntro(){
+  var params=new URLSearchParams(window.location.search);
+  var n=params.get('for');
+  if(n!=='fractional'&&n!=='coach'){
+    try{ n=localStorage.getItem('pipelind_niche'); }catch(e){ n=null; }
+  }
+  if(n!=='fractional'&&n!=='coach') n='fractional';
+  applyNicheIntro(n);
+})();
 
 window.addEventListener('DOMContentLoaded',function(){
   document.getElementById('btn-start').addEventListener('click',start);
@@ -414,6 +536,7 @@ function start(){
 }
 
 function renderQ(idx){
+  var Qs=QUESTION_BANK[niche];
   var q=Qs[idx];
   var card=document.getElementById('q-card');
   var html='<div class="q-dim">'+q.dim+'</div>';
@@ -449,6 +572,7 @@ function renderQ(idx){
 }
 
 function next(){
+  var Qs=QUESTION_BANK[niche];
   if(currentQ<Qs.length-1){currentQ++;renderQ(currentQ);}
   else{generate();}
 }
@@ -516,8 +640,9 @@ async function unlockReport(){
         name:userName,
         email:email,
         linkedin:linkedinUrl,
-        message:'Engagement Pipeline Readiness Diagnostic lead. Score: '+teaserCalc.total+'/100. Band: '+teaserCalc.band+'. LinkedIn: '+linkedinUrl+'. Answers: '+JSON.stringify(answers)+'.',
+        message:(niche==='coach'?'Client Pipeline Readiness Diagnostic':'Engagement Pipeline Readiness Diagnostic')+' lead. Niche: '+niche+'. Score: '+teaserCalc.total+'/100. Band: '+teaserCalc.band+'. LinkedIn: '+linkedinUrl+'. Answers: '+JSON.stringify(answers)+'.',
         source:'pipeline-readiness-diagnostic',
+        niche:niche,
         client:'saurabh-own-lead-magnet'
       })
     });
@@ -531,6 +656,22 @@ async function unlockReport(){
 function dNetwork(){
   var a=answers['network']||1;
   var s={1:4,2:11,4:20}[a]||4;
+  if(niche==='coach'){
+    var ins={
+      1:'Most of your connections are other coaches, peers, and people from your own past corporate role. Every post and every update you share reaches people who are unlikely to become clients, not the senior leaders who could. This is the most common reason a strong practice still produces a quiet pipeline.',
+      2:'Your network is mixed. Some real senior leaders exist in it, but they are outnumbered. Most of what you share still reaches people who will never become a client.',
+      4:'Your network is aligned with who actually becomes a client. VPs, C-suite, and senior leaders are already in your feed. This is the right foundation to compound on.'
+    };
+    var fix={
+      1:'Send 10 targeted connection requests per week to senior leaders showing a real coaching-readiness signal. A personalised note under 280 characters, referencing the specific signal, changes the composition of your network within 6 months.',
+      2:'Move from sporadic to systematic. 10 targeted requests per week, aimed only at senior leaders showing a real signal, steadily raises the share of your network that could actually become a client.',
+      4:'The foundation is solid. Focus on tightening which signals you connect on and maintaining weekly volume so the compounding continues.'
+    };
+    return{name:'Network-to-Client Targeting',score:s,insight:ins[a]||ins[1],fix:fix[a]||fix[1],
+      actionWhat:'Build a weekly connection ritual targeting senior leaders showing a real signal',
+      actionWhy:'Your current network is the primary reason coaching conversations are not starting. No amount of signal detection fixes a distribution problem.',
+      actionTime:'20 min every Monday',actionResult:'A steadily growing share of your network who could actually become a client'};
+  }
   var ins={
     1:'Most of your connections are other fractional executives, peers, and former full-time colleagues. Every post and every update you share reaches people who cannot hand you an engagement, not the CEOs and founders who can. This is the most common reason a strong practice still produces a quiet pipeline.',
     2:'Your network is mixed. Some real decision-makers exist in it, but they are outnumbered. Most of what you share still reaches people who will never bring in fractional leadership.',
@@ -551,6 +692,17 @@ function dTiming(){
   var raw=fm+sc;
   var s=raw<=2?4:raw<=4?9:raw<=5?15:20;
   var ins;
+  if(niche==='coach'){
+    if(sc===1&&fm===1)ins='No routine is watching LinkedIn, so every conversation is still arriving secondhand, after the person already went looking elsewhere. Even a weekly signal check can put you ahead of that within 30 days.';
+    else if(sc>=2&&fm<=1)ins='You are checking for signals but not yet turning that into first-mover conversations. Awareness without a timely outreach step still lets the person go to whoever reaches them first.';
+    else if(sc>=2&&fm===2)ins='Real timing advantage is starting to show up. The conversations that are happening early confirm the mechanism works. The gap is in how consistently signals get acted on the same week they appear.';
+    else ins='You are consistently early to the conversation. Timing is working in your favour. The opportunity now is tightening how fast a signal turns into a first outreach message.';
+    return{name:'Coaching-Timing Alignment',score:s,insight:ins,
+      fix:'The moment a senior leader shows a new title, a team reshuffle, or a first-time people-management role, reach out that week, not the month after. Reference the actual event in the first line. Not a general introduction.',
+      actionWhat:'Reach out the same week a signal appears, every time',
+      actionWhy:'A real signal loses almost all of its value after a few weeks. Acting late on the right signal produces the same result as never seeing it.',
+      actionTime:'30 min per week',actionResult:'Conversations that start because you reached out first, not because they went looking'};
+  }
   if(sc===1&&fm===1)ins='No routine is watching the market, so every engagement is still arriving secondhand, after another fractional executive already has the head start. Even a weekly signal check can put you ahead of that within 30 days.';
   else if(sc>=2&&fm<=1)ins='You are checking for signals but not yet turning that into first-mover conversations. Awareness without a timely outreach step still lets the engagement go to whoever calls first.';
   else if(sc>=2&&fm===2)ins='Real timing advantage is starting to show up. The conversations that are happening early confirm the mechanism works. The gap is in how consistently signals get acted on the same week they appear.';
@@ -564,6 +716,22 @@ function dTiming(){
 function dProfile(){
   var a=answers['profile']||1;
   var s={1:4,2:11,4:20}[a]||4;
+  if(niche==='coach'){
+    var ins={
+      1:'Your profile is a resume. When a senior leader arrives after hearing your name, they see past full-time roles and no clear picture of who you coach now or what to do next. The coaching conversation dies at the profile visit.',
+      2:'Your profile describes what you do but does not drive action. One rewrite of the headline and About section could meaningfully change how many warm intros turn into a discovery call.',
+      4:'Your profile is working as a landing page. A senior leader who looks you up lands on a clear positioning statement and a specific next step.'
+    };
+    var fix={
+      1:'Rewrite your headline to name the level and kind of leader you coach, the outcome clients get, and a specific next step. Close your About section with a clear invitation, a conversation, a diagnostic, or a clear resource.',
+      2:'Add a clear next step at the end of your About section. Every profile visit that ends without one is a coaching conversation that never opens.',
+      4:'Make sure your Featured section links to your strongest proof point or a recent post that has drawn engagement from senior leaders in your target market.'
+    };
+    return{name:'Profile Conversion Layer',score:s,insight:ins[a]||ins[1],fix:fix[a]||fix[1],
+      actionWhat:'Rewrite your LinkedIn headline and About section for conversion',
+      actionWhy:'A warm introduction sends someone to your profile. If the profile does not convert that visit, the introduction loses its value at the final step.',
+      actionTime:'45 min one-time',actionResult:'Warm intros that turn into a discovery call instead of going quiet'};
+  }
   var ins={
     1:'Your profile is a resume. When a CEO or founder arrives after hearing your name, they see past full-time roles and no clear picture of what you take on now or what to do next. The engagement conversation dies at the profile visit.',
     2:'Your profile describes what you do but does not drive action. One rewrite of the headline and About section could meaningfully change how many warm intros turn into a scoping call.',
@@ -582,6 +750,18 @@ function dProfile(){
 function dOutreach(){
   var a=answers['outreach']||1;
   var s={1:3,2:9,4:20}[a]||3;
+  if(niche==='coach'){
+    var ins={
+      1:'Waiting for referrals or inbound interest means your pipeline depends entirely on who happens to think of you this month. Reaching the actual person showing a real signal is the lever most coaches never pull.',
+      2:'Sporadic outreach produces sporadic conversations. Making this a weekly ritual changes how many senior leaders hear from you before they go looking elsewhere.',
+      4:'You have a consistent outreach system. The variable to optimise next is how tightly your targeting matches people actually showing a live signal.'
+    };
+    return{name:'Outreach Consistency',score:s,insight:ins[a]||ins[1],
+      fix:'Set a Monday morning ritual: reach out to every person who showed a new title, a reshuffle, or a first-time people-management signal that week. Each note references the specific event. Under 280 characters. Peer tone. No pitch. 20 minutes total.',
+      actionWhat:'Establish a weekly outreach ritual to people showing a real signal',
+      actionWhy:'Without systematic outreach, even a perfect signal never turns into a conversation, because nobody reached the person who was actually ready.',
+      actionTime:'20 min every Monday',actionResult:'A repeatable weekly motion instead of a pipeline that depends on who happens to reach out first'};
+  }
   var ins={
     1:'Waiting for referrals or inbound calls means your pipeline depends entirely on who happens to think of you this month. Reaching the actual decision-maker at a signalled company is the lever most fractional executives never pull.',
     2:'Sporadic outreach produces sporadic engagements. Making this a weekly ritual changes how many decision-makers hear from you before another fractional executive does.',
@@ -596,6 +776,18 @@ function dOutreach(){
 function dResponse(){
   var a=answers['response']||1;
   var s={1:4,2:11,4:20}[a]||4;
+  if(niche==='coach'){
+    var ins={
+      1:'Coaching conversations are dying in the thread. Every warm introduction, referral, and LinkedIn reply is the opening of a potential engagement. Without a system to advance those conversations, they close permanently.',
+      2:'Good instincts but no system means inconsistent results. The interest that converts is the interest where follow-through is fast and purposeful, not improvised.',
+      4:'You have a system for converting interest into conversations. The opportunity is in the quality of the sequence and whether each reply moves toward a booked discovery call.'
+    };
+    return{name:'Response Infrastructure',score:s,insight:ins[a]||ins[1],
+      fix:'Write 3 reply sequences for your most common situations: a warm referral, a comment on your content, and a direct signal-based reply. Each one should acknowledge the context, add one specific insight, and open one clear next step toward a discovery call.',
+      actionWhat:'Write 3 response sequences for referrals, comments, and signal-based outreach replies',
+      actionWhy:'Interest without a next move is a coaching conversation that closes permanently. A sequence makes the right move automatic instead of improvised.',
+      actionTime:'1 hour one-time',actionResult:'Every sign of interest becomes a discovery call instead of a dead end'};
+  }
   var ins={
     1:'Engagement conversations are dying in the thread. Every warm introduction, referral, and LinkedIn reply is the opening of a potential search engagement. Without a system to advance those conversations, they close permanently.',
     2:'Good instincts but no system means inconsistent results. The interest that converts is the interest where follow-through is fast and purposeful, not improvised.',
@@ -611,20 +803,21 @@ function dResponse(){
 function buildReport(){
   var d1=dNetwork(),d2=dTiming(),d3=dProfile(),d4=dOutreach(),d5=dResponse();
   var total=d1.score+d2.score+d3.score+d4.score+d5.score;
+  var isCoach=(niche==='coach');
   var band,bc,msg;
-  if(total<40){band='Critical Gap';bc='bc';msg='Your engagement pipeline is currently disconnected from any system. The foundations are not yet in place. The fix is structural, not strategic. You do not need more networking, you need the right signals reaching you first.';}
+  if(total<40){band='Critical Gap';bc='bc';msg=isCoach?'Your client pipeline is currently disconnected from any system. The foundations are not yet in place. The fix is structural, not strategic. You do not need more networking, you need the right signals reaching you first.':'Your engagement pipeline is currently disconnected from any system. The foundations are not yet in place. The fix is structural, not strategic. You do not need more networking, you need the right signals reaching you first.';}
   else if(total<60){band='Developing';bc='bd';msg='You have some pieces in place, but signal detection and outreach are not yet running together. The specific gaps below are fixable within 30 days with the right sequence.';}
-  else if(total<80){band='Building';bc='bb';msg='Your system is working but not yet compounding. You are reaching some of the right decision-makers, but your timing advantage is not yet showing up in engagement volume. Two specific fixes will close the gap.';}
-  else{band='Strong Foundation';bc='bs';msg='You have a solid base. Engagement conversations are starting early. The opportunity now is to compound what is working and remove the remaining friction points.';}
+  else if(total<80){band='Building';bc='bb';msg=isCoach?'Your system is working but not yet compounding. You are reaching some of the right senior leaders, but your timing advantage is not yet showing up in conversation volume. Two specific fixes will close the gap.':'Your system is working but not yet compounding. You are reaching some of the right decision-makers, but your timing advantage is not yet showing up in engagement volume. Two specific fixes will close the gap.';}
+  else{band='Strong Foundation';bc='bs';msg=isCoach?'You have a solid base. Coaching conversations are starting early. The opportunity now is to compound what is working and remove the remaining friction points.':'You have a solid base. Engagement conversations are starting early. The opportunity now is to compound what is working and remove the remaining friction points.';}
   var rfn=answers['network']===4?60:answers['network']===2?25:8;
   var dims=[d1,d2,d3,d4,d5];
   var actions=dims.slice().sort(function(a,b){return a.score-b.score;}).slice(0,3);
-  var about=answers['about']||'help clients achieve their goals';
+  var about=answers['about']||(isCoach?'help clients grow into stronger leaders':'help clients achieve their goals');
   var today=new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
   var h='';
 
   h+='<div class="report-header fade-in">';
-  h+='<div class="report-for">Engagement Pipeline Readiness Report \u00b7 prepared for</div>';
+  h+='<div class="report-for">'+(isCoach?'Client Pipeline Readiness Report':'Engagement Pipeline Readiness Report')+' \u00b7 prepared for</div>';
   h+='<div class="report-name">'+userName+'</div>';
   h+='<div class="report-date">'+today+' \u00b7 Pipelind</div>';
   h+='<div class="score-wrap"><div class="score-circle"><div class="score-num" id="anim-score" style="color:'+col(total)+'">0</div><div class="score-lbl">Out of 100</div></div></div>';
@@ -632,7 +825,7 @@ function buildReport(){
   h+='<p class="score-interp">'+msg+'</p>';
   h+='</div>';
 
-  h+='<div class="r-section fade-in"><div class="r-eyebrow">Your Score Breakdown</div><div class="r-title">5 Engagement Pipeline Dimensions</div>';
+  h+='<div class="r-section fade-in"><div class="r-eyebrow">Your Score Breakdown</div><div class="r-title">5 '+(isCoach?'Client Pipeline':'Engagement Pipeline')+' Dimensions</div>';
   dims.forEach(function(d){
     var pct=(d.score/20)*100;
     var dc=d.score<=8?'var(--rd)':d.score<=14?'var(--or)':'var(--gr)';
@@ -649,10 +842,12 @@ function buildReport(){
   h+='<div class="r-section fade-in"><div class="math-section">';
   h+='<div class="r-eyebrow">The Compounding Network Math</div>';
   h+='<div class="r-title" style="margin-bottom:8px;">What building the right network looks like for '+userName+'</div>';
-  h+='<p style="font-size:13px;color:var(--w8);line-height:1.6;">You '+about.toLowerCase()+'. The decision-makers who could hand you that engagement are not yet in your network in force. Here is a conservative, illustrative picture of what changes with a consistent weekly targeting routine.</p>';
+  h+=isCoach
+    ?'<p style="font-size:13px;color:var(--w8);line-height:1.6;">You '+about.toLowerCase()+'. The senior leaders who could become that client are not yet in your network in force. Here is a conservative, illustrative picture of what changes with a consistent weekly targeting routine.</p>'
+    :'<p style="font-size:13px;color:var(--w8);line-height:1.6;">You '+about.toLowerCase()+'. The decision-makers who could hand you that engagement are not yet in your network in force. Here is a conservative, illustrative picture of what changes with a consistent weekly targeting routine.</p>';
   h+='<div class="math-grid">';
-  h+='<div class="math-cell"><div class="math-num" style="color:var(--rd);">'+rfn+'</div><div class="math-lbl">Decision-makers now</div><div class="math-sub">Estimated from your current network composition</div></div>';
-  h+='<div class="math-cell"><div class="math-num" style="color:var(--or);">'+(rfn+65)+'</div><div class="math-lbl">After 3 months</div><div class="math-sub">At 5 targeted decision-makers added per week</div></div>';
+  h+='<div class="math-cell"><div class="math-num" style="color:var(--rd);">'+rfn+'</div><div class="math-lbl">'+(isCoach?'Right-fit leaders now':'Decision-makers now')+'</div><div class="math-sub">Estimated from your current network composition</div></div>';
+  h+='<div class="math-cell"><div class="math-num" style="color:var(--or);">'+(rfn+65)+'</div><div class="math-lbl">After 3 months</div><div class="math-sub">At 5 targeted '+(isCoach?'leaders':'decision-makers')+' added per week</div></div>';
   h+='<div class="math-cell" style="border-color:rgba(16,185,129,.3);background:rgba(16,185,129,.04);"><div class="math-num" style="color:var(--gr);">'+(rfn+130)+'</div><div class="math-lbl">After 6 months</div><div class="math-sub">Same pace, compounded</div></div>';
   h+='</div>';
   h+='<p style="font-size:12px;color:var(--w4);margin-top:14px;text-align:center;font-family:var(--mono);">Illustrative math at a conservative, self-directed pace of 5 per week. Not a guaranteed delivery volume.</p>';
@@ -672,10 +867,12 @@ function buildReport(){
 
   h+='<div class="cta-section fade-in">';
   h+='<div class="r-eyebrow" style="margin-bottom:12px;">The Done-For-You Solution</div>';
-  h+='<div class="cta-title">See Your Engagement Pipeline System Built, Before You Pay Anything</div>';
-  h+='<p class="cta-body">This diagnostic shows where the gaps are. Pipelind installs the full engagement-signal system directly inside your own Claude account, connected to your own data source, and builds your first live pipeline report with you. You only pay once you have seen the results and approved them.</p>';
-  h+='<a href="https://calendly.com/saurabh_zentro/30-min" target="_blank" class="btn-cta">Book Your Pipeline Walkthrough</a><br>';
-  h+='<a href="https://pipelind.com/" target="_blank" class="btn-sec">See how the system works first \u2197</a>';
+  h+='<div class="cta-title">'+(isCoach?'See Your Client-Finding System Built, Before You Pay Anything':'See Your Engagement Pipeline System Built, Before You Pay Anything')+'</div>';
+  h+=isCoach
+    ?'<p class="cta-body">This diagnostic shows where the gaps are. Pipelind installs the full client-finding system directly inside your own Claude account, connected to your own data source, and builds your first live prospect report with you. You only pay once you have seen the results and approved them.</p>'
+    :'<p class="cta-body">This diagnostic shows where the gaps are. Pipelind installs the full engagement-signal system directly inside your own Claude account, connected to your own data source, and builds your first live pipeline report with you. You only pay once you have seen the results and approved them.</p>';
+  h+='<a href="https://calendly.com/saurabh_zentro/30-min" target="_blank" class="btn-cta">Book Your '+(isCoach?'Client-Finder':'Pipeline')+' Walkthrough</a><br>';
+  h+='<a href="https://pipelind.com/?for='+niche+'" target="_blank" class="btn-sec">See how the system works first \u2197</a>';
   h+='</div>';
   h+='<div class="report-actions"><button class="btn-action" onclick="printReport()">Save as PDF</button><button class="btn-action" onclick="shareLinkedIn()">Share on LinkedIn</button><button class="btn-action" onclick="resetAll()">Retake</button></div>';
   h+='<div class="report-footer"><p>Pipelind \u00b7 <a href="https://pipelind.com/">pipelind.com</a> \u00b7 Saurabh M.</p></div>';

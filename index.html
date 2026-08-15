@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>Pipelind | The 15-Day Off-The-Bench Engagement Installer for Fractional Executives</title>
-<meta name="description" content="An engagement-pipeline system built once, installed directly on your own Claude account, yours outright. Installed before you pay. One-time fee, only after you approve real results."/>
+<title>Pipelind | Client-Acquisition Systems for Fractional Executives &amp; Executive Coaches</title>
+<meta name="description" content="An owned client-acquisition system, installed directly on your own Claude account, for fractional executives or independent executive coaches. Installed before you pay. One-time fee, only after you approve real results."/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,700;1,800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
@@ -752,6 +752,19 @@ h2.hd em{font-style:italic;color:var(--or);}
   .hw-company{font-size:9px;}
 }
 
+/* --- NICHE TOGGLE --- */
+.nav-niche-row{border-top:1px solid var(--b1);padding:9px 0;display:flex;justify-content:center;}
+.niche-toggle{display:inline-flex;background:var(--s1);border:1px solid var(--b2);border-radius:999px;padding:3px;gap:3px;}
+.nt-btn{font-family:var(--dsp);font-size:12.5px;font-weight:600;letter-spacing:.005em;padding:8px 18px;border-radius:999px;border:none;background:transparent;color:var(--w6);cursor:pointer;transition:background .2s,color .2s;white-space:nowrap;}
+.nt-btn:hover{color:var(--w1);}
+.nt-btn.active{color:#06060E;}
+.nt-btn[data-niche-btn="fractional"].active{background:var(--or);box-shadow:0 0 20px rgba(255,153,0,.35);}
+.nt-btn[data-niche-btn="coach"].active{background:var(--pu);color:#fff;box-shadow:0 0 20px rgba(106,102,163,.4);}
+@media(max-width:480px){.nt-btn{font-size:11px;padding:7px 13px;}}
+/* elements hidden by niche */
+[data-n]{transition:none;}
+[data-n][hidden]{display:none !important;}
+
 /* FIX: Logo sizing on mobile so it doesn't cut */
 @media(max-width:480px){
   .nav-inner{padding:13px 0;gap:10px;flex-wrap:nowrap;}
@@ -798,6 +811,12 @@ h2.hd em{font-style:italic;color:var(--or);}
       <a class="nav-cta" href="https://calendly.com/saurabh_zentro/30-min" target="_blank" rel="noopener">Book a Walkthrough</a>
     </div>
   </div>
+  <div class="nav-niche-row">
+    <div class="niche-toggle" role="group" aria-label="Choose your practice">
+      <button type="button" class="nt-btn" data-niche-btn="fractional" onclick="setNiche('fractional')">For Fractional Executives</button>
+      <button type="button" class="nt-btn" data-niche-btn="coach" onclick="setNiche('coach')">For Executive Coaches</button>
+    </div>
+  </div>
 </nav>
 
 <!-- HERO -->
@@ -811,10 +830,13 @@ h2.hd em{font-style:italic;color:var(--or);}
     <div class="hero-inner">
       <div>
         <div class="hero-tag">
-          <span class="badge badge-or"><span class="badge-dot"></span>For Fractional Executives, Every Function</span>
+          <span class="badge badge-or" data-n="fractional"><span class="badge-dot"></span>For Fractional Executives, Every Function</span>
+          <span class="badge badge-pu" data-n="coach" hidden><span class="badge-dot"></span>For Independent Executive Coaches</span>
         </div>
-        <h1>You already have the expertise and the network. <em>You still cannot see the next engagement coming first.</em></h1>
-        <p class="hero-sub">For independent, solo-practice fractional executives, CFO, COO, CMO, CTO, CHRO, CRO, and every other senior function, whose next engagement depends on catching a company before another fractional executive does. Pipelind installs a private system, on your own Claude account, that watches the market for the exact signals that mean a company may be about to bring in fractional leadership: finance, HR, and ops hiring buildouts, funding rounds, ownership change. <strong>Installed on your own infrastructure before you pay anything. One fee, only once you approve real results.</strong></p>
+        <h1 data-n="fractional">You already have the expertise and the network. <em>You still cannot see the next engagement coming first.</em></h1>
+        <h1 data-n="coach" hidden>You already have the credibility and the network. <em>You still cannot see who is ready for coaching right now.</em></h1>
+        <p class="hero-sub" data-n="fractional">For independent, solo-practice fractional executives, CFO, COO, CMO, CTO, CHRO, CRO, and every other senior function, whose next engagement depends on catching a company before another fractional executive does. Pipelind installs a private system, on your own Claude account, that watches the market for the exact signals that mean a company may be about to bring in fractional leadership: finance, HR, and ops hiring buildouts, funding rounds, ownership change. <strong>Installed on your own infrastructure before you pay anything. One fee, only once you approve real results.</strong></p>
+        <p class="hero-sub" data-n="coach" hidden>For independent executive coaches coaching senior leaders and C-suite executives inside mid-size to large companies, whose next client depends on reaching the right person at the right moment, not guessing across your own network. Pipelind installs a private system, on your own Claude account, that watches LinkedIn for the exact signals that mean someone may be ready for coaching right now: a new leadership title, a team reshuffle, a funding round, a first-time people-management role. <strong>Installed on your own infrastructure before you pay anything. One fee, only once you approve real results.</strong></p>
         <div class="hero-ctas">
           <a class="btn btn-or" href="https://calendly.com/saurabh_zentro/30-min" target="_blank" rel="noopener">
             Book Your Discovery Call
@@ -833,8 +855,8 @@ h2.hd em{font-style:italic;color:var(--or);}
       <!-- HERO WIDGETS COLUMN -->
       <div class="hero-widgets-col">
 
-      <!-- ENGAGEMENT SIGNAL WIDGET -->
-      <div class="hero-widget">
+      <!-- SIGNAL WIDGET, FRACTIONAL -->
+      <div class="hero-widget" data-n="fractional">
         <div class="hw-header">
           <div class="hw-title">
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="5" height="5" rx="1" fill="currentColor" opacity=".7"/><rect x="9" y="2" width="5" height="5" rx="1" fill="currentColor" opacity=".7"/><rect x="2" y="9" width="5" height="5" rx="1" fill="currentColor" opacity=".7"/><rect x="9" y="9" width="5" height="5" rx="1" fill="#FF9900"/></svg>
@@ -901,10 +923,80 @@ h2.hd em{font-style:italic;color:var(--or);}
             <div class="hw-footer-lbl">Recurring Bill</div>
           </div>
         </div>
-      </div><!-- end hero-widget -->
+      </div><!-- end hero-widget fractional -->
 
-      <!-- TOOLKIT WIDGET -->
-      <div class="cw">
+      <!-- SIGNAL WIDGET, COACH -->
+      <div class="hero-widget" data-n="coach" hidden>
+        <div class="hw-header">
+          <div class="hw-title">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="5" height="5" rx="1" fill="currentColor" opacity=".7"/><rect x="9" y="2" width="5" height="5" rx="1" fill="currentColor" opacity=".7"/><rect x="2" y="9" width="5" height="5" rx="1" fill="currentColor" opacity=".7"/><rect x="9" y="9" width="5" height="5" rx="1" fill="#6A66A3"/></svg>
+            Client Signal Feed
+          </div>
+          <div class="hw-live"><span class="hw-live-dot"></span>Live Signals</div>
+        </div>
+        <div class="hw-body">
+          <div class="hw-week">Sample Matches</div>
+          <div class="hw-profiles">
+            <div class="hw-profile">
+              <div class="hw-avatar" style="background:linear-gradient(135deg,#6A66A3,#8B85D6)">JL</div>
+              <div class="hw-info">
+                <div class="hw-name">Jordan Lee, VP Ops</div>
+                <div class="hw-company">New leadership title &middot; Tech &middot; 400 employees</div>
+              </div>
+              <span class="hw-signal sig-hire">Promotion</span>
+            </div>
+            <div class="hw-profile">
+              <div class="hw-avatar" style="background:linear-gradient(135deg,#FF9900,#FFB340)">MC</div>
+              <div class="hw-info">
+                <div class="hw-name">Maria Chen, Director</div>
+                <div class="hw-company">First people-mgmt role &middot; Healthcare &middot; 600 emp.</div>
+              </div>
+              <span class="hw-signal sig-fund">New Role</span>
+            </div>
+            <div class="hw-profile">
+              <div class="hw-avatar" style="background:linear-gradient(135deg,#06B6D4,#38BDF8)">TB</div>
+              <div class="hw-info">
+                <div class="hw-name">Tom Baxter, Head of Sales</div>
+                <div class="hw-company">Team reshuffle &middot; Retail &middot; 250 employees</div>
+              </div>
+              <span class="hw-signal sig-exp">Reshuffle</span>
+            </div>
+          </div>
+          <div class="hw-chart-label">Signal Activity, Sample Week</div>
+          <div class="hw-bars">
+            <div class="hw-bar" style="height:35%;background:rgba(106,102,163,.4);"></div>
+            <div class="hw-bar" style="height:55%;background:rgba(106,102,163,.55);"></div>
+            <div class="hw-bar" style="height:48%;background:rgba(106,102,163,.5);"></div>
+            <div class="hw-bar" style="height:70%;background:rgba(106,102,163,.65);"></div>
+            <div class="hw-bar" style="height:62%;background:rgba(106,102,163,.6);"></div>
+            <div class="hw-bar" style="height:85%;background:var(--pu);"></div>
+            <div class="hw-bar" style="height:78%;background:rgba(106,102,163,.8);"></div>
+          </div>
+          <div class="hw-bars-labels">
+            <span class="hw-bar-lbl">Mon</span><span class="hw-bar-lbl">Tue</span><span class="hw-bar-lbl">Wed</span>
+            <span class="hw-bar-lbl">Thu</span><span class="hw-bar-lbl">Fri</span><span class="hw-bar-lbl">Sat</span><span class="hw-bar-lbl">Sun</span>
+          </div>
+        </div>
+        <div class="hw-footer">
+          <div class="hw-footer-stat">
+            <div class="hw-footer-num" data-counter="5" data-suffix="">0</div>
+            <div class="hw-footer-lbl">Day, First Report</div>
+          </div>
+          <div class="hw-footer-div"></div>
+          <div class="hw-footer-stat">
+            <div class="hw-footer-num" data-counter="1" data-suffix="x">0</div>
+            <div class="hw-footer-lbl">Fee, Pay on Approval</div>
+          </div>
+          <div class="hw-footer-div"></div>
+          <div class="hw-footer-stat">
+            <div class="hw-footer-num" data-counter="0" data-suffix="">0</div>
+            <div class="hw-footer-lbl">Recurring Bill</div>
+          </div>
+        </div>
+      </div><!-- end hero-widget coach -->
+
+      <!-- TOOLKIT WIDGET, FRACTIONAL -->
+      <div class="cw" data-n="fractional">
         <div class="cw-header">
           <div class="cw-title">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8B5CF6" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
@@ -965,7 +1057,71 @@ h2.hd em{font-style:italic;color:var(--or);}
             </div>
           </div>
         </div>
-      </div><!-- end cw -->
+      </div><!-- end cw fractional -->
+
+      <!-- TOOLKIT WIDGET, COACH -->
+      <div class="cw" data-n="coach" hidden>
+        <div class="cw-header">
+          <div class="cw-title">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8B5CF6" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            Toolkit Overview
+          </div>
+          <span class="cw-badge">6 skills, 1 fee</span>
+        </div>
+        <div class="cw-body">
+          <div class="cw-section-lbl">What&rsquo;s Installed</div>
+          <div class="cw-types">
+            <div class="cw-type">
+              <div class="cw-type-dot" style="background:#8B5CF6;box-shadow:0 0 6px rgba(139,92,246,.6);"></div>
+              <div class="cw-type-info"><div class="cw-type-name">Client Finder</div><div class="cw-type-count">Core &middot; On demand</div></div>
+              <div class="cw-type-num" style="color:#8B5CF6;">&#10003;</div>
+            </div>
+            <div class="cw-type">
+              <div class="cw-type-dot" style="background:#06B6D4;box-shadow:0 0 6px rgba(6,182,212,.6);"></div>
+              <div class="cw-type-info"><div class="cw-type-name">First-Message Scripts</div><div class="cw-type-count">Bonus &middot; Included</div></div>
+              <div class="cw-type-num" style="color:#06B6D4;">&#10003;</div>
+            </div>
+            <div class="cw-type">
+              <div class="cw-type-dot" style="background:#FF9900;box-shadow:0 0 6px rgba(255,153,0,.6);"></div>
+              <div class="cw-type-info"><div class="cw-type-name">Client-Ready Profile Rewrite</div><div class="cw-type-count">Bonus &middot; Included</div></div>
+              <div class="cw-type-num" style="color:#FF9900;">&#10003;</div>
+            </div>
+            <div class="cw-type">
+              <div class="cw-type-dot" style="background:#10B981;box-shadow:0 0 6px rgba(16,185,129,.6);"></div>
+              <div class="cw-type-info"><div class="cw-type-name">Warm Reconnect Messages</div><div class="cw-type-count">Bonus &middot; Included</div></div>
+              <div class="cw-type-num" style="color:#10B981;">&#10003;</div>
+            </div>
+            <div class="cw-type">
+              <div class="cw-type-dot" style="background:#F472B6;box-shadow:0 0 6px rgba(244,114,182,.6);"></div>
+              <div class="cw-type-info"><div class="cw-type-name">Weekly Content System</div><div class="cw-type-count">Bonus &middot; Included</div></div>
+              <div class="cw-type-num" style="color:#F472B6;">&#10003;</div>
+            </div>
+            <div class="cw-type">
+              <div class="cw-type-dot" style="background:#38BDF8;box-shadow:0 0 6px rgba(56,189,248,.6);"></div>
+              <div class="cw-type-info"><div class="cw-type-name">Client-Ready Visual Kit</div><div class="cw-type-count">Bonus &middot; Included</div></div>
+              <div class="cw-type-num" style="color:#38BDF8;">&#10003;</div>
+            </div>
+          </div>
+          <div class="cw-section-lbl">Your Side</div>
+          <div class="cw-schedule">
+            <div class="cw-sched-row">
+              <span class="cw-sched-day">1</span>
+              <span class="cw-sched-title">Installed on your account, revised until you approve</span>
+              <span class="cw-sched-status sched-live">Before payment</span>
+            </div>
+            <div class="cw-sched-row">
+              <span class="cw-sched-day">2</span>
+              <span class="cw-sched-title">You approve the results, then pay one time</span>
+              <span class="cw-sched-status sched-ready">On approval</span>
+            </div>
+            <div class="cw-sched-row">
+              <span class="cw-sched-day">3</span>
+              <span class="cw-sched-title">30 days of hypercare, then it is fully yours</span>
+              <span class="cw-sched-status sched-draft">Yours</span>
+            </div>
+          </div>
+        </div>
+      </div><!-- end cw coach -->
 
       </div><!-- end hero-widgets-col -->
     </div><!-- end hero-inner -->
@@ -1023,13 +1179,20 @@ h2.hd em{font-style:italic;color:var(--or);}
   <div class="container">
     <div class="sh fi">
       <div class="sl">The Diagnosis</div>
-      <h2 class="hd">You already have the expertise and the network. <em>You still can&rsquo;t see the next engagement coming first.</em></h2>
+      <h2 class="hd" data-n="fractional">You already have the expertise and the network. <em>You still can&rsquo;t see the next engagement coming first.</em></h2>
+      <h2 class="hd" data-n="coach" hidden>You already have the credibility and the network. <em>You still can&rsquo;t see who is ready for coaching right now.</em></h2>
     </div>
-    <div class="diag-big fi">
+    <div class="diag-big fi" data-n="fractional">
       <p>You built your practice on expertise and a strong network. That work is real, and it still matters.</p>
       <p>Most fractional executives respond to a quiet pipeline by posting more, working the same referral relationships harder, joining another peer community. That builds relationships. It does not tell you which company down the street is about to bring in fractional leadership.</p>
       <p class="hi">The problem is not that you are not working your network. The problem is that nothing is watching the market for the signal that tells you when to reach out, and by the time a referral finally lands, another fractional executive already has the seat.</p>
       <p><strong>Fractional engagements run $2,000 to $20,000 a month, or $100 to $400 an hour.</strong> A quiet engagement pipeline is not a vague growth concern. It is a direct, calculable income gap, and the only way to catch the next engagement before another fractional executive does is to see the signal before anyone else does.</p>
+    </div>
+    <div class="diag-big fi" data-n="coach" hidden>
+      <p>You built your practice on credibility and a strong network. That work is real, and it still matters.</p>
+      <p>Most coaches respond to a quiet pipeline by posting more, scrolling their own connections hoping the right person is in there, or joining another peer community. That builds relationships. It does not tell you which senior leader, anywhere on LinkedIn, is actually in a coaching-ready moment right now.</p>
+      <p class="hi">The problem is not that you are not working your network. The problem is that nothing is watching LinkedIn for the signal that tells you when someone is ready, so outreach goes to the wrong person at the wrong time and reads as a cold pitch with no real reason behind it.</p>
+      <p><strong>Executive coaching engagements typically run $3,500 to $15,000 or more, depending on program length and seniority.</strong> A one-time $997 system is a small fraction of a single signed engagement, and the only way to reach the right person before they are already working with someone else is to see the signal before anyone else does.</p>
     </div>
     <!-- PROBLEM CARDS -->
     <div class="diag-section-label bad fi">- &nbsp;What is happening now</div>
@@ -1092,10 +1255,12 @@ h2.hd em{font-style:italic;color:var(--or);}
   <div class="container">
     <div class="sh fi">
       <div class="sl">How It Works</div>
-      <h2 class="hd">The Engagement-Match Radar. <em>Plus everything you need to open the conversation.</em></h2>
-      <p>Installed on your own private Claude account and run entirely by you. One capability continuously finds companies showing active engagement signals, the other turns that into outreach and content you can actually send.</p>
+      <h2 class="hd" data-n="fractional">The Engagement-Match Radar. <em>Plus everything you need to open the conversation.</em></h2>
+      <h2 class="hd" data-n="coach" hidden>The Client Finder. <em>Plus everything you need to open the conversation.</em></h2>
+      <p data-n="fractional">Installed on your own private Claude account and run entirely by you. One capability continuously finds companies showing active engagement signals, the other turns that into outreach and content you can actually send.</p>
+      <p data-n="coach" hidden>Installed on your own private Claude account and run entirely by you. One capability continuously finds senior leaders showing real coaching-readiness signals, the other turns that into outreach and content you can actually send.</p>
     </div>
-    <div class="engines-bento fi">
+    <div class="engines-bento fi" data-n="fractional">
       <div class="eng-card or">
         <div class="eng-num">Core</div>
         <h3>The Engagement-Match Radar</h3>
@@ -1129,9 +1294,47 @@ h2.hd em{font-style:italic;color:var(--or);}
         </div>
       </div>
     </div>
-    <div class="engines-payoff fi">
+    <div class="engines-bento fi" data-n="coach" hidden>
+      <div class="eng-card or">
+        <div class="eng-num">Core</div>
+        <h3>The Client Finder</h3>
+        <p>Runs the M.A.T.C.H. mechanism (Mine, Assemble, Tailor, Hand-off), continuously scanning LinkedIn for the events that mean a senior leader may be ready for coaching right now: a new leadership title, a team reshuffle, a funding round, a first-time people-management role. Each prospect comes with the opening message already drafted. You choose the pace and volume.</p>
+        <span class="eng-pill or">Finds high-intent prospects before you would ever stumble on them</span>
+        <div class="eng-widget">
+          <div class="ew-label">Active Signal Types</div>
+          <div class="signal-tags">
+            <span class="sig-tag sig-fund">New Title</span>
+            <span class="sig-tag sig-hire">Team Reshuffle</span>
+            <span class="sig-tag sig-exp">Funding Round</span>
+            <span class="sig-tag" style="background:rgba(255,153,0,.08);color:#FF9900;border:1px solid rgba(255,153,0,.18);">First-Time Manager</span>
+            <span class="sig-tag" style="background:rgba(16,185,129,.08);color:#10B981;border:1px solid rgba(16,185,129,.2);">Leadership Change</span>
+          </div>
+        </div>
+      </div>
+      <div class="eng-card pu">
+        <div class="eng-num">Bundled</div>
+        <h3>The Client-Ready Practice Toolkit</h3>
+        <p>Installed once you approve the results: opener scripts for turning a signal into a reply without sounding like a cold pitch, warm reconnect messages for dormant connections, a profile rewrite so you read like a coach clients hire and not a resume, a weekly content system so you never run out of things to say, and a visual kit so your posts and profile look premium.</p>
+        <span class="eng-pill pu">Turns matches into real conversations</span>
+        <div class="eng-widget">
+          <div class="ew-label">Bundled Skills</div>
+          <div class="content-mix">
+            <div class="cm-row"><span class="cm-label">First-Message Scripts</span><div class="cm-bar-track"><div class="cm-bar-fill" style="background:var(--pu);width:100%;transform:scaleX(1);" data-width="100%"></div></div><span class="cm-val">&#10003;</span></div>
+            <div class="cm-row"><span class="cm-label">Warm Reconnect Msgs</span><div class="cm-bar-track"><div class="cm-bar-fill" style="background:var(--cy);width:100%;transform:scaleX(1);" data-width="100%"></div></div><span class="cm-val">&#10003;</span></div>
+            <div class="cm-row"><span class="cm-label">Client-Ready Profile</span><div class="cm-bar-track"><div class="cm-bar-fill" style="background:var(--or);width:100%;transform:scaleX(1);" data-width="100%"></div></div><span class="cm-val">&#10003;</span></div>
+            <div class="cm-row"><span class="cm-label">Weekly Content System</span><div class="cm-bar-track"><div class="cm-bar-fill" style="background:var(--gr);width:100%;transform:scaleX(1);" data-width="100%"></div></div><span class="cm-val">&#10003;</span></div>
+            <div class="cm-row"><span class="cm-label">Client-Ready Visuals</span><div class="cm-bar-track"><div class="cm-bar-fill" style="background:#F472B6;width:100%;transform:scaleX(1);" data-width="100%"></div></div><span class="cm-val">&#10003;</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="engines-payoff fi" data-n="fractional">
       <h4>Engagement conversations. The only output that matters.</h4>
       <p>When decision-makers already showing the signal receive your outreach or your thinking consistently, conversations start. Not a cold pitch. A warm conversation that begins because the signal found them first, before another fractional executive did.</p>
+    </div>
+    <div class="engines-payoff fi" data-n="coach" hidden>
+      <h4>Client conversations. The only output that matters.</h4>
+      <p>When senior leaders already showing the signal receive your outreach or your thinking consistently, conversations start. Not a cold pitch. A warm conversation that begins because the signal found them first, before they found someone else.</p>
     </div>
   </div>
 </section>
@@ -1148,7 +1351,7 @@ h2.hd em{font-style:italic;color:var(--or);}
     </div>
     <div class="compound-bento fi">
       <div class="cb-chart">
-        <div class="cb-chart-title">Right-Fit Engagement Opportunities Surfaced</div>
+        <div class="cb-chart-title"><span data-n="fractional">Right-Fit Engagement Opportunities Surfaced</span><span data-n="coach" hidden>Right-Fit Coaching Prospects Surfaced</span></div>
         <div class="cb-chart-sub">Example only, at a steady self-run weekly pace</div>
         <div class="compound-bars-wrap" id="compoundChart">
           <div class="cb-bar-group">
@@ -1192,7 +1395,7 @@ h2.hd em{font-style:italic;color:var(--or);}
         <div class="cbi-stat">
           <div class="cbi-label">Your network today</div>
           <div class="cbi-val">~60</div>
-          <div class="cbi-desc">Estimated right-fit engagement opportunities visible in a typical existing network</div>
+          <div class="cbi-desc"><span data-n="fractional">Estimated right-fit engagement opportunities visible in a typical existing network</span><span data-n="coach" hidden>Estimated right-fit coaching prospects visible in a typical existing network</span></div>
         </div>
         <div class="cbi-stat">
           <div class="cbi-label">At a steady weekly pace</div>
@@ -1224,8 +1427,10 @@ h2.hd em{font-style:italic;color:var(--or);}
       <div class="step-tl fi">
         <div class="step-tl-num">1</div>
         <div class="step-tl-tag">Day 0 to 5 &middot; Installed before you pay anything</div>
-        <h3>See it work on your own market before you decide anything</h3>
-        <p>Comment or DM ENGAGEMENT. A discovery call confirms fit, then your own Claude Project and Vibe Prospecting connection are set up on trust, before any payment. Your first live pipeline report is built inside days.</p>
+        <h3 data-n="fractional">See it work on your own market before you decide anything</h3>
+        <h3 data-n="coach" hidden>See it work on real prospects before you decide anything</h3>
+        <p data-n="fractional">DM SIGNAL. A discovery call confirms fit, then your own Claude Project and Vibe Prospecting connection are set up on trust, before any payment. Your first live pipeline report is built inside days.</p>
+        <p data-n="coach" hidden>DM SIGNAL. A discovery call confirms fit, then your own Claude Project and Vibe Prospecting connection are set up on trust, before any payment. Your first live prospect report is built inside days.</p>
         <ul>
           <li>Built from your actual practice, not a generic template</li>
           <li>Not right yet, say so and it gets revised</li>
@@ -1237,18 +1442,21 @@ h2.hd em{font-style:italic;color:var(--or);}
         <div class="step-tl-num">2</div>
         <div class="step-tl-tag">Day 5 &middot; Once you approve the results</div>
         <h3>One fee, only after you have seen it work</h3>
-        <p>Once you explicitly approve the live pipeline report, a single one-time payment is collected. No trial timer, no card held in advance, no recurring charge, ever.</p>
+        <p data-n="fractional">Once you explicitly approve the live pipeline report, a single one-time payment is collected. No trial timer, no card held in advance, no recurring charge, ever.</p>
+        <p data-n="coach" hidden>Once you explicitly approve the live prospect report, a single one-time payment is collected. No trial timer, no card held in advance, no recurring charge, ever.</p>
         <ul>
           <li>Payment gated to one specific, checkable thing: your approval</li>
           <li>Your own account, your own data, no shared access</li>
-          <li>Full Engagement Signal Engine already live from the build phase</li>
+          <li data-n="fractional">Full Engagement Signal Engine already live from the build phase</li>
+          <li data-n="coach" hidden>Full Client Finder Engine already live from the build phase</li>
         </ul>
       </div>
       <div class="step-tl fi">
         <div class="step-tl-num">3</div>
         <div class="step-tl-tag">Day 10 to 45 &middot; Bonus skills, handoff, hypercare</div>
         <h3>Five bonus components installed, then you run it yourself</h3>
-        <p>The five bonus components go in on Day 10, alongside the Run-Your-Own-Practice Playbook. Full handoff and your first fully independent run land on Day 15, backed by 30 days of hypercare while you get comfortable.</p>
+        <p data-n="fractional">The five bonus components go in on Day 10, alongside the Run-Your-Own-Practice Playbook. Full handoff and your first fully independent run land on Day 15, backed by 30 days of hypercare while you get comfortable.</p>
+        <p data-n="coach" hidden>The five bonus components go in on Day 10, alongside the Run-It-Yourself Playbook. Full handoff and your first fully independent run land on Day 15, backed by 30 days of hypercare while you get comfortable.</p>
         <ul>
           <li>Direct access to me at saurabh@pipelind.com, 24-hour response time</li>
           <li>Filter tuning and troubleshooting included through hypercare</li>
@@ -1274,7 +1482,8 @@ h2.hd em{font-style:italic;color:var(--or);}
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(248,113,113,.9)" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
         </div>
         <div class="gc-title">Waiting on the referral cycle</div>
-        <div class="gc-desc">The network that built your practice is real, and it is finite. It does not regenerate on command. Every quiet month, engagements you were structurally positioned to win are landing with a fractional executive who saw the signal first.</div>
+        <div class="gc-desc" data-n="fractional">The network that built your practice is real, and it is finite. It does not regenerate on command. Every quiet month, engagements you were structurally positioned to win are landing with a fractional executive who saw the signal first.</div>
+        <div class="gc-desc" data-n="coach" hidden>The network that built your practice is real, and it is finite. It does not regenerate on command. Every quiet month, clients you were structurally positioned to work with are choosing a coach who reached them first.</div>
       </div>
       <div class="glow-card gc-red">
         <div class="gc-icon red">
@@ -1288,7 +1497,8 @@ h2.hd em{font-style:italic;color:var(--or);}
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(248,113,113,.9)" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
         </div>
         <div class="gc-title">Posting for inbound alone</div>
-        <div class="gc-desc">Content-only tools build visibility. Visibility is not the same thing as knowing which company is about to bring in fractional leadership before anyone else does.</div>
+        <div class="gc-desc" data-n="fractional">Content-only tools build visibility. Visibility is not the same thing as knowing which company is about to bring in fractional leadership before anyone else does.</div>
+        <div class="gc-desc" data-n="coach" hidden>Content-only tools build visibility. Visibility is not the same thing as knowing which senior leader is ready for coaching before anyone else does.</div>
       </div>
     </div>
     <div class="compare-wrap fi">
@@ -1305,9 +1515,9 @@ h2.hd em{font-style:italic;color:var(--or);}
           <tr class="fi"><td>Cost structure</td><td>Free, unpredictable</td><td>Recurring monthly bill, indefinitely</td><td class="win">One-time fee, then $0</td></tr>
           <tr class="fi"><td>Who owns it</td><td>No one, it is luck</td><td>The vendor, you are renting access</td><td class="win">You, outright</td></tr>
           <tr class="fi"><td>Who does the actual work</td><td>You, alone, indefinitely</td><td>You, either paying every month or spending weeks building it yourself if it is a course</td><td class="win">Installed for you, before you ever pay</td></tr>
-          <tr class="fi"><td>Engagement-signal intelligence</td><td>None</td><td>Data feed only, or a framework you build the workflow around</td><td class="win">Signal-matched, refreshed every run</td></tr>
+          <tr class="fi"><td data-n="fractional">Engagement-signal intelligence</td><td data-n="coach" hidden>Coaching-signal intelligence</td><td>None</td><td>Data feed only, or a framework you build the workflow around</td><td class="win">Signal-matched, refreshed every run</td></tr>
           <tr class="fi"><td>If you stop paying</td><td>N/A</td><td>Everything stops</td><td class="win">Nothing stops, it is already yours</td></tr>
-          <tr class="fi"><td>Preserves retained-executive positioning</td><td>Yes</td><td>Often not, cold outreach at scale</td><td class="win">Yes, signal-led and specific</td></tr>
+          <tr class="fi"><td>Preserves premium positioning</td><td>Yes</td><td>Often not, cold outreach at scale</td><td class="win">Yes, signal-led and specific</td></tr>
           <tr class="fi"><td>Dependency</td><td>On your network staying warm</td><td>On the vendor staying in business</td><td class="win">On nothing but your own account</td></tr>
         </tbody>
       </table>
@@ -1335,7 +1545,7 @@ h2.hd em{font-style:italic;color:var(--or);}
       <div class="ds"><div class="ds-num">30</div><div class="ds-lbl">Days of hypercare<br>support included</div></div>
       <div class="ds"><div class="ds-num">0</div><div class="ds-lbl">Ongoing bill<br>from me, ever</div></div>
     </div>
-    <div class="deliv-grid fi">
+    <div class="deliv-grid fi" data-n="fractional">
       <div class="dc feat">
         <span class="di">The Engagement-Match Radar &middot; The Differentiator</span>
         <h4>Engagement-opportunity profiles, generated on demand, on your own account.</h4>
@@ -1347,6 +1557,26 @@ h2.hd em{font-style:italic;color:var(--or);}
       <div class="dc"><span class="di">Bonus skill</span><h4>Visibility-to-Engagement Bridge</h4><p>A system for turning the visibility you already get on LinkedIn into real 1:1 engagement conversations, not just profile views.</p></div>
       <div class="dc"><span class="di">Bonus skill</span><h4>Always-On Authority Engine</h4><p>An on-demand LinkedIn post generator, so you never run out of things to post to build fractional-executive authority.</p></div>
       <div class="dc"><span class="di">Bonus skill</span><h4>Boardroom-Grade Visual Kit</h4><p>Design briefs for post and profile graphics you can hand straight to an AI image tool. No designer needed.</p></div>
+      <div class="dc"><span class="di">Support &middot; 30 days</span><h4>Direct operator access via email</h4><p>Email me directly at <a href="mailto:saurabh@pipelind.com" style="color:var(--or)">saurabh@pipelind.com</a>. Not an account manager. 24-hour response time through hypercare while you get comfortable running it yourself.</p></div>
+      <div class="dc dfy">
+        <span class="di" style="color:rgba(160,150,255,.9)">Ownership &middot; No extra cost</span>
+        <h4>Your own account, your own data, your own pace</h4>
+        <p>Nothing here depends on me staying available or in business. Once it is installed, it is yours. You decide the volume, the cadence, and how you use it.</p>
+        <span class="dtag">Built around how you work, not the other way around</span>
+      </div>
+    </div>
+    <div class="deliv-grid fi" data-n="coach" hidden>
+      <div class="dc feat">
+        <span class="di">The Client Finder &middot; The Differentiator</span>
+        <h4>Coaching-ready prospect profiles, generated on demand, on your own account.</h4>
+        <p>Installed directly inside your own private Claude Project. Every profile is pulled from real event data and flagged by an active signal: a new leadership title, a team reshuffle, a funding round, a first-time people-management role. Each prospect comes with the opening message already drafted. You choose the pace and the volume.</p>
+        <span class="dtag">Real signals &middot; Verified profiles &middot; No data scraping</span>
+      </div>
+      <div class="dc"><span class="di">Bonus skill</span><h4>First-Message Scripts</h4><p>Ready-to-use opening messages for new, signal-backed connections, so you never stare at a blank message box wondering how to start.</p></div>
+      <div class="dc"><span class="di">Bonus skill</span><h4>Client-Ready Profile Rewrite</h4><p>An audit and rewrite of your LinkedIn profile so it reads like a coach clients hire, not a résumé.</p></div>
+      <div class="dc"><span class="di">Bonus skill</span><h4>Warm Reconnect Messages</h4><p>Ready-to-use messages for reconnecting with dormant connections without it reading as a cold pitch.</p></div>
+      <div class="dc"><span class="di">Bonus skill</span><h4>Weekly Content System</h4><p>An on-demand LinkedIn post generator, so you never run out of things to post to build coaching authority.</p></div>
+      <div class="dc"><span class="di">Bonus skill</span><h4>Client-Ready Visual Kit</h4><p>Design briefs for post and profile graphics you can hand straight to an AI image tool. No designer needed.</p></div>
       <div class="dc"><span class="di">Support &middot; 30 days</span><h4>Direct operator access via email</h4><p>Email me directly at <a href="mailto:saurabh@pipelind.com" style="color:var(--or)">saurabh@pipelind.com</a>. Not an account manager. 24-hour response time through hypercare while you get comfortable running it yourself.</p></div>
       <div class="dc dfy">
         <span class="di" style="color:rgba(160,150,255,.9)">Ownership &middot; No extra cost</span>
@@ -1372,9 +1602,10 @@ h2.hd em{font-style:italic;color:var(--or);}
   <div class="container">
     <div class="sh fi">
       <div class="sl">Who This Is For</div>
-      <h2 class="hd">Built for <em>independent, solo-practice fractional executives, every function</em></h2>
+      <h2 class="hd" data-n="fractional">Built for <em>independent, solo-practice fractional executives, every function</em></h2>
+      <h2 class="hd" data-n="coach" hidden>Built for <em>independent executive coaches, coaching senior leaders</em></h2>
     </div>
-    <div class="fit-grid fi">
+    <div class="fit-grid fi" data-n="fractional">
       <div class="fit-col yes">
         <div class="fit-head">- Right Fit &middot; Fractional Executives, Every Function</div>
         <ul>
@@ -1395,6 +1626,30 @@ h2.hd em{font-style:italic;color:var(--or);}
           <li>In-house corporate staff, not independent fractional operators</li>
           <li>Candidate-side or contingency-only recruiters</li>
           <li>Employees of a fractional-placement firm, as distinct from independent solo-practice operators</li>
+        </ul>
+      </div>
+    </div>
+    <div class="fit-grid fi" data-n="coach" hidden>
+      <div class="fit-col yes">
+        <div class="fit-head">- Right Fit &middot; Executive Coaches</div>
+        <ul>
+          <li>Independent executive coach, solo or very small practice, not part of a large coaching platform</li>
+          <li>You coach senior leaders, VPs, C-suite, or high-potential directors inside mid-size to large companies</li>
+          <li>2 to 6 years into independent practice, established but not yet at premium-retainer scale</li>
+          <li>Working primarily in English-speaking markets, we&rsquo;ll confirm fit on the call</li>
+          <li>Income tied to coaching engagements, typically $3,500 to $15,000 or more per engagement</li>
+          <li>Currently relying on referrals and your existing network, with no way to see who is ready for coaching before you stumble into them</li>
+        </ul>
+      </div>
+      <div class="fit-col no">
+        <div class="fit-head">&#10007; Probably Not the Right Fit</div>
+        <ul>
+          <li>Career coaches, business coaches, or life coaches, B2C-leaning practices</li>
+          <li>Coaches already running a premium marketing retainer, $5,000 to $10,000 or more a month</li>
+          <li>Coaches who are part of a large coaching platform such as BetterUp or CoachHub</li>
+          <li>Full-time employees rather than independent practitioners</li>
+          <li>Agency founders, vendors, or service providers selling to other coaches</li>
+          <li>In-house corporate L&amp;D staff, not independent coaching practitioners</li>
         </ul>
       </div>
     </div>
@@ -1427,8 +1682,10 @@ h2.hd em{font-style:italic;color:var(--or);}
       <!-- CONTENT -->
       <div class="operator-content fi">
         <div class="sl">The Operator</div>
-        <h2>Sixteen years on the buyer&rsquo;s side.<br><em>This one finds your next engagement.</em></h2>
-        <p class="lead">I am not a fractional executive myself. I spent sixteen years inside corporate operations, on the side of the business that actually approves bringing in outside senior leadership. That means direct, lived familiarity with the internal signals that come before that decision, a departure, a growth stage the org has outgrown, a stalled full-time search, a budget cycle, and the internal approval mechanics that follow. Not a marketer guessing at your world from the outside. You work directly with the person who built it, not an account manager.</p>
+        <h2 data-n="fractional">Sixteen years on the buyer&rsquo;s side.<br><em>This one finds your next engagement.</em></h2>
+        <h2 data-n="coach" hidden>Sixteen years on the buyer&rsquo;s side.<br><em>This one finds your next client.</em></h2>
+        <p class="lead" data-n="fractional">I am not a fractional executive myself. I spent sixteen years inside corporate operations, on the side of the business that actually approves bringing in outside senior leadership. That means direct, lived familiarity with the internal signals that come before that decision, a departure, a growth stage the org has outgrown, a stalled full-time search, a budget cycle, and the internal approval mechanics that follow. Not a marketer guessing at your world from the outside. You work directly with the person who built it, not an account manager.</p>
+        <p class="lead" data-n="coach" hidden>I am not an executive coach myself. I spent sixteen years inside corporate operations, on the side of the business that actually approves bringing in outside senior support. That means direct, lived familiarity with the internal signals that come before that decision, a promotion, a team reshuffle, a first-time people-management role, a budget cycle, and the internal approval mechanics that follow. Not a marketer guessing at your world from the outside. You work directly with the person who built it, not an account manager.</p>
 
         <div class="operator-stats">
           <div class="os"><div class="os-num">16+</div><div class="os-lbl">Years on the buyer&rsquo;s side</div></div>
@@ -1468,9 +1725,10 @@ h2.hd em{font-style:italic;color:var(--or);}
     <div class="sh fi">
       <div class="sl">Why This Works</div>
       <h2 class="hd">You can verify the results <em>before you ever pay anything</em></h2>
-      <p>Comment or DM ENGAGEMENT. A discovery call confirms fit, then the system is installed directly on your own Claude account and your first live pipeline report is built there. Not right yet, say so and it gets revised, as many times as it takes.</p>
+      <p data-n="fractional">DM SIGNAL. A discovery call confirms fit, then the system is installed directly on your own Claude account and your first live pipeline report is built there. Not right yet, say so and it gets revised, as many times as it takes.</p>
+      <p data-n="coach" hidden>DM SIGNAL. A discovery call confirms fit, then the system is installed directly on your own Claude account and your first live prospect report is built there. Not right yet, say so and it gets revised, as many times as it takes.</p>
     </div>
-    <div class="trust fi">
+    <div class="trust fi" data-n="fractional">
       <div class="tc"><div class="tc-tag">01</div><h4>Verify before you pay</h4><p>Your live pipeline report is built on your own account, from real event data, before any money changes hands. No form to guess from. No generic template. Real signals on real companies in your own market.</p></div>
       <div class="tc"><div class="tc-tag">02</div>
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
@@ -1483,8 +1741,21 @@ h2.hd em{font-style:italic;color:var(--or);}
         <h4>Direct operator access</h4><p>Email me at <a href="mailto:saurabh@pipelind.com" style="color:var(--or)">saurabh@pipelind.com</a>. Not an account manager. Sixteen years on the buyer&rsquo;s side, now the person behind this system. During setup and your 30 days of hypercare, you are talking to the person who built it, not a queue.</p></div>
       <div class="tc"><div class="tc-tag">03</div><h4>Proof: a real client, same system</h4><p>Before this system, Kam Emami, a fractional sales-compensation advisor, had been tracking leads and pipeline by hand, in a spreadsheet, for a year and a half. After the install, he landed a new client in under 60 days. Same signal-matched mechanism this system installs for you, already proven on a real, paying account.</p></div>
     </div>
+    <div class="trust fi" data-n="coach" hidden>
+      <div class="tc"><div class="tc-tag">01</div><h4>Verify before you pay</h4><p>Your live prospect report is built on your own account, from real event data, before any money changes hands. No form to guess from. No generic template. Real signals on real people across LinkedIn.</p></div>
+      <div class="tc"><div class="tc-tag">02</div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+          <img src="assets/saurabh-photo.jpg" alt="Saurabh M." style="width:48px;height:48px;border-radius:50%;object-fit:cover;object-position:center top;border:2px solid var(--pu);flex-shrink:0;"/>
+          <div>
+            <div style="font-family:var(--dsp);font-weight:700;font-size:14px;color:var(--w1);line-height:1.2;">Saurabh M.</div>
+            <div style="font-family:var(--dsp);font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--pu);margin-top:2px;">Founder &middot; Operator</div>
+          </div>
+        </div>
+        <h4>Direct operator access</h4><p>Email me at <a href="mailto:saurabh@pipelind.com" style="color:var(--or)">saurabh@pipelind.com</a>. Not an account manager. Sixteen years on the buyer&rsquo;s side, now the person behind this system. During setup and your 30 days of hypercare, you are talking to the person who built it, not a queue.</p></div>
+      <div class="tc"><div class="tc-tag">03</div><h4>Proof: same mechanism, new niche</h4><p>This is the same signal-detection engine already running for a paying fractional-executive client, who moved off a manual spreadsheet and landed a new client in under 60 days. There is no executive-coach-specific result yet, stated here honestly rather than glossed over. The first coach-niche outcome becomes the standing proof point the moment it exists.</p></div>
+    </div>
 
-    <div class="testimonial-block fi">
+    <div class="testimonial-block fi" data-n="fractional">
       <div class="testimonial-quote">
         <p>&ldquo;The lead cards weren&rsquo;t just lists, they were thoughtfully curated profiles tied to real signals like hiring and funding activity. That context made a huge difference. Instead of guessing who might be a fit, I could prioritize conversations with people already likely to have a need. The process became repeatable, and most importantly, it started generating meaningful conversations rather than cold dead ends. Highly recommend working with Saurabh.&rdquo;</p>
         <div class="testimonial-attr">
@@ -1494,11 +1765,25 @@ h2.hd em{font-style:italic;color:var(--or);}
       </div>
       <img class="testimonial-img" src="assets/kam-recommendation.png" alt="LinkedIn recommendation from Kamran Kam Emami for Saurabh M., Pipelind"/>
     </div>
+    <div class="testimonial-block fi" data-n="coach" hidden style="grid-template-columns:1fr;">
+      <div class="testimonial-quote">
+        <p style="font-style:normal;font-family:var(--bod);font-weight:300;color:var(--w6);font-size:14.5px;">There is no coach-specific testimonial here yet, and this page will not pretend otherwise. What exists today is the mechanism itself, proven in the fractional-executive niche below, and a system installed on your own account before you pay anything, so you can judge it against your own real prospects rather than a borrowed result.</p>
+        <div class="testimonial-attr" style="margin-top:4px;">
+          <strong>Honest, on purpose</strong>
+          <span>The first coach-niche result gets added here the moment it exists</span>
+        </div>
+      </div>
+    </div>
 
-    <div class="guarantee fi">
+    <div class="guarantee fi" data-n="fractional">
       <span class="guar-label"><span class="badge-dot" style="background:var(--gr);box-shadow:0 0 8px var(--gr);"></span>The Engagement-or-Free Guarantee</span>
       <h3>Approved, or free. <em>You decide when it is ready.</em></h3>
       <p>I install the system on your own infrastructure and build your first live engagement-pipeline report before you pay anything. If it is not right, I fix it. There is no limit on revisions. You only pay the one-time fee once you have seen real results on your own market and approved them yourself.</p>
+    </div>
+    <div class="guarantee fi" data-n="coach" hidden>
+      <span class="guar-label"><span class="badge-dot" style="background:var(--gr);box-shadow:0 0 8px var(--gr);"></span>The Pay-After-Approval Guarantee</span>
+      <h3>Pay only after you approve. <em>You decide when it is ready.</em></h3>
+      <p>I install the Client Finder system on your own infrastructure and build your first live high-intent prospect report before you pay anything. If it is not right, I fix it. There is no limit on revisions. You only pay the one-time fee once you have seen real, high-intent prospects and approved them yourself.</p>
     </div>
   </div>
 </section>
@@ -1513,18 +1798,22 @@ h2.hd em{font-style:italic;color:var(--or);}
       <h2 class="hd">What you are probably already thinking</h2>
     </div>
     <div class="faq fi">
-      <details><summary>What does it cost?</summary><div class="faq-body"><p>Shared once a discovery call has confirmed genuine fit, and once you have seen your own live pipeline report. Not before.</p><p>What you can verify before any pricing conversation: the actual signal methodology, the data source, and a real report built from your own market. If it makes sense after that, pricing is the last conversation, not the first, and you only pay once you approve the results.</p><p><a href="https://calendly.com/saurabh_zentro/30-min" target="_blank" rel="noopener" style="color:var(--or);text-decoration:underline;">Book a 30-minute walkthrough to see the system in action.</a></p></div></details>
+      <details><summary>What does it cost?</summary><div class="faq-body"><p>Shared once a discovery call has confirmed genuine fit, and once you have seen your own live report. Not before.</p><p>What you can verify before any pricing conversation: the actual signal methodology, the data source, and a real report built from your own market. If it makes sense after that, pricing is the last conversation, not the first, and you only pay once you approve the results.</p><p><a href="https://calendly.com/saurabh_zentro/30-min" target="_blank" rel="noopener" style="color:var(--or);text-decoration:underline;">Book a 30-minute walkthrough to see the system in action.</a></p></div></details>
       <details><summary>Will the price change over time?</summary><div class="faq-body"><p>No. It is a single one-time fee. There is no recurring rate to lock in, and no future increase to worry about, because there is nothing ongoing to increase.</p></div></details>
       <details><summary>Can I cancel anytime?</summary><div class="faq-body"><p>There is nothing to cancel. It is a one-time payment, not a subscription, and it is only collected after you approve the results. You get 30 days of hypercare after handoff, and after that the system is fully yours to run, with no further billing relationship required.</p></div></details>
-      <details><summary>What is an engagement signal, and how does it find the right companies?</summary><div class="faq-body"><p>A signal is a verifiable event indicating a company may be about to bring in fractional leadership: a finance, HR, or operations hiring buildout, a funding round, an M&amp;A or ownership event. Every profile is tied to the internal decision-maker who could actually authorize bringing you in, CEO, President, Founder, Owner, or a relevant C-suite function head, never a candidate. These are live, verified events, not a static purchased list.</p></div></details>
-      <details><summary>Can this be customised to my practice?</summary><div class="faq-body"><p><strong>Yes.</strong> Once it is installed on your own account, you control the filters, the pace, and the function or sector mix entirely. It is built around your specific practice from the start, whether you specialise in one function or work as a generalist.</p></div></details>
-      <details><summary>How is this different from a rented BD tool, a course, or a content subscription?</summary><div class="faq-body"><p>A rented BD or signal tool charges a recurring bill for access to a system or a data feed, you still have to build the workflow around it, and everything stops the moment you stop paying. A coaching program or franchise teaches you to build the same thing yourself, over weeks of your own effort, and installs nothing for you. A content-only subscription solves visibility, not signal timing.</p><p>Pipelind builds the whole system, proves it with your own live results before you pay anything, and then you own it outright. Direct access to the person who built it, no automation, and when hypercare ends, the system does not stop working.</p></div></details>
+      <details data-n="fractional"><summary>What is an engagement signal, and how does it find the right companies?</summary><div class="faq-body"><p>A signal is a verifiable event indicating a company may be about to bring in fractional leadership: a finance, HR, or operations hiring buildout, a funding round, an M&amp;A or ownership event. Every profile is tied to the internal decision-maker who could actually authorize bringing you in, CEO, President, Founder, Owner, or a relevant C-suite function head, never a candidate. These are live, verified events, not a static purchased list.</p></div></details>
+      <details data-n="coach" hidden><summary>What is a coaching-readiness signal, and how does it find the right people?</summary><div class="faq-body"><p>A signal is a verifiable event indicating a senior leader may be ready for coaching right now: a new leadership title, a team reshuffle, a funding round, a first-time people-management role. Every prospect is a real, identifiable person, never a static scraped list. These are live, verified events, not a purchased database.</p></div></details>
+      <details><summary>Can this be customised to my practice?</summary><div class="faq-body"><p><strong>Yes.</strong> Once it is installed on your own account, you control the filters, the pace, and the mix entirely. It is built around your specific practice from the start, whether you specialise narrowly or work as a generalist.</p></div></details>
+      <details data-n="fractional"><summary>How is this different from a rented BD tool, a course, or a content subscription?</summary><div class="faq-body"><p>A rented BD or signal tool charges a recurring bill for access to a system or a data feed, you still have to build the workflow around it, and everything stops the moment you stop paying. A training program or franchise teaches you to build the same thing yourself, over weeks of your own effort, and installs nothing for you. A content-only subscription solves visibility, not signal timing.</p><p>Pipelind builds the whole system, proves it with your own live results before you pay anything, and then you own it outright. Direct access to the person who built it, no automation, and when hypercare ends, the system does not stop working.</p></div></details>
+      <details data-n="coach" hidden><summary>How is this different from a rented BD tool, a course, or a content subscription?</summary><div class="faq-body"><p>A rented BD or signal tool charges a recurring bill for access to a system or a data feed, you still have to build the workflow around it, and everything stops the moment you stop paying. A training program teaches you to build the same thing yourself, over weeks of your own effort, and installs nothing for you. A content-only subscription solves visibility, not signal timing.</p><p>Pipelind builds the whole system, proves it with your own live results before you pay anything, and then you own it outright. Direct access to the person who built it, no automation, and when hypercare ends, the system does not stop working.</p></div></details>
       <details><summary>What if the output does not sound like me?</summary><div class="faq-body"><p>The system is calibrated to your actual voice and practice during setup, not a generic template. If something is off during the pre-payment build phase, say so and it gets revised until it is right, before you ever pay anything.</p></div></details>
       <details><summary>Do you log into my LinkedIn account or use automation?</summary><div class="faq-body"><p>No. Never. You send connection requests and messages from your own account. No credentials change hands. No automation tools. No browser extensions. Nothing that could put your LinkedIn account at risk.</p></div></details>
       <details><summary>How much of my time does this take each week?</summary><div class="faq-body"><p>Whatever you choose. Once it is set up, there is no fixed weekly commitment, because I am not the one running it after handoff. Some people run it weekly, some in bursts before a push.</p></div></details>
-      <details><summary>Is there a guarantee?</summary><div class="faq-body"><p>The Engagement-or-Free Guarantee. The system is installed and revised on your own account, with unlimited rounds, until you approve the results yourself. You only pay once that happens. There is no guarantee on outcomes beyond that. Anyone who guarantees you a specific number of engagements is selling you something they cannot deliver.</p></div></details>
+      <details data-n="fractional"><summary>Is there a guarantee?</summary><div class="faq-body"><p>The Engagement-or-Free Guarantee. The system is installed and revised on your own account, with unlimited rounds, until you approve the results yourself. You only pay once that happens. There is no guarantee on outcomes beyond that. Anyone who guarantees you a specific number of engagements is selling you something they cannot deliver.</p></div></details>
+      <details data-n="coach" hidden><summary>Is there a guarantee?</summary><div class="faq-body"><p>The Pay-After-Approval Guarantee. The system is installed and revised on your own account, with unlimited rounds, until you approve the results yourself. You only pay once that happens. There is no guarantee on outcomes beyond that. Anyone who guarantees you a specific number of clients is selling you something they cannot deliver.</p></div></details>
       <details><summary>What does &ldquo;direct operator access&rdquo; actually mean?</summary><div class="faq-body"><p>You email me, Saurabh, directly at <strong>saurabh@pipelind.com</strong>. Not a project manager. Not an account team. During the build phase and your 30 days of hypercare, you are talking to the person who built the system.</p></div></details>
-      <details><summary>Why fractional executives specifically?</summary><div class="faq-body"><p>Referral dependency is the single most-repeated complaint fractional executives make about their own practice. Fractional engagements run $2,000 to $20,000 a month, or $100 to $400 an hour, so a quiet engagement pipeline is a direct, calculable income gap, not a vague growth concern. This is also the most LinkedIn-native professional audience tested to date: fractional executives already treat LinkedIn as both a sourcing tool and a client-attraction channel, and real, funded companies are already selling versions of this into the same market. That is proof the crowd is already reaching for its wallet, for a worse version of what gets installed once here.</p></div></details>
+      <details data-n="fractional"><summary>Why fractional executives specifically?</summary><div class="faq-body"><p>Referral dependency is the single most-repeated complaint fractional executives make about their own practice. Fractional engagements run $2,000 to $20,000 a month, or $100 to $400 an hour, so a quiet engagement pipeline is a direct, calculable income gap, not a vague growth concern. This is also the most LinkedIn-native professional audience tested to date: fractional executives already treat LinkedIn as both a sourcing tool and a client-attraction channel, and real, funded companies are already selling versions of this into the same market. That is proof the crowd is already reaching for its wallet, for a worse version of what gets installed once here.</p></div></details>
+      <details data-n="coach" hidden><summary>Why executive coaches specifically?</summary><div class="faq-body"><p>Coaches routinely name finding clients as their single biggest business challenge, not a lack of credibility but a lack of any system for knowing which senior leader, out of thousands on LinkedIn, is actually in a coaching-ready moment right now. Executive coaching engagements typically run $3,500 to $15,000 or more, so a quiet pipeline is a direct, calculable income gap, not a vague growth concern. This is also a genuinely LinkedIn-native audience: coaches already have real personal-brand presence there, and multiple funded competitors already sell retainer-based versions of this into the same market. That is proof the crowd is already reaching for its wallet, for a worse version of what gets installed once here.</p></div></details>
     </div>
   </div>
 </section>
@@ -1535,9 +1824,12 @@ h2.hd em{font-style:italic;color:var(--or);}
 <section class="sec">
   <div class="container">
     <div class="final fi">
-      <span class="badge badge-or" style="margin-bottom:16px;">Installed before you pay anything</span>
-      <h2>See exactly which engagements are signaling <em>in your market right now</em></h2>
-      <p>Comment or DM ENGAGEMENT. A discovery call confirms fit, then the system is installed on your own account and your first live pipeline report is built there. If it is not quite right, say so, and it gets revised until it is, before you ever pay anything.</p>
+      <span class="badge badge-or" style="margin-bottom:16px;" data-n="fractional">Installed before you pay anything</span>
+      <span class="badge badge-pu" style="margin-bottom:16px;" data-n="coach" hidden>Installed before you pay anything</span>
+      <h2 data-n="fractional">See exactly which engagements are signaling <em>in your market right now</em></h2>
+      <h2 data-n="coach" hidden>See exactly who is signaling <em>ready for coaching right now</em></h2>
+      <p data-n="fractional">DM SIGNAL. A discovery call confirms fit, then the system is installed on your own account and your first live pipeline report is built there. If it is not quite right, say so, and it gets revised until it is, before you ever pay anything.</p>
+      <p data-n="coach" hidden>DM SIGNAL. A discovery call confirms fit, then the system is installed on your own account and your first live prospect report is built there. If it is not quite right, say so, and it gets revised until it is, before you ever pay anything.</p>
       <a class="btn btn-or" href="https://calendly.com/saurabh_zentro/30-min" target="_blank" rel="noopener">
         Book Your Discovery Call
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L8 3M13 8L8 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -1550,7 +1842,7 @@ h2.hd em{font-style:italic;color:var(--or);}
         <span><span class="ck">&#10003;</span> You own the system after handoff</span>
       </div>
       <div style="margin-top:28px;">
-        <a class="link-ghost" href="https://www.linkedin.com/in/saurabh-m15/" target="_blank" rel="noopener">Comment or DM ENGAGEMENT on LinkedIn to start the conversation &nearr;</a>
+        <a class="link-ghost" href="https://www.linkedin.com/in/saurabh-m15/" target="_blank" rel="noopener">DM SIGNAL on LinkedIn to start the conversation &nearr;</a>
       </div>
     </div>
   </div>
@@ -1559,7 +1851,8 @@ h2.hd em{font-style:italic;color:var(--or);}
 <!-- FOOTER -->
 <footer class="footer">
   <div class="container footer-inner">
-    <div>&copy; Pipelind &middot; Saurabh M. &middot; A LinkedIn engagement pipeline system you own, for fractional executives</div>
+    <div data-n="fractional">&copy; Pipelind &middot; Saurabh M. &middot; A LinkedIn engagement pipeline system you own, for fractional executives</div>
+    <div data-n="coach" hidden>&copy; Pipelind &middot; Saurabh M. &middot; A LinkedIn client-finding system you own, for executive coaches</div>
     <div class="footer-links">
       <a href="https://www.linkedin.com/in/saurabh-m15/" target="_blank" rel="noopener">LinkedIn &nearr;</a>
       <a href="https://calendly.com/saurabh_zentro/30-min" target="_blank" rel="noopener">Book a Walkthrough &nearr;</a>
@@ -1577,6 +1870,34 @@ h2.hd em{font-style:italic;color:var(--or);}
 </div>
 
 <script>
+// -- NICHE TOGGLE --
+function applyNiche(n){
+  document.documentElement.setAttribute('data-niche', n);
+  document.querySelectorAll('.nt-btn').forEach(function(b){
+    b.classList.toggle('active', b.dataset.nicheBtn === n);
+  });
+  document.querySelectorAll('[data-n]').forEach(function(el){
+    var v = el.getAttribute('data-n');
+    el.hidden = (v !== n && v !== 'both');
+  });
+  try{ localStorage.setItem('pipelind_niche', n); }catch(e){}
+}
+function setNiche(n){
+  applyNiche(n);
+  var url = new URL(window.location.href);
+  url.searchParams.set('for', n);
+  window.history.replaceState({}, '', url);
+}
+(function initNiche(){
+  var params = new URLSearchParams(window.location.search);
+  var n = params.get('for');
+  if(n !== 'fractional' && n !== 'coach'){
+    try{ n = localStorage.getItem('pipelind_niche'); }catch(e){ n = null; }
+  }
+  if(n !== 'fractional' && n !== 'coach') n = 'fractional';
+  applyNiche(n);
+})();
+
 // -- SCROLL REVEAL --
 (function(){
   if(!('IntersectionObserver' in window)){
