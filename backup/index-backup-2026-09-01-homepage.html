@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>Pipelind | The CFO Opportunity Engine for Fractional CFO Firms</title>
-<meta name="description" content="Verified, evidence-backed CFO opportunities delivered every month, not another lead list. See a free 5-opportunity demo report built for your practice before any paid conversation."/>
+<title>Pipelind | Client-Acquisition Systems for Fractional Executives &amp; Executive Coaches</title>
+<meta name="description" content="An owned client-acquisition system, installed directly on your own Claude account, for fractional executives or independent executive coaches. Installed before you pay. One-time fee, only after you approve real results."/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,700;1,800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
@@ -752,6 +752,18 @@ h2.hd em{font-style:italic;color:var(--or);}
   .hw-company{font-size:9px;}
 }
 
+/* --- NICHE TOGGLE --- */
+.nav-niche-row{border-top:1px solid var(--b1);padding:9px 0;display:flex;justify-content:center;}
+.niche-toggle{display:inline-flex;background:var(--s1);border:1px solid var(--b2);border-radius:999px;padding:3px;gap:3px;}
+.nt-btn{font-family:var(--dsp);font-size:12.5px;font-weight:600;letter-spacing:.005em;padding:8px 18px;border-radius:999px;border:none;background:transparent;color:var(--w6);cursor:pointer;transition:background .2s,color .2s;white-space:nowrap;}
+.nt-btn:hover{color:var(--w1);}
+.nt-btn.active{color:#06060E;}
+.nt-btn[data-niche-btn="fractional"].active{background:var(--or);box-shadow:0 0 20px rgba(255,153,0,.35);}
+.nt-btn[data-niche-btn="coach"].active{background:var(--pu);color:#fff;box-shadow:0 0 20px rgba(106,102,163,.4);}
+@media(max-width:480px){.nt-btn{font-size:11px;padding:7px 13px;}}
+/* elements hidden by niche */
+[data-n]{transition:none;}
+[data-n][hidden]{display:none !important;}
 
 /* FIX: Logo sizing on mobile so it doesn't cut */
 @media(max-width:480px){
@@ -799,6 +811,12 @@ h2.hd em{font-style:italic;color:var(--or);}
       <a class="nav-cta" href="https://calendly.com/saurabh_zentro/30-min" target="_blank" rel="noopener">Book a Walkthrough</a>
     </div>
   </div>
+  <div class="nav-niche-row">
+    <div class="niche-toggle" role="group" aria-label="Choose your practice">
+      <button type="button" class="nt-btn" data-niche-btn="fractional" onclick="setNiche('fractional')">For Fractional Executives</button>
+      <button type="button" class="nt-btn" data-niche-btn="coach" onclick="setNiche('coach')">For Executive Coaches</button>
+    </div>
+  </div>
 </nav>
 
 <!-- HERO -->
@@ -812,10 +830,13 @@ h2.hd em{font-style:italic;color:var(--or);}
     <div class="hero-inner">
       <div>
         <div class="hero-tag">
-          <span class="badge badge-or"><span class="badge-dot"></span>For Fractional CFO Firms</span>
+          <span class="badge badge-or" data-n="fractional"><span class="badge-dot"></span>For Fractional Executives, Every Function</span>
+          <span class="badge badge-pu" data-n="coach" hidden><span class="badge-dot"></span>For Independent Executive Coaches</span>
         </div>
-        <h1>You have the expertise fractional CFO firms are hired for. <em>You still can&rsquo;t see which companies need you right now.</em></h1>
-        <p class="hero-sub">For independent, solo-practice fractional CFO firms whose next client depends on catching the right company at the right moment, not waiting for a referral to trickle in. Every month, Pipelind delivers a small number of verified, evidence-backed CFO opportunities: funding rounds, rapid headcount growth, finance hiring with no CFO in place, ownership changes, checked against public sources, mapped to the actual decision-maker, with a personalised reason to reach out. <strong>See your first report free, before any pricing conversation.</strong></p>
+        <h1 data-n="fractional">You already have the expertise and the network. <em>You still cannot see the next engagement coming first.</em></h1>
+        <h1 data-n="coach" hidden>You already have the credibility and the network. <em>You still cannot see who is ready for coaching right now.</em></h1>
+        <p class="hero-sub" data-n="fractional">For independent, solo-practice fractional executives, CFO, COO, CMO, CTO, CHRO, CRO, and every other senior function, whose next engagement depends on catching a company before another fractional executive does. Pipelind installs a private system, on your own Claude account, that watches the market for the exact signals that mean a company may be about to bring in fractional leadership: finance, HR, and ops hiring buildouts, funding rounds, ownership change. <strong>Installed on your own infrastructure before you pay anything. One fee, only once you approve real results.</strong></p>
+        <p class="hero-sub" data-n="coach" hidden>For independent executive coaches coaching senior leaders and C-suite executives inside mid-size to large companies, whose next client depends on reaching the right person at the right moment, not guessing across your own network. Pipelind installs a private system, on your own Claude account, that watches LinkedIn for the exact signals that mean someone may be ready for coaching right now: a new leadership title, a team reshuffle, a funding round, a first-time people-management role. <strong>Installed on your own infrastructure before you pay anything. One fee, only once you approve real results.</strong></p>
         <div class="hero-ctas">
           <a class="btn btn-or" href="https://calendly.com/saurabh_zentro/30-min" target="_blank" rel="noopener">
             Book Your Discovery Call
@@ -823,23 +844,23 @@ h2.hd em{font-style:italic;color:var(--or);}
           </a>
         </div>
         <div class="hero-risk">
-          <span><span class="ck">&#10003;</span> Free 5-opportunity report, before any payment</span>
+          <span><span class="ck">&#10003;</span> Installed on your own account, before any payment</span>
           <span class="sp"></span>
-          <span><span class="ck">&#10003;</span> Every claim sourced, never invented</span>
+          <span><span class="ck">&#10003;</span> One-time fee, no recurring charge, ever</span>
           <span class="sp"></span>
-          <span><span class="ck">&#10003;</span> Delivered monthly, not a lead list</span>
+          <span><span class="ck">&#10003;</span> You own the system after handoff</span>
         </div>
       </div>
 
       <!-- HERO WIDGETS COLUMN -->
       <div class="hero-widgets-col">
 
-      <!-- SIGNAL WIDGET -->
-      <div class="hero-widget">
+      <!-- SIGNAL WIDGET, FRACTIONAL -->
+      <div class="hero-widget" data-n="fractional">
         <div class="hw-header">
           <div class="hw-title">
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="5" height="5" rx="1" fill="currentColor" opacity=".7"/><rect x="9" y="2" width="5" height="5" rx="1" fill="currentColor" opacity=".7"/><rect x="2" y="9" width="5" height="5" rx="1" fill="currentColor" opacity=".7"/><rect x="9" y="9" width="5" height="5" rx="1" fill="#FF9900"/></svg>
-            CFO Opportunity Signal Feed
+            Engagement Signal Feed
           </div>
           <div class="hw-live"><span class="hw-live-dot"></span>Live Signals</div>
         </div>
@@ -858,7 +879,7 @@ h2.hd em{font-style:italic;color:var(--or);}
               <div class="hw-avatar" style="background:linear-gradient(135deg,#8B5CF6,#A78BFA)">SR</div>
               <div class="hw-info">
                 <div class="hw-name">Sarah R., President</div>
-                <div class="hw-company">Finance hiring, no CFO in place &middot; SaaS &middot; 120 employees</div>
+                <div class="hw-company">Finance team hiring &middot; SaaS &middot; 120 employees</div>
               </div>
               <span class="hw-signal sig-hire">Hiring</span>
             </div>
@@ -889,79 +910,218 @@ h2.hd em{font-style:italic;color:var(--or);}
         <div class="hw-footer">
           <div class="hw-footer-stat">
             <div class="hw-footer-num" data-counter="5" data-suffix="">0</div>
-            <div class="hw-footer-lbl">Opps, Free Report</div>
+            <div class="hw-footer-lbl">Day, First Report</div>
           </div>
           <div class="hw-footer-div"></div>
           <div class="hw-footer-stat">
-            <div class="hw-footer-num" data-counter="100" data-suffix="%">0</div>
-            <div class="hw-footer-lbl">Evidence-Sourced</div>
+            <div class="hw-footer-num" data-counter="1" data-suffix="x">0</div>
+            <div class="hw-footer-lbl">Fee, Pay on Approval</div>
           </div>
           <div class="hw-footer-div"></div>
           <div class="hw-footer-stat">
-            <div class="hw-footer-num" data-counter="6" data-suffix="">0</div>
-            <div class="hw-footer-lbl">Signal Types Tracked</div>
+            <div class="hw-footer-num" data-counter="0" data-suffix="">0</div>
+            <div class="hw-footer-lbl">Recurring Bill</div>
           </div>
         </div>
-      </div><!-- end hero-widget -->
+      </div><!-- end hero-widget fractional -->
 
-      <!-- REPORT-CONTENTS WIDGET -->
-      <div class="cw">
+      <!-- SIGNAL WIDGET, COACH -->
+      <div class="hero-widget" data-n="coach" hidden>
+        <div class="hw-header">
+          <div class="hw-title">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="5" height="5" rx="1" fill="currentColor" opacity=".7"/><rect x="9" y="2" width="5" height="5" rx="1" fill="currentColor" opacity=".7"/><rect x="2" y="9" width="5" height="5" rx="1" fill="currentColor" opacity=".7"/><rect x="9" y="9" width="5" height="5" rx="1" fill="#6A66A3"/></svg>
+            Client Signal Feed
+          </div>
+          <div class="hw-live"><span class="hw-live-dot"></span>Live Signals</div>
+        </div>
+        <div class="hw-body">
+          <div class="hw-week">Sample Matches</div>
+          <div class="hw-profiles">
+            <div class="hw-profile">
+              <div class="hw-avatar" style="background:linear-gradient(135deg,#6A66A3,#8B85D6)">JL</div>
+              <div class="hw-info">
+                <div class="hw-name">Jordan Lee, VP Ops</div>
+                <div class="hw-company">New leadership title &middot; Tech &middot; 400 employees</div>
+              </div>
+              <span class="hw-signal sig-hire">Promotion</span>
+            </div>
+            <div class="hw-profile">
+              <div class="hw-avatar" style="background:linear-gradient(135deg,#FF9900,#FFB340)">MC</div>
+              <div class="hw-info">
+                <div class="hw-name">Maria Chen, Director</div>
+                <div class="hw-company">First people-mgmt role &middot; Healthcare &middot; 600 emp.</div>
+              </div>
+              <span class="hw-signal sig-fund">New Role</span>
+            </div>
+            <div class="hw-profile">
+              <div class="hw-avatar" style="background:linear-gradient(135deg,#06B6D4,#38BDF8)">TB</div>
+              <div class="hw-info">
+                <div class="hw-name">Tom Baxter, Head of Sales</div>
+                <div class="hw-company">Team reshuffle &middot; Retail &middot; 250 employees</div>
+              </div>
+              <span class="hw-signal sig-exp">Reshuffle</span>
+            </div>
+          </div>
+          <div class="hw-chart-label">Signal Activity, Sample Week</div>
+          <div class="hw-bars">
+            <div class="hw-bar" style="height:35%;background:rgba(106,102,163,.4);"></div>
+            <div class="hw-bar" style="height:55%;background:rgba(106,102,163,.55);"></div>
+            <div class="hw-bar" style="height:48%;background:rgba(106,102,163,.5);"></div>
+            <div class="hw-bar" style="height:70%;background:rgba(106,102,163,.65);"></div>
+            <div class="hw-bar" style="height:62%;background:rgba(106,102,163,.6);"></div>
+            <div class="hw-bar" style="height:85%;background:var(--pu);"></div>
+            <div class="hw-bar" style="height:78%;background:rgba(106,102,163,.8);"></div>
+          </div>
+          <div class="hw-bars-labels">
+            <span class="hw-bar-lbl">Mon</span><span class="hw-bar-lbl">Tue</span><span class="hw-bar-lbl">Wed</span>
+            <span class="hw-bar-lbl">Thu</span><span class="hw-bar-lbl">Fri</span><span class="hw-bar-lbl">Sat</span><span class="hw-bar-lbl">Sun</span>
+          </div>
+        </div>
+        <div class="hw-footer">
+          <div class="hw-footer-stat">
+            <div class="hw-footer-num" data-counter="5" data-suffix="">0</div>
+            <div class="hw-footer-lbl">Day, First Report</div>
+          </div>
+          <div class="hw-footer-div"></div>
+          <div class="hw-footer-stat">
+            <div class="hw-footer-num" data-counter="1" data-suffix="x">0</div>
+            <div class="hw-footer-lbl">Fee, Pay on Approval</div>
+          </div>
+          <div class="hw-footer-div"></div>
+          <div class="hw-footer-stat">
+            <div class="hw-footer-num" data-counter="0" data-suffix="">0</div>
+            <div class="hw-footer-lbl">Recurring Bill</div>
+          </div>
+        </div>
+      </div><!-- end hero-widget coach -->
+
+      <!-- TOOLKIT WIDGET, FRACTIONAL -->
+      <div class="cw" data-n="fractional">
         <div class="cw-header">
           <div class="cw-title">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8B5CF6" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-            What&rsquo;s Inside Your Report
+            Toolkit Overview
           </div>
-          <span class="cw-badge">Delivered Monthly</span>
+          <span class="cw-badge">6 skills, 1 fee</span>
         </div>
         <div class="cw-body">
-          <div class="cw-section-lbl">Every Opportunity Includes</div>
+          <div class="cw-section-lbl">What&rsquo;s Installed</div>
           <div class="cw-types">
             <div class="cw-type">
               <div class="cw-type-dot" style="background:#8B5CF6;box-shadow:0 0 6px rgba(139,92,246,.6);"></div>
-              <div class="cw-type-info"><div class="cw-type-name">Verified Company + Signal</div><div class="cw-type-count">Dated, sourced</div></div>
+              <div class="cw-type-info"><div class="cw-type-name">Engagement-Match Radar</div><div class="cw-type-count">Core &middot; On demand</div></div>
               <div class="cw-type-num" style="color:#8B5CF6;">&#10003;</div>
             </div>
             <div class="cw-type">
               <div class="cw-type-dot" style="background:#06B6D4;box-shadow:0 0 6px rgba(6,182,212,.6);"></div>
-              <div class="cw-type-info"><div class="cw-type-name">Decision-Maker Identified</div><div class="cw-type-count">Not a candidate</div></div>
+              <div class="cw-type-info"><div class="cw-type-name">First-Reply Advantage Scripts</div><div class="cw-type-count">Bonus &middot; Included</div></div>
               <div class="cw-type-num" style="color:#06B6D4;">&#10003;</div>
             </div>
             <div class="cw-type">
               <div class="cw-type-dot" style="background:#FF9900;box-shadow:0 0 6px rgba(255,153,0,.6);"></div>
-              <div class="cw-type-info"><div class="cw-type-name">Evidence &amp; Source Links</div><div class="cw-type-count">Checkable yourself</div></div>
+              <div class="cw-type-info"><div class="cw-type-name">Seat-At-The-Table Profile Rewrite</div><div class="cw-type-count">Bonus &middot; Included</div></div>
               <div class="cw-type-num" style="color:#FF9900;">&#10003;</div>
             </div>
             <div class="cw-type">
               <div class="cw-type-dot" style="background:#10B981;box-shadow:0 0 6px rgba(16,185,129,.6);"></div>
-              <div class="cw-type-info"><div class="cw-type-name">Opportunity Score</div><div class="cw-type-count">Ranked, not just found</div></div>
+              <div class="cw-type-info"><div class="cw-type-name">Visibility-to-Engagement Bridge</div><div class="cw-type-count">Bonus &middot; Included</div></div>
               <div class="cw-type-num" style="color:#10B981;">&#10003;</div>
             </div>
             <div class="cw-type">
               <div class="cw-type-dot" style="background:#F472B6;box-shadow:0 0 6px rgba(244,114,182,.6);"></div>
-              <div class="cw-type-info"><div class="cw-type-name">Personalised Outreach Angle</div><div class="cw-type-count">Plus a suggested first message</div></div>
+              <div class="cw-type-info"><div class="cw-type-name">Always-On Authority Engine</div><div class="cw-type-count">Bonus &middot; Included</div></div>
               <div class="cw-type-num" style="color:#F472B6;">&#10003;</div>
             </div>
+            <div class="cw-type">
+              <div class="cw-type-dot" style="background:#38BDF8;box-shadow:0 0 6px rgba(56,189,248,.6);"></div>
+              <div class="cw-type-info"><div class="cw-type-name">Boardroom-Grade Visual Kit</div><div class="cw-type-count">Bonus &middot; Included</div></div>
+              <div class="cw-type-num" style="color:#38BDF8;">&#10003;</div>
+            </div>
           </div>
-          <div class="cw-section-lbl">How It Starts</div>
+          <div class="cw-section-lbl">Your Side</div>
           <div class="cw-schedule">
             <div class="cw-sched-row">
               <span class="cw-sched-day">1</span>
-              <span class="cw-sched-title">Free CFO Opportunity Report, built for your practice</span>
+              <span class="cw-sched-title">Installed on your account, revised until you approve</span>
               <span class="cw-sched-status sched-live">Before payment</span>
             </div>
             <div class="cw-sched-row">
               <span class="cw-sched-day">2</span>
-              <span class="cw-sched-title">Discovery call confirms fit and pricing</span>
-              <span class="cw-sched-status sched-ready">Live call</span>
+              <span class="cw-sched-title">You approve the results, then pay one time</span>
+              <span class="cw-sched-status sched-ready">On approval</span>
             </div>
             <div class="cw-sched-row">
               <span class="cw-sched-day">3</span>
-              <span class="cw-sched-title">Monthly reports begin, same evidence standard</span>
-              <span class="cw-sched-status sched-draft">Ongoing</span>
+              <span class="cw-sched-title">30 days of hypercare, then it is fully yours</span>
+              <span class="cw-sched-status sched-draft">Yours</span>
             </div>
           </div>
         </div>
-      </div><!-- end cw -->
+      </div><!-- end cw fractional -->
+
+      <!-- TOOLKIT WIDGET, COACH -->
+      <div class="cw" data-n="coach" hidden>
+        <div class="cw-header">
+          <div class="cw-title">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8B5CF6" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            Toolkit Overview
+          </div>
+          <span class="cw-badge">6 skills, 1 fee</span>
+        </div>
+        <div class="cw-body">
+          <div class="cw-section-lbl">What&rsquo;s Installed</div>
+          <div class="cw-types">
+            <div class="cw-type">
+              <div class="cw-type-dot" style="background:#8B5CF6;box-shadow:0 0 6px rgba(139,92,246,.6);"></div>
+              <div class="cw-type-info"><div class="cw-type-name">Client Finder</div><div class="cw-type-count">Core &middot; On demand</div></div>
+              <div class="cw-type-num" style="color:#8B5CF6;">&#10003;</div>
+            </div>
+            <div class="cw-type">
+              <div class="cw-type-dot" style="background:#06B6D4;box-shadow:0 0 6px rgba(6,182,212,.6);"></div>
+              <div class="cw-type-info"><div class="cw-type-name">First-Message Scripts</div><div class="cw-type-count">Bonus &middot; Included</div></div>
+              <div class="cw-type-num" style="color:#06B6D4;">&#10003;</div>
+            </div>
+            <div class="cw-type">
+              <div class="cw-type-dot" style="background:#FF9900;box-shadow:0 0 6px rgba(255,153,0,.6);"></div>
+              <div class="cw-type-info"><div class="cw-type-name">Client-Ready Profile Rewrite</div><div class="cw-type-count">Bonus &middot; Included</div></div>
+              <div class="cw-type-num" style="color:#FF9900;">&#10003;</div>
+            </div>
+            <div class="cw-type">
+              <div class="cw-type-dot" style="background:#10B981;box-shadow:0 0 6px rgba(16,185,129,.6);"></div>
+              <div class="cw-type-info"><div class="cw-type-name">Warm Reconnect Messages</div><div class="cw-type-count">Bonus &middot; Included</div></div>
+              <div class="cw-type-num" style="color:#10B981;">&#10003;</div>
+            </div>
+            <div class="cw-type">
+              <div class="cw-type-dot" style="background:#F472B6;box-shadow:0 0 6px rgba(244,114,182,.6);"></div>
+              <div class="cw-type-info"><div class="cw-type-name">Weekly Content System</div><div class="cw-type-count">Bonus &middot; Included</div></div>
+              <div class="cw-type-num" style="color:#F472B6;">&#10003;</div>
+            </div>
+            <div class="cw-type">
+              <div class="cw-type-dot" style="background:#38BDF8;box-shadow:0 0 6px rgba(56,189,248,.6);"></div>
+              <div class="cw-type-info"><div class="cw-type-name">Client-Ready Visual Kit</div><div class="cw-type-count">Bonus &middot; Included</div></div>
+              <div class="cw-type-num" style="color:#38BDF8;">&#10003;</div>
+            </div>
+          </div>
+          <div class="cw-section-lbl">Your Side</div>
+          <div class="cw-schedule">
+            <div class="cw-sched-row">
+              <span class="cw-sched-day">1</span>
+              <span class="cw-sched-title">Installed on your account, revised until you approve</span>
+              <span class="cw-sched-status sched-live">Before payment</span>
+            </div>
+            <div class="cw-sched-row">
+              <span class="cw-sched-day">2</span>
+              <span class="cw-sched-title">You approve the results, then pay one time</span>
+              <span class="cw-sched-status sched-ready">On approval</span>
+            </div>
+            <div class="cw-sched-row">
+              <span class="cw-sched-day">3</span>
+              <span class="cw-sched-title">30 days of hypercare, then it is fully yours</span>
+              <span class="cw-sched-status sched-draft">Yours</span>
+            </div>
+          </div>
+        </div>
+      </div><!-- end cw coach -->
 
       </div><!-- end hero-widgets-col -->
     </div><!-- end hero-inner -->
@@ -977,8 +1137,8 @@ h2.hd em{font-style:italic;color:var(--or);}
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FF9900" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
         </div>
         <div>
-          <div class="sc-num"><span data-counter="5" data-suffix="">0</span></div>
-          <div class="sc-lbl">Opportunities in your free demo report, built for your practice</div>
+          <div class="sc-num"><span data-counter="5" data-suffix="">0</span><em>day</em></div>
+          <div class="sc-lbl">To your first live pipeline report, built on your own account</div>
         </div>
       </div>
       <div class="sc">
@@ -986,8 +1146,8 @@ h2.hd em{font-style:italic;color:var(--or);}
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FF9900" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
         </div>
         <div>
-          <div class="sc-num"><span data-counter="10" data-suffix="">0</span></div>
-          <div class="sc-lbl">Priority opportunities per report, not 1,000 unqualified names</div>
+          <div class="sc-num"><span data-counter="1" data-suffix="x">0</span></div>
+          <div class="sc-lbl">Fee. Paid only once you approve the live results.</div>
         </div>
       </div>
       <div class="sc">
@@ -995,8 +1155,8 @@ h2.hd em{font-style:italic;color:var(--or);}
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FF9900" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
         </div>
         <div>
-          <div class="sc-num"><span data-counter="100" data-suffix="%">0</span></div>
-          <div class="sc-lbl">Of material claims backed by a checkable source</div>
+          <div class="sc-num"><span data-counter="30" data-suffix="">0</span><em>day</em></div>
+          <div class="sc-lbl">Of hypercare once you are fully handed off</div>
         </div>
       </div>
       <div class="sc">
@@ -1004,8 +1164,8 @@ h2.hd em{font-style:italic;color:var(--or);}
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FF9900" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
         </div>
         <div>
-          <div class="sc-num">Monthly</div>
-          <div class="sc-lbl">Delivered on the same cadence, every time</div>
+          <div class="sc-num">Own It</div>
+          <div class="sc-lbl">Yours after handoff. No monthly bill, ever.</div>
         </div>
       </div>
     </div>
@@ -1019,37 +1179,44 @@ h2.hd em{font-style:italic;color:var(--or);}
   <div class="container">
     <div class="sh fi">
       <div class="sl">The Diagnosis</div>
-      <h2 class="hd">You have the expertise. <em>You still can&rsquo;t see which companies need a CFO before your competitors do.</em></h2>
+      <h2 class="hd" data-n="fractional">You already have the expertise and the network. <em>You still can&rsquo;t see the next engagement coming first.</em></h2>
+      <h2 class="hd" data-n="coach" hidden>You already have the credibility and the network. <em>You still can&rsquo;t see who is ready for coaching right now.</em></h2>
     </div>
-    <div class="diag-big fi">
-      <p>You built your practice on real financial and operational expertise. That work is real, and it still matters.</p>
-      <p>Most fractional CFO firms respond to a quiet pipeline the same way: post more, work the same referral relationships harder, join another peer community. That builds relationships. It does not tell you which company down the street just raised a round, is scaling headcount with no finance leader in sight, or just went through an ownership change.</p>
-      <p class="hi">The problem is not that you are not working your network. The problem is that the signals are already public, buried across job boards, funding databases, and press releases, and by the time a referral finally lands, another fractional CFO firm has already had the conversation.</p>
-      <p><strong>Fractional CFO engagements are considered, high-value relationships, not impulse purchases.</strong> A quiet pipeline is not a vague growth concern. It is a direct, calculable gap in the practice you have already built the expertise to serve, and the only way to close it is to see the signal, verified, before anyone else does.</p>
+    <div class="diag-big fi" data-n="fractional">
+      <p>You built your practice on expertise and a strong network. That work is real, and it still matters.</p>
+      <p>Most fractional executives respond to a quiet pipeline by posting more, working the same referral relationships harder, joining another peer community. That builds relationships. It does not tell you which company down the street is about to bring in fractional leadership.</p>
+      <p class="hi">The problem is not that you are not working your network. The problem is that nothing is watching the market for the signal that tells you when to reach out, and by the time a referral finally lands, another fractional executive already has the seat.</p>
+      <p><strong>Fractional engagements run $2,000 to $20,000 a month, or $100 to $400 an hour.</strong> A quiet engagement pipeline is not a vague growth concern. It is a direct, calculable income gap, and the only way to catch the next engagement before another fractional executive does is to see the signal before anyone else does.</p>
+    </div>
+    <div class="diag-big fi" data-n="coach" hidden>
+      <p>You built your practice on credibility and a strong network. That work is real, and it still matters.</p>
+      <p>Most coaches respond to a quiet pipeline by posting more, scrolling their own connections hoping the right person is in there, or joining another peer community. That builds relationships. It does not tell you which senior leader, anywhere on LinkedIn, is actually in a coaching-ready moment right now.</p>
+      <p class="hi">The problem is not that you are not working your network. The problem is that nothing is watching LinkedIn for the signal that tells you when someone is ready, so outreach goes to the wrong person at the wrong time and reads as a cold pitch with no real reason behind it.</p>
+      <p><strong>Executive coaching engagements typically run $3,500 to $15,000 or more, depending on program length and seniority.</strong> A one-time $997 system is a small fraction of a single signed engagement, and the only way to reach the right person before they are already working with someone else is to see the signal before anyone else does.</p>
     </div>
     <!-- PROBLEM CARDS -->
-    <div class="diag-section-label bad fi">- &nbsp;What is happening now</div>
+    <div class="diag-section-label bad fi">- &nbsp;What is happening now</div>
     <div class="glow-cards-grid fi" style="margin-bottom:32px;">
       <div class="glow-card gc-red">
         <div class="gc-icon red">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(248,113,113,.9)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
         </div>
-        <div class="gc-title">Referrals tell you who trusts you, not who needs you now</div>
-        <div class="gc-desc">Your network already includes companies that will need a fractional CFO this year. It does not tell you which ones, or when to reach out first.</div>
+        <div class="gc-title">Relationships tell you who, not when</div>
+        <div class="gc-desc">Your network already includes companies that will need a fractional executive this year. It does not tell you which ones, or when to reach out first.</div>
       </div>
       <div class="glow-card gc-red">
         <div class="gc-icon red">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(248,113,113,.9)" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
         </div>
-        <div class="gc-title">The signal is public. Assembling it is not.</div>
-        <div class="gc-desc">Funding rounds, headcount growth, finance hiring, ownership changes: all visible, scattered across a dozen sources, and requiring real judgment to turn into an actual sales opportunity.</div>
+        <div class="gc-title">The engagement signal is invisible until it is public</div>
+        <div class="gc-desc">Companies building out finance, HR, or operations leadership, raising a round, or going through an ownership change are showing you the signal early. Most fractional executives never see it until a full-time search is already posted.</div>
       </div>
       <div class="glow-card gc-red">
         <div class="gc-icon red">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(248,113,113,.9)" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
         </div>
         <div class="gc-title">No system, no compounding</div>
-        <div class="gc-desc">Every month LinkedIn resets. Posting consistently builds visibility. It does not tell you which company just showed the signal that means they may need you now.</div>
+        <div class="gc-desc">Every month LinkedIn resets. Ghostwriters write generic content. The engagement-timing problem stays untouched. No pipeline is being built.</div>
       </div>
     </div>
 
@@ -1060,22 +1227,22 @@ h2.hd em{font-style:italic;color:var(--or);}
         <div class="gc-icon or">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(255,153,0,.9)" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         </div>
-        <div class="gc-title">Verified opportunities, not more noise</div>
-        <div class="gc-desc">Every opportunity is checked against public sources before it reaches you. If the evidence is not strong enough, it does not ship.</div>
+        <div class="gc-title">A system, not a subscription</div>
+        <div class="gc-desc">The full engagement-signal engine, installed inside your own private Claude account. Run it whenever you want, at whatever volume you want.</div>
       </div>
       <div class="glow-card gc-or">
         <div class="gc-icon or">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(255,153,0,.9)" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
         </div>
-        <div class="gc-title">Prioritised, not just discovered</div>
-        <div class="gc-desc">Ranked by ICP fit, signal strength, recency, and evidence quality, so you know which opportunities deserve your attention first.</div>
+        <div class="gc-title">Signal-matched, not list-bought</div>
+        <div class="gc-desc">Every profile is tied to something real and dated, a finance or operations hire, a funding round, an ownership change. Not a static list scraped once and resold.</div>
       </div>
       <div class="glow-card gc-or">
         <div class="gc-icon or">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(255,153,0,.9)" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
         </div>
-        <div class="gc-title">Delivered monthly, not built by you</div>
-        <div class="gc-desc">You do not run searches or interpret signals yourself. A researched, ready-to-act-on report lands with you every month.</div>
+        <div class="gc-title">Yours outright</div>
+        <div class="gc-desc">No monthly bill after setup. No agency contract to forget to cancel. No dependency on anyone else staying in business for your system to keep working.</div>
       </div>
     </div>
   </div>
@@ -1083,155 +1250,217 @@ h2.hd em{font-style:italic;color:var(--or);}
 
 <div class="divider"></div>
 
-<!-- THE ENGINE -->
+<!-- TWO ENGINES -->
 <section class="sec" id="system">
   <div class="container">
     <div class="sh fi">
       <div class="sl">How It Works</div>
-      <h2 class="hd">The CFO Opportunity Engine. <em>Verified evidence, not a bigger lead list.</em></h2>
-      <p>Every opportunity moves through six steps before it reaches you: Discover, Verify, Prioritise, Explain, Personalise, Activate. Nothing ships until it clears every step.</p>
+      <h2 class="hd" data-n="fractional">The Engagement-Match Radar. <em>Plus everything you need to open the conversation.</em></h2>
+      <h2 class="hd" data-n="coach" hidden>The Client Finder. <em>Plus everything you need to open the conversation.</em></h2>
+      <p data-n="fractional">Installed on your own private Claude account and run entirely by you. One capability continuously finds companies showing active engagement signals, the other turns that into outreach and content you can actually send.</p>
+      <p data-n="coach" hidden>Installed on your own private Claude account and run entirely by you. One capability continuously finds senior leaders showing real coaching-readiness signals, the other turns that into outreach and content you can actually send.</p>
     </div>
-    <div class="engines-bento fi">
+    <div class="engines-bento fi" data-n="fractional">
       <div class="eng-card or">
         <div class="eng-num">Core</div>
-        <h3>The Opportunity Engine</h3>
-        <p>Continuously scans for the events that mean a company may be about to need fractional CFO support: a funding round, rapid headcount growth, finance hiring with no CFO in place, an ownership change, an ERP or accounting-system transition. Every signal is checked against public sources before it counts. If the evidence is not there, the opportunity does not ship.</p>
-        <span class="eng-pill or">Finds opportunities before they are common knowledge</span>
+        <h3>The Engagement-Match Radar</h3>
+        <p>Runs the M.A.T.C.H. mechanism (Mine, Assemble, Tailor, Hand-off), continuously scanning for the events that mean a company may be about to bring in fractional leadership: a finance, HR, or operations hiring buildout, a funding round, an M&amp;A or ownership event. Every profile is tied to the internal decision-maker who could actually authorize bringing you in, plus a ready-to-send opening line. You choose the pace and volume.</p>
+        <span class="eng-pill or">Finds engagement opportunities before they go public</span>
         <div class="eng-widget">
           <div class="ew-label">Active Signal Types</div>
           <div class="signal-tags">
             <span class="sig-tag sig-fund">Funding Round</span>
             <span class="sig-tag sig-hire">Finance Hiring</span>
-            <span class="sig-tag sig-exp">Ownership Change</span>
-            <span class="sig-tag" style="background:rgba(255,153,0,.08);color:#FF9900;border:1px solid rgba(255,153,0,.18);">Headcount Growth</span>
-            <span class="sig-tag" style="background:rgba(16,185,129,.08);color:#10B981;border:1px solid rgba(16,185,129,.2);">ERP Transition</span>
+            <span class="sig-tag sig-exp">M&amp;A Activity</span>
+            <span class="sig-tag" style="background:rgba(255,153,0,.08);color:#FF9900;border:1px solid rgba(255,153,0,.18);">Operations Hiring</span>
+            <span class="sig-tag" style="background:rgba(16,185,129,.08);color:#10B981;border:1px solid rgba(16,185,129,.2);">HR Hiring</span>
           </div>
         </div>
       </div>
       <div class="eng-card pu">
-        <div class="eng-num">Delivered</div>
-        <h3>Your CFO Opportunity Report</h3>
-        <p>A small number of high-quality opportunities each month, not a thousand unqualified names. Each one includes the company, the verified signal and its date, why it matters, the decision-maker, an Opportunity Score, and a personalised reason to start the conversation, plus a suggested first message, in your voice, that you send yourself.</p>
-        <span class="eng-pill pu">Ten priority opportunities beat a thousand names you have to sort yourself</span>
+        <div class="eng-num">Bundled</div>
+        <h3>The Off-The-Bench Practice Toolkit</h3>
+        <p>Installed once you approve the results: opener scripts for turning a signal into a reply without sounding like you're pitching for a part-time job, a comment-to-engagement bridge for the visibility you already generate, a profile rewrite so you read like a retained executive and not a resume, a post engine so you never run out of things to say, and a visual kit so your posts and profile look boardroom-grade.</p>
+        <span class="eng-pill pu">Turns matches into real conversations</span>
         <div class="eng-widget">
-          <div class="ew-label">Every Report Includes</div>
+          <div class="ew-label">Bundled Skills</div>
           <div class="content-mix" id="contentMix">
-            <div class="cm-row"><span class="cm-label">Verified Company + Signal</span><div class="cm-bar-track"><div class="cm-bar-fill" style="background:var(--pu);" data-width="100%"></div></div><span class="cm-val">&#10003;</span></div>
-            <div class="cm-row"><span class="cm-label">Decision-Maker Identified</span><div class="cm-bar-track"><div class="cm-bar-fill" style="background:var(--cy);" data-width="100%"></div></div><span class="cm-val">&#10003;</span></div>
-            <div class="cm-row"><span class="cm-label">Evidence &amp; Source Links</span><div class="cm-bar-track"><div class="cm-bar-fill" style="background:var(--or);" data-width="100%"></div></div><span class="cm-val">&#10003;</span></div>
-            <div class="cm-row"><span class="cm-label">Opportunity Score</span><div class="cm-bar-track"><div class="cm-bar-fill" style="background:var(--gr);" data-width="100%"></div></div><span class="cm-val">&#10003;</span></div>
-            <div class="cm-row"><span class="cm-label">Personalised Outreach Angle</span><div class="cm-bar-track"><div class="cm-bar-fill" style="background:#F472B6;" data-width="100%"></div></div><span class="cm-val">&#10003;</span></div>
+            <div class="cm-row"><span class="cm-label">First-Reply Advantage Scripts</span><div class="cm-bar-track"><div class="cm-bar-fill" style="background:var(--pu);" data-width="100%"></div></div><span class="cm-val">&#10003;</span></div>
+            <div class="cm-row"><span class="cm-label">Visibility-to-Engagement Bridge</span><div class="cm-bar-track"><div class="cm-bar-fill" style="background:var(--cy);" data-width="100%"></div></div><span class="cm-val">&#10003;</span></div>
+            <div class="cm-row"><span class="cm-label">Seat-At-The-Table Profile Rewrite</span><div class="cm-bar-track"><div class="cm-bar-fill" style="background:var(--or);" data-width="100%"></div></div><span class="cm-val">&#10003;</span></div>
+            <div class="cm-row"><span class="cm-label">Always-On Authority Engine</span><div class="cm-bar-track"><div class="cm-bar-fill" style="background:var(--gr);" data-width="100%"></div></div><span class="cm-val">&#10003;</span></div>
+            <div class="cm-row"><span class="cm-label">Boardroom-Grade Visual Kit</span><div class="cm-bar-track"><div class="cm-bar-fill" style="background:#F472B6;" data-width="100%"></div></div><span class="cm-val">&#10003;</span></div>
           </div>
         </div>
       </div>
     </div>
-    <div class="engines-payoff fi">
-      <h4>Conversations, not just names on a list.</h4>
-      <p>When a decision-maker already showing the signal receives a reason to talk that is grounded in real evidence, not a guess, conversations start. Not a cold pitch. A relevant one, because the timing and the reasoning were both verified before you ever reached out.</p>
+    <div class="engines-bento fi" data-n="coach" hidden>
+      <div class="eng-card or">
+        <div class="eng-num">Core</div>
+        <h3>The Client Finder</h3>
+        <p>Runs the M.A.T.C.H. mechanism (Mine, Assemble, Tailor, Hand-off), continuously scanning LinkedIn for the events that mean a senior leader may be ready for coaching right now: a new leadership title, a team reshuffle, a funding round, a first-time people-management role. Each prospect comes with the opening message already drafted. You choose the pace and volume.</p>
+        <span class="eng-pill or">Finds high-intent prospects before you would ever stumble on them</span>
+        <div class="eng-widget">
+          <div class="ew-label">Active Signal Types</div>
+          <div class="signal-tags">
+            <span class="sig-tag sig-fund">New Title</span>
+            <span class="sig-tag sig-hire">Team Reshuffle</span>
+            <span class="sig-tag sig-exp">Funding Round</span>
+            <span class="sig-tag" style="background:rgba(255,153,0,.08);color:#FF9900;border:1px solid rgba(255,153,0,.18);">First-Time Manager</span>
+            <span class="sig-tag" style="background:rgba(16,185,129,.08);color:#10B981;border:1px solid rgba(16,185,129,.2);">Leadership Change</span>
+          </div>
+        </div>
+      </div>
+      <div class="eng-card pu">
+        <div class="eng-num">Bundled</div>
+        <h3>The Client-Ready Practice Toolkit</h3>
+        <p>Installed once you approve the results: opener scripts for turning a signal into a reply without sounding like a cold pitch, warm reconnect messages for dormant connections, a profile rewrite so you read like a coach clients hire and not a resume, a weekly content system so you never run out of things to say, and a visual kit so your posts and profile look premium.</p>
+        <span class="eng-pill pu">Turns matches into real conversations</span>
+        <div class="eng-widget">
+          <div class="ew-label">Bundled Skills</div>
+          <div class="content-mix">
+            <div class="cm-row"><span class="cm-label">First-Message Scripts</span><div class="cm-bar-track"><div class="cm-bar-fill" style="background:var(--pu);width:100%;transform:scaleX(1);" data-width="100%"></div></div><span class="cm-val">&#10003;</span></div>
+            <div class="cm-row"><span class="cm-label">Warm Reconnect Msgs</span><div class="cm-bar-track"><div class="cm-bar-fill" style="background:var(--cy);width:100%;transform:scaleX(1);" data-width="100%"></div></div><span class="cm-val">&#10003;</span></div>
+            <div class="cm-row"><span class="cm-label">Client-Ready Profile</span><div class="cm-bar-track"><div class="cm-bar-fill" style="background:var(--or);width:100%;transform:scaleX(1);" data-width="100%"></div></div><span class="cm-val">&#10003;</span></div>
+            <div class="cm-row"><span class="cm-label">Weekly Content System</span><div class="cm-bar-track"><div class="cm-bar-fill" style="background:var(--gr);width:100%;transform:scaleX(1);" data-width="100%"></div></div><span class="cm-val">&#10003;</span></div>
+            <div class="cm-row"><span class="cm-label">Client-Ready Visuals</span><div class="cm-bar-track"><div class="cm-bar-fill" style="background:#F472B6;width:100%;transform:scaleX(1);" data-width="100%"></div></div><span class="cm-val">&#10003;</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="engines-payoff fi" data-n="fractional">
+      <h4>Engagement conversations. The only output that matters.</h4>
+      <p>When decision-makers already showing the signal receive your outreach or your thinking consistently, conversations start. Not a cold pitch. A warm conversation that begins because the signal found them first, before another fractional executive did.</p>
+    </div>
+    <div class="engines-payoff fi" data-n="coach" hidden>
+      <h4>Client conversations. The only output that matters.</h4>
+      <p>When senior leaders already showing the signal receive your outreach or your thinking consistently, conversations start. Not a cold pitch. A warm conversation that begins because the signal found them first, before they found someone else.</p>
     </div>
   </div>
 </section>
 
 <div class="divider"></div>
 
-<!-- OPPORTUNITY SCORE -->
+<!-- COMPOUNDING -->
 <section class="sec">
   <div class="container">
     <div class="sh fi">
-      <div class="sl">How Prioritisation Works</div>
-      <h2 class="hd">Illustrative example. <em>Not every signal counts the same.</em></h2>
-      <p>Every opportunity gets scored across six dimensions before it is ranked. This is not a prediction of who will buy. It is how we decide which opportunities deserve your attention first.</p>
+      <div class="sl">A Growing Network, At Your Own Pace</div>
+      <h2 class="hd">Illustrative example. <em>Not a fixed delivery rate.</em></h2>
+      <p>Volume is entirely up to you once the system is installed. This is one example of what a steady weekly pace could look like over six months, not a guarantee of what gets delivered.</p>
     </div>
     <div class="compound-bento fi">
       <div class="cb-chart">
-        <div class="cb-chart-title">Opportunity Score Breakdown</div>
-        <div class="cb-chart-sub">One illustrative example. Every real opportunity is scored the same way.</div>
+        <div class="cb-chart-title"><span data-n="fractional">Right-Fit Engagement Opportunities Surfaced</span><span data-n="coach" hidden>Right-Fit Coaching Prospects Surfaced</span></div>
+        <div class="cb-chart-sub">Example only, at a steady self-run weekly pace</div>
         <div class="compound-bars-wrap" id="compoundChart">
           <div class="cb-bar-group">
-            <div class="cb-bar-num">90</div>
-            <div class="cb-bar" style="background:var(--or);box-shadow:0 0 20px rgba(255,153,0,.4);" data-height="90%"></div>
-            <div class="cb-bar-time">ICP Fit</div>
+            <div class="cb-bar-num">~60</div>
+            <div class="cb-bar" style="background:rgba(255,255,255,.18);" data-height="25%"></div>
+            <div class="cb-bar-time">Now</div>
           </div>
           <div class="cb-bar-group">
-            <div class="cb-bar-num">85</div>
-            <div class="cb-bar" style="background:rgba(255,153,0,.82);" data-height="85%"></div>
-            <div class="cb-bar-time">Signal Strength</div>
+            <div class="cb-bar-num">100</div>
+            <div class="cb-bar" style="background:rgba(255,153,0,.35);" data-height="40%"></div>
+            <div class="cb-bar-time">Mo 1</div>
           </div>
           <div class="cb-bar-group">
-            <div class="cb-bar-num">70</div>
+            <div class="cb-bar-num">140</div>
+            <div class="cb-bar" style="background:rgba(255,153,0,.5);" data-height="55%"></div>
+            <div class="cb-bar-time">Mo 2</div>
+          </div>
+          <div class="cb-bar-group">
+            <div class="cb-bar-num">180</div>
             <div class="cb-bar" style="background:rgba(255,153,0,.62);" data-height="70%"></div>
-            <div class="cb-bar-time">Recency</div>
+            <div class="cb-bar-time">Mo 3</div>
           </div>
           <div class="cb-bar-group">
-            <div class="cb-bar-num">60</div>
-            <div class="cb-bar" style="background:rgba(255,153,0,.5);" data-height="60%"></div>
-            <div class="cb-bar-time">Fin. Complexity</div>
+            <div class="cb-bar-num">200</div>
+            <div class="cb-bar" style="background:rgba(255,153,0,.72);" data-height="78%"></div>
+            <div class="cb-bar-time">Mo 4</div>
           </div>
           <div class="cb-bar-group">
-            <div class="cb-bar-num">75</div>
-            <div class="cb-bar" style="background:rgba(255,153,0,.68);" data-height="75%"></div>
-            <div class="cb-bar-time">Org Context</div>
+            <div class="cb-bar-num">220</div>
+            <div class="cb-bar" style="background:rgba(255,153,0,.82);" data-height="87%"></div>
+            <div class="cb-bar-time">Mo 5</div>
           </div>
           <div class="cb-bar-group">
-            <div class="cb-bar-num" style="color:var(--or)">95</div>
-            <div class="cb-bar" style="background:var(--or);box-shadow:0 0 20px rgba(255,153,0,.4);" data-height="95%"></div>
-            <div class="cb-bar-time" style="color:var(--or)">Evidence Quality</div>
+            <div class="cb-bar-num" style="color:var(--or)">240</div>
+            <div class="cb-bar" style="background:var(--or);box-shadow:0 0 20px rgba(255,153,0,.4);" data-height="100%"></div>
+            <div class="cb-bar-time" style="color:var(--or)">Mo 6</div>
           </div>
         </div>
       </div>
       <div class="cb-info">
         <div class="cbi-stat">
-          <div class="cbi-label">What it is not</div>
-          <div class="cbi-val" style="font-size:16px;line-height:1.4;">A probability of purchase</div>
-          <div class="cbi-desc">Never a prediction of buying intent, and never presented as one.</div>
+          <div class="cbi-label">Your network today</div>
+          <div class="cbi-val">~60</div>
+          <div class="cbi-desc"><span data-n="fractional">Estimated right-fit engagement opportunities visible in a typical existing network</span><span data-n="coach" hidden>Estimated right-fit coaching prospects visible in a typical existing network</span></div>
         </div>
         <div class="cbi-stat">
-          <div class="cbi-label">What it is</div>
-          <div class="cbi-val" style="font-size:16px;line-height:1.4;">A prioritisation signal</div>
-          <div class="cbi-desc">Which opportunities deserve your attention first, ranked consistently.</div>
+          <div class="cbi-label">At a steady weekly pace</div>
+          <div class="cbi-val"><em>Your choice</em></div>
+          <div class="cbi-desc">You control volume once the system is installed. This example assumes a steady run.</div>
         </div>
         <div class="cbi-stat">
-          <div class="cbi-label">How it is built</div>
-          <div class="cbi-val" style="font-size:16px;line-height:1.4;">Six dimensions, every time</div>
-          <div class="cbi-desc">Scored the same way for every opportunity, every month.</div>
+          <div class="cbi-label">Example, by month 6</div>
+          <div class="cbi-val"><em>240</em></div>
+          <div class="cbi-desc">Illustrative only, based on a consistent weekly pace, not a promised delivery rate</div>
         </div>
       </div>
     </div>
-    <p class="compound-payoff fi">Every opportunity is scored the same way. <strong>You decide where to spend your time first.</strong></p>
+    <p class="compound-payoff fi">A consistent pace compounds. <strong>The pace itself is entirely yours to set.</strong></p>
   </div>
 </section>
 
 <div class="divider"></div>
 
-<!-- THE PROCESS -->
+<!-- SETUP -->
 <section class="sec">
   <div class="container">
     <div class="sh fi">
-      <div class="sl">The Process</div>
-      <h2 class="hd">See it before you commit. <em>No pricing conversation until you have seen a real report.</em></h2>
-      <p>No numbers, no contract, until you have seen the actual research quality on your own market.</p>
+      <div class="sl">The Setup</div>
+      <h2 class="hd">Installed before you pay. <em>One fee, once you approve it.</em></h2>
+      <p>No card held in advance, no separate demo environment to manage. The system is built and revised directly on your own Claude account, and you see real results on your own market first.</p>
     </div>
     <div class="steps-timeline">
       <div class="step-tl fi">
         <div class="step-tl-num">1</div>
-        <div class="step-tl-tag">Free, before any payment</div>
-        <h3>See real opportunities from your own market first</h3>
-        <p>DM SIGNAL, or book a call. If it is a fit, we build your free CFO Opportunity Report: five real, evidence-backed opportunities matched to your practice, before any pricing conversation.</p>
+        <div class="step-tl-tag">Day 0 to 5 &middot; Installed before you pay anything</div>
+        <h3 data-n="fractional">See it work on your own market before you decide anything</h3>
+        <h3 data-n="coach" hidden>See it work on real prospects before you decide anything</h3>
+        <p data-n="fractional">DM SIGNAL. A discovery call confirms fit, then your own Claude Project and Vibe Prospecting connection are set up on trust, before any payment. Your first live pipeline report is built inside days.</p>
+        <p data-n="coach" hidden>DM SIGNAL. A discovery call confirms fit, then your own Claude Project and Vibe Prospecting connection are set up on trust, before any payment. Your first live prospect report is built inside days.</p>
         <ul>
-          <li>Built from your actual ICP and specialisation, not a generic template</li>
-          <li>Every opportunity backed by a source you can check yourself</li>
-          <li>Nothing charged, nothing committed, at this stage</li>
+          <li>Built from your actual practice, not a generic template</li>
+          <li>Not right yet, say so and it gets revised</li>
+          <li>Unlimited revision rounds, no cap on how many</li>
+          <li>Nothing charged, nothing committed, at any point in this phase</li>
         </ul>
       </div>
       <div class="step-tl fi">
         <div class="step-tl-num">2</div>
-        <div class="step-tl-tag">Once you have seen the quality</div>
-        <h3>Start the CFO Opportunity Engine for your practice</h3>
-        <p>If the free report holds up, we walk through what a monthly engagement looks like for your specific ICP and capacity: pricing, cadence, and volume, matched to your practice. There is no published rate card, because every practice's volume needs are different.</p>
+        <div class="step-tl-tag">Day 5 &middot; Once you approve the results</div>
+        <h3>One fee, only after you have seen it work</h3>
+        <p data-n="fractional">Once you explicitly approve the live pipeline report, a single one-time payment is collected. No trial timer, no card held in advance, no recurring charge, ever.</p>
+        <p data-n="coach" hidden>Once you explicitly approve the live prospect report, a single one-time payment is collected. No trial timer, no card held in advance, no recurring charge, ever.</p>
         <ul>
-          <li>Delivered monthly, on the same evidence-first standard as your free report</li>
-          <li>You decide which opportunities to act on, and when</li>
-          <li>No long-term contract; terms are confirmed on the call</li>
+          <li>Payment gated to one specific, checkable thing: your approval</li>
+          <li>Your own account, your own data, no shared access</li>
+          <li data-n="fractional">Full Engagement Signal Engine already live from the build phase</li>
+          <li data-n="coach" hidden>Full Client Finder Engine already live from the build phase</li>
+        </ul>
+      </div>
+      <div class="step-tl fi">
+        <div class="step-tl-num">3</div>
+        <div class="step-tl-tag">Day 10 to 45 &middot; Bonus skills, handoff, hypercare</div>
+        <h3>Five bonus components installed, then you run it yourself</h3>
+        <p data-n="fractional">The five bonus components go in on Day 10, alongside the Run-Your-Own-Practice Playbook. Full handoff and your first fully independent run land on Day 15, backed by 30 days of hypercare while you get comfortable.</p>
+        <p data-n="coach" hidden>The five bonus components go in on Day 10, alongside the Run-It-Yourself Playbook. Full handoff and your first fully independent run land on Day 15, backed by 30 days of hypercare while you get comfortable.</p>
+        <ul>
+          <li>Direct access to me at saurabh@pipelind.com, 24-hour response time</li>
+          <li>Filter tuning and troubleshooting included through hypercare</li>
+          <li>Day 45: hypercare ends, no further billing relationship required</li>
         </ul>
       </div>
     </div>
@@ -1253,21 +1482,23 @@ h2.hd em{font-style:italic;color:var(--or);}
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(248,113,113,.9)" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
         </div>
         <div class="gc-title">Waiting on the referral cycle</div>
-        <div class="gc-desc">The network that built your practice is real, and it is finite. It does not regenerate on command. Every quiet month, engagements you were structurally positioned to win are landing with a fractional CFO firm that saw the signal first.</div>
+        <div class="gc-desc" data-n="fractional">The network that built your practice is real, and it is finite. It does not regenerate on command. Every quiet month, engagements you were structurally positioned to win are landing with a fractional executive who saw the signal first.</div>
+        <div class="gc-desc" data-n="coach" hidden>The network that built your practice is real, and it is finite. It does not regenerate on command. Every quiet month, clients you were structurally positioned to work with are choosing a coach who reached them first.</div>
       </div>
       <div class="glow-card gc-red">
         <div class="gc-icon red">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(248,113,113,.9)" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
         </div>
-        <div class="gc-title">A generic lead list or prospecting tool</div>
-        <div class="gc-desc">Raw company data and contact lists are already easy to buy. They hand you the volume and leave the verification, prioritisation, and judgment entirely to you. That work is the actual bottleneck, not the data.</div>
+        <div class="gc-title">A rented tool, a course, or a subscription</div>
+        <div class="gc-desc">Some platforms charge a recurring bill for access to a system or a data feed. Others sell a coaching program teaching you to build the same thing yourself, over weeks of your own effort. Either way, stop paying, or stop doing the work, and it stops with it. You never actually own anything.</div>
       </div>
       <div class="glow-card gc-red">
         <div class="gc-icon red">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(248,113,113,.9)" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
         </div>
         <div class="gc-title">Posting for inbound alone</div>
-        <div class="gc-desc">Content-only tools build visibility. Visibility is not the same thing as knowing which company is about to bring in a fractional CFO before anyone else does.</div>
+        <div class="gc-desc" data-n="fractional">Content-only tools build visibility. Visibility is not the same thing as knowing which company is about to bring in fractional leadership before anyone else does.</div>
+        <div class="gc-desc" data-n="coach" hidden>Content-only tools build visibility. Visibility is not the same thing as knowing which senior leader is ready for coaching before anyone else does.</div>
       </div>
     </div>
     <div class="compare-wrap fi">
@@ -1276,23 +1507,24 @@ h2.hd em{font-style:italic;color:var(--or);}
           <tr>
             <th></th>
             <th>Waiting on Referrals</th>
-            <th>Generic Lead Lists &amp; Prospecting Tools</th>
+            <th>A Rented Tool, Course, or Subscription</th>
             <th class="win">Pipelind</th>
           </tr>
         </thead>
         <tbody>
-          <tr><td>Who does the verification</td><td>No one</td><td>You, alone, on every name</td><td class="win">Done before it reaches you</td></tr>
-          <tr><td>Prioritisation</td><td>None, it is luck</td><td>Raw volume, you sort it</td><td class="win">Scored and ranked for you</td></tr>
-          <tr><td>Personalisation</td><td>Whatever you can improvise</td><td>Generic templates</td><td class="win">Evidence-based reason, plus a suggested message</td></tr>
-          <tr><td>Decision-maker mapping</td><td>Sometimes, via referral</td><td>Often stale or wrong</td><td class="win">Mapped and current</td></tr>
-          <tr><td>Who does the research</td><td>You, indefinitely</td><td>You, with more raw data to sort</td><td class="win">Done for you, every month</td></tr>
-          <tr><td>What you are paying for</td><td>Nothing, it is free and unpredictable</td><td>Access to more names</td><td class="win">Verified, prioritised opportunities</td></tr>
+          <tr class="fi"><td>Cost structure</td><td>Free, unpredictable</td><td>Recurring monthly bill, indefinitely</td><td class="win">One-time fee, then $0</td></tr>
+          <tr class="fi"><td>Who owns it</td><td>No one, it is luck</td><td>The vendor, you are renting access</td><td class="win">You, outright</td></tr>
+          <tr class="fi"><td>Who does the actual work</td><td>You, alone, indefinitely</td><td>You, either paying every month or spending weeks building it yourself if it is a course</td><td class="win">Installed for you, before you ever pay</td></tr>
+          <tr class="fi"><td data-n="fractional">Engagement-signal intelligence</td><td data-n="coach" hidden>Coaching-signal intelligence</td><td>None</td><td>Data feed only, or a framework you build the workflow around</td><td class="win">Signal-matched, refreshed every run</td></tr>
+          <tr class="fi"><td>If you stop paying</td><td>N/A</td><td>Everything stops</td><td class="win">Nothing stops, it is already yours</td></tr>
+          <tr class="fi"><td>Preserves premium positioning</td><td>Yes</td><td>Often not, cold outreach at scale</td><td class="win">Yes, signal-led and specific</td></tr>
+          <tr class="fi"><td>Dependency</td><td>On your network staying warm</td><td>On the vendor staying in business</td><td class="win">On nothing but your own account</td></tr>
         </tbody>
       </table>
       <div class="cmp-mob">
-        <div class="cmp-card"><h5>Waiting on Referrals</h5><dl><div><dt>Verification</dt><dd>No one</dd></div><div><dt>Prioritisation</dt><dd>None, it is luck</dd></div><div><dt>Who does the research</dt><dd>You, indefinitely</dd></div></dl></div>
-        <div class="cmp-card"><h5>Generic Lead Lists &amp; Prospecting Tools</h5><dl><div><dt>Verification</dt><dd>You, alone, on every name</dd></div><div><dt>Prioritisation</dt><dd>Raw volume, you sort it</dd></div><div><dt>Paying for</dt><dd>Access to more names</dd></div></dl></div>
-        <div class="cmp-card win"><h5>Pipelind</h5><dl><div><dt>Verification</dt><dd>Done before it reaches you</dd></div><div><dt>Prioritisation</dt><dd>Scored and ranked for you</dd></div><div><dt>Paying for</dt><dd>Verified, prioritised opportunities</dd></div></dl></div>
+        <div class="cmp-card"><h5>Waiting on Referrals</h5><dl><div><dt>Cost structure</dt><dd>Free, unpredictable</dd></div><div><dt>Signal intelligence</dt><dd>None</dd></div><div><dt>Who owns it</dt><dd>No one, it is luck</dd></div></dl></div>
+        <div class="cmp-card"><h5>A Rented Tool, Course, or Subscription</h5><dl><div><dt>Cost structure</dt><dd>Recurring monthly bill</dd></div><div><dt>Who does the work</dt><dd>You, paying monthly or building it yourself</dd></div><div><dt>If you stop paying</dt><dd>Everything stops</dd></div></dl></div>
+        <div class="cmp-card win"><h5>Pipelind</h5><dl><div><dt>Cost structure</dt><dd>One-time fee, then $0</dd></div><div><dt>Who owns it</dt><dd>You, outright</dd></div><div><dt>If you stop paying</dt><dd>Nothing stops, it is already yours</dd></div></dl></div>
       </div>
     </div>
   </div>
@@ -1304,82 +1536,127 @@ h2.hd em{font-style:italic;color:var(--or);}
 <section class="sec" id="deliverables">
   <div class="container">
     <div class="sh fi">
-      <div class="sl">What You Receive</div>
-      <h2 class="hd">Delivered every month. <em>Verified before it reaches you.</em></h2>
+      <div class="sl">What You Own After Setup</div>
+      <h2 class="hd">A one-time build. <em>Not a monthly package.</em></h2>
     </div>
     <div class="deliv-top fi">
-      <div class="ds"><div class="ds-num">10</div><div class="ds-lbl">Priority opportunities<br>per report</div></div>
-      <div class="ds"><div class="ds-num">6</div><div class="ds-lbl">Steps every opportunity<br>clears before shipping</div></div>
-      <div class="ds"><div class="ds-num">100</div><div class="ds-lbl">% of claims backed<br>by a checkable source</div></div>
-      <div class="ds"><div class="ds-num">1x</div><div class="ds-lbl">Monthly cadence,<br>every time</div></div>
+      <div class="ds"><div class="ds-num">1x</div><div class="ds-lbl">Fee, paid on approval<br>then nothing recurring</div></div>
+      <div class="ds"><div class="ds-num">6</div><div class="ds-lbl">Skills installed<br>on your own account</div></div>
+      <div class="ds"><div class="ds-num">30</div><div class="ds-lbl">Days of hypercare<br>support included</div></div>
+      <div class="ds"><div class="ds-num">0</div><div class="ds-lbl">Ongoing bill<br>from me, ever</div></div>
     </div>
-    <div class="deliv-grid fi">
+    <div class="deliv-grid fi" data-n="fractional">
       <div class="dc feat">
-        <span class="di">The CFO Opportunity Report &middot; The Core Deliverable</span>
-        <h4>A small number of high-quality opportunities, verified and prioritised, delivered monthly.</h4>
-        <p>Each report contains company, location, industry, and size; the verified signal and its date; why it matters for a fractional CFO specifically; the decision-maker and role; an Opportunity Score; evidence and source links; a recommended conversation; a personalised outreach angle; and a suggested first message. Ten priority opportunities, not a thousand unqualified names.</p>
-        <span class="dtag">Real signals &middot; Verified sources &middot; Never invented</span>
+        <span class="di">The Engagement-Match Radar &middot; The Differentiator</span>
+        <h4>Engagement-opportunity profiles, generated on demand, on your own account.</h4>
+        <p>Installed directly inside your own private Claude Project. Every profile is pulled from real event data and flagged by an active signal: a finance, HR, or operations hiring buildout, a funding round, an M&amp;A or ownership event. Each profile is tied to the internal decision-maker who could authorize bringing in fractional leadership, plus a ready-to-send opening line. You choose the pace and the volume.</p>
+        <span class="dtag">Real signals &middot; Verified profiles &middot; No data scraping</span>
       </div>
-      <div class="dc"><span class="di">Included</span><h4>Decision-Maker Mapping</h4><p>Every opportunity is tied to the person who could actually authorise bringing in a fractional CFO, never a static contact scraped once and resold.</p></div>
-      <div class="dc"><span class="di">Included</span><h4>Opportunity Scoring</h4><p>Every opportunity is ranked across ICP fit, signal strength, recency, financial complexity, organisational context, and evidence quality, so you know where to spend your time first.</p></div>
-      <div class="dc"><span class="di">Included</span><h4>Evidence &amp; Source Tracking</h4><p>Every material claim comes with the source behind it. If the evidence is not strong enough, the opportunity does not ship, and we say so rather than guess.</p></div>
-      <div class="dc"><span class="di">Included</span><h4>Personalised Outreach Angles</h4><p>A specific, evidence-based reason to reach out, plus a suggested first message in your voice. You make contact yourself, from your own account.</p></div>
-      <div class="dc"><span class="di">Direct access</span><h4>Direct operator access via email</h4><p>Email me directly at <a href="mailto:saurabh@pipelind.com" style="color:var(--or)">saurabh@pipelind.com</a>. Not an account manager, the person who builds every report.</p></div>
+      <div class="dc"><span class="di">Bonus skill</span><h4>First-Reply Advantage Scripts</h4><p>Ready-to-use DM scripts for what to say once someone replies or connects, so a reply becomes an actual engagement conversation, not a cold pitch.</p></div>
+      <div class="dc"><span class="di">Bonus skill</span><h4>Seat-At-The-Table Profile Rewrite</h4><p>An audit and rewrite of your LinkedIn profile so it reads like a retained executive&rsquo;s landing page, not a job-seeker&rsquo;s resume.</p></div>
+      <div class="dc"><span class="di">Bonus skill</span><h4>Visibility-to-Engagement Bridge</h4><p>A system for turning the visibility you already get on LinkedIn into real 1:1 engagement conversations, not just profile views.</p></div>
+      <div class="dc"><span class="di">Bonus skill</span><h4>Always-On Authority Engine</h4><p>An on-demand LinkedIn post generator, so you never run out of things to post to build fractional-executive authority.</p></div>
+      <div class="dc"><span class="di">Bonus skill</span><h4>Boardroom-Grade Visual Kit</h4><p>Design briefs for post and profile graphics you can hand straight to an AI image tool. No designer needed.</p></div>
+      <div class="dc"><span class="di">Support &middot; 30 days</span><h4>Direct operator access via email</h4><p>Email me directly at <a href="mailto:saurabh@pipelind.com" style="color:var(--or)">saurabh@pipelind.com</a>. Not an account manager. 24-hour response time through hypercare while you get comfortable running it yourself.</p></div>
       <div class="dc dfy">
-        <span class="di" style="color:rgba(160,150,255,.9)">Evidence-First &middot; By Design</span>
-        <h4>Every material claim is checked before it reaches you</h4>
-        <p>If the evidence is not strong enough, the opportunity does not ship. &ldquo;Not verified&rdquo; is a correct answer here, not a gap we fill with a guess.</p>
-        <span class="dtag">Built on a standard, not a shortcut</span>
+        <span class="di" style="color:rgba(160,150,255,.9)">Ownership &middot; No extra cost</span>
+        <h4>Your own account, your own data, your own pace</h4>
+        <p>Nothing here depends on me staying available or in business. Once it is installed, it is yours. You decide the volume, the cadence, and how you use it.</p>
+        <span class="dtag">Built around how you work, not the other way around</span>
+      </div>
+    </div>
+    <div class="deliv-grid fi" data-n="coach" hidden>
+      <div class="dc feat">
+        <span class="di">The Client Finder &middot; The Differentiator</span>
+        <h4>Coaching-ready prospect profiles, generated on demand, on your own account.</h4>
+        <p>Installed directly inside your own private Claude Project. Every profile is pulled from real event data and flagged by an active signal: a new leadership title, a team reshuffle, a funding round, a first-time people-management role. Each prospect comes with the opening message already drafted. You choose the pace and the volume.</p>
+        <span class="dtag">Real signals &middot; Verified profiles &middot; No data scraping</span>
+      </div>
+      <div class="dc"><span class="di">Bonus skill</span><h4>First-Message Scripts</h4><p>Ready-to-use opening messages for new, signal-backed connections, so you never stare at a blank message box wondering how to start.</p></div>
+      <div class="dc"><span class="di">Bonus skill</span><h4>Client-Ready Profile Rewrite</h4><p>An audit and rewrite of your LinkedIn profile so it reads like a coach clients hire, not a résumé.</p></div>
+      <div class="dc"><span class="di">Bonus skill</span><h4>Warm Reconnect Messages</h4><p>Ready-to-use messages for reconnecting with dormant connections without it reading as a cold pitch.</p></div>
+      <div class="dc"><span class="di">Bonus skill</span><h4>Weekly Content System</h4><p>An on-demand LinkedIn post generator, so you never run out of things to post to build coaching authority.</p></div>
+      <div class="dc"><span class="di">Bonus skill</span><h4>Client-Ready Visual Kit</h4><p>Design briefs for post and profile graphics you can hand straight to an AI image tool. No designer needed.</p></div>
+      <div class="dc"><span class="di">Support &middot; 30 days</span><h4>Direct operator access via email</h4><p>Email me directly at <a href="mailto:saurabh@pipelind.com" style="color:var(--or)">saurabh@pipelind.com</a>. Not an account manager. 24-hour response time through hypercare while you get comfortable running it yourself.</p></div>
+      <div class="dc dfy">
+        <span class="di" style="color:rgba(160,150,255,.9)">Ownership &middot; No extra cost</span>
+        <h4>Your own account, your own data, your own pace</h4>
+        <p>Nothing here depends on me staying available or in business. Once it is installed, it is yours. You decide the volume, the cadence, and how you use it.</p>
+        <span class="dtag">Built around how you work, not the other way around</span>
       </div>
     </div>
   </div>
 </section>
-
 <!-- RHYTHM -->
 <section class="sec">
   <div class="container">
     <div class="sh fi">
       <div class="sl">Your Operating Rhythm</div>
-      <h2 class="hd">Delivered monthly. <em>Reviewed on your own time.</em></h2>
-      <p>There is no dashboard to check daily and no research to run yourself. Your report lands on a set monthly cadence. Review it, decide which opportunities to act on, and reach out yourself, in your own voice, whenever it fits your schedule.</p>
+      <h2 class="hd">No fixed schedule. <em>You run it when you want to.</em></h2>
+      <p>There is no weekly commitment I am asking you to keep, because I am not the one running it after the first 30 days. Some people run it every Monday. Some run it in bursts before a push. The system waits for you, not the other way around.</p>
     </div>
   </div>
 </section>
-
 <!-- WHO THIS IS FOR -->
 <section class="sec">
   <div class="container">
     <div class="sh fi">
       <div class="sl">Who This Is For</div>
-      <h2 class="hd">Built for <em>independent, solo-practice fractional CFO firms</em></h2>
+      <h2 class="hd" data-n="fractional">Built for <em>independent, solo-practice fractional executives, every function</em></h2>
+      <h2 class="hd" data-n="coach" hidden>Built for <em>independent executive coaches, coaching senior leaders</em></h2>
     </div>
-    <div class="fit-grid fi">
+    <div class="fit-grid fi" data-n="fractional">
       <div class="fit-col yes">
-        <div class="fit-head">- Right Fit &middot; Fractional CFO Firms</div>
+        <div class="fit-head">- Right Fit &middot; Fractional Executives, Every Function</div>
         <ul>
-          <li>Independent, solo-practice fractional CFO or CFO firm, not employed by a placement agency</li>
-          <li>Primarily US-based; Canada, UK, Australia, and other Tier-1 English-speaking markets also fit</li>
-          <li>Founder or principal-led, with an established practice, existing clients or case studies to point to</li>
-          <li>A clearly defined offer and ICP of your own, we calibrate around your specialisation, not a generic template</li>
-          <li>Active or reasonably active on LinkedIn, with capacity to take on additional clients right now</li>
-          <li>Currently relying primarily on referrals, networking, or founder-led business development</li>
+          <li>Independent, solo-practice fractional CFO, COO, CMO, CTO, CHRO, CRO, or any other senior function</li>
+          <li>You own your own client acquisition, not employed by a fractional-placement firm or staffing agency</li>
+          <li>1 to 3 years into solo practice, still running on referrals and an old employer&rsquo;s network</li>
+          <li>Working primarily in English-speaking markets, we&rsquo;ll confirm fit on the call</li>
+          <li>Income tied to fractional engagements, typically $2,000 to $20,000 a month or $100 to $400 an hour</li>
+          <li>Currently relying on referrals and relationship timing, with no way to see the next engagement coming before another fractional executive does</li>
         </ul>
       </div>
       <div class="fit-col no">
         <div class="fit-head">&#10007; Probably Not the Right Fit</div>
         <ul>
-          <li>GTM, RevOps, or marketing consultants who are not themselves fractional CFOs</li>
-          <li>Full-time employees rather than independent operators</li>
+          <li>GTM, RevOps, or marketing consultants who are not themselves fractional executives</li>
+          <li>B2C practitioners, or full-time employees rather than independent operators</li>
           <li>Agency founders, vendors, or service providers selling to other consultants</li>
-          <li>In-house corporate finance staff, not independent fractional operators</li>
+          <li>In-house corporate staff, not independent fractional operators</li>
           <li>Candidate-side or contingency-only recruiters</li>
           <li>Employees of a fractional-placement firm, as distinct from independent solo-practice operators</li>
+        </ul>
+      </div>
+    </div>
+    <div class="fit-grid fi" data-n="coach" hidden>
+      <div class="fit-col yes">
+        <div class="fit-head">- Right Fit &middot; Executive Coaches</div>
+        <ul>
+          <li>Independent executive coach, solo or very small practice, not part of a large coaching platform</li>
+          <li>You coach senior leaders, VPs, C-suite, or high-potential directors inside mid-size to large companies</li>
+          <li>2 to 6 years into independent practice, established but not yet at premium-retainer scale</li>
+          <li>Working primarily in English-speaking markets, we&rsquo;ll confirm fit on the call</li>
+          <li>Income tied to coaching engagements, typically $3,500 to $15,000 or more per engagement</li>
+          <li>Currently relying on referrals and your existing network, with no way to see who is ready for coaching before you stumble into them</li>
+        </ul>
+      </div>
+      <div class="fit-col no">
+        <div class="fit-head">&#10007; Probably Not the Right Fit</div>
+        <ul>
+          <li>Career coaches, business coaches, or life coaches, B2C-leaning practices</li>
+          <li>Coaches already running a premium marketing retainer, $5,000 to $10,000 or more a month</li>
+          <li>Coaches who are part of a large coaching platform such as BetterUp or CoachHub</li>
+          <li>Full-time employees rather than independent practitioners</li>
+          <li>Agency founders, vendors, or service providers selling to other coaches</li>
+          <li>In-house corporate L&amp;D staff, not independent coaching practitioners</li>
         </ul>
       </div>
     </div>
   </div>
 </section>
 
+<!-- OPERATOR -->
 <!-- OPERATOR -->
 <section class="operator-section" id="operator">
   <div class="container">
@@ -1389,7 +1666,7 @@ h2.hd em{font-style:italic;color:var(--or);}
       <div class="operator-photo-wrap fi">
         <div class="operator-glow"></div>
         <div class="operator-photo-frame">
-          <img src="assets/saurabh-photo.jpg" alt="Saurabh M.  &middot;  Founder, Pipelind"/>
+          <img src="assets/saurabh-photo.jpg" alt="Saurabh M.  ·  Founder, Pipelind"/>
         </div>
         <div class="operator-photo-badge">
           <div class="operator-badge-avatar">
@@ -1405,23 +1682,26 @@ h2.hd em{font-style:italic;color:var(--or);}
       <!-- CONTENT -->
       <div class="operator-content fi">
         <div class="sl">The Operator</div>
-        <h2>Sixteen years on the buyer&rsquo;s side.<br><em>Now finding your next CFO opportunity.</em></h2>
-        <p class="lead">I am not a fractional CFO myself. I spent sixteen years inside corporate operations, on the side of the business that actually decides whether to bring in outside senior finance leadership. That means direct, lived familiarity with the internal signals that come before that decision: a funding round, a growth stage the finance function has outgrown, a stalled full-time search, an ownership change, a budget cycle. Every opportunity Pipelind delivers runs through a research and verification stack built on that same buyer&rsquo;s-side judgment, not a marketer guessing at your world from the outside. You work directly with the person who built it, not an account manager.</p>
+        <h2 data-n="fractional">Sixteen years on the buyer&rsquo;s side.<br><em>This one finds your next engagement.</em></h2>
+        <h2 data-n="coach" hidden>Sixteen years on the buyer&rsquo;s side.<br><em>This one finds your next client.</em></h2>
+        <p class="lead" data-n="fractional">I am not a fractional executive myself. I spent sixteen years inside corporate operations, on the side of the business that actually approves bringing in outside senior leadership. That means direct, lived familiarity with the internal signals that come before that decision, a departure, a growth stage the org has outgrown, a stalled full-time search, a budget cycle, and the internal approval mechanics that follow. Not a marketer guessing at your world from the outside. You work directly with the person who built it, not an account manager.</p>
+        <p class="lead" data-n="coach" hidden>I am not an executive coach myself. I spent sixteen years inside corporate operations, on the side of the business that actually approves bringing in outside senior support. That means direct, lived familiarity with the internal signals that come before that decision, a promotion, a team reshuffle, a first-time people-management role, a budget cycle, and the internal approval mechanics that follow. Not a marketer guessing at your world from the outside. You work directly with the person who built it, not an account manager.</p>
 
         <div class="operator-stats">
           <div class="os"><div class="os-num">16+</div><div class="os-lbl">Years on the buyer&rsquo;s side</div></div>
-          <div class="os"><div class="os-num">Evidence</div><div class="os-lbl">First. Every claim sourced, or flagged unverified</div></div>
-          <div class="os"><div class="os-num">Monthly</div><div class="os-lbl">Delivered on a set cadence</div></div>
+          <div class="os"><div class="os-num">B2B</div><div class="os-lbl">GTM &amp; pipeline specialist</div></div>
+          <div class="os"><div class="os-num">1x</div><div class="os-lbl">Setup fee. Yours after that.</div></div>
         </div>
 
         <div class="operator-creds">
-          <div class="oc-row">Sixteen years spent on the side of the business that decides whether to bring in outside senior finance expertise, watching the exact internal signals that precede that decision. That is why this is not a generic lead list, it is a research process built on knowing what the buying moment actually looks like from the inside.</div>
-          <div class="oc-row">Direct operator access means you email me at <a href="mailto:saurabh@pipelind.com" style="color:var(--or)">saurabh@pipelind.com</a>. The same person who builds every report responds within 24 hours, Monday through Friday. No ticketing system. No queue.</div>
-          <div class="oc-row">Selective intake. Every practice gets the same research depth and the same evidence standard. That standard is non-negotiable, which is why intake runs at a deliberate pace rather than a mass-market one.</div>
+          <div class="oc-row">Sixteen years spent on the side of the business that decides whether to bring in outside senior expertise, watching the exact internal signals that precede that decision. That is why this is not a generic lead list, it is a system built on knowing what the buying moment actually looks like from the inside.</div>
+          <div class="oc-row">Deep background in B2B GTM strategy, demand generation, RevOps, and founder-led sales. The ICP filters and signal logic are built from years of watching what actually converts in B2B pipelines, not borrowed from a playbook.</div>
+          <div class="oc-row">Direct operator access means you email me at <a href="mailto:saurabh@pipelind.com" style="color:var(--or)">saurabh@pipelind.com</a>. The same person who built the system responds within 24 hours, Monday through Friday. No ticketing system. No queue.</div>
+          <div class="oc-row">Selective intake. Every prospect gets the same research depth and iteration until the report is right. That standard is non-negotiable, which is why intake runs at a deliberate pace rather than a mass-market one.</div>
         </div>
 
         <div class="operator-quote">
-          <p>&ldquo;This is the same standard I would want if I were buying it myself. <strong>Sixteen years on the buyer&rsquo;s side of exactly this kind of decision</strong> is the only credential that matters here.&rdquo;</p>
+          <p>"This is the same system I would build for myself. <strong>Sixteen years on the buyer&rsquo;s side of exactly this kind of decision</strong> is the only credential that matters here."</p>
         </div>
 
         <div style="margin-top:24px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;">
@@ -1439,15 +1719,17 @@ h2.hd em{font-style:italic;color:var(--or);}
 
 <div class="divider"></div>
 
+
 <section class="sec">
   <div class="container">
     <div class="sh fi">
       <div class="sl">Why This Works</div>
-      <h2 class="hd">See the research quality <em>before you ever pay anything</em></h2>
-      <p>DM SIGNAL, or book a call. If it is a fit, your free CFO Opportunity Report is built from real, current signals on your own market, before any pricing conversation.</p>
+      <h2 class="hd">You can verify the results <em>before you ever pay anything</em></h2>
+      <p data-n="fractional">DM SIGNAL. A discovery call confirms fit, then the system is installed directly on your own Claude account and your first live pipeline report is built there. Not right yet, say so and it gets revised, as many times as it takes.</p>
+      <p data-n="coach" hidden>DM SIGNAL. A discovery call confirms fit, then the system is installed directly on your own Claude account and your first live prospect report is built there. Not right yet, say so and it gets revised, as many times as it takes.</p>
     </div>
-    <div class="trust fi">
-      <div class="tc"><div class="tc-tag">01</div><h4>Verify before you commit</h4><p>Your free report is built from real, current signals and public evidence, not a generic template or a form you filled out. Check the sources yourself.</p></div>
+    <div class="trust fi" data-n="fractional">
+      <div class="tc"><div class="tc-tag">01</div><h4>Verify before you pay</h4><p>Your live pipeline report is built on your own account, from real event data, before any money changes hands. No form to guess from. No generic template. Real signals on real companies in your own market.</p></div>
       <div class="tc"><div class="tc-tag">02</div>
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
           <img src="assets/saurabh-photo.jpg" alt="Saurabh M." style="width:48px;height:48px;border-radius:50%;object-fit:cover;object-position:center top;border:2px solid var(--or);flex-shrink:0;"/>
@@ -1456,25 +1738,52 @@ h2.hd em{font-style:italic;color:var(--or);}
             <div style="font-family:var(--dsp);font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--or);margin-top:2px;">Founder &middot; Operator</div>
           </div>
         </div>
-        <h4>Direct operator access</h4><p>Email me at <a href="mailto:saurabh@pipelind.com" style="color:var(--or)">saurabh@pipelind.com</a>. Not an account manager. Sixteen years on the buyer&rsquo;s side, now the person behind every report. You are talking to the person who built it, not a queue.</p></div>
-      <div class="tc"><div class="tc-tag">03</div><h4>Proof: an honest accounting</h4><p>The signal-driven model behind this engine already produced a real result for a fractional-executive client, a sales-compensation specialist, not a CFO. There is no CFO-specific client result yet, stated here honestly rather than glossed over. What you can see instead: an <a href="https://pipelind.com/demo/31082026/dave" target="_blank" rel="noopener" style="color:var(--or);text-decoration:underline;">actual CFO Opportunity Report</a> built for a real fractional CFO practice, showing exactly what the research and evidence look like.</p></div>
+        <h4>Direct operator access</h4><p>Email me at <a href="mailto:saurabh@pipelind.com" style="color:var(--or)">saurabh@pipelind.com</a>. Not an account manager. Sixteen years on the buyer&rsquo;s side, now the person behind this system. During setup and your 30 days of hypercare, you are talking to the person who built it, not a queue.</p></div>
+      <div class="tc"><div class="tc-tag">03</div><h4>Proof: a real client, same system</h4><p>Before this system, Kam Emami, a fractional sales-compensation advisor, had been tracking leads and pipeline by hand, in a spreadsheet, for a year and a half. After the install, he landed a new client in under 60 days. Same signal-matched mechanism this system installs for you, already proven on a real, paying account.</p></div>
+    </div>
+    <div class="trust fi" data-n="coach" hidden>
+      <div class="tc"><div class="tc-tag">01</div><h4>Verify before you pay</h4><p>Your live prospect report is built on your own account, from real event data, before any money changes hands. No form to guess from. No generic template. Real signals on real people across LinkedIn.</p></div>
+      <div class="tc"><div class="tc-tag">02</div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+          <img src="assets/saurabh-photo.jpg" alt="Saurabh M." style="width:48px;height:48px;border-radius:50%;object-fit:cover;object-position:center top;border:2px solid var(--pu);flex-shrink:0;"/>
+          <div>
+            <div style="font-family:var(--dsp);font-weight:700;font-size:14px;color:var(--w1);line-height:1.2;">Saurabh M.</div>
+            <div style="font-family:var(--dsp);font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--pu);margin-top:2px;">Founder &middot; Operator</div>
+          </div>
+        </div>
+        <h4>Direct operator access</h4><p>Email me at <a href="mailto:saurabh@pipelind.com" style="color:var(--or)">saurabh@pipelind.com</a>. Not an account manager. Sixteen years on the buyer&rsquo;s side, now the person behind this system. During setup and your 30 days of hypercare, you are talking to the person who built it, not a queue.</p></div>
+      <div class="tc"><div class="tc-tag">03</div><h4>Proof: same mechanism, new niche</h4><p>This is the same signal-detection engine already running for a paying fractional-executive client, who moved off a manual spreadsheet and landed a new client in under 60 days. There is no executive-coach-specific result yet, stated here honestly rather than glossed over. The first coach-niche outcome becomes the standing proof point the moment it exists.</p></div>
     </div>
 
-    <div class="testimonial-block fi">
+    <div class="testimonial-block fi" data-n="fractional">
       <div class="testimonial-quote">
         <p>&ldquo;The lead cards weren&rsquo;t just lists, they were thoughtfully curated profiles tied to real signals like hiring and funding activity. That context made a huge difference. Instead of guessing who might be a fit, I could prioritize conversations with people already likely to have a need. The process became repeatable, and most importantly, it started generating meaningful conversations rather than cold dead ends. Highly recommend working with Saurabh.&rdquo;</p>
         <div class="testimonial-attr">
           <strong>Kamran &ldquo;Kam&rdquo; Emami</strong>
-          <span>Fractional Sales Compensation Advisor, SalesComp Advisors &middot; same signal-driven model, not a CFO-specific engagement</span>
+          <span>Fractional Sales Compensation Advisor, SalesComp Advisors</span>
         </div>
       </div>
       <img class="testimonial-img" src="assets/kam-recommendation.png" alt="LinkedIn recommendation from Kamran Kam Emami for Saurabh M., Pipelind"/>
     </div>
+    <div class="testimonial-block fi" data-n="coach" hidden style="grid-template-columns:1fr;">
+      <div class="testimonial-quote">
+        <p style="font-style:normal;font-family:var(--bod);font-weight:300;color:var(--w6);font-size:14.5px;">There is no coach-specific testimonial here yet, and this page will not pretend otherwise. What exists today is the mechanism itself, proven in the fractional-executive niche below, and a system installed on your own account before you pay anything, so you can judge it against your own real prospects rather than a borrowed result.</p>
+        <div class="testimonial-attr" style="margin-top:4px;">
+          <strong>Honest, on purpose</strong>
+          <span>The first coach-niche result gets added here the moment it exists</span>
+        </div>
+      </div>
+    </div>
 
-    <div class="guarantee fi">
-      <span class="guar-label"><span class="badge-dot" style="background:var(--gr);box-shadow:0 0 8px var(--gr);"></span>See It Before You Commit</span>
-      <h3>A free report first. <em>Pricing is the last conversation, not the first.</em></h3>
-      <p>We build your free CFO Opportunity Report, five real, evidence-backed opportunities matched to your practice, before we ever talk numbers. If the research quality does not hold up, there is nothing to buy. If it does, we will walk through what a monthly engagement looks like for your specific practice.</p>
+    <div class="guarantee fi" data-n="fractional">
+      <span class="guar-label"><span class="badge-dot" style="background:var(--gr);box-shadow:0 0 8px var(--gr);"></span>The Engagement-or-Free Guarantee</span>
+      <h3>Approved, or free. <em>You decide when it is ready.</em></h3>
+      <p>I install the system on your own infrastructure and build your first live engagement-pipeline report before you pay anything. If it is not right, I fix it. There is no limit on revisions. You only pay the one-time fee once you have seen real results on your own market and approved them yourself.</p>
+    </div>
+    <div class="guarantee fi" data-n="coach" hidden>
+      <span class="guar-label"><span class="badge-dot" style="background:var(--gr);box-shadow:0 0 8px var(--gr);"></span>The Pay-After-Approval Guarantee</span>
+      <h3>Pay only after you approve. <em>You decide when it is ready.</em></h3>
+      <p>I install the Client Finder system on your own infrastructure and build your first live high-intent prospect report before you pay anything. If it is not right, I fix it. There is no limit on revisions. You only pay the one-time fee once you have seen real, high-intent prospects and approved them yourself.</p>
     </div>
   </div>
 </section>
@@ -1489,17 +1798,22 @@ h2.hd em{font-style:italic;color:var(--or);}
       <h2 class="hd">What you are probably already thinking</h2>
     </div>
     <div class="faq fi">
-      <details><summary>What does it cost?</summary><div class="faq-body"><p>Shared once a discovery call has confirmed genuine fit, and once you have seen your own free report. Not before.</p><p>Every practice has a different ICP and volume need, so there is no published rate card. What you can verify before any pricing conversation: the actual research methodology, the evidence standard, and a real report built from your own market. <a href="https://calendly.com/saurabh_zentro/30-min" target="_blank" rel="noopener" style="color:var(--or);text-decoration:underline;">Book a 30-minute walkthrough to see it first.</a></p></div></details>
-      <details><summary>Is this a subscription?</summary><div class="faq-body"><p>Yes. The CFO Opportunity Engine is a monthly service: a new, verified report delivered on a set cadence. There is no long-term contract, and the specific terms and cadence are confirmed on the call once you have seen your free report.</p></div></details>
-      <details><summary>What is a CFO opportunity, and how is it different from a lead?</summary><div class="faq-body"><p>A lead is a name. An opportunity is a name plus a reason: a verified signal, funding, headcount growth, finance hiring, an ownership change, or a similar trigger, evidence you can check, the right decision-maker, and a personalised reason to reach out now. If any of that is missing, it does not count as an opportunity here.</p></div></details>
-      <details><summary>What signals do you track?</summary><div class="faq-body"><p>Funding rounds, rapid headcount growth, finance hiring with no CFO in place, ownership changes, ERP or accounting-system transitions, and leadership changes, calibrated to your specific specialisation. Not every signal applies to every practice; your actual ICP determines which ones matter.</p></div></details>
-      <details><summary>How do you verify a signal?</summary><div class="faq-body"><p>Every material claim is checked against public sources before it reaches you: company websites, official announcements, filings, and credible industry publications carry more weight than a directory listing or a social post. If the evidence is not strong enough, the opportunity does not ship, and we say &ldquo;not verified&rdquo; rather than fill the gap with a guess.</p></div></details>
-      <details><summary>Can this be customised to my practice?</summary><div class="faq-body"><p><strong>Yes.</strong> Calibrated to your sector, company stage, geography, and specific specialisation from the start, whether you specialise narrowly or work as a generalist.</p></div></details>
-      <details><summary>Do you contact prospects on my behalf?</summary><div class="faq-body"><p>No. You receive the research, the decision-maker, and a suggested opening message. You make contact yourself, from your own account, in your own voice. No credentials change hands, and no automation touches your LinkedIn account.</p></div></details>
-      <details><summary>Is there a guarantee?</summary><div class="faq-body"><p>There is no guarantee on outcomes. Anyone who promises you a specific number of new clients from a research service is selling you something they cannot deliver. What you get instead: a free, real report before you ever discuss pricing, so you can judge the evidence yourself before committing to anything.</p></div></details>
-      <details><summary>What does &ldquo;direct operator access&rdquo; actually mean?</summary><div class="faq-body"><p>You email me, Saurabh, directly at <strong>saurabh@pipelind.com</strong>. Not a project manager. Not an account team. The same person who builds every report responds within 24 hours, Monday through Friday.</p></div></details>
-      <details><summary>Why fractional CFO firms specifically?</summary><div class="faq-body"><p>Referral dependency is the single most-repeated complaint fractional CFOs make about their own practice. Fractional CFO engagements are considered, high-value relationships, so a quiet pipeline is a direct, calculable income gap, not a vague growth concern. This is also a genuinely LinkedIn-active professional audience, which is what makes a signal-based, evidence-first approach workable rather than theoretical.</p></div></details>
-      <details><summary>I already use a lead-gen or prospecting tool. Why do I need this?</summary><div class="faq-body"><p>Those tools give you raw access, more names, more data, and leave the verification, prioritisation, and personalisation entirely to you. Pipelind does that work before it reaches you: a small number of opportunities, already checked, ranked, and matched to a specific reason to reach out, not another database to sort through yourself.</p></div></details>
+      <details><summary>What does it cost?</summary><div class="faq-body"><p>Shared once a discovery call has confirmed genuine fit, and once you have seen your own live report. Not before.</p><p>What you can verify before any pricing conversation: the actual signal methodology, the data source, and a real report built from your own market. If it makes sense after that, pricing is the last conversation, not the first, and you only pay once you approve the results.</p><p><a href="https://calendly.com/saurabh_zentro/30-min" target="_blank" rel="noopener" style="color:var(--or);text-decoration:underline;">Book a 30-minute walkthrough to see the system in action.</a></p></div></details>
+      <details><summary>Will the price change over time?</summary><div class="faq-body"><p>No. It is a single one-time fee. There is no recurring rate to lock in, and no future increase to worry about, because there is nothing ongoing to increase.</p></div></details>
+      <details><summary>Can I cancel anytime?</summary><div class="faq-body"><p>There is nothing to cancel. It is a one-time payment, not a subscription, and it is only collected after you approve the results. You get 30 days of hypercare after handoff, and after that the system is fully yours to run, with no further billing relationship required.</p></div></details>
+      <details data-n="fractional"><summary>What is an engagement signal, and how does it find the right companies?</summary><div class="faq-body"><p>A signal is a verifiable event indicating a company may be about to bring in fractional leadership: a finance, HR, or operations hiring buildout, a funding round, an M&amp;A or ownership event. Every profile is tied to the internal decision-maker who could actually authorize bringing you in, CEO, President, Founder, Owner, or a relevant C-suite function head, never a candidate. These are live, verified events, not a static purchased list.</p></div></details>
+      <details data-n="coach" hidden><summary>What is a coaching-readiness signal, and how does it find the right people?</summary><div class="faq-body"><p>A signal is a verifiable event indicating a senior leader may be ready for coaching right now: a new leadership title, a team reshuffle, a funding round, a first-time people-management role. Every prospect is a real, identifiable person, never a static scraped list. These are live, verified events, not a purchased database.</p></div></details>
+      <details><summary>Can this be customised to my practice?</summary><div class="faq-body"><p><strong>Yes.</strong> Once it is installed on your own account, you control the filters, the pace, and the mix entirely. It is built around your specific practice from the start, whether you specialise narrowly or work as a generalist.</p></div></details>
+      <details data-n="fractional"><summary>How is this different from a rented BD tool, a course, or a content subscription?</summary><div class="faq-body"><p>A rented BD or signal tool charges a recurring bill for access to a system or a data feed, you still have to build the workflow around it, and everything stops the moment you stop paying. A training program or franchise teaches you to build the same thing yourself, over weeks of your own effort, and installs nothing for you. A content-only subscription solves visibility, not signal timing.</p><p>Pipelind builds the whole system, proves it with your own live results before you pay anything, and then you own it outright. Direct access to the person who built it, no automation, and when hypercare ends, the system does not stop working.</p></div></details>
+      <details data-n="coach" hidden><summary>How is this different from a rented BD tool, a course, or a content subscription?</summary><div class="faq-body"><p>A rented BD or signal tool charges a recurring bill for access to a system or a data feed, you still have to build the workflow around it, and everything stops the moment you stop paying. A training program teaches you to build the same thing yourself, over weeks of your own effort, and installs nothing for you. A content-only subscription solves visibility, not signal timing.</p><p>Pipelind builds the whole system, proves it with your own live results before you pay anything, and then you own it outright. Direct access to the person who built it, no automation, and when hypercare ends, the system does not stop working.</p></div></details>
+      <details><summary>What if the output does not sound like me?</summary><div class="faq-body"><p>The system is calibrated to your actual voice and practice during setup, not a generic template. If something is off during the pre-payment build phase, say so and it gets revised until it is right, before you ever pay anything.</p></div></details>
+      <details><summary>Do you log into my LinkedIn account or use automation?</summary><div class="faq-body"><p>No. Never. You send connection requests and messages from your own account. No credentials change hands. No automation tools. No browser extensions. Nothing that could put your LinkedIn account at risk.</p></div></details>
+      <details><summary>How much of my time does this take each week?</summary><div class="faq-body"><p>Whatever you choose. Once it is set up, there is no fixed weekly commitment, because I am not the one running it after handoff. Some people run it weekly, some in bursts before a push.</p></div></details>
+      <details data-n="fractional"><summary>Is there a guarantee?</summary><div class="faq-body"><p>The Engagement-or-Free Guarantee. The system is installed and revised on your own account, with unlimited rounds, until you approve the results yourself. You only pay once that happens. There is no guarantee on outcomes beyond that. Anyone who guarantees you a specific number of engagements is selling you something they cannot deliver.</p></div></details>
+      <details data-n="coach" hidden><summary>Is there a guarantee?</summary><div class="faq-body"><p>The Pay-After-Approval Guarantee. The system is installed and revised on your own account, with unlimited rounds, until you approve the results yourself. You only pay once that happens. There is no guarantee on outcomes beyond that. Anyone who guarantees you a specific number of clients is selling you something they cannot deliver.</p></div></details>
+      <details><summary>What does &ldquo;direct operator access&rdquo; actually mean?</summary><div class="faq-body"><p>You email me, Saurabh, directly at <strong>saurabh@pipelind.com</strong>. Not a project manager. Not an account team. During the build phase and your 30 days of hypercare, you are talking to the person who built the system.</p></div></details>
+      <details data-n="fractional"><summary>Why fractional executives specifically?</summary><div class="faq-body"><p>Referral dependency is the single most-repeated complaint fractional executives make about their own practice. Fractional engagements run $2,000 to $20,000 a month, or $100 to $400 an hour, so a quiet engagement pipeline is a direct, calculable income gap, not a vague growth concern. This is also the most LinkedIn-native professional audience tested to date: fractional executives already treat LinkedIn as both a sourcing tool and a client-attraction channel, and real, funded companies are already selling versions of this into the same market. That is proof the crowd is already reaching for its wallet, for a worse version of what gets installed once here.</p></div></details>
+      <details data-n="coach" hidden><summary>Why executive coaches specifically?</summary><div class="faq-body"><p>Coaches routinely name finding clients as their single biggest business challenge, not a lack of credibility but a lack of any system for knowing which senior leader, out of thousands on LinkedIn, is actually in a coaching-ready moment right now. Executive coaching engagements typically run $3,500 to $15,000 or more, so a quiet pipeline is a direct, calculable income gap, not a vague growth concern. This is also a genuinely LinkedIn-native audience: coaches already have real personal-brand presence there, and multiple funded competitors already sell retainer-based versions of this into the same market. That is proof the crowd is already reaching for its wallet, for a worse version of what gets installed once here.</p></div></details>
     </div>
   </div>
 </section>
@@ -1510,19 +1824,22 @@ h2.hd em{font-style:italic;color:var(--or);}
 <section class="sec">
   <div class="container">
     <div class="final fi">
-      <span class="badge badge-or" style="margin-bottom:16px;">See it before you commit</span>
-      <h2>See exactly which companies are showing a CFO-relevant signal <em>in your market right now</em></h2>
-      <p>DM SIGNAL, or book a call. If it is a fit, your free CFO Opportunity Report, five real, evidence-backed opportunities, gets built before any pricing conversation.</p>
+      <span class="badge badge-or" style="margin-bottom:16px;" data-n="fractional">Installed before you pay anything</span>
+      <span class="badge badge-pu" style="margin-bottom:16px;" data-n="coach" hidden>Installed before you pay anything</span>
+      <h2 data-n="fractional">See exactly which engagements are signaling <em>in your market right now</em></h2>
+      <h2 data-n="coach" hidden>See exactly who is signaling <em>ready for coaching right now</em></h2>
+      <p data-n="fractional">DM SIGNAL. A discovery call confirms fit, then the system is installed on your own account and your first live pipeline report is built there. If it is not quite right, say so, and it gets revised until it is, before you ever pay anything.</p>
+      <p data-n="coach" hidden>DM SIGNAL. A discovery call confirms fit, then the system is installed on your own account and your first live prospect report is built there. If it is not quite right, say so, and it gets revised until it is, before you ever pay anything.</p>
       <a class="btn btn-or" href="https://calendly.com/saurabh_zentro/30-min" target="_blank" rel="noopener">
         Book Your Discovery Call
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L8 3M13 8L8 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </a>
       <div class="final-risk">
-        <span><span class="ck">&#10003;</span> Free report, before any payment</span>
+        <span><span class="ck">&#10003;</span> Installed on your own account, before any payment</span>
         <span class="sp"></span>
-        <span><span class="ck">&#10003;</span> Every claim sourced, never invented</span>
+        <span><span class="ck">&#10003;</span> One-time fee, no recurring charge, ever</span>
         <span class="sp"></span>
-        <span><span class="ck">&#10003;</span> See real results before you talk pricing</span>
+        <span><span class="ck">&#10003;</span> You own the system after handoff</span>
       </div>
       <div style="margin-top:28px;">
         <a class="link-ghost" href="https://www.linkedin.com/in/saurabh-m15/" target="_blank" rel="noopener">DM SIGNAL on LinkedIn to start the conversation &nearr;</a>
@@ -1534,7 +1851,8 @@ h2.hd em{font-style:italic;color:var(--or);}
 <!-- FOOTER -->
 <footer class="footer">
   <div class="container footer-inner">
-    <div>&copy; Pipelind &middot; Saurabh M. &middot; Verified CFO opportunities, delivered monthly, for fractional CFO firms</div>
+    <div data-n="fractional">&copy; Pipelind &middot; Saurabh M. &middot; A LinkedIn engagement pipeline system you own, for fractional executives</div>
+    <div data-n="coach" hidden>&copy; Pipelind &middot; Saurabh M. &middot; A LinkedIn client-finding system you own, for executive coaches</div>
     <div class="footer-links">
       <a href="https://www.linkedin.com/in/saurabh-m15/" target="_blank" rel="noopener">LinkedIn &nearr;</a>
       <a href="https://calendly.com/saurabh_zentro/30-min" target="_blank" rel="noopener">Book a Walkthrough &nearr;</a>
@@ -1552,7 +1870,35 @@ h2.hd em{font-style:italic;color:var(--or);}
 </div>
 
 <script>
-// -- SCROLL REVEAL --
+// -- NICHE TOGGLE --
+function applyNiche(n){
+  document.documentElement.setAttribute('data-niche', n);
+  document.querySelectorAll('.nt-btn').forEach(function(b){
+    b.classList.toggle('active', b.dataset.nicheBtn === n);
+  });
+  document.querySelectorAll('[data-n]').forEach(function(el){
+    var v = el.getAttribute('data-n');
+    el.hidden = (v !== n && v !== 'both');
+  });
+  try{ localStorage.setItem('pipelind_niche', n); }catch(e){}
+}
+function setNiche(n){
+  applyNiche(n);
+  var url = new URL(window.location.href);
+  url.searchParams.set('for', n);
+  window.history.replaceState({}, '', url);
+}
+(function initNiche(){
+  var params = new URLSearchParams(window.location.search);
+  var n = params.get('for');
+  if(n !== 'fractional' && n !== 'coach'){
+    try{ n = localStorage.getItem('pipelind_niche'); }catch(e){ n = null; }
+  }
+  if(n !== 'fractional' && n !== 'coach') n = 'fractional';
+  applyNiche(n);
+})();
+
+// -- SCROLL REVEAL --
 (function(){
   if(!('IntersectionObserver' in window)){
     document.querySelectorAll('.fi').forEach(el=>el.classList.add('vis'));
@@ -1566,7 +1912,7 @@ h2.hd em{font-style:italic;color:var(--or);}
   document.querySelectorAll('.fi').forEach(el=>io.observe(el));
 })();
 
-// -- COUNTER ANIMATION --
+// -- COUNTER ANIMATION --
 function animateCounter(el){
   const target=+el.dataset.counter;
   const suffix=el.dataset.suffix||'';
@@ -1580,7 +1926,7 @@ function animateCounter(el){
   requestAnimationFrame(step);
 }
 
-// -- BAR CHART ANIMATIONS --
+// -- BAR CHART ANIMATIONS --
 function animateBars(container,attr){
   container.querySelectorAll('['+attr+']').forEach((bar,i)=>{
     setTimeout(()=>{
@@ -1613,7 +1959,7 @@ function animateCmBars(){
   });
 }
 
-// -- INTERSECTION OBSERVERS FOR ANIMATIONS --
+// -- INTERSECTION OBSERVERS FOR ANIMATIONS --
 const animIO=new IntersectionObserver((entries)=>{
   entries.forEach(e=>{
     if(!e.isIntersecting)return;
