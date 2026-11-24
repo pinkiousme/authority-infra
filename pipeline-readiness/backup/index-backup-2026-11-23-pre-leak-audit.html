@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pipelind &middot; Engagement-Pipeline Readiness Diagnostic for Fractional CFO Firms</title>
+<meta name="description" content="7 questions. A personalised score across 5 engagement-pipeline dimensions. A prioritised 30-day action plan. Built for independent, solo-practice fractional CFO firms. Free, takes 5 minutes.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,700;1,800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#06060E;--bg2:#0A0A18;--bg3:#0E0E1F;
+  --border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.12);
+  --pu:#6A66A3;--pus:rgba(106,102,163,.12);--pub:rgba(106,102,163,.28);--pulight:#9490C0;
+  --or:#FF9900;--ors:rgba(255,153,0,.12);--orb:rgba(255,153,0,.28);
+  --gr:#10B981;--grs:rgba(16,185,129,.10);--grb:rgba(16,185,129,.3);
+  --rd:#F87171;
+  --w1:rgba(255,255,255,.95);--w8:rgba(255,255,255,.78);--w6:rgba(255,255,255,.55);--w4:rgba(255,255,255,.35);--w2:rgba(255,255,255,.12);
+  --dsp:'Plus Jakarta Sans',system-ui,sans-serif;
+  --mono:'Space Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--w1);font-family:var(--dsp);font-size:15px;line-height:1.65;min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");opacity:.025;pointer-events:none;z-index:999;mix-blend-mode:overlay;}
+.orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0;filter:blur(130px);opacity:.22;}
+.orb1{width:600px;height:600px;background:var(--pu);top:-250px;right:-200px;}
+.orb2{width:500px;height:500px;background:rgba(255,153,0,.45);bottom:-200px;left:-200px;}
+.shell{position:relative;z-index:1;max-width:700px;margin:0 auto;padding:0 24px 80px;}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:24px 0 0;margin-bottom:56px;}
+.logo{display:flex;align-items:center;gap:10px;font-family:var(--dsp);font-size:15px;font-weight:700;text-decoration:none;color:var(--w1);}
+.logo-icon{width:40px;height:40px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.badge{font-family:var(--mono);font-size:10px;background:rgba(106,102,163,.15);border:1px solid rgba(106,102,163,.3);color:var(--pulight);padding:4px 12px;border-radius:20px;text-transform:uppercase;letter-spacing:.08em;}
+.niche-toggle-wrap{display:flex;justify-content:center;margin-bottom:28px;}
+.niche-toggle{display:inline-flex;background:var(--bg2);border:1px solid var(--border2);border-radius:999px;padding:3px;gap:3px;}
+.nt-btn{font-family:var(--dsp);font-size:12.5px;font-weight:600;padding:8px 16px;border-radius:999px;border:none;background:transparent;color:var(--w6);cursor:pointer;transition:background .2s,color .2s;white-space:nowrap;}
+.nt-btn:hover{color:var(--w1);}
+.nt-btn.active{color:#06060E;}
+@media(max-width:480px){.nt-btn{font-size:11px;padding:7px 12px;}}
+.hero{margin-bottom:48px;text-align:center;}
+.eyebrow{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--or);margin-bottom:20px;display:inline-block;}
+h1{font-family:var(--dsp);font-size:clamp(28px,5vw,44px);font-weight:800;line-height:1.1;margin-bottom:20px;letter-spacing:-.03em;}
+h1 em{font-style:normal;color:var(--or);}
+.hero-sub{font-size:16px;color:var(--w8);max-width:500px;margin:0 auto 28px;line-height:1.7;}
+.hero-meta{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;font-family:var(--mono);font-size:11px;color:var(--w6);}
+.hero-meta span{display:flex;align-items:center;gap:6px;}
+.hero-meta span::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--or);flex-shrink:0;}
+.name-card{background:var(--bg2);border:1px solid var(--border2);border-radius:20px;padding:32px 36px;margin-bottom:32px;position:relative;overflow:hidden;}
+.name-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--pu),transparent);opacity:.7;}
+.name-label{font-family:var(--dsp);font-size:20px;font-weight:700;margin-bottom:6px;display:block;}
+.name-hint{font-size:13px;color:var(--w6);margin-bottom:20px;}
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;text-align:center;}
+.stat-cell{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:18px 14px;}
+.stat-num{font-family:var(--dsp);font-size:26px;font-weight:800;color:var(--or);line-height:1;margin-bottom:4px;}
+.stat-lbl{font-size:11px;color:var(--w4);font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em;}
+.progress-wrap{margin-bottom:36px;}
+.progress-label{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;color:var(--w4);margin-bottom:10px;}
+.progress-track{height:3px;background:rgba(255,255,255,.08);border-radius:99px;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--pu),var(--or));border-radius:99px;transition:width .5s cubic-bezier(.4,0,.2,1);width:0%;}
+.q-card{background:var(--bg2);border:1px solid var(--border2);border-radius:20px;padding:36px 40px 40px;position:relative;overflow:hidden;}
+.q-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--pu),transparent);opacity:.7;}
+.q-dim{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--or);margin-bottom:8px;}
+.q-num{font-family:var(--mono);font-size:11px;color:var(--w4);margin-bottom:4px;}
+.q-text{font-family:var(--dsp);font-size:21px;font-weight:700;line-height:1.3;margin-bottom:8px;}
+.q-hint{font-size:13px;color:var(--w6);margin-bottom:28px;line-height:1.6;}
+.opts{display:grid;gap:10px;}
+.opt{display:flex;align-items:flex-start;gap:14px;padding:14px 18px;background:var(--bg3);border:1.5px solid rgba(255,255,255,.07);border-radius:12px;cursor:pointer;transition:all .18s;text-align:left;width:100%;color:var(--w1);font-family:var(--dsp);}
+.opt:hover{border-color:rgba(106,102,163,.4);background:rgba(106,102,163,.08);}
+.opt.selected{border-color:var(--pu);background:rgba(106,102,163,.12);}
+.radio{width:18px;height:18px;flex-shrink:0;border:2px solid rgba(255,255,255,.2);border-radius:50%;margin-top:2px;position:relative;transition:all .18s;background:transparent;}
+.opt.selected .radio{background:var(--pu);border-color:var(--pu);}
+.opt.selected .radio::after{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:6px;height:6px;border-radius:50%;background:#fff;}
+.opt-label{font-size:14px;font-weight:600;line-height:1.4;}
+.opt-sub{font-size:12px;color:var(--w6);margin-top:3px;line-height:1.4;}
+.q-input{width:100%;background:var(--bg3);border:1.5px solid rgba(255,255,255,.1);border-radius:12px;padding:14px 18px;font-family:var(--dsp);font-size:15px;color:var(--w1);resize:none;outline:none;transition:border-color .18s;line-height:1.6;}
+.q-input:focus{border-color:rgba(106,102,163,.5);}
+.q-input::placeholder{color:var(--w4);}
+.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:28px;gap:12px;}
+.btn-back{background:none;border:1.5px solid rgba(255,255,255,.12);color:var(--w6);font-family:var(--dsp);font-size:14px;font-weight:600;padding:11px 22px;border-radius:10px;cursor:pointer;transition:all .18s;}
+.btn-back:hover{border-color:rgba(255,255,255,.3);color:var(--w1);}
+.btn-next{background:var(--pu);border:none;color:#fff;font-family:var(--dsp);font-size:14px;font-weight:700;padding:12px 28px;border-radius:10px;cursor:pointer;transition:all .18s;display:flex;align-items:center;gap:8px;margin-left:auto;}
+.btn-next:hover:not(:disabled){opacity:.88;transform:translateY(-1px);}
+.btn-next:disabled{opacity:.35;cursor:not-allowed;transform:none;}
+.btn-start{background:var(--pu);border:none;color:#fff;font-family:var(--dsp);font-size:15px;font-weight:700;padding:13px 28px;border-radius:10px;cursor:pointer;transition:all .18s;display:inline-flex;align-items:center;gap:8px;margin-top:20px;}
+.btn-start:hover{opacity:.88;transform:translateY(-1px);}
+#screen-generating{display:none;text-align:center;padding:60px 0;}
+.gen-orb{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--pu),var(--or));margin:0 auto 32px;display:flex;align-items:center;justify-content:center;font-size:32px;animation:pulse 2s ease-in-out infinite;}
+@keyframes pulse{0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(106,102,163,.4);}50%{transform:scale(1.05);box-shadow:0 0 0 20px rgba(106,102,163,0);}}
+.gen-title{font-family:var(--dsp);font-size:24px;font-weight:700;margin-bottom:12px;}
+.gen-sub{font-size:14px;color:var(--w6);}
+.gen-steps{margin:32px auto 0;max-width:320px;display:grid;gap:12px;text-align:left;}
+.gen-step{display:flex;align-items:center;gap:12px;font-size:13px;color:var(--w4);transition:color .3s;}
+.gen-step.active{color:var(--w1);}
+.gen-step.done{color:var(--gr);}
+.gen-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.15);flex-shrink:0;transition:background .3s;}
+.gen-step.active .gen-dot{background:var(--or);animation:blink .8s ease-in-out infinite alternate;}
+.gen-step.done .gen-dot{background:var(--gr);}
+@keyframes blink{from{opacity:.4;}to{opacity:1;}}
+#screen-gate{display:none;}
+.gate-card{background:var(--bg2);border:1px solid var(--border2);border-radius:20px;padding:32px 36px;margin-bottom:24px;position:relative;overflow:hidden;}
+.gate-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--pu),var(--or),transparent);opacity:.7;}
+.gate-teaser{font-family:var(--mono);font-size:12px;color:var(--or);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;}
+.gate-title{font-family:var(--dsp);font-size:24px;font-weight:800;margin-bottom:20px;letter-spacing:-.02em;}
+.gate-list{background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:20px 22px;margin-bottom:26px;}
+.gate-list-lbl{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--pulight);margin-bottom:14px;}
+.gate-item{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--w8);margin-bottom:10px;line-height:1.5;}
+.gate-item:last-child{margin-bottom:0;}
+.gate-item .n{font-family:var(--mono);color:var(--or);font-size:11px;font-weight:700;margin-top:2px;flex-shrink:0;}
+.gate-item b{color:var(--w1);}
+.gate-field{margin-bottom:16px;}
+.gate-field label{display:block;font-family:var(--mono);font-size:11px;color:var(--w4);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;}
+.gate-field input{width:100%;background:var(--bg3);border:1.5px solid rgba(255,255,255,.1);border-radius:12px;padding:14px 18px;font-family:var(--dsp);font-size:15px;color:var(--w1);outline:none;transition:border-color .18s;}
+.gate-field input:focus{border-color:rgba(106,102,163,.5);}
+.gate-field input::placeholder{color:var(--w4);}
+.btn-unlock{width:100%;background:var(--pu);border:none;color:#fff;font-family:var(--dsp);font-size:15px;font-weight:700;padding:15px 28px;border-radius:12px;cursor:pointer;transition:all .18s;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:6px;}
+.btn-unlock:hover{opacity:.88;transform:translateY(-1px);}
+.gate-footnote{text-align:center;font-size:12px;color:var(--w4);margin-top:16px;line-height:1.5;}
+#screen-report{display:none;}
+.report-header{text-align:center;padding:48px 0 40px;border-bottom:1px solid var(--border);margin-bottom:40px;}
+.report-for{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--w4);margin-bottom:8px;}
+.report-name{font-family:var(--dsp);font-size:30px;font-weight:800;margin-bottom:4px;}
+.report-date{font-family:var(--mono);font-size:11px;color:var(--w4);margin-bottom:28px;}
+.score-wrap{display:flex;justify-content:center;margin-bottom:20px;}
+.score-circle{width:140px;height:140px;border-radius:50%;border:3px solid transparent;background:linear-gradient(var(--bg),var(--bg)) padding-box,linear-gradient(135deg,var(--pu),var(--or)) border-box;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.score-num{font-family:var(--dsp);font-size:44px;font-weight:800;line-height:1;}
+.score-lbl{font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--w4);margin-top:4px;}
+.score-band{display:inline-block;font-family:var(--mono);font-size:11px;padding:5px 16px;border-radius:20px;margin-bottom:16px;text-transform:uppercase;letter-spacing:.06em;}
+.bc{background:rgba(248,113,113,.15);color:#F87171;border:1px solid rgba(248,113,113,.3);}
+.bd{background:rgba(255,153,0,.15);color:var(--or);border:1px solid rgba(255,153,0,.3);}
+.bb{background:rgba(106,102,163,.15);color:var(--pulight);border:1px solid rgba(106,102,163,.3);}
+.bs{background:rgba(16,185,129,.15);color:var(--gr);border:1px solid rgba(16,185,129,.3);}
+.score-interp{font-size:15px;color:var(--w8);max-width:500px;margin:0 auto;line-height:1.7;}
+.r-section{margin-bottom:36px;}
+.r-eyebrow{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--or);margin-bottom:6px;}
+.r-title{font-family:var(--dsp);font-size:22px;font-weight:700;margin-bottom:16px;}
+.dim-card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:12px;}
+.dim-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;gap:16px;}
+.dim-name{font-size:15px;font-weight:700;}
+.dim-badge{font-family:var(--mono);font-size:13px;font-weight:400;padding:4px 12px;border-radius:8px;white-space:nowrap;flex-shrink:0;}
+.dim-bar-track{height:4px;background:rgba(255,255,255,.08);border-radius:99px;margin-bottom:14px;overflow:hidden;}
+.dim-bar-fill{height:100%;border-radius:99px;transition:width 1s cubic-bezier(.4,0,.2,1) .5s;width:0%;}
+.dim-insight{font-size:13px;color:var(--w8);line-height:1.6;}
+.dim-fix{margin-top:12px;background:var(--bg3);border-radius:10px;padding:12px 14px;font-size:13px;line-height:1.6;}
+.dim-fix-lbl{font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--or);margin-bottom:6px;}
+.math-section{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:32px;margin:28px 0;position:relative;overflow:hidden;}
+.math-section::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--or),transparent);opacity:.5;}
+.math-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:20px;}
+.math-cell{text-align:center;padding:16px 12px;background:var(--bg3);border-radius:12px;border:1px solid var(--border);}
+.math-num{font-family:var(--dsp);font-size:34px;font-weight:800;line-height:1;margin-bottom:4px;}
+.math-lbl{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--w4);}
+.math-sub{font-size:11px;color:var(--w6);margin-top:6px;line-height:1.4;}
+.action-card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:12px;position:relative;}
+.ap{position:absolute;top:-1px;left:24px;font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:.1em;padding:4px 12px;border-radius:0 0 8px 8px;}
+.ap1{background:rgba(248,113,113,.2);color:#F87171;border:1px solid rgba(248,113,113,.3);border-top:none;}
+.ap2{background:rgba(255,153,0,.15);color:var(--or);border:1px solid rgba(255,153,0,.3);border-top:none;}
+.ap3{background:rgba(106,102,163,.15);color:var(--pulight);border:1px solid rgba(106,102,163,.3);border-top:none;}
+.action-content{margin-top:12px;}
+.action-what{font-size:15px;font-weight:700;margin-bottom:8px;}
+.action-why{font-size:13px;color:var(--w8);line-height:1.6;margin-bottom:10px;}
+.action-meta{display:flex;gap:16px;flex-wrap:wrap;font-family:var(--mono);font-size:11px;}
+.at{color:var(--gr);}
+.ar{color:var(--pulight);}
+.cta-section{background:linear-gradient(135deg,rgba(106,102,163,.12),rgba(255,153,0,.08));border:1px solid rgba(106,102,163,.25);border-radius:20px;padding:40px;text-align:center;margin-top:40px;position:relative;overflow:hidden;}
+.cta-section::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--pu),var(--or),transparent);}
+.cta-title{font-family:var(--dsp);font-size:24px;font-weight:800;margin-bottom:12px;letter-spacing:-.02em;}
+.cta-body{font-size:14px;color:var(--w8);max-width:440px;margin:0 auto 28px;line-height:1.7;}
+.btn-cta{display:inline-flex;align-items:center;gap:10px;background:var(--pu);color:#fff;font-family:var(--dsp);font-size:15px;font-weight:700;padding:14px 32px;border-radius:12px;text-decoration:none;transition:all .2s;border:none;cursor:pointer;}
+.btn-cta:hover{opacity:.88;transform:translateY(-2px);color:#fff;}
+.btn-sec{display:inline-flex;align-items:center;gap:8px;color:var(--pulight);font-size:13px;text-decoration:none;margin-top:16px;font-family:var(--mono);transition:color .18s;}
+.btn-sec:hover{color:var(--w1);}
+.report-actions{display:flex;gap:12px;justify-content:center;margin-top:28px;flex-wrap:wrap;}
+.btn-action{display:inline-flex;align-items:center;gap:8px;background:var(--bg2);border:1px solid var(--border);color:var(--w6);font-family:var(--mono);font-size:11px;padding:10px 18px;border-radius:10px;cursor:pointer;transition:all .18s;text-decoration:none;}
+.btn-action:hover{border-color:rgba(255,255,255,.3);color:var(--w1);}
+.report-footer{text-align:center;margin-top:48px;padding-top:28px;border-top:1px solid var(--border);font-family:var(--mono);font-size:11px;color:var(--w4);}
+.report-footer a{color:var(--pulight);text-decoration:none;}
+.fade-in{animation:fadeUp .4s ease forwards;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+@media(max-width:600px){
+  .q-card{padding:24px 20px 28px;}
+  .math-grid{grid-template-columns:1fr;}
+  .cta-section{padding:28px 20px;}
+  .score-circle{width:110px;height:110px;}
+  .score-num{font-size:32px;}
+}
+@media print{
+  *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}
+  body{background:#0A0A18!important;color:#fff!important;margin:0;padding:0;}
+  body::before{display:none!important;}
+  .orb1,.orb2{display:none!important;}
+  .shell{max-width:100%!important;padding:20px!important;}
+  #screen-intro,#screen-questions,#screen-generating{display:none!important;}
+  #screen-report{display:block!important;}
+  .report-actions,.cta-section,.report-footer,.topbar{display:none!important;}
+  .report-header{padding:20px 0!important;border-bottom:1px solid rgba(255,255,255,0.2)!important;}
+  .score-circle{border:3px solid #6A66A3!important;background:#0A0A18!important;}
+  .score-num{color:#6A66A3!important;}
+  .dim-card,.action-card,.math-section,.math-cell{background:#0E0E1F!important;border:1px solid rgba(255,255,255,0.15)!important;}
+  .dim-bar-fill{print-color-adjust:exact!important;}
+  .r-section{margin-bottom:24px!important;}
+  .math-grid{grid-template-columns:repeat(3,1fr)!important;}
+  a{color:#9490C0!important;}
+}
+</style>
+</head>
+<body>
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+<div class="shell">
+
+<div class="topbar">
+  <div class="logo">
+    <span class="logo-icon">
+      <svg width="40" height="40" viewBox="0 0 52 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="7" cy="16" r="6" fill="#6A66A3"/>
+        <circle cx="7" cy="16" r="3" fill="#fff" opacity="0.25"/>
+        <line x1="13" y1="16" x2="20" y2="16" stroke="#6A66A3" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="26" cy="16" r="5" fill="#6A66A3" opacity="0.6"/>
+        <line x1="31" y1="16" x2="37" y2="16" stroke="url(#lm_grad)" stroke-width="2.5" stroke-linecap="round"/>
+        <defs><linearGradient id="lm_grad" x1="31" y1="16" x2="37" y2="16" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#6A66A3"/><stop offset="100%" stop-color="#FF9900"/></linearGradient></defs>
+        <circle cx="45" cy="16" r="7" fill="#FF9900"/>
+        <circle cx="45" cy="16" r="10.5" stroke="#FF9900" stroke-width="1.2" opacity="0.35"/>
+        <circle cx="45" cy="16" r="2.5" fill="#fff" opacity="0.7"/>
+      </svg>
+    </span>
+    <span style="font-weight:800;letter-spacing:-0.03em;font-size:16px;">Pipelin<span style="color:#FF9900;">d</span></span>
+  </div>
+  <div class="badge">Free Diagnostic</div>
+</div>
+
+<div id="screen-intro">
+  <div class="niche-toggle-wrap">
+    <div class="badge" style="background:rgba(255,153,0,.12);border:1px solid rgba(255,153,0,.3);color:var(--or);">For Fractional CFO Firms</div>
+  </div>
+  <div class="hero fade-in">
+    <div class="eyebrow">5-Minute Diagnostic</div>
+    <h1 id="intro-h1">Find Out How Early You're <em>Catching Your Next CFO Engagement.</em></h1>
+    <p class="hero-sub" id="intro-sub">7 questions. A personalised score across 5 engagement-pipeline dimensions. A prioritised 30-day action plan. Built for independent, solo-practice fractional CFO firms.</p>
+    <div class="hero-meta">
+      <span>5 minutes</span><span>Personalised report</span><span>Free</span>
+    </div>
+  </div>
+  <div class="name-card">
+    <div class="eyebrow">Before we start</div>
+    <label class="name-label" for="name-input">What should I call you?</label>
+    <p class="name-hint">First name only. It appears on your personalised report.</p>
+    <input type="text" id="name-input" class="q-input" placeholder="e.g. Sarah" style="max-width:300px;" maxlength="40" autocomplete="given-name">
+    <br>
+    <button class="btn-start" id="btn-start">
+      Start the Diagnostic
+      <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </button>
+    <div id="name-error" style="color:#F87171;font-size:13px;margin-top:10px;display:none;">Please enter your name to continue.</div>
+  </div>
+  <div class="stat-row">
+    <div class="stat-cell"><div class="stat-num">5</div><div class="stat-lbl">Dimensions Scored</div></div>
+    <div class="stat-cell"><div class="stat-num">100</div><div class="stat-lbl">Point Score</div></div>
+    <div class="stat-cell"><div class="stat-num">3</div><div class="stat-lbl">Priority Actions</div></div>
+  </div>
+</div>
+
+<div id="screen-questions" style="display:none;">
+  <div class="progress-wrap">
+    <div class="progress-label">
+      <span id="prog-text">Question 1 of 7</span>
+      <span id="prog-pct">0%</span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="prog-fill"></div></div>
+  </div>
+  <div class="q-card" id="q-card"></div>
+  <div class="q-nav">
+    <button class="btn-back" id="btn-back" style="display:none;">Back</button>
+    <button class="btn-next" id="btn-next" disabled>
+      Continue
+      <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </button>
+  </div>
+</div>
+
+<div id="screen-generating">
+  <div class="gen-orb">&#9889;</div>
+  <div class="gen-title">Building your report...</div>
+  <div class="gen-sub" id="gen-sub">Analysing answers across 5 engagement-pipeline dimensions</div>
+  <div class="gen-steps">
+    <div class="gen-step active" id="gs-1"><div class="gen-dot"></div><span id="gs-1-txt">Scoring network-to-engagement targeting</span></div>
+    <div class="gen-step" id="gs-2"><div class="gen-dot"></div><span id="gs-2-txt">Evaluating engagement-timing alignment</span></div>
+    <div class="gen-step" id="gs-3"><div class="gen-dot"></div><span id="gs-3-txt">Checking profile conversion layer</span></div>
+    <div class="gen-step" id="gs-4"><div class="gen-dot"></div><span id="gs-4-txt">Assessing outreach consistency</span></div>
+    <div class="gen-step" id="gs-5"><div class="gen-dot"></div><span id="gs-5-txt">Calculating response infrastructure</span></div>
+  </div>
+</div>
+
+<div id="screen-gate">
+  <div class="gate-card fade-in">
+    <div class="gate-teaser" id="gate-teaser">Your score is calculated.</div>
+    <div class="gate-title">Enter your details to open your full report.</div>
+    <div class="gate-list">
+      <div class="gate-list-lbl">What's inside</div>
+      <div class="gate-item"><span class="n">01</span><span>Your <b>score out of 100</b> with the full 5-dimension breakdown</span></div>
+      <div class="gate-item"><span class="n">02</span><span>The <b>compounding network math</b> for your specific answers</span></div>
+      <div class="gate-item"><span class="n">03</span><span>Your <b>prioritised 30-day action plan</b>, sequenced by impact</span></div>
+    </div>
+    <div class="gate-field">
+      <label for="gate-name">Name</label>
+      <input type="text" id="gate-name" placeholder="e.g. Sarah" autocomplete="given-name">
+    </div>
+    <div class="gate-field">
+      <label for="gate-email">Email, we'll also send you the report so you don't lose it</label>
+      <input type="email" id="gate-email" placeholder="sarah@yourpractice.com" autocomplete="email">
+    </div>
+    <div class="gate-field" style="margin-bottom:8px;">
+      <label for="gate-linkedin">LinkedIn handle</label>
+      <input type="text" id="gate-linkedin" placeholder="e.g. sarah-chen-search">
+    </div>
+    <button class="btn-unlock" id="btn-unlock" onclick="unlockReport()">
+      Open My Report
+      <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </button>
+    <div id="gate-error" style="color:#F87171;font-size:13px;margin-top:12px;display:none;text-align:center;">Please enter your name, email, and LinkedIn handle to open your report.</div>
+    <p class="gate-footnote">No spam. Your details unlock this report and nothing else.</p>
+  </div>
+</div>
+
+<div id="screen-report"></div>
+
+</div>
+<script>
+var userName='',currentQ=0,answers={},teaserCalc=null;
+var niche='cfo';
+
+var QUESTION_BANK={
+cfo:[
+  {id:'network',dim:'Dimension 1 \u00b7 Network-to-Engagement Targeting',
+   text:'Who makes up most of your current LinkedIn network?',
+   hint:'Think about the last 20 connection requests you sent or accepted.',
+   type:'opts',
+   opts:[
+     {l:'Mostly other fractional CFOs, peers, and former full-time finance colleagues',s:'The people who can hand you a CFO engagement are outnumbered by the people who can\u2019t',v:1},
+     {l:'A mix \u2014 some decision-makers, but mostly peers and former colleagues',s:'Some right people, but they are still a minority in your feed',v:2},
+     {l:'Actively building with CEOs, founders, and boards who could bring in fractional finance leadership',s:'Your network is aligned with who actually hands out CFO engagements',v:4}
+   ]},
+  {id:'firstmover',dim:'Dimension 2 \u00b7 Engagement-Timing Alignment',
+   text:'In the last 90 days, how many CFO engagement conversations started because you reached out first, before another fractional CFO firm already had the seat?',
+   hint:'Not conversations that started after a job posting went live or a referral tipped you off. Ones where you were early.',
+   type:'opts',
+   opts:[
+     {l:'Zero',s:'Every engagement is still arriving secondhand, after other firms already know',v:1},
+     {l:'1 to 2 conversations',s:'A trickle of early signal, not enough to rely on',v:2},
+     {l:'3 to 5 conversations',s:'Real timing advantage some of the time, but not yet a system',v:3},
+     {l:'6 or more',s:'You are consistently first to the door',v:4}
+   ]},
+  {id:'signalcheck',dim:'Dimension 2 \u00b7 Engagement-Timing Alignment',
+   text:'How consistently do you check for the events that actually trigger a company needing fractional CFO support, funding rounds, rapid headcount growth, finance hiring with no CFO in place, or an ownership change?',
+   hint:'Be honest. This separates a timing gap from a network gap.',
+   type:'opts',
+   opts:[
+     {l:'Rarely or never \u2014 I hear about it when someone tells me',s:'No system is watching the market for you',v:1},
+     {l:'Occasionally, when something crosses my feed or a contact mentions it',s:'Some effort, but it stops and starts',v:2},
+     {l:'Weekly or more, as a fixed routine',s:'Consistent enough that timing becomes a real edge',v:3}
+   ]},
+  {id:'profile',dim:'Dimension 3 \u00b7 Profile Conversion Layer',
+   text:'When a CEO or founder looks you up after hearing your name, what happens?',
+   hint:'Your profile is where a warm introduction either turns into a scoping call or goes quiet. Most fractional CFOs have a resume where a retained-CFO landing page should be.',
+   type:'opts',
+   opts:[
+     {l:'They see my career history and past full-time roles. Essentially a resume.',s:'No clear next step for someone who could hand you a CFO engagement',v:1},
+     {l:'My headline and About section explain what I do, but there is no clear next step',s:'Better framing, but still no conversion path',v:2},
+     {l:'My profile speaks directly to the CFO engagements I take on, with a clear next step',s:'Built to convert a warm intro, not just look credible',v:4}
+   ]},
+  {id:'outreach',dim:'Dimension 4 \u00b7 Outreach Consistency',
+   text:'How are you currently reaching the specific decision-makers at companies showing a hiring, funding, or leadership-change signal?',
+   hint:'Most fractional CFOs skip this entirely and wait for the phone to ring instead. It is the lever almost nobody is pulling.',
+   type:'opts',
+   opts:[
+     {l:'I am not. I wait for referrals or inbound calls.',s:'No systematic way of reaching the person who could authorise a CFO engagement',v:1},
+     {l:'Occasionally, when a signal happens to cross my desk',s:'Sporadic, not systematic',v:2},
+     {l:'I have a weekly routine for reaching out to the decision-maker at signalled companies',s:'Consistently reaching the person who can actually hand you the engagement',v:4}
+   ]},
+  {id:'response',dim:'Dimension 5 \u00b7 Response Infrastructure',
+   text:'When a warm introduction, referral, or LinkedIn engagement turns into interest, what happens next?',
+   hint:'Every one of these is the opening of a CFO engagement conversation, or it goes quiet.',
+   type:'opts',
+   opts:[
+     {l:'I reply when I can. No consistent follow-up.',s:'Interest is going cold before it becomes a scoping call',v:1},
+     {l:'I follow up but improvise the message every time',s:'Good instincts, no system',v:2},
+     {l:'I have a scripted sequence for turning interest into a scoping call',s:'Every signal of interest has a tested next move',v:4}
+   ]},
+  {id:'about',dim:'About Your Practice',
+   text:'In one sentence, what kind of fractional CFO engagements do you take on for your clients?',
+   hint:'Be specific about company stage, sector, and the scope you cover. This calibrates your action plan and appears in your report.',
+   type:'text',
+   placeholder:'e.g. I take on fractional CFO engagements for Series A/B SaaS companies...'}
+]
+};
+
+window.addEventListener('DOMContentLoaded',function(){
+  document.getElementById('btn-start').addEventListener('click',start);
+  document.getElementById('name-input').addEventListener('keydown',function(e){if(e.key==='Enter')start();});
+  document.getElementById('btn-next').addEventListener('click',next);
+  document.getElementById('btn-back').addEventListener('click',back);
+  document.getElementById('q-card').addEventListener('click',function(e){
+    var opt=e.target.closest('.opt');
+    if(!opt)return;
+    document.querySelectorAll('#q-card .opt').forEach(function(o){o.classList.remove('selected');});
+    opt.classList.add('selected');
+    answers[opt.dataset.qid]=parseInt(opt.dataset.val,10);
+    document.getElementById('btn-next').disabled=false;
+  });
+  document.getElementById('q-card').addEventListener('input',function(e){
+    if(e.target.classList.contains('q-input')){
+      var v=e.target.value.trim();
+      answers['about']=v;
+      document.getElementById('btn-next').disabled=v.length<8;
+    }
+  });
+});
+
+function start(){
+  var v=document.getElementById('name-input').value.trim();
+  if(!v){document.getElementById('name-error').style.display='block';document.getElementById('name-input').focus();return;}
+  document.getElementById('name-error').style.display='none';
+  userName=v.charAt(0).toUpperCase()+v.slice(1);
+  document.getElementById('screen-intro').style.display='none';
+  document.getElementById('screen-questions').style.display='block';
+  renderQ(0);
+}
+
+function renderQ(idx){
+  var Qs=QUESTION_BANK[niche];
+  var q=Qs[idx];
+  var card=document.getElementById('q-card');
+  var html='<div class="q-dim">'+q.dim+'</div>';
+  html+='<div class="q-num">Question '+(idx+1)+' of '+Qs.length+'</div>';
+  html+='<div class="q-text">'+q.text+'</div>';
+  html+='<div class="q-hint">'+q.hint+'</div>';
+  if(q.type==='opts'){
+    html+='<div class="opts">';
+    q.opts.forEach(function(o){
+      var sel=(answers[q.id]===o.v)?' selected':'';
+      html+='<button class="opt'+sel+'" data-qid="'+q.id+'" data-val="'+o.v+'" type="button">';
+      html+='<div class="radio"></div><div>';
+      html+='<div class="opt-label">'+o.l+'</div>';
+      if(o.s)html+='<div class="opt-sub">'+o.s+'</div>';
+      html+='</div></button>';
+    });
+    html+='</div>';
+  } else {
+    var sv=answers[q.id]||'';
+    html+='<textarea class="q-input" rows="3" placeholder="'+q.placeholder+'">'+sv+'</textarea>';
+  }
+  card.innerHTML=html;
+  var pct=Math.round((idx/Qs.length)*100);
+  document.getElementById('prog-fill').style.width=pct+'%';
+  document.getElementById('prog-text').textContent='Question '+(idx+1)+' of '+Qs.length;
+  document.getElementById('prog-pct').textContent=pct+'%';
+  document.getElementById('btn-back').style.display=idx>0?'block':'none';
+  var nb=document.getElementById('btn-next');
+  nb.innerHTML=idx===Qs.length-1
+    ?'Generate My Report <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>'
+    :'Continue <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
+  nb.disabled=(q.type==='text')?(!(answers[q.id]&&answers[q.id].length>=8)):(answers[q.id]===undefined);
+}
+
+function next(){
+  var Qs=QUESTION_BANK[niche];
+  if(currentQ<Qs.length-1){currentQ++;renderQ(currentQ);}
+  else{generate();}
+}
+function back(){if(currentQ>0){currentQ--;renderQ(currentQ);}}
+
+function generate(){
+  document.getElementById('screen-questions').style.display='none';
+  document.getElementById('screen-generating').style.display='block';
+  var steps=['gs-1','gs-2','gs-3','gs-4','gs-5'];
+  var delay=0;
+  steps.forEach(function(id,i){
+    setTimeout(function(){
+      if(i>0)document.getElementById(steps[i-1]).className='gen-step done';
+      document.getElementById(id).className='gen-step active';
+    },delay);
+    delay+=700;
+  });
+  setTimeout(function(){
+    document.getElementById(steps[steps.length-1]).className='gen-step done';
+    setTimeout(function(){
+      document.getElementById('screen-generating').style.display='none';
+      showGate();
+      window.scrollTo(0,0);
+    },500);
+  },delay);
+}
+
+function computeTeaser(){
+  var d1=dNetwork(),d2=dTiming(),d3=dProfile(),d4=dOutreach(),d5=dResponse();
+  var total=d1.score+d2.score+d3.score+d4.score+d5.score;
+  var band;
+  if(total<40)band='Critical Gap';
+  else if(total<60)band='Developing';
+  else if(total<80)band='Building';
+  else band='Strong Foundation';
+  return {total:total,band:band};
+}
+
+function showGate(){
+  teaserCalc=computeTeaser();
+  document.getElementById('gate-teaser').textContent='Your score: '+teaserCalc.total+'/100, '+teaserCalc.band+'.';
+  document.getElementById('gate-name').value=userName;
+  document.getElementById('screen-gate').style.display='block';
+}
+
+async function unlockReport(){
+  var name=document.getElementById('gate-name').value.trim();
+  var email=document.getElementById('gate-email').value.trim();
+  var linkedinRaw=document.getElementById('gate-linkedin').value.trim();
+  var err=document.getElementById('gate-error');
+  if(!name||!email||!email.includes('@')||!linkedinRaw){
+    err.style.display='block';
+    return;
+  }
+  err.style.display='none';
+  userName=name.charAt(0).toUpperCase()+name.slice(1);
+  var handle=linkedinRaw.replace(/^https?:\/\/(www\.)?linkedin\.com\/in\//i,'').replace(/^@/,'').replace(/^in\//i,'').replace(/\/$/,'').trim();
+  var linkedinUrl='linkedin.com/in/'+handle;
+  try{
+    await fetch('https://api.web3forms.com/submit',{
+      method:'POST',
+      headers:{'Content-Type':'application/json',Accept:'application/json'},
+      body:JSON.stringify({
+        access_key:'54e4bfc3-4b35-49a5-979f-988a9ac22fa2',
+        name:userName,
+        email:email,
+        linkedin:linkedinUrl,
+        message:'Engagement Pipeline Readiness Diagnostic lead. Niche: '+niche+'. Score: '+teaserCalc.total+'/100. Band: '+teaserCalc.band+'. LinkedIn: '+linkedinUrl+'. Answers: '+JSON.stringify(answers)+'.',
+        source:'pipeline-readiness-diagnostic',
+        niche:niche,
+        client:'saurabh-own-lead-magnet'
+      })
+    });
+  }catch(e){console.warn('Lead capture failed, continuing.',e);}
+  document.getElementById('screen-gate').style.display='none';
+  buildReport();
+  document.getElementById('screen-report').style.display='block';
+  window.scrollTo(0,0);
+}
+
+function dNetwork(){
+  var a=answers['network']||1;
+  var s={1:4,2:11,4:20}[a]||4;
+  var ins={
+    1:'Most of your connections are other fractional CFOs, peers, and former full-time finance colleagues. Every post and every update you share reaches people who cannot hand you an engagement, not the CEOs and founders who can. This is the most common reason a strong practice still produces a quiet pipeline.',
+    2:'Your network is mixed. Some real decision-makers exist in it, but they are outnumbered. Most of what you share still reaches people who will never bring in fractional finance leadership.',
+    4:'Your network is aligned with who actually hands out CFO engagements. CEOs, founders, and boards are already in your feed. This is the right foundation to compound on.'
+  };
+  var fix={
+    1:'Send 10 targeted connection requests per week to CEOs and founders at companies showing an active hiring or funding signal. A personalised note under 280 characters, referencing the specific signal, changes the composition of your network within 6 months.',
+    2:'Move from sporadic to systematic. 10 targeted requests per week, aimed only at decision-makers at signalled companies, steadily raises the share of your network that could actually hand you an engagement.',
+    4:'The foundation is solid. Focus on tightening which signals you connect on and maintaining weekly volume so the compounding continues.'
+  };
+  return{name:'Network-to-Engagement Targeting',score:s,insight:ins[a]||ins[1],fix:fix[a]||fix[1],
+    actionWhat:'Build a weekly connection ritual targeting decision-makers at signalled companies',
+    actionWhy:'Your current network is the primary reason CFO engagement conversations are not starting. No amount of signal detection fixes a distribution problem.',
+    actionTime:'20 min every Monday',actionResult:'A steadily growing share of your network who could actually authorise a search'};
+}
+function dTiming(){
+  var fm=answers['firstmover']||1,sc=answers['signalcheck']||1;
+  var raw=fm+sc;
+  var s=raw<=2?4:raw<=4?9:raw<=5?15:20;
+  var ins;
+  if(sc===1&&fm===1)ins='No routine is watching the market, so every engagement is still arriving secondhand, after another fractional CFO firm already has the head start. Even a weekly signal check can put you ahead of that within 30 days.';
+  else if(sc>=2&&fm<=1)ins='You are checking for signals but not yet turning that into first-mover conversations. Awareness without a timely outreach step still lets the engagement go to whoever calls first.';
+  else if(sc>=2&&fm===2)ins='Real timing advantage is starting to show up. The conversations that are happening early confirm the mechanism works. The gap is in how consistently signals get acted on the same week they appear.';
+  else ins='You are consistently early to the door. Timing is working in your favour. The opportunity now is tightening how fast a signal turns into a first outreach message.';
+  return{name:'Engagement-Timing Alignment',score:s,insight:ins,
+    fix:'The moment a target company shows a funding round, ownership change, or a hiring buildout, reach out to the specific decision-maker that week, not the month after. Reference the actual event in the first line. Not a general introduction.',
+    actionWhat:'Reach out to the decision-maker the same week a signal appears, every time',
+    actionWhy:'A real signal loses almost all of its value after a few weeks. Acting late on the right signal produces the same result as never seeing it.',
+    actionTime:'30 min per week',actionResult:'Conversations that start because you called first, not because a job posting went public'};
+}
+function dProfile(){
+  var a=answers['profile']||1;
+  var s={1:4,2:11,4:20}[a]||4;
+  var ins={
+    1:'Your profile is a resume. When a CEO or founder arrives after hearing your name, they see past full-time roles and no clear picture of what you take on now or what to do next. The engagement conversation dies at the profile visit.',
+    2:'Your profile describes what you do but does not drive action. One rewrite of the headline and About section could meaningfully change how many warm intros turn into a scoping call.',
+    4:'Your profile is working as a landing page. A decision-maker who looks you up lands on a clear positioning statement and a specific next step.'
+  };
+  var fix={
+    1:'Rewrite your headline to name the functions and level you search for, the kind of company you serve, and the outcome clients get. Close your About section with a specific next step, a conversation, a diagnostic, or a clear resource.',
+    2:'Add a clear next step at the end of your About section. Every profile visit that ends without one is an engagement conversation that never opens.',
+    4:'Make sure your Featured section links to your strongest proof point or a recent post that has drawn engagement from decision-makers in your target market.'
+  };
+  return{name:'Profile Conversion Layer',score:s,insight:ins[a]||ins[1],fix:fix[a]||fix[1],
+    actionWhat:'Rewrite your LinkedIn headline and About section for conversion',
+    actionWhy:'A warm introduction sends someone to your profile. If the profile does not convert that visit, the introduction loses its value at the final step.',
+    actionTime:'45 min one-time',actionResult:'Warm intros that turn into a scoping call instead of going quiet'};
+}
+function dOutreach(){
+  var a=answers['outreach']||1;
+  var s={1:3,2:9,4:20}[a]||3;
+  var ins={
+    1:'Waiting for referrals or inbound calls means your pipeline depends entirely on who happens to think of you this month. Reaching the actual decision-maker at a signalled company is the lever most fractional CFOs never pull.',
+    2:'Sporadic outreach produces sporadic engagements. Making this a weekly ritual changes how many decision-makers hear from you before another fractional CFO firm does.',
+    4:'You have a consistent outreach system. The variable to optimise next is how tightly your targeting matches companies actually showing a live signal.'
+  };
+  return{name:'Outreach Consistency',score:s,insight:ins[a]||ins[1],
+    fix:'Set a Monday morning ritual: reach out to the decision-maker at every company that showed a funding, ownership-change, or hiring-buildout signal that week. Each note references the specific event. Under 280 characters. Peer tone. No pitch. 20 minutes total.',
+    actionWhat:'Establish a weekly outreach ritual to decision-makers at signalled companies',
+    actionWhy:'Without systematic outreach, even a perfect signal never turns into a conversation, because nobody reached the person who could act on it.',
+    actionTime:'20 min every Monday',actionResult:'A repeatable weekly motion instead of a pipeline that depends on who happens to call'};
+}
+function dResponse(){
+  var a=answers['response']||1;
+  var s={1:4,2:11,4:20}[a]||4;
+  var ins={
+    1:'Engagement conversations are dying in the thread. Every warm introduction, referral, and LinkedIn reply is the opening of a potential search engagement. Without a system to advance those conversations, they close permanently.',
+    2:'Good instincts but no system means inconsistent results. The interest that converts is the interest where follow-through is fast and purposeful, not improvised.',
+    4:'You have a system for converting interest into conversations. The opportunity is in the quality of the sequence and whether each reply moves toward a booked scoping call.'
+  };
+  return{name:'Response Infrastructure',score:s,insight:ins[a]||ins[1],
+    fix:'Write 3 reply sequences for your most common situations: a warm referral, a comment on your content, and a direct signal-based reply. Each one should acknowledge the context, add one specific insight, and open one clear next step toward a scoping call.',
+    actionWhat:'Write 3 response sequences for referrals, comments, and signal-based outreach replies',
+    actionWhy:'Interest without a next move is an engagement conversation that closes permanently. A sequence makes the right move automatic instead of improvised.',
+    actionTime:'1 hour one-time',actionResult:'Every sign of interest becomes a scoping call instead of a dead end'};
+}
+
+function buildReport(){
+  var d1=dNetwork(),d2=dTiming(),d3=dProfile(),d4=dOutreach(),d5=dResponse();
+  var total=d1.score+d2.score+d3.score+d4.score+d5.score;
+  var band,bc,msg;
+  if(total<40){band='Critical Gap';bc='bc';msg='Your engagement pipeline is currently disconnected from any system. The foundations are not yet in place. The fix is structural, not strategic. You do not need more networking, you need the right signals reaching you first.';}
+  else if(total<60){band='Developing';bc='bd';msg='You have some pieces in place, but signal detection and outreach are not yet running together. The specific gaps below are fixable within 30 days with the right sequence.';}
+  else if(total<80){band='Building';bc='bb';msg='Your system is working but not yet compounding. You are reaching some of the right decision-makers, but your timing advantage is not yet showing up in engagement volume. Two specific fixes will close the gap.';}
+  else{band='Strong Foundation';bc='bs';msg='You have a solid base. Engagement conversations are starting early. The opportunity now is to compound what is working and remove the remaining friction points.';}
+  var rfn=answers['network']===4?60:answers['network']===2?25:8;
+  var dims=[d1,d2,d3,d4,d5];
+  var actions=dims.slice().sort(function(a,b){return a.score-b.score;}).slice(0,3);
+  var about=answers['about']||'help clients achieve their goals';
+  var today=new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+  var h='';
+
+  h+='<div class="report-header fade-in">';
+  h+='<div class="report-for">Engagement Pipeline Readiness Report \u00b7 prepared for</div>';
+  h+='<div class="report-name">'+userName+'</div>';
+  h+='<div class="report-date">'+today+' \u00b7 Pipelind</div>';
+  h+='<div class="score-wrap"><div class="score-circle"><div class="score-num" id="anim-score" style="color:'+col(total)+'">0</div><div class="score-lbl">Out of 100</div></div></div>';
+  h+='<span class="score-band '+bc+'">'+band+'</span><br>';
+  h+='<p class="score-interp">'+msg+'</p>';
+  h+='</div>';
+
+  h+='<div class="r-section fade-in"><div class="r-eyebrow">Your Score Breakdown</div><div class="r-title">5 Engagement Pipeline Dimensions</div>';
+  dims.forEach(function(d){
+    var pct=(d.score/20)*100;
+    var dc=d.score<=8?'var(--rd)':d.score<=14?'var(--or)':'var(--gr)';
+    h+='<div class="dim-card">';
+    h+='<div class="dim-top"><div class="dim-name">'+d.name+'</div>';
+    h+='<div class="dim-badge" style="background:rgba(255,255,255,.05);color:'+dc+';border:1px solid '+dc+'40;">'+d.score+' / 20</div></div>';
+    h+='<div class="dim-bar-track"><div class="dim-bar-fill" data-pct="'+pct+'" style="background:'+dc+'"></div></div>';
+    h+='<div class="dim-insight">'+d.insight+'</div>';
+    if(d.score<16)h+='<div class="dim-fix"><div class="dim-fix-lbl">Highest Leverage Fix</div>'+d.fix+'</div>';
+    h+='</div>';
+  });
+  h+='</div>';
+
+  h+='<div class="r-section fade-in"><div class="math-section">';
+  h+='<div class="r-eyebrow">The Compounding Network Math</div>';
+  h+='<div class="r-title" style="margin-bottom:8px;">What building the right network looks like for '+userName+'</div>';
+  h+='<p style="font-size:13px;color:var(--w8);line-height:1.6;">You '+about.toLowerCase()+'. The decision-makers who could hand you that engagement are not yet in your network in force. Here is a conservative, illustrative picture of what changes with a consistent weekly targeting routine.</p>';
+  h+='<div class="math-grid">';
+  h+='<div class="math-cell"><div class="math-num" style="color:var(--rd);">'+rfn+'</div><div class="math-lbl">Decision-makers now</div><div class="math-sub">Estimated from your current network composition</div></div>';
+  h+='<div class="math-cell"><div class="math-num" style="color:var(--or);">'+(rfn+65)+'</div><div class="math-lbl">After 3 months</div><div class="math-sub">At 5 targeted decision-makers added per week</div></div>';
+  h+='<div class="math-cell" style="border-color:rgba(16,185,129,.3);background:rgba(16,185,129,.04);"><div class="math-num" style="color:var(--gr);">'+(rfn+130)+'</div><div class="math-lbl">After 6 months</div><div class="math-sub">Same pace, compounded</div></div>';
+  h+='</div>';
+  h+='<p style="font-size:12px;color:var(--w4);margin-top:14px;text-align:center;font-family:var(--mono);">Illustrative math at a conservative, self-directed pace of 5 per week. Not a guaranteed delivery volume.</p>';
+  h+='</div></div>';
+
+  h+='<div class="r-section fade-in"><div class="r-eyebrow">Based on Your Lowest Scores</div><div class="r-title">Your Prioritised 30-Day Action Plan</div>';
+  h+='<p style="font-size:13px;color:var(--w8);margin-bottom:20px;line-height:1.6;">These three actions are sequenced by impact. Start with Priority 1. It produces the fastest visible result on your pipeline.</p>';
+  var plabels=['ap1','ap2','ap3'],ptexts=['Priority 1 \u00b7 Do This First','Priority 2 \u00b7 Week 2','Priority 3 \u00b7 Weeks 3 to 4'];
+  actions.forEach(function(d,i){
+    h+='<div class="action-card"><div class="ap '+plabels[i]+'">'+ptexts[i]+'</div>';
+    h+='<div class="action-content"><div class="action-what">'+d.actionWhat+'</div>';
+    h+='<div class="action-why">'+d.actionWhy+'</div>';
+    h+='<div class="action-meta"><span class="at">Time: '+d.actionTime+'</span><span class="ar">Result: '+d.actionResult+'</span></div>';
+    h+='</div></div>';
+  });
+  h+='</div>';
+
+  h+='<div class="cta-section fade-in">';
+  h+='<div class="r-eyebrow" style="margin-bottom:12px;">Beyond Your Own Outreach</div>';
+  h+='<div class="cta-title">See Your First CFO Opportunity Report, Free</div>';
+  h+='<p class="cta-body">This diagnostic scores your own outreach habits. But even a perfect outreach routine still needs to know which companies to reach and why. Pipelind\u2019s CFO Opportunity Engine does that research for you: every month we deliver a small number of verified, prioritised CFO opportunities \u2014 each with the evidence, the decision-maker, and a personalised reason to start the conversation. See it before you commit to anything.</p>';
+  h+='<a href="https://calendly.com/saurabh_zentro/30-min" target="_blank" class="btn-cta">Book Your CFO Opportunity Walkthrough</a><br>';
+  h+='<a href="https://pipelind.com/" target="_blank" class="btn-sec">See how the CFO Opportunity Engine works first \u2197</a>';
+  h+='</div>';
+  h+='<div class="report-actions"><button class="btn-action" onclick="printReport()">Save as PDF</button><button class="btn-action" onclick="shareLinkedIn()">Share on LinkedIn</button><button class="btn-action" onclick="resetAll()">Retake</button></div>';
+  h+='<div class="report-footer"><p>Pipelind \u00b7 <a href="https://pipelind.com/">pipelind.com</a> \u00b7 Saurabh M.</p></div>';
+
+  document.getElementById('screen-report').innerHTML=h;
+  animScore(total);
+  setTimeout(function(){
+    document.querySelectorAll('.dim-bar-fill').forEach(function(el){el.style.width=el.getAttribute('data-pct')+'%';});
+  },400);
+}
+
+function col(s){return s<40?'#F87171':s<60?'#FF9900':s<80?'#6A66A3':'#10B981';}
+
+function animScore(target){
+  var el=document.getElementById('anim-score');
+  if(!el)return;
+  var n=0,step=Math.ceil(target/40);
+  var t=setInterval(function(){n=Math.min(n+step,target);el.textContent=n;if(n>=target)clearInterval(t);},40);
+}
+function printReport(){
+  document.querySelectorAll('.dim-bar-fill').forEach(function(el){
+    el.style.transition='none';
+    el.style.width=el.getAttribute('data-pct')+'%';
+  });
+  setTimeout(function(){window.print();},300);
+}
+function shareLinkedIn(){
+  window.open('https://www.linkedin.com/sharing/share-offsite/?url='+encodeURIComponent('https://www.pipelind.com/pipeline-readiness'),'_blank');
+}
+function resetAll(){
+  answers={};currentQ=0;teaserCalc=null;
+  document.getElementById('screen-report').style.display='none';
+  document.getElementById('screen-gate').style.display='none';
+  document.getElementById('screen-intro').style.display='block';
+  document.getElementById('name-input').value='';
+  document.getElementById('gate-email').value='';
+  document.getElementById('gate-linkedin').value='';
+  document.getElementById('gate-error').style.display='none';
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>
