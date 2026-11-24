@@ -162,11 +162,8 @@ table.sc td:last-child{width:34%;border-left:1px solid var(--border);}
 .cta ul{list-style:none;display:grid;gap:8px;margin-bottom:20px;font-size:15px;color:var(--w8);}
 .cta li{padding-left:24px;position:relative;}
 .cta li::before{content:'\2713';position:absolute;left:0;color:var(--or);font-weight:800;}
-#cal-wrap{display:none;margin-top:18px;background:#fff;border-radius:14px;overflow:hidden;min-height:120px;}
-#cal-wrap .calendly-inline-widget{min-width:300px;height:720px;}
 .cal-note{font-size:13px;color:var(--w6);text-align:center;margin-top:10px;}
 .cal-note a{color:var(--or);}
-.booked{display:none;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.4);border-radius:12px;padding:16px;margin-top:14px;font-size:15px;}
 .actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:26px;}
 .foot{text-align:center;font-size:13px;color:var(--w4);margin-top:30px;}
 .foot a{color:var(--w6);}
@@ -176,7 +173,7 @@ table.sc td:last-child{width:34%;border-left:1px solid var(--border);}
 @media(max-width:560px){.two{grid-template-columns:1fr;}.about{flex-direction:column;align-items:center;text-align:center;}.opt{font-size:15px;}.card{padding:20px;}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important;}.fade{opacity:1;transform:none;}}
 @media print{
-  body{background:#fff;color:#111;font-size:12px;}.orb,.topbar,.no-print,#cal-wrap,.actions,.cta{display:none!important;}
+  body{background:#fff;color:#111;font-size:12px;}.orb,.topbar,.no-print,.actions,.cta{display:none!important;}
   .card,.act,.leak-hero,.tpl,.row{background:#fff!important;border:1px solid #bbb!important;color:#111!important;}
   *{color:#111!important;}.bar-row .bf{transition:none!important;}.r-sec,.act{break-inside:avoid;}
 }
@@ -255,7 +252,7 @@ table.sc td:last-child{width:34%;border-left:1px solid var(--border);}
         <img src="/assets/saurabh-photo.jpg" alt="Saurabh M., founder of Pipelind" width="84" height="84" loading="lazy" decoding="async">
         <div>
           <p>I spent 16 years on the buyer side of corporate operations. I know what makes a decision-maker ignore a LinkedIn message, and what makes one reply.</p>
-          <p>Today I build AI-assisted LinkedIn outbound systems for B2B founders. This audit is the checklist I wish every founder ran before spending another hour on outreach.</p>
+          <p>Today I build LinkedIn outbound systems for B2B founders. This audit is the checklist I wish every founder ran before spending another hour on outreach.</p>
           <p class="who">Saurabh M. &middot; Founder, Pipelind</p>
         </div>
       </div>
@@ -612,11 +609,8 @@ function buildReport(){
   h+='<h2>Want a second pair of eyes on your pipeline?</h2>';
   h+='<p>'+esc(ctaLead)+' Knowing what is broken and fixing it week after week are two different jobs. In a free 30-minute LinkedIn Outbound Strategy Review we will:</p>';
   h+='<ul><li>Look at your current outbound process</li><li>Pinpoint the one bottleneck worth fixing first</li><li>Map your ideal prospect profile</li><li>Decide honestly whether a done-for-you system makes sense for you</li></ul>';
-  h+='<button class="btn" id="book-btn" type="button">Book my strategy review &rarr;</button>';
-  h+='<p class="micro">No generic sales presentation. If it is not a fit, I will tell you.</p>';
-  h+='<div id="cal-wrap" aria-live="polite"></div>';
-  h+='<p class="cal-note" id="cal-note" style="display:none">Calendar not loading? <a href="'+CONFIG.calendly+'" target="_blank" rel="noopener">Open it in a new tab</a>.</p>';
-  h+='<div class="booked" id="booked"><b>You&rsquo;re booked.</b> Check your email for the calendar invite. Before we talk, try the first step of your Priority 1 fix.</div></div>';
+  h+='<a class="btn" id="book-btn" href="'+esc(bookingUrl(p,top))+'" target="_blank" rel="noopener">Book my strategy review &rarr;</a>';
+  h+='<p class="micro">Opens my calendar in a new tab. No generic sales presentation. If it is not a fit, I will tell you.</p></div>';
 
   h+='<div class="actions no-print"><button class="btn-ghost" id="print-btn" type="button">Save as PDF</button><button class="btn-ghost" id="share-btn" type="button">Share the audit</button><button class="btn-ghost" id="retake-btn" type="button">Retake</button></div>';
   h+='<div class="foot">Pipelind &middot; Saurabh M. &middot; <a href="'+CONFIG.linkedin+'" target="_blank" rel="noopener">LinkedIn</a> &middot; saurabh@pipelind.com</div>';
@@ -632,7 +626,6 @@ function bindReport(p,b,top){
     var el=$('ring-num'),n=0,st=Math.max(1,Math.ceil(p/40));
     var t=setInterval(function(){n=Math.min(n+st,p);el.textContent=n;if(n>=p)clearInterval(t);},30);
   },250);
-  $('book-btn').addEventListener('click',function(){openCalendar(p,top);});
   $('print-btn').addEventListener('click',function(){
     document.querySelectorAll('.bf').forEach(function(el){el.style.transition='none';el.style.width=el.getAttribute('data-w')+'%';});
     var ring=$('ring');if(ring){ring.style.transition='none';ring.style.strokeDashoffset=String(339.29*(1-p/100));}
@@ -650,44 +643,19 @@ function bindReport(p,b,top){
   });
 }
 
-/* ---------- CALENDLY (loaded on demand) ---------- */
-var calLoaded=false;
-function openCalendar(p,top){
-  var wrap=$('cal-wrap');
-  wrap.style.display='block';
-  $('book-btn').style.display='none';
-  $('cal-note').style.display='block';
-  if(calLoaded){return;}
-  calLoaded=true;
-  wrap.innerHTML='<div style="padding:30px;text-align:center;color:#444;font-size:14px">Loading calendar\u2026</div>';
-  var s=document.createElement('script');
-  s.src='https://assets.calendly.com/assets/external/widget.js';s.async=true;
-  var failTimer=setTimeout(function(){
-    if(!wrap.querySelector('iframe'))wrap.innerHTML='<div style="padding:28px;text-align:center;color:#222;font-size:15px">The calendar is slow to load. <a href="'+CONFIG.calendly+'" target="_blank" rel="noopener" style="color:#b45f00;font-weight:700">Open it in a new tab</a>.</div>';
-  },9000);
-  s.onload=function(){
-    wrap.innerHTML='';
-    try{
-      window.Calendly.initInlineWidget({
-        url:CONFIG.calendly+'?hide_gdpr_banner=1&background_color=ffffff&text_color=1a1a2e&primary_color=e07b00',
-        parentElement:wrap,
-        prefill:{name:userName,email:userEmail,customAnswers:{a1:userSite||'',a2:'Leak Audit '+p+'/100. Biggest leak: '+LEAKS[top.i].name}},
-        utm:{utmSource:'pipeline-leak-audit',utmMedium:params.get('utm_source')||'direct',utmCampaign:variant}
-      });
-    }catch(e){wrap.innerHTML='<div style="padding:28px;text-align:center;color:#222"><a href="'+CONFIG.calendly+'" target="_blank" rel="noopener">Open the calendar in a new tab</a></div>';}
-    clearTimeout(failTimer);
-  };
-  s.onerror=function(){clearTimeout(failTimer);wrap.innerHTML='<div style="padding:28px;text-align:center;color:#222;font-size:15px">Could not load the calendar. <a href="'+CONFIG.calendly+'" target="_blank" rel="noopener" style="color:#b45f00;font-weight:700">Open it in a new tab</a>.</div>';};
-  document.head.appendChild(s);
+/* ---------- BOOKING (always opens in a new tab) ---------- */
+function bookingUrl(p,top){
+  var q=[
+    'name='+encodeURIComponent(userName),
+    'email='+encodeURIComponent(userEmail),
+    'a1='+encodeURIComponent(userSite||''),
+    'a2='+encodeURIComponent('Leak Audit '+p+'/100. Biggest leak: '+LEAKS[top.i].name),
+    'utm_source=pipeline-leak-audit',
+    'utm_medium='+encodeURIComponent(params.get('utm_source')||'direct'),
+    'utm_campaign='+encodeURIComponent(variant)
+  ];
+  return CONFIG.calendly+'?'+q.join('&');
 }
-window.addEventListener('message',function(e){
-  if(e.origin!=='https://calendly.com')return;
-  if(e.data&&e.data.event==='calendly.event_scheduled'){
-    var bk=$('booked');if(bk){bk.style.display='block';}
-    var w=$('cal-wrap');if(w)w.style.display='none';
-    var n=$('cal-note');if(n)n.style.display='none';
-  }
-});
 
 /* expose minimal hooks for automated testing only */
 window.__audit={answers:function(){return answers;},pct:pctScore,ranked:ranked,raw:rawTotal};

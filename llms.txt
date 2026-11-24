@@ -1,14 +1,13 @@
 # Pipelind
 
-> Pipelind builds and runs AI-powered LinkedIn outbound systems for established B2B founders. The flagship service is the 8-Week B2B Pipeline Accelerator: a done-for-you programme designed to target 10-30 qualified sales conversations per month once optimised. Founder: Saurabh M. Contact: saurabh@pipelind.com. Last updated: November 2026.
+> Pipelind builds and runs LinkedIn outbound systems for established B2B founders. The flagship service is the 8-Week B2B Pipeline Accelerator: a done-for-you programme designed to target 10-30 qualified sales conversations per month once optimised. Founder: Saurabh M. Contact: saurabh@pipelind.com. Last updated: November 2026.
 
 ## Key facts
 - Service: The 8-Week B2B Pipeline Accelerator (done-for-you LinkedIn outbound and appointment setting)
-- Price: $997 USD one-time for the 8-week programme. Third-party software and optional data subscriptions are billed separately and approved with the client before purchase.
+- Pricing: tailored to each client's requirements and shared in a personalised proposal after a free strategy call. There is no public price list.
 - Target: 10-30 qualified sales conversations per month once the campaign is optimised. This is a target, not a promise. Closed revenue is not guaranteed.
 - Guarantee: Founding-client guarantee. If the client completes agreed onboarding and approvals but the agreed qualified-meeting target is missed in the measurement period, optimisation and delivery continue at no additional service fee for an agreed extension period. Terms are documented in the service agreement.
 - Qualified meeting: the prospect matches the agreed ICP, is a relevant decision-maker or buying stakeholder, has shown interest in a relevant business conversation, and has accepted a calendar invitation.
-- Technology: Sbl.so (AI-powered LinkedIn outreach platform). Pipelind's strategy, targeting, messaging, management and optimisation are the service.
 - Ideal client: B2B founders in the US, UK, Canada and Australia with 3+ paying customers, selling contracts of $2,000+; priority segments are B2B SaaS, marketing agencies and IT/software services.
 - Not a fit: no paying customers yet, low-value or consumer products, no capacity for more sales calls, or expecting guaranteed revenue.
 
@@ -42,11 +41,11 @@ If you complete the agreed onboarding, give timely approvals and take part as ag
 ### Is the 10 to 30 calls a month a promise?
 It is a target, not a promise. The system is designed to aim for 10 to 30 qualified sales conversations a month once the campaign is optimised. Results depend on your offer, your market, how fast you approve things and how the campaign performs.
 
-### What does the $997 cover, and what does it not?
-The $997 one-time fee covers the full 8-week programme: strategy, research, messaging, campaign setup and management, reply qualification, weekly reviews, five bonuses and a 90-day roadmap. Third-party software and optional data subscriptions are billed separately, and I approve each one with you before you buy it.
+### How much does it cost?
+Pricing is tailored to each business, because every client's market, goals and requirements are different. After the strategy call you receive a clear, personalised proposal that shows exactly what is included and the investment, before you commit to anything. Any third-party costs are discussed and agreed with you in advance.
 
-### Is AI-written outreach going to sound robotic or get my account in trouble?
-Messages are personalised from each prospect's business, role and context, and you approve the messaging before launch. Replies and follow-ups are AI-assisted with human oversight. LinkedIn restricts some kinds of automation and no provider can remove that risk completely, so we start with controlled outreach volumes and review early performance before scaling.
+### Will the outreach sound robotic or put my LinkedIn account at risk?
+Every message is personalised from the prospect's business, role and context, and you approve the messaging before launch. Replies and follow-ups are handled with human oversight. LinkedIn restricts some kinds of automation and no provider can remove that risk completely, so we start with controlled outreach volumes and review early performance before scaling.
 
 ### What do I need to do?
 Complete onboarding, approve the messaging, and take the qualified calls that arrive. You focus on sales conversations while the outbound system is managed for you.
