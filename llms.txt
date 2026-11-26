@@ -12,7 +12,7 @@
 
 ## Pages
 - [Home](https://www.pipelind.com/)
-- [Free Pipeline Leak Audit](https://www.pipelind.com/pipeline-readiness)
+- [Free Agency Pipeline Leak Audit](https://www.pipelind.com/pipeline-readiness): a free 3-minute, 14-question diagnostic for B2B agency owners with an instant score, biggest leak and 3-step fix plan
 
 ## Book a call
 - Free 30-minute strategy call: https://calendly.com/saurabh_zentro/30-min
