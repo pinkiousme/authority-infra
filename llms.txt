@@ -1,57 +1,50 @@
 # Pipelind
 
-> Pipelind builds and runs LinkedIn outbound systems for established B2B founders. The flagship service is the 8-Week B2B Pipeline Accelerator: a done-for-you programme designed to target 10-30 qualified sales conversations per month once optimised. Founder: Saurabh M. Contact: saurabh@pipelind.com. Last updated: November 2026.
+> Pipelind is an intent-led B2B prospect intelligence and appointment-setting partner for B2B service agency owners. The flagship engagement is the 90-Day Intent-to-Meeting Accelerator: buying-signal and competitor intelligence plus personalised LinkedIn outreach, with a target of 5-15 qualified sales opportunities per month. Founder: Saurabh M. Contact: saurabh@pipelind.com. Last updated: 26 November 2026.
 
 ## Key facts
-- Service: The 8-Week B2B Pipeline Accelerator (done-for-you LinkedIn outbound and appointment setting)
-- Pricing: tailored to each client's requirements and shared in a personalised proposal after a free strategy call. There is no public price list.
-- Target: 10-30 qualified sales conversations per month once the campaign is optimised. This is a target, not a promise. Closed revenue is not guaranteed.
-- Guarantee: Founding-client guarantee. If the client completes agreed onboarding and approvals but the agreed qualified-meeting target is missed in the measurement period, optimisation and delivery continue at no additional service fee for an agreed extension period. Terms are documented in the service agreement.
-- Qualified meeting: the prospect matches the agreed ICP, is a relevant decision-maker or buying stakeholder, has shown interest in a relevant business conversation, and has accepted a calendar invitation.
-- Ideal client: B2B founders in the US, UK, Canada and Australia with 3+ paying customers, selling contracts of $2,000+; priority segments are B2B SaaS, marketing agencies and IT/software services.
-- Not a fit: no paying customers yet, low-value or consumer products, no capacity for more sales calls, or expecting guaranteed revenue.
-
-## 8-week roadmap
-- Week 1: Revenue clarity and offer positioning
-- Week 2: Buyer intelligence and prospect research
-- Week 3: LinkedIn messaging and personalisation
-- Week 4: Campaign setup and launch
-- Week 5: Reply-to-meeting engine
-- Week 6: Meeting quality and show-up system
-- Week 7: Pipeline optimisation
-- Week 8: Handover and 90-day growth plan
+- Audience: owners of B2B service agencies (digital marketing, SEO, paid ads, web and software development, branding, IT consulting, automation, recruitment, sales and business consulting) in the US, UK, Canada and Australia
+- Method: the Intent-to-Meeting Intelligence System, five stages: competitor intelligence, buying-signal detection, high-intent keyword research, AI-assisted prospect intelligence, personalised conversion
+- Two execution paths: a managed path (outreach, follow-ups, qualification and booking coordination run for the client) and a research-led path (researched prospects with ready-to-send personalised messages; the client sends and books calls)
+- Pricing: tailored to each agency and shared in a personalised proposal after a free strategy call. There is no public price list.
+- Target: 5-15 qualified sales opportunities per month. A target, not a promise. Revenue, closed deals and LinkedIn account safety are not guaranteed.
+- Pipeline Performance Commitment: if the agreed minimum target is missed in the final 30 days of the initial 90 days despite the client meeting agreed responsibilities, up to 30 additional days of management or research delivery at no additional management fee.
 
 ## Pages
-- [Home](https://www.pipelind.com/): the offer, how it works, pricing and FAQ
-- [Free Pipeline Leak Audit](https://www.pipelind.com/pipeline-readiness): a free 21-question LinkedIn outbound diagnostic with an instant score and fix plan
+- [Home](https://www.pipelind.com/)
+- [Free Pipeline Leak Audit](https://www.pipelind.com/pipeline-readiness)
 
 ## Book a call
 - Free 30-minute strategy call: https://calendly.com/saurabh_zentro/30-min
 
 ## FAQ
-### What counts as a qualified meeting?
-A qualified meeting is one where the prospect matches the agreed ICP, is a relevant decision-maker or buying stakeholder, has shown interest in a relevant business conversation, and has accepted a calendar invitation. We write this definition into the service agreement.
+### Is this just another lead list?
+No. A list tells you who exists. We tell you who is showing signs they may need you, why, and what to say. Every prospect comes with a documented relevance reason, a supporting signal, the source and the research date, plus a personalised outreach angle.
 
-### Do you guarantee sales or revenue?
-No. We do not guarantee closed revenue, and a booked meeting is not the same as a completed sales opportunity. The system is designed to create more qualified conversations. Closing them is your job.
+### Does a buying signal mean the prospect wants to buy?
+No, and we never claim it does. A hiring push, a funding round or a new executive suggests there may be a need. We verify each signal is relevant to your offer before we use it. The conversation then tells us whether the need is real.
 
-### How does the guarantee work?
-If you complete the agreed onboarding, give timely approvals and take part as agreed, but we miss the agreed qualified-meeting target in the measurement period, we keep optimising and delivering at no additional service fee for an agreed extension period. The target, period and your responsibilities are documented in the service agreement.
+### Which execution path is right for me?
+If you want the whole outbound process off your plate, choose the managed path: we run the outreach, follow-ups, qualification and booking coordination. If you prefer to keep full control of your LinkedIn account and send messages yourself, choose the research-led path: we deliver researched prospects with ready-to-send personalised messages. Both use the same research foundation. We will recommend one on the strategy call.
 
-### Is the 10 to 30 calls a month a promise?
-It is a target, not a promise. The system is designed to aim for 10 to 30 qualified sales conversations a month once the campaign is optimised. Results depend on your offer, your market, how fast you approve things and how the campaign performs.
+### Is the 5 to 15 opportunities a month a promise?
+It is a target, not a promise. It depends on your offer, your market, the path you choose, how quickly you approve messaging and the qualification criteria we agree in writing.
+
+### How does the performance commitment work?
+If the agreed minimum target is not reached in the final 30 days of the initial 90-day engagement, despite you fulfilling your agreed responsibilities, we continue management or research delivery for up to 30 additional days without an additional management fee. Qualified-opportunity definitions, your obligations and exclusions are set out in writing.
+
+### Do you guarantee revenue or closed deals?
+No. We do not guarantee revenue or closed deals, and we cannot promise LinkedIn account safety. We create qualified conversations. Closing them is your job.
 
 ### How much does it cost?
-Pricing is tailored to each business, because every client's market, goals and requirements are different. After the strategy call you receive a clear, personalised proposal that shows exactly what is included and the investment, before you commit to anything. Any third-party costs are discussed and agreed with you in advance.
+There is no public price list, because the investment depends on how much research depth your market needs, how many prospects you want, how complex your market is and how much of the execution you want us to run. After a short strategy call you receive a clear proposal that shows exactly what is included, before you commit to anything. Any third-party costs are specified in writing in advance.
 
-### Will the outreach sound robotic or put my LinkedIn account at risk?
-Every message is personalised from the prospect's business, role and context, and you approve the messaging before launch. Replies and follow-ups are handled with human oversight. LinkedIn restricts some kinds of automation and no provider can remove that risk completely, so we start with controlled outreach volumes and review early performance before scaling.
+### Will the outreach sound robotic, and what about my LinkedIn account?
+Every message is written from the prospect's business, role and context, and you approve the messaging before anything goes out. LinkedIn restricts some kinds of automation and no provider can remove that risk completely, so we use controlled volumes and review early performance before scaling. Any account arrangement is agreed with you in writing and requires your authorisation.
 
 ### What do I need to do?
-Complete onboarding, approve the messaging, and take the qualified calls that arrive. You focus on sales conversations while the outbound system is managed for you.
-
-### What happens after the 8 weeks?
-In Week 8 you get a handover session, the documented outbound process (SOPs), your performance dashboard and a 90-day growth roadmap. You will know which campaigns and segments work best and what to do next.
+Share your offer and ideal customer, approve the messaging, give feedback on lead quality and take the calls that arrive. On the research-led path you also send the prepared messages and book your own calls.
 
 ### Who is this not for?
-Founders with no paying customers yet, low-value or consumer products, no clear target market, or no capacity for more sales calls. If we are not a fit, I will tell you on the strategy call.
+Agencies that expect lead generation to make up for a weak offer, a shaky sales process or limited capacity to serve new clients. Also anyone who wants a contact list, guaranteed revenue or ban-proof promises. If we are not a fit, I will tell you on the strategy call.
+
